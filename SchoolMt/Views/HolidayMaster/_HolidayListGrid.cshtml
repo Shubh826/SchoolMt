@@ -1,0 +1,74 @@
+﻿@model List<MDL.HolidayMDL>
+@{
+    //var objPagingmdl = (MDL.Common.BasicPagingMDL)ViewBag.paging;
+    //int SerialNo = (objPagingmdl.CurrentPage - 1) * objPagingmdl.RowParPage + 1;
+}
+
+<div class="col-md-12">
+    <div class="table-responsive">
+        <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover" id="data">
+            <thead>
+                <tr>
+                    <th class="text-center">Month</th>
+                    <th class="text-center">Date</th>
+                    <th class="text-center">Day</th>
+                    <th class="text-center">Holiday Name</th>
+                    <th class="text-center">Applicability</th>
+                    <th class="text-center">State</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr>
+                        <td colspan="14">
+                            <div class="text-danger">No Record Found </div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Month)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.HolidayDate)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Day)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.HolidayName)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.CityName)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Statename)
+                            </td>
+
+                            <td class="text-center">
+                                @*@if (ViewBag.CanEdit)
+                        {
+                            <a class="btn btn-primary" href="@Url.Action("AddEditHolidays", new { PK_HolidayId = item.PK_HolidayId })">Edit</a>
+                        }*@
+                                    <a class="btn btn-primary" id="btndelete" href="javascript:void(0)" onclick="DeleteHoliday(@item.PK_HolidayId)">Delete</a>
+
+                                    @*<a class="btn btn-primary" href="@Url.Action("DeleteHoliday", new { HolidayId = item.PK_HolidayId })">Delete</a>*@
+                              
+                            </td>
+                        </tr>
+                        //SerialNo++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@*@Html.Partial("_Paging", (MDL.Common.BasicPagingMDL)ViewBag.paging)*@

@@ -1,0 +1,93 @@
+﻿@model List<FTSMDLClassLibrary.ETMS.EmployeeValidExcelData>
+@{
+    int SerialNo = 1;
+}
+<div class="col-md-12">
+    <div class="table-responsive">
+        <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover" id="ValidDataTable">
+            <thead>
+                <tr>
+                    <th class="text-center">Sr. No.</th>
+                    <th class="text-center">Company Name</th>
+                    <th class="text-center">Employee Name</th>
+                    <th class="text-center">Employee Code</th>
+                    <th class="text-center">Mobile No.</th>
+                    <th class="text-center">Shift Name</th>
+                    <th class="text-center">Shift Start Time</th>
+                    <th class="text-center">Shift End Time</th>
+                    <th class="text-center">Address</th>
+                    <th class="text-center">Landmark</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (Model == null || !Model.Any())
+                {
+                    <tr>
+                        <td colspan="14">
+                            <div class="text-danger">@Resources.Dictionary.NoRecordFound </div>
+                        </td>
+                    </tr>
+                }
+
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@SerialNo</td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.CompanyName)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Employee_Name)
+                            </td>
+
+                            <td class="text-center">
+                                <font color="#ff0000">@Html.DisplayFor(modelItem => item.Employee_Code)</font>
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Mobile_No)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Shift_Name)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Shift_Start_Time)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Shift_End_Time)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Landmark)
+                            </td>
+                        </tr>
+                        SerialNo++;
+                    }
+                }
+            </tbody>
+        </table>
+        @using (Html.BeginForm("UploadValidDataToDB", "EmployeeMaster"))
+        {
+            <button type="submit" id="btnDone" class="btn btn-primary">Submit</button>
+        }
+
+        @using (Html.BeginForm("InValidExportToExcel", "EmployeeMaster"))
+        {
+            <input type="image" class="iconSet" title="Download Excel" src="~/App_Images/excel.jpg" style="float:right;" alt="Submit" id="Excel" />
+        }
+    </div>
+</div>
+
+

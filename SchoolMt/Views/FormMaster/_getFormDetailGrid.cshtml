@@ -1,0 +1,93 @@
+﻿@model IEnumerable<MDL.FormMasterMDL>
+@{
+    var objPagingmdl = (MDL.Common.BasicPagingMDL)ViewBag.paging;
+    int SerialNo = (objPagingmdl.CurrentPage - 1) * objPagingmdl.RowParPage + 1;
+
+}
+<div class="col-md-12">
+    <div class="table-responsive">
+        <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover" id="">
+            <thead>
+                <tr>
+                    <th class="text-center">Sr. No.</th>
+                    <th class="text-center">Form Name</th>
+                    <th class="text-center">Controller Name</th>
+                    <th class="text-center">Action Name</th>
+                    <th class="text-center">Parent Form</th>
+                    <th class="text-center">Class Name</th>
+                    <th class="text-center">Area Name</th>
+                    <th class="text-center">Web/Mobile</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr>
+                        <td colspan="14">
+                            <div class="text-danger">No Record Found </div>
+                        </td>
+                    </tr>
+
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@SerialNo</td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.FormName)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.ControllerName)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modalItem => item.ActionName)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modalItem => item.ParentForm)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modalItem => item.ClassName)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modalItem => item.AreaName)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modalItem => item.FormFor)
+                            </td>
+                            @if (item.IsActive)
+                            {
+                                // SerialNo++;
+                                <td class="text-center">Active</td>
+                            }
+                            else
+                            {
+                                // SerialNo++;
+                                <td class="text-center">InActive</td>
+                            }
+
+                            <td class="text-center">
+                                @*@if (ViewBag.CanEdit)
+                                    {*@
+                                <a data-original-title="Edit" data-placement="bottom" data-toggle="tooltip" href=@Url.Action("AddEditForm", new { id = item.Pk_FormId }) class="btn btn-primary btn-sm">Edit</a>
+
+                                @*}*@
+
+                            </td>
+
+                        </tr>
+                        SerialNo++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@Html.Partial("_Paging", (MDL.Common.BasicPagingMDL)ViewBag.paging)
+
+

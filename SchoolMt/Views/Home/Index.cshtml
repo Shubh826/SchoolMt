@@ -1,0 +1,48 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertical Navbar - True Sunshine Academy Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="~/assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/assets/css/style-bod.css">
+    <link rel="shortcut icon" href="~/assets/images/favicon.png" type="image/x-icon">
+</head>
+
+<body class="bg-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="row align-items-center loginOptn">
+                    <div class="col-12">
+                        <div class="auth-logo m-5 mb-0"> <a href="http://erp.truesunshineacademy.com/"><img src="~/assets/images/logo/logo.png" alt="Logo"></a> </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card text-center m-5">
+                            <div class="card-body">  <img src="~/assets/images/921543.png" class="img-fluid" alt="" /> </div>
+                            <div class="card-footer text-muted"><a href="@Url.Action("Login","Home")" class="link">Login as a Client</a></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card text-center m-5">
+                            <div class="card-body"> <img src="~/assets/images/1212164.png" class="img-fluid" alt="" /> </div>
+                            <div class="card-footer text-muted"><a href="@Url.Action("Login","Home")" class="link">Login as an Agency</a></div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center mt-4 text-lg fs-5">Facing trouble Logging in? Chat with us on email id <a href="mailto:info@benchondemand.com">info@benchondemand.com</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/main-bod.js"></script>
+</body>
+</html>

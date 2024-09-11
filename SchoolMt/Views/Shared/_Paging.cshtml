@@ -1,0 +1,43 @@
+﻿@model MDL.Common.BasicPagingMDL
+<div class="paginationDiv">
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <h5 class="pageNumber">Page <span class="text-info">@Model.CurrentPage</span> of <span class="text-info">@Model.TotalPage</span> ( <span class="text-info">@Model.TotalItem</span> Records )</h5>
+    </div>
+    <div class="col-md-8 col-sm-6 col-xs-12 text-right">
+        <ul class="pagination">
+            @{
+            int currentPage = Model.CurrentPage;
+            int MaxShowpage = Convert.ToInt32(5);
+            int StartNo = (currentPage % MaxShowpage == 0) ? (currentPage / MaxShowpage - 1) * MaxShowpage + 1 : (currentPage / MaxShowpage) * MaxShowpage + 1;
+            int previous = StartNo - MaxShowpage;
+            int nextPage = StartNo + MaxShowpage;
+            }
+            @if (currentPage > MaxShowpage)
+            {
+            if (previous == 0) { previous = 1; }
+            <li disabled="disabled"><a onclick="paging(@previous)" href="javascript:void(0);">&laquo;</a></li>
+            }
+            @for (int i = StartNo; i < nextPage; i++)
+            {
+            if (i <= Model.TotalPage)
+            {
+            if (i == currentPage)
+            {
+            <li class="active"><a onclick="paging(@i)" href="javascript:void(0);" class="form-control">@i</a></li>
+            }
+            else
+            {
+            <li><a onclick="paging(@i)" href="javascript:void(0);" class="form-control btn btn-primary marb10">@i</a></li>
+            }
+            }
+            }
+
+            @if (Model.TotalPage >= nextPage)
+            {
+            <li><a onclick="paging(@nextPage)" href="javascript:void(0);">&raquo;</a></li>
+            }
+        </ul>
+    </div>
+</div>
+
+

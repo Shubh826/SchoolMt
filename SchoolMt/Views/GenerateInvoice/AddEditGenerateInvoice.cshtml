@@ -1,0 +1,337 @@
+﻿@model MDL.GenerateInvoiceMDL
+@{
+    ViewBag.Title = "AddEditFeeHead";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .bold {
+        font-weight: bold;
+    }
+
+    hr.class-1 {
+        border-top: 1px solid #8c8b8b;
+    }
+</style>
+
+@*@using (Html.BeginForm("AddEditGenerateInvoice", "GenerateInvoice"))
+    {*@
+@Html.HiddenFor(E => E.PK_InvoiceId)
+<div class="page-heading mb-0">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Add Edit Fee Head</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Add Edit Generate Invoice</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-content">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-1">
+                    @*<form class="form form-horizontal">*@
+                    <div class="form-body">
+                        <div class="row">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div class="col-md-3 ClientDiv">
+                                <label class="setForm bold">School Name<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group ClientDiv">
+                                @Html.DropDownListFor(E => E.FK_CompanyId, new SelectList((System.Collections.IEnumerable)ViewData["CompanyList"], "ID", "Value"), "--Select--", new { @class = "form-select select2" })
+                                @Html.ValidationMessageFor(E => E.FK_CompanyId, "", new { @class = "redText", @style = "color:red" })
+                            </div>
+                            <div class="col-md-3">
+                                <label class="setForm bold">Class Name<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.DropDownListFor(E => E.ClassName, new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Value", "Value"), "--Select--", new { @class = "form-select select2" })
+                                @Html.ValidationMessageFor(E => E.ClassName, "", new { @class = "redText", @style = "color:red" })
+                            </div>
+                            <div class="col-md-3">
+                                <label class="setForm bold">Student Name<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.DropDownListFor(E => E.FK_StudentId, new SelectList(Enumerable.Empty<SelectListItem>
+                                                                 (), "ID", "Value"), "--Select--", new { @class = "form-select select2" })
+                                @Html.ValidationMessageFor(E => E.FK_StudentId, "", new { @class = "redText", @style = "color:red" })
+                            </div>
+                            <div class="col-md-3">
+                                <label class="setForm bold">Year<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.DropDownListFor(E => E.Year, new SelectList((System.Collections.IEnumerable)ViewData["AcYearlist"], "ID", "Value"), "--Select--", new { @class = "form-select select2" })
+                                @Html.ValidationMessageFor(E => E.Year, "", new { @class = "redText", @style = "color:red" })
+                            </div>
+                            <div class="col-md-3">
+                                <label class="setForm bold">Month<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @*@Html.DropDownListFor(E => E.Month, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Value"), new { @class = "form-control", @multiple = "multiple", placeholder = "--Select--", style = "width:100%" })*@
+
+                                @Html.DropDownListFor(E => E.Month, new SelectList((System.Collections.IEnumerable)ViewData["MonthList"], "Value", "Value"), "--Select--", new { @class = "form-select"})
+                                @Html.ValidationMessageFor(E => E.Month, "", new { @class = "redText", @style = "color:red" })
+                            </div>
+                            <div class="row">
+                                <label class="setForm  bold">Fee-Head</label>
+                            </div>
+
+                            <hr class="class-1" />
+                            <br />
+
+                            @foreach (var item1 in Model._feeHeadlist)
+                            {
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">@item1.feeheadName</label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    <input class="form-control val" FhID="feeheadName_@item1.PK_feeheadId" id="feeheadName_@item1.PK_feeheadId" , maxlength="100" name="feeheadName_@item1.PK_feeheadId" placeholder="@item1.feeheadName" type="text" value="@item1.feeheadName">
+
+                                    @*@Html.TextBoxFor("feeheadName + '_' + @item1.PK_feeheadId", new { @class = "form-control val", @maxlength = "100", @placeholder = item1.feeheadName })*@
+                                    @*@Html.ValidationMessageFor(E => item1.feeheadName, "", new { @class = "redText", @style = "color:red" })*@
+                                </div>
+                            }
+
+
+                            <div class="col-md-3">
+                                <label class="setForm  bold">Grand Total<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.TextBoxFor(E => E.GrandTotal, new { @class = "form-control", @maxlength = "100", @placeholder = "Grand Total", @readonly = "readonly" })
+                                @Html.ValidationMessageFor(E => E.GrandTotal, "", new { @class = "redText", @style = "color:red" })
+                            </div>
+                            <div class="col-md-3">
+                                <label class="setForm  bold">In Cash</label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.TextBoxFor(E => E.InCash, new { @class = "form-control val1", @maxlength = "100", @placeholder = "In Cash"})
+                                @Html.ValidationMessageFor(E => E.InCash, "", new { @class = "redText", @style = "color:red" })
+                            </div>
+                            <div class="col-md-3">
+                                <label class="setForm  bold">In Account</label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.TextBoxFor(E => E.InAccount, new { @class = "form-control val1", @maxlength = "100", @placeholder = "In Account"})
+                                @Html.ValidationMessageFor(E => E.InAccount, "", new { @class = "redText", @style = "color:red" })
+                            </div>
+                            <div class="col-md-3">
+                                <label class="setForm  bold">Due Amount </label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.TextBoxFor(E => E.DueAmount, new { @class = "form-control", @maxlength = "100", @placeholder = "Due Amount", @readonly = "readonly" })
+                                @Html.ValidationMessageFor(E => E.DueAmount, "", new { @class = "redText", @style = "color:red" })
+                            </div>
+                            <input type="hidden" value="@Model.FK_StudentId" id="hdnStudentId" />
+
+                            <div class="col-sm-9 d-flex justify-content-end center">
+                                <button type="submit" class="btn btn-primary me-1 mb-1" onclick="InvoiceDetails()">Submit</button>
+                                <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                    @*</form>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*}*@
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<link href="~/Select2/css/select2.css" rel="stylesheet" />
+<script src="~/Select2/js/select2.js"></script>
+<script src="~/assets/js/jquery.sumoselect.js"></script>
+@*<script src="~/assets/js/CustomSumoselectForVMS.js"></script>*@
+<link href="~/assets/css/sumoselect.css" rel="stylesheet" />
+
+
+<script type="text/javascript">
+    var FeeHeadData= @Html.Raw(Json.Encode(@ViewBag.FeeHeadList));
+    var arrayLength = FeeHeadData.length;
+    var sum = 0;
+    $(document).ready(function () {
+        $('.select2').select2();
+
+        //$('#Month').html('');
+        //$('#Month').SumoSelect({ okCancelInMulti: true, selectAll: true, csvDispCount: 1, Sumofor: 'Month' });
+        //$('#Month')[0].sumo.unload();
+        //$('#Month').SumoSelect({ okCancelInMulti: true, selectAll: true, csvDispCount: 1, Sumofor: 'Month' });
+
+
+        $("#ClassName").change(function () {
+            BindStudent($("#ClassName").val());
+        });
+        $("#Month").change(function () {
+            if ($("#FK_StudentId").val() != 0) {
+                CheckStudentMonth($("#FK_StudentId").val());
+            }
+            else {
+                alert('Please Select Student.')
+                $("#Month").val('');
+            }
+
+        });
+
+        //GetMonthDetails();
+        $('.val').val('');
+
+
+            $('.val').keyup(function () {
+              //  debugger
+                sum = 0;
+                for (var i = 0; i < arrayLength; i++) {
+                    if (!isNaN($('#feeheadName_' + FeeHeadData[i].PK_feeheadId).val()) && $('#feeheadName_' + FeeHeadData[i].PK_feeheadId).val().length != 0) {
+                        if (FeeHeadData[i].feeheadName != 'Discount') {
+                            sum += parseInt($('#feeheadName_' + FeeHeadData[i].PK_feeheadId).val());
+                        }
+                        if (FeeHeadData[i].feeheadName == 'Discount') {
+                            sum = sum - parseInt($('#feeheadName_' + FeeHeadData[i].PK_feeheadId).val());
+                        }
+                    }
+
+                    //sum += $('#feeheadName_' + FeeHeadData[i].PK_feeheadId).val();
+                }
+
+
+                var result = sum;
+                    //$('#feeheadName_' + FeeHeadData[i].PK_feeheadId).val()
+                    //textone + texttwo + textthree + textfour + textfive - textsix + textseven;
+                $('#GrandTotal').val(result);
+
+            });
+
+        $('.val1').keyup(function () {
+            debugger
+            var textone;
+            var texttwo;
+            var textthree;
+            textone = parseInt($('#GrandTotal').val());
+            texttwo = parseInt($('#InCash').val());
+            textthree = parseInt($('#InAccount').val());
+            if (texttwo.toString().toUpperCase() == "NAN") {
+                texttwo = parseInt($('#InCash').val(0));
+            }
+            if (textthree.toString().toUpperCase() == "NAN") {
+                textthree = parseInt($('#InAccount').val(0));
+            }
+            var result1 = textone - texttwo - textthree
+            $('#DueAmount').val(result1);
+        });
+
+    });
+    function CheckStudentMonth(Id) {
+                $.ajax({
+                    url: "@Url.Action("CheckStudentMonth", "GenerateInvoice")",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { 'Id': Id },
+                    success: function (data) {
+                       // //debugger
+                        $.each(data, function (i, Item) {
+                            if (Item.Value.toUpperCase() == $('#Month').val().toUpperCase()) {
+                                alert("This Month Invoice Already Genrated.");
+                                $('#Month').val('');
+                            }
+                        });
+                    }
+                });
+    }
+    function GetMonthDetails() {
+                ////debugger
+            $("#Month").html("");// clear before appending new list
+                $.ajax({
+                    url: "@Url.Action("BindStudent", "GenerateInvoice")",
+                    type: "POST",
+                    dataType: "JSON",
+
+                    success: function (data) {
+                       // //debugger
+                        $.each(data, function (i, Item) {
+                            $("#Month").append('<option value="' + Item.Value + '">' + Item.Value + '</option>');
+                        });
+                        $("#Month")[0].sumo.reload();
+                    }
+                });
+    }
+
+
+    function BindStudent(ClassName) {
+
+            $("FK_StudentId").html("");
+            $("FK_StudentId").append(
+            $('<option></option>').val("0").html("--Select--")
+        )
+        if (ClassName == "0" || ClassName == "" || ClassName == null) {
+            return false;
+        }
+
+        $.ajax({
+            url: "@Url.Action("BindStudent", "GenerateInvoice")",
+    type: "GET",
+    cache: false,
+            data: { 'ClassName': ClassName },
+    success: function (data) {
+        debugger
+        if (data.length > 0) {
+            $.each(data, function (i, data) {
+
+                $("#FK_StudentId").append(
+                    $('<option></option>').val(data.ID).html(data.Value));
+            });
+        }
+        else {
+
+        }
+        if ($('#hdnStudentId').val() != '0') {
+            $("#FK_StudentId").val($("#hdnStudentId").val());
+        }
+    },
+});
+}
+
+    function InvoiceDetails()
+    {
+
+            for (var i = 0; i < arrayLength; i++) {
+                FeeHeadData[i].Value = $('#feeheadName_' + FeeHeadData[i].PK_feeheadId).val();
+                FeeHeadData[i].PK_feeheadId = FeeHeadData[i].PK_feeheadId;
+            }
+            $.ajax({
+            url: "@Url.Action("AddEditGenerateInvoice", "GenerateInvoice")",
+            type: "POST",
+            data: {
+                'PK_InvoiceId': $('#PK_InvoiceId').val(),
+                'FK_CompanyId': $('#FK_CompanyId').val(),
+                'ClassName': $('#ClassName').val(),
+                'FK_StudentId': $('#FK_StudentId').val(),
+                'Year': $('#Year').val(),
+                'Month': $('#Month').val(),
+                'GrandTotal': $('#GrandTotal').val(),
+                'InCash': $('#InCash').val(),
+                'InAccount': $('#InAccount').val(),
+                'DueAmount': $('#DueAmount').val(),
+                'InvoiceDetailJson': JSON.stringify(FeeHeadData),
+
+            },
+            success: function (data) {
+               // alert(data.Message);
+                //location.reload();
+
+                window.location.href = '@Url.Action("Index", "GenerateInvoice")';
+            }
+        });
+
+    }
+</script>

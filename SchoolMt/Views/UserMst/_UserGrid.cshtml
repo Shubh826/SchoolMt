@@ -1,0 +1,91 @@
+﻿
+@model List<MDL.UserMDL>
+@{
+    int SerialNo = 1;
+}
+<div class="table-responsive">
+    <table class="table table-bordered mb-0">
+        <thead>
+            <tr>
+                <th class="text-center">S.No.</th>
+                <th class="text-center">User Name</th>
+                <th class="text-center">Name</th>
+                <th class="text-center">Gender</th>
+                <th class="text-center">DOB</th>
+                <th class="text-center">Email ID</th>
+                <th class="text-center">Mobile No.</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Role</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model == null || !Model.Any())
+            {
+                <tr>
+                    <td colspan="14">
+                        <div class="text-danger">No Record Found</div>
+                    </td>
+                </tr>
+
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td align="center">@SerialNo</td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.name)
+                        </td>
+
+                        <td class="text-center">
+                            @item.FirstName @item.MiddleName @item.LastName
+                        </td>
+
+                        @if (item.Gender == "M")
+                        {
+                            <td class="text-center">Male</td>
+                        }
+                        else
+                        {
+                            <td class="text-center">Female</td>
+                        }
+
+                        <td align="center">
+                            @Html.DisplayFor(modelItem => item.DateOfBirth)
+                        </td>
+
+                        <td class="text-center">
+                            @Html.Raw(item.Email)
+                        </td>
+
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.MobileNo)
+                        </td>
+                        @if (item.IsActive)
+                        {
+                            SerialNo++;
+                            <td align="center">Active</td>
+                        }
+                        else
+                        {
+                            SerialNo++;
+                            <td align="center">InActive</td>
+                        }
+
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.RoleName)
+                        <td class="text-center text-nowrap">
+                                <a class="btn btn-primary marb10" href="@Url.Action("AddEditUser", new { id = item.userid })"><i></i>Edit</a>
+                            
+                            <a class="btn btn-primary marb10" href="@Url.Action("DeleteUser", new { id = item.userid })"><i></i>Delete</a>
+
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+@Html.Partial("_Paging", (MDL.Common.BasicPagingMDL)ViewBag.paging)

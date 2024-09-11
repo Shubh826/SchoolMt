@@ -1,0 +1,210 @@
+﻿@model MDL.UserMDL
+@{
+    ViewBag.Title = "AddEditUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+
+    .dateView .dateIcon {
+        position: absolute;
+        right: 25px;
+        top: 12px;
+    }
+
+    .round {
+        border-radius: 1.5rem;
+    }
+
+    .btn-dark {
+        color: white;
+        border-color: #444 !important;
+        background-color: #444 !important;
+    }
+
+    .searchPanel .searchBtn {
+        position: absolute;
+        right: 0;
+        top: 28px;
+    }
+
+    .btntop {
+        top: 6;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+</style>
+
+@using (Html.BeginForm("AddEditUser", "UserMst"))
+{
+    @Html.HiddenFor(E => E.userid)
+    <div class="page-heading mb-0">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Add Edit User</h3>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Add Edit User</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-1">
+                        <form class="form form-horizontal">
+                            <div class="form-body">
+                                <div class="row">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">User Name<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.TextBoxFor(E => E.name, new { @class = "form-control", @maxlength = "50", @placeholder = "User Name" })
+                                        @Html.ValidationMessageFor(E => E.name, "", new { @class = "redText", @style = "color:red" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Role Name<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.DropDownListFor(E => E.roleid, new SelectList((System.Collections.IEnumerable)ViewData["Rolelist"], "ID", "Value"), "--Select--", new { @class = "form-select select2" })
+                                        @Html.ValidationMessageFor(E => E.roleid, "", new { @class = "redText", @style = "color:red" })
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Password<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.PasswordFor(E => E.Password, new { value = Model.Password, @class = "form-control", @placeholder = "Password", @maxlength = "50" })
+                                        @Html.ValidationMessageFor(E => E.Password, "", new { @class = "redText", @style = "color:red" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">First Name<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.TextBoxFor(E => E.FirstName, new { @class = "form-control", maxlength = "50", @placeholder = "First Name" })
+                                        @Html.ValidationMessageFor(E => E.FirstName, "", new { @class = "redText", @style = "color:red" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Middle Name</label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.TextBoxFor(E => E.MiddleName, new { @class = "form-control", maxlength = "50", @placeholder = "Middle Name" })
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Last Name</label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.TextBoxFor(E => E.LastName, new { @class = "form-control", maxlength = "30", @placeholder = "Last Name" })
+                                        @*@Html.ValidationMessageFor(E => E.LastName, "", new { @class = "redText", @style = "color:red" })*@
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Gender<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.DropDownListFor(E => E.Gender, new List<SelectListItem>()
+                                                                                                 {
+                                                                                                   new SelectListItem() { Value = "", Text = "--Select Gender--",Selected=true },
+                                                                                                   new SelectListItem() { Value="M", Text="Male"},
+                                                                                                   new SelectListItem() { Value = "F", Text = "Female" }
+                                                                                                 }, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(E => E.Gender, "", new { @class = "redText", @style = "color:red" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Date Of Birth<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @*<input type="date" placeholder="dd/mm/yyyy">*@
+                                        <div class="form-group position-relative has-icon-right">
+                                            @*@Html.TextBoxFor(E => E.DateOfBirth, new { @class = "form-control DateVal", @placeholder = "DD-MM-YYYY", @Style = "background:white;" })*@
+                                            @Html.TextBoxFor(E => E.DateOfBirth, new { @class = "form-control sdateime", @placeholder = "DD/MM/YYYY", @Style = "background:white;" })
+                                            <div class="form-control-icon"> <i class="bi bi-calendar-range"></i> </div>
+                                            @Html.ValidationMessageFor(E => E.DateOfBirth, "", new { @class = "redText", @style = "color:red" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Email ID<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.TextBoxFor(E => E.Email, new { @class = "form-control", @placeholder = "Email ID", @maxlength = "200" })
+                                        @Html.ValidationMessageFor(E => E.Email, "", new { @class = "redText", @style = "color:red" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Mobile No.<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.TextBoxFor(E => E.MobileNo, new { @class = "form-control", maxlength = "13", @placeholder = "Mobile No." })
+                                        @Html.ValidationMessageFor(E => E.MobileNo, "", new { @class = "redText", @style = "color:red" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Phone No.</label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.TextBoxFor(E => E.PhoneNo, new { @class = "form-control", maxlength = "30", @placeholder = "Phone No." })
+                                        @*@Html.ValidationMessageFor(E => E.PhoneNo, "", new { @class = "redText", @style = "color:red" })*@
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Address</label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.TextBoxFor(E => E.Address, new { @class = "form-control", @placeholder = "Address", @maxlength = "200" })
+                                        @*@Html.ValidationMessageFor(E => E.Address, "", new { @class = "redText", @style = "color:red" })*@
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Status<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.DropDownListFor(E => E.Status, new List<SelectListItem>()
+                                                                                              {
+                                                                                                new SelectListItem() { Value = "Active", Text ="Active",Selected=true },
+                                                                                                new SelectListItem() { Value="InActive", Text="InActive"},
+
+                                                                                              }, new { @class = "form-select select2" })
+                                    </div>
+
+                                    <div class="col-sm-9 d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                        <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<link href="~/assets/css/jquery.datetimepicker.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.datetimepicker.min.js"></script>
+<script src="~/Scripts/jquery.datetimepicker.full.js"></script>
+<link href="~/Select2/css/select2.css" rel="stylesheet" />
+<script src="~/Select2/js/select2.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.select2').select2();
+
+
+    });
+    $('#DateOfBirth').datetimepicker({
+        format: "d/m/Y",
+        //maxDate: 0,
+        defaultDate: new Date(),
+        timepicker: false,
+        //defaultTime: '00:00',
+
+
+    });
+</script>

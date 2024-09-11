@@ -1,0 +1,131 @@
+﻿@model MDL.FormMasterMDL
+
+@{
+    ViewBag.Title = "AddEditUserClientMapping";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .bold {
+        font-weight: bold;
+    }
+</style>
+
+@using (Html.BeginForm("AddEditForm", "FormMaster"))
+{
+    @Html.HiddenFor(E => E.Pk_FormId)
+    <div class="page-heading mb-0">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Add Edit Form</h3>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Add Edit Form</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-1">
+                        @*<form class="form form-horizontal">*@
+                        <div class="form-body">
+                            <div class="row">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="col-md-3 ClientDiv">
+                                    <label class="setForm bold">Form Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv">
+                                    @Html.TextBoxFor(E => E.FormName, new { @class = "form-control", maxlength = "250", @placeholder = "Form Name" })
+                                    @Html.ValidationMessageFor(E => E.FormName, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Controller Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.TextBoxFor(E => E.ControllerName, new { @class = "form-control", maxlength = "250", @placeholder = "Controller Name" })
+                                    @Html.ValidationMessageFor(E => E.ControllerName, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Home Page</label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.TextBoxFor(E => E.ActionName, new { @class = "form-control", maxlength = "250", @placeholder = "Action Name" })
+                                    @Html.ValidationMessageFor(E => E.ActionName, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Class Name</label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.TextBoxFor(E => E.ClassName, new { @class = "form-control", maxlength = "250", @placeholder = "Class Name" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Parent Form</label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.DropDownListFor(E => E.Fk_ParentId, new SelectList((System.Collections.IEnumerable)ViewData["formSelectlist"], "Value", "Text"), "--Select--", new { @class = "form-select select2" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Area Name</label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.TextBoxFor(E => E.AreaName, new { @class = "form-control", maxlength = "250", @placeholder = "Class Name" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Web/Mobile<span class="red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.DropDownListFor(E => E.FormFor, new List<SelectListItem>()
+                                                                       {
+                                                                         new SelectListItem() { Value = "", Text = "--Select--",Selected=true },
+                                                                         new SelectListItem() { Value="All", Text="All"},
+                                                                         new SelectListItem() { Value = "WebApp", Text = "WebApp" },
+                                                                         new SelectListItem() { Value = "MobileApp", Text = "MobileApp" }
+                                    }, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(E => E.FormFor, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Status<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.CheckBoxFor(E => E.IsActive, new { @checked = true })
+                                </div>
+
+                                <div class="col-sm-9 d-flex justify-content-end center">
+                                    <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                    <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        @*</form>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<link href="~/Select2/css/select2.css" rel="stylesheet" />
+<script src="~/Select2/js/select2.js"></script>
+<script type="text/javascript">
+    $(document).ready(function (e) {
+
+        $('.select2').select2();
+
+
+
+    });
+</script>

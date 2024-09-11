@@ -1,0 +1,229 @@
+﻿@model MDL.FormMappingViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.js"></script>
+<div id="main-content">
+    <div class="page-heading">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Form Role Mapping</h3>
+                </div>
+            </div>
+        </div>
+        <section class="section">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 ClientDiv">
+                            <label class="setForm">Mapping For</label>
+                        </div>
+                        <div class="col-md-7 form-group">
+                            @Html.DropDownListFor(E => E.MappingFor, new SelectList((System.Collections.IEnumerable)ViewData["Mappinglist"], "MappingFor", "MappingFor"), new { @class = "form-control select2" })
+                            @Html.ValidationMessageFor(E => E.MappingFor)
+                        </div>
+                        <div class="col-md-3 ClientDiv">
+                            <label class="setForm">Company Name</label>
+                        </div>
+                        <div class="col-md-7 form-group">
+                            @Html.DropDownListFor(E => E.FK_CompanyID, new SelectList((System.Collections.IEnumerable)ViewData["companylist"], "ID", "Value"), "--Select Company--", new { @class = "form-control select2" })
+                            @Html.ValidationMessageFor(E => E.FK_CompanyID)
+                        </div>
+                        <div class="col-md-3 ClientDiv">
+                            <label class="setForm">Role</label>
+                        </div>
+                        <div class="col-md-7 form-group">
+                            @*@Html.DropDownListFor(E => E.FK_RoleId, new SelectList(Enumerable.Empty<SelectListItem>(), "PK_RoleId", "RoleName"), "--Select--", new { @class = "form-control" })*@
+                            @Html.DropDownListFor(E => E.FK_RoleId, new SelectList((System.Collections.IEnumerable)ViewData["Rolelist"], "ID", "Value"), "--Select Role--", new { @class = "form-control select2" })
+
+                            @Html.ValidationMessageFor(E => E.FK_RoleId)
+                        </div>
+                        <div class="col-md-3 ClientDiv">
+                            <label class="setForm">Form</label>
+                        </div>
+                        <div class="col-md-7 form-group">
+                            @Html.DropDownListFor(m => m.FK_FormId, ViewData["formSelectlist"] as SelectList, new { @class = "form-control select2" })
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-md-8">
+                                    <input type="hidden" value="@Model.FK_CompanyID" id="hdncompanyId" />
+                                    <input type="hidden" value="@Model.FK_RoleId" id="hdnroleId" />
+                                    <input type="hidden" value="@Model.FK_FormId" id="hdnformId" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="TableDiv">
+                            @Html.Partial("_FormMapping", Model)
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:20px;">
+                        <div id="msgDiv">
+                            @if (ViewBag.msg != null && (ViewBag.msg).Message_Id == 1)
+                            {
+                                <div id="myAlert" class="alert alert-success">
+                                    <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close" onclick="DivHide()">&times;</a>
+                                    <strong>@ViewBag.msg.Message</strong>
+                                </div>
+                            }
+                            else
+                            {
+                                if (ViewBag.msg != null)
+                                {
+                                    <div id="myAlert" class="alert alert-danger">
+                                        <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close" onclick="DivHide()">&times;</a>
+                                        <strong> @ViewBag.msg.Message</strong>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+@*<script src="~/assets/vendors/jquery/jquery.min.js"></script>*@
+<link href="~/Select2/css/select2.css" rel="stylesheet" />
+<script src="~/Select2/js/select2.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#MappingFor').select2();
+        $("#FK_CompanyID").select2();
+        $("#FK_RoleId").select2();
+        $("#FK_FormId").select2();
+
+        if ($('#hdncompanyId').val() != '0') {
+
+            BindRole($('#hdncompanyId').val());
+
+        }
+        $('#MappingFor').change(function () {
+            debugger;
+            var a = $('#MappingFor').val();
+            var FormId = parseInt($('#FK_FormId').val());
+            var RoleId = parseInt($('#FK_RoleId').val());
+            BindingData(RoleId, FormId, $('#MappingFor').val(), $('#FK_CompanyID').val());
+        });
+
+        $('#FK_FormId').change(function () {
+            debugger
+            var FormId = parseInt($(this).val());
+            var RoleId = parseInt($('#FK_RoleId').val());
+            BindingData(RoleId, FormId, $('#MappingFor').val(), $('#FK_CompanyID').val());
+        });
+
+        $('#FK_RoleId').change(function () {
+
+            var RoleId = parseInt($(this).val());
+            var FormId = parseInt($('#FK_FormId').val());
+            BindingData(RoleId, FormId, $('#MappingFor').val(), $('#FK_CompanyID').val());
+        });
+        $('#FK_CompanyID').change(function () {
+            debugger
+
+            BindForm($(this).val());
+            BindRole($(this).val());
+            var RoleId = parseInt($('#FK_RoleId').val());
+            var FormId = parseInt($('#FK_FormId').val());
+            $('#hdnroleId').val("0").html("--Select--");
+        });
+    });
+    function DivHide() {
+        $('#msgDiv').hide();
+    }
+    function BindingData(RoleId, FormId,MappingFor,compId) {
+        debugger;
+        $.ajax({
+            url:"@Url.Action("FormRole", "FormRoleMapping")",
+            type: 'GET',
+            cache: false,
+            data: { 'roleId': RoleId, 'formId': FormId, 'MappingFor': MappingFor, 'companyid': compId },
+            success: function (data) {
+
+                $('#TableDiv').html(data);
+
+            }
+        });
+    }
+        function BindRole(CompanyId) {
+            debugger
+            var companyId = CompanyId;
+            $("#FK_RoleId").html("");// clear before appending new list
+            $("#FK_RoleId").append(
+            $('<option></option>').val("0").html("--Select--"));
+            if (companyId == "0") {
+                return false;
+            }
+            $.ajax({
+                url:"@Url.Action("getRole", "FormRoleMapping")",
+                type: "GET",
+                dataType: "JSON",
+                data: { companyId: companyId },
+                success: function (roles) {
+
+                    $.each(roles, function (i, role) {
+                        $("#FK_RoleId").append(
+                        $('<option></option>').val(role.ID).html(role.Value));
+                    });
+                    if ($('#hdncompanyId').val() != '0') {
+
+                        $('#FK_RoleId').val($('#hdnroleId').val()).attr("selected", "selected");
+                        $('#hdncompanyId').val(0);
+                    }
+                }
+            });
+        }
+
+
+    function BindForm(CompanyId) {
+        debugger
+        var companyId = CompanyId
+        $("#FK_FormId").html("");// clear before appending new list
+        $("#FK_FormId").append(
+                       $('<option></option>').val("").html("--Select --"));
+
+        if (companyId == "0") {
+            return false;
+        }
+        $.ajax({
+            url:"@Url.Action("getForms", "FormRoleMapping")",
+            type: "GET",
+            dataType: "JSON",
+
+        data: { companyId: companyId },
+        success: function (forms) {
+            if (forms.length > 0) {
+                $.each(forms, function (i, form) {
+                    $("#FK_FormId").append(
+                    $('<option></option>').val(form.PK_FormId).html(form.FormName));
+                });
+
+
+                if ($('#hdncompanyId').val() != '0') {
+
+                    $('#FK_FormId').val($('#hdnformId').val()).attr("selected", "selected");
+                    $('#hdncompanyId').val(0);
+                }
+                $("#FK_FormId")[0].selectedIndex = 1;
+                BindingData($('#FK_RoleId').val(), $("#FK_FormId").val(), $('#MappingFor').val(), $('#FK_CompanyID').val());
+            }
+            else {
+
+            }
+        }
+    });
+    }
+
+
+</script>
+
+

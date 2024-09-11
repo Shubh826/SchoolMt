@@ -1,0 +1,131 @@
+﻿@model List<MDL.CompanyMDL>
+@{
+    var objPagingmdl = (MDL.Common.BasicPagingMDL)ViewBag.paging;
+    int SerialNo = (objPagingmdl.CurrentPage - 1) * objPagingmdl.RowParPage + 1;
+
+}
+<div class="col-md-12">
+    <div class="table-responsive">
+        <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover" id="">
+            <thead>
+                <tr>
+                    <th class="text-center">S.No</th>
+                    <th class="text-center">School Name</th>
+                    <th class="text-center">Parent School</th>
+                    <th class="text-center">Email ID</th>
+                    <th class="text-center">Mobile No.</th>
+
+                    <th class="text-center">GST No.</th>
+                    <th class="text-center">PAN No.</th>
+                    <th class="text-center">CIN No.</th>
+
+                    <th class="text-center">Country</th>
+                    <th class="text-center">State</th>
+                    <th class="text-center">City</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Logo</th>
+
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr>
+                        <td colspan="31">
+                            <div class="text-danger">No Record Found </div>
+                        </td>
+                    </tr>
+
+                }
+                else
+                {
+
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td align="center">@SerialNo</td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.CompanyName)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.CompanyParentName)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.Raw(item.EmailId)
+                                @*@Html.DisplayFor(modelItem => item.EmailId)*@
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.MobileNo)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.GstNo)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.PanNo)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.CIN)
+                            </td>
+
+
+                            <td class="text-center">
+                                @item.countryname
+                            </td>
+
+                            <td class="text-center">
+                                @item.statename
+                            </td>
+
+                            <td class="text-center">
+                                @item.cityname
+                            </td>
+
+                            @if (item.IsActive)
+                            {
+                                SerialNo++;
+                                <td align="center">Active</td>
+                            }
+                            else
+                            {
+                                SerialNo++;
+                                <td align="center">InActive</td>
+                            }
+
+                            <td class="text-center">
+
+                                @if (@item.CompanyLogoName == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <img src="@Url.Content(String.Format("~/App_Images/CompanyLogo/{0}", item.CompanyLogoName))" height="25" width="25" />
+                                }
+
+                            </td>
+
+                            <td class="text-center">
+                                @*@if (ViewBag.CanEdit)
+                                {*@
+                                    <a class="btn btn-primary" href="@Url.Action("AddEditCompany", new { id = item.CompanyId })">Edit</a><br />
+                                @*}*@
+                            </td>
+
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@Html.Partial("_Paging", (MDL.Common.BasicPagingMDL)ViewBag.paging)
+
+

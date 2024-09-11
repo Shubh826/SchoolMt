@@ -1,0 +1,512 @@
+﻿@model MDL.CompanyMDL
+
+@{ ViewBag.Title = "AddEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@using (Html.BeginForm("AddEditCompany", "Company"))
+{
+@Html.HiddenFor(E => E.CompanyId)
+                @Html.HiddenFor(E => E.CurrentLogoURL)
+                                <div class="page-heading mb-0">
+                                    <div class="page-title">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 order-md-1 order-last">
+                                                <h3>Add Edit School</h3>
+                                            </div>
+                                            <div class="col-12 col-md-6 order-md-2 order-first">
+                                                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                                    <ol class="breadcrumb">
+                                                        <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                                                        <li class="breadcrumb-item active" aria-current="page">Add Edit School</li>
+                                                    </ol>
+                                                </nav>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                                <div class="card">
+                                                    <div class="card-content">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-8 offset-lg-1">
+                                                                    @*<form class="form form-horizontal">*@
+                                                                    <div class="form-body">
+                                                                        <div class="row">
+                                                                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">School Name<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextBoxFor(E => E.CompanyName, new { @class = "form-control", maxlength = "250", @placeholder = "School Name" })
+                                                                                @Html.ValidationMessageFor(E => E.CompanyName, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <label class="setForm  bold">Parent School<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group">
+                                                                                @Html.DropDownListFor(E => E.CompanyParentId, new SelectList((System.Collections.IEnumerable)ViewData["companylist"], "ID", "Value"), "--SELECT--", new { @class = "form-control" })
+                                                                            </div>
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">Address<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextAreaFor(E => E.Address, new { @class = "form-control", maxlength = "250", @placeholder = "Address" })
+                                                                                @Html.ValidationMessageFor(E => E.Address, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">PinCode<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextBoxFor(E => E.Company_Pin, new { @class = "form-control", maxlength = "20", @placeholder = "PinCode" })
+                                                                                @Html.ValidationMessageFor(E => E.Company_Pin, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <label class="setForm  bold">Country<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group">
+                                                                                @Html.DropDownListFor(E => E.FK_CountryId, new SelectList((System.Collections.IEnumerable)ViewData["countrylist"], "CountryId", "CountryName"), "--SELECT--", new { @class = "form-control" })
+                                                                                @Html.ValidationMessageFor(E => E.FK_CountryId, "", new { @class = "redText", @style = "color:red" })
+
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <label class="setForm  bold">State<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group">
+                                                                                @Html.DropDownListFor(E => E.FK_StateId, new SelectList(Enumerable.Empty<SelectListItem>(), "stateId", "stateName"), "--Select State--", new { @class = "form-control" })
+                                                                                @Html.ValidationMessageFor(E => E.FK_StateId, "", new { @class = "redText", @style = "color:red" })
+
+                                                                            </div>
+
+                                                                            <div class="col-md-3">
+                                                                                <label class="setForm  bold">City<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group">
+                                                                                @Html.DropDownListFor(E => E.FK_CityId, new SelectList(Enumerable.Empty<SelectListItem>(), "CityId", "CityName"), "--Select City--", new { @class = "form-control" })
+                                                                                @Html.ValidationMessageFor(E => E.FK_CityId, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <label class="setForm  bold">Is Billing Address Same As Address ?</label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group">
+                                                                                @Html.CheckBoxFor(E => E.chkIsSameAddress, new { @class = "checkbox-inline", @checked = "checked" })
+
+                                                                                @*<input type="checkbox" id="chkIsSameAddress" />*@
+                                                                            </div>
+                                                                            @*<div class="col-md-3">
+                                                                                <label class="setForm  bold">Google Location Address</label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group">
+                                                                                @Html.CheckBoxFor(E => E.locationBuildAllow, new { @class = "checkbox-inline", @checked = "checked" })
+                                                                            </div>*@
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">Billing Address<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextAreaFor(E => E.Billing_Address, new { @class = "form-control", maxlength = "250", @placeholder = "Billing Address" })
+                                                                                @Html.ValidationMessageFor(E => E.Billing_Address, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">Billing PinCode<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextBoxFor(E => E.Billing_Pin, new { @class = "form-control", maxlength = "20", @placeholder = "Billing PinCode" })
+                                                                                @Html.ValidationMessageFor(E => E.Billing_Pin, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <label class="setForm  bold">Billing Country<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group">
+                                                                                @Html.DropDownListFor(E => E.Billing_FkCountryId, new SelectList((System.Collections.IEnumerable)ViewData["countrylist"], "CountryId", "CountryName"), "--SELECT--", new { @class = "form-control" })
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <label class="setForm  bold">Billing State<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group">
+                                                                                @Html.DropDownListFor(E => E.Billing_FkStateId, new SelectList(Enumerable.Empty<SelectListItem>(), "stateId", "stateName"), "--Select State--", new { @class = "form-control" })
+                                                                            </div>
+
+                                                                            <div class="col-md-3">
+                                                                                <label class="setForm  bold">Billing City<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group">
+                                                                                @Html.DropDownListFor(E => E.Billing_FkCityId, new SelectList(Enumerable.Empty<SelectListItem>(), "CityId", "CityName"), "--Select City--", new { @class = "form-control" })
+                                                                            </div>
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">School Phone No.<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextBoxFor(E => E.Company_Phone, new { @class = "form-control", maxlength = "20", @placeholder = "School Phone No." })
+                                                                                @Html.ValidationMessageFor(E => E.Company_Phone, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">Contact Person</label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextBoxFor(E => E.ContactPerson, new { @class = "form-control", maxlength = "20", @placeholder = "Contact Person" })
+                                                                                @Html.ValidationMessageFor(E => E.ContactPerson, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">Contact No.<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextBoxFor(E => E.ContactNo, new { @class = "form-control", maxlength = "20", @placeholder = "Contact No." })
+                                                                                @Html.ValidationMessageFor(E => E.ContactNo, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">Alt Contact No.</label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextBoxFor(E => E.ContactAltNo, new { @class = "form-control", maxlength = "20", @placeholder = "Alt Contact No." })
+                                                                                @Html.ValidationMessageFor(E => E.ContactAltNo, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">Contact Email ID</label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextBoxFor(E => E.ContactEmailId, new { @class = "form-control", maxlength = "200", @placeholder = "Contact Email ID" })
+                                                                                @Html.ValidationMessageFor(E => E.ContactEmailId, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">Mobile No.<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextBoxFor(E => E.MobileNo, new { @class = "form-control", maxlength = "20", @placeholder = "Mobile No." })
+                                                                                @Html.ValidationMessageFor(E => E.MobileNo, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">Email ID<span style="color:red">*</span></label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextBoxFor(E => E.EmailId, new { @class = "form-control", maxlength = "200", @placeholder = "Email ID" })
+                                                                                @Html.ValidationMessageFor(E => E.EmailId, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">Alternate Email ID</label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextBoxFor(E => E.AltEmailId, new { @class = "form-control", maxlength = "200", @placeholder = "Alternate Email ID" })
+                                                                                @Html.ValidationMessageFor(E => E.AltEmailId, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">Gst No.</label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextBoxFor(E => E.GstNo, new { @class = "form-control", maxlength = "20", @placeholder = "Gst No." })
+                                                                                @Html.ValidationMessageFor(E => E.GstNo, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">Pan No.</label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextBoxFor(E => E.PanNo, new { @class = "form-control", maxlength = "20", @placeholder = "Pan No." })
+                                                                                @Html.ValidationMessageFor(E => E.PanNo, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">CIN</label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.TextBoxFor(E => E.CIN, new { @class = "form-control", maxlength = "50", @placeholder = "CIN" })
+                                                                                @Html.ValidationMessageFor(E => E.CIN, "", new { @class = "redText", @style = "color:red" })
+                                                                            </div>
+                                                                            <div class="col-md-3 ClientDiv">
+                                                                                <label class="setForm bold">School Logo</label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group ClientDiv">
+                                                                                @Html.DisplayFor(E => E.CompanyLogoName)
+
+                                                                                @Html.TextBoxFor(E => E.CompanyLogo, new { @type = "file", @class = "form-control", @maxlength = 100 })
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <label class="setForm  bold">Status</label>
+                                                                            </div>
+                                                                            <div class="col-md-7 form-group">
+                                                                                @Html.CheckBoxFor(E => E.IsActive, new { @checked = true })
+                                                                            </div>
+                                                                            <input type="hidden" value="@Model.FK_CountryId" id="hdncountryId" />
+                                                                            <input type="hidden" value="@Model.FK_StateId" id="hdnSateId" />
+                                                                            <input type="hidden" value="@Model.FK_CityId" id="hdncityId" />
+                                                                            <input type="hidden" value="@Model.Billing_FkCountryId" id="hdnBillcountryId" />
+                                                                            <input type="hidden" value="@Model.Billing_FkStateId" id="hdnBillSateId" />
+                                                                            <input type="hidden" value="@Model.Billing_FkCityId" id="hdnBillcityId" />
+                                                                            <input type="hidden" value="@Model.CompanyParentId" id="hdnCompanyParentId" />
+
+
+                                                                            <div class="col-sm-9 d-flex justify-content-end center">
+                                                                                <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                                                                <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    @*</form>*@
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>}
+
+
+@Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+        $(document).ready(function () {
+
+            if ($('#hdncountryId').val() != '0') {
+                BindState($('#hdncountryId').val());
+            }
+
+            if ($('#hdnBillcountryId').val() != '0') {
+                BindBillingState($('#hdnBillcountryId').val());
+            }
+
+            $('#FK_CountryId').change(function () {
+                BindState($(this).val());
+                $('#hdnSateId').val("0").html("--Select--");
+                $('#hdncountryId').val("0").html("--Select--");
+            });
+
+            $('#Billing_FkCountryId').change(function () {
+                BindBillingState($(this).val());
+                $('#hdnBillSateId').val("0").html("--Select--");
+                $('#hdnBillcountryId').val("0").html("--Select--");
+            });
+
+
+            $('#hdnBillcountryId').change(function () {
+                debugger;
+                BindBillingState($(this).val());
+                $('#hdnBillSateId').val("0").html("--Select--");
+                $('#hdnBillcountryId').val("0").html("--Select--");
+            });
+
+
+
+            $('#FK_StateId').change(function () {
+                $('#hdncityId').val("0").html("--Select--");
+                BindCity($(this).val());
+            });
+
+
+            $('#hdnBillSateId').change(function () {
+                $('#hdncityId').val("0").html("--Select--");
+                BindCity($(this).val());
+            });
+
+
+            $('#Billing_FkStateId').change(function () {
+                $('#hdnBillcityId').val("0").html("--Select--");
+                BindBillingCity($(this).val());
+            });
+        });
+    //if ($("#chkIsSameAddress").val()) {
+    //        debugger
+    //        $("#chkIsSameAddress").trigger("click");
+    //    }
+
+        $('#chkIsSameAddress').change(function () {  //Deepak Sir
+
+            if (this.checked) {
+                if ($('#Address').val() != ""
+                     && $('#FK_CountryId').val() != "" && $('#FK_StateId').val() != "0"
+                     && $('#FK_CityId').val() != "0") {
+                    AddressChange();
+                }
+                else {
+                    $("#chkIsSameAddress").prop("checked", false);
+                    alert('Please Enter company Address details.');
+                }
+            }
+            else {
+                $('#Billing_Address').prop("disabled", false);
+                $('#Billing_Pin').prop("disabled", false);
+                $('#Billing_FkCountryId').prop("disabled", false);
+                $('#Billing_FkStateId').prop("disabled", false);
+                $('#Billing_FkCityId').prop("disabled", false);
+
+                $('#Billing_FkCountryId').val("");
+                $('#Billing_Address').val('');
+                $('#Billing_Pin').val('');
+                $('#Billing_FkStateId').val("0").html("--Select--");
+                $('#Billing_FkCityId').val("0").html("--Select--");
+
+                BindBillingState($(this).val());
+                $('#hdnBillSateId').val("0").html("--Select--");
+                $('#hdnBillcountryId').val("0").html("--Select--");
+                // $('#hdnBillcityId').val("0").html("--Select--");
+                BindBillingCity($(this).val());
+                //$("#Billing_Address").prop('required', 'required');
+            }
+        });
+
+        function AddressChange() {
+            $('#Billing_Address').val($('#Address').val());
+            $('#Billing_Pin').val($('#Company_Pin').val());
+
+            var country = $('#FK_CountryId').find('option:selected').val();
+            var state = $('#FK_StateId').find('option:selected').val();
+            var city = $('#FK_CityId').find('option:selected').val();
+
+            $("#Billing_FkCountryId").val(country);
+
+            BindBillingState(country);
+            $("#hdnBillSateId").val(state);
+
+            BindBillingCity(state);
+            $("#hdnBillcityId").val(city);
+
+            $('#Billing_Address').prop("disabled", true);
+            $('#Billing_Pin').prop("disabled", true);
+            $('#Billing_FkCountryId').prop("disabled", true);
+            $('#Billing_FkStateId').prop("disabled", true);
+            $('#Billing_FkCityId').prop("disabled", true);
+            $('#chkIsSameAddress').val() == '';
+        }
+
+        //Code to Capitalize First Character of Every Word
+        $('#CompanyName').change(function () {
+
+            var Companyname = $('#CompanyName').val();
+            var splitted = Companyname.split(" ");
+            var capitalized = "";
+
+            for (var i = 0; i < splitted.length; i++) {
+                capitalized = capitalized + " " + splitted[i].charAt(0).toUpperCase() + splitted[i].slice(1);
+            }
+            $('#CompanyName').val(capitalized);
+        });
+
+
+        $('#ContactEmailId').keyup(function () {
+            $(this).val($(this).val().toLowerCase());
+        });
+
+        $('#EmailId').keyup(function () {
+            $(this).val($(this).val().toLowerCase());
+        });
+
+        $('#AltEmailId').keyup(function () {
+            $(this).val($(this).val().toLowerCase());
+        });
+
+
+        function BindState(CountryId) {
+
+            var countryId = CountryId;
+            $("#FK_StateId").html("");// clear before appending new list
+            $("#FK_StateId").append(
+                       $('<option></option>').val("0").html("--Select State--"));
+
+            $("#FK_CityId").html("");// clear before appending new list
+            $("#FK_CityId").append(
+                       $('<option></option>').val("0").html("--Select City--"));//
+            if (countryId == "0" || countryId == null || countryId=="") {
+                return false;
+            }
+            $.ajax({
+                // url: '../Company/getstate',
+                url: "@Url.Action("getstate", "Company")",
+                type: "GET",
+                dataType: "JSON",
+                data: { countryid: countryId },
+                success: function (states) {
+                    debugger;
+                    $.each(states, function (i, state) {
+                        $("#FK_StateId").append(
+                            $('<option></option>').val(state.StateId).html(state.StateName));
+                    });
+
+                    if ($('#hdnSateId').val() != '0') {
+                        $('#FK_StateId').val($('#hdnSateId').val()).attr("selected", "selected");
+                        BindCity($('#FK_StateId').val())
+                    }
+                }
+            });
+        }
+        function BindBillingState(CountryId) {
+            var countryId = CountryId;
+
+            $("#Billing_FkStateId").html("");// clear before appending new list
+            $("#Billing_FkStateId").append(
+                       $('<option></option>').val("0").html("--Select State--"));
+
+            $("#Billing_FkCityId").html("");// clear before appending new list
+            $("#Billing_FkCityId").append(
+                       $('<option></option>').val("0").html("--Select City--"));//
+            if (countryId == "0" || countryId == null || countryId == "") {
+                return false;
+            }
+
+            $.ajax({
+                // url: '../Company/getstate',
+                url: "@Url.Action("getstate", "Company")",
+                type: "GET",
+                dataType: "JSON",
+                data: { countryid: countryId },
+                success: function (states) {
+                    $.each(states, function (i, state) {
+                        $("#Billing_FkStateId").append(
+                            $('<option></option>').val(state.StateId).html(state.StateName));
+                    });
+                    if ($('#hdnBillSateId').val() != '0') {
+
+                        $('#Billing_FkStateId').val($('#hdnBillSateId').val()).attr("selected", "selected");
+                        BindBillingCity($('#Billing_FkStateId').val())
+                    }
+                }
+            });
+        }
+        function BindCity(StateId) {
+            var stateid = StateId;
+            $("#FK_CityId").html("");// clear before appending new list
+            $("#FK_CityId").append(
+                       $('<option></option>').val("0").html("--Select City--"));
+            if (stateid == "0") {
+                return false;
+            }
+            $.ajax({
+                // url: '../Company/getcity',
+                url: "@Url.Action("getcity", "Company")",
+                type: "GET",
+                dataType: "JSON",
+                data: { stateid: stateid },
+                success: function (citys) {
+                    $.each(citys, function (i, city) {
+                        $("#FK_CityId").append(
+                            $('<option></option>').val(city.CityId).html(city.CityName));
+                    });
+                    if ($('#hdncityId').val() != '0') {
+                        $("#FK_CityId").val($('#hdncityId').val());
+                    }
+                }
+            });
+
+        }
+        function BindBillingCity(StateId) {
+
+            var stateid = StateId;
+            $("#Billing_FkCityId").html("");// clear before appending new list
+            $("#Billing_FkCityId").append(
+                       $('<option></option>').val("0").html("--Select City--"));
+            if (stateid == "0") {
+                return false;
+            }
+            $.ajax({
+                // url: '../Company/getcity',
+                url: "@Url.Action("getcity", "Company")",
+                type: "GET",
+                dataType: "JSON",
+                data: { stateid: stateid },
+                success: function (citys) {
+                    $.each(citys, function (i, city) {
+                        $("#Billing_FkCityId").append(
+                            $('<option></option>').val(city.CityId).html(city.CityName));
+                    });
+                    if ($('#hdnBillcityId').val() != '0') {
+                        $("#Billing_FkCityId").val($('#hdnBillcityId').val());
+                    }
+                }
+            });
+        }
+</script>

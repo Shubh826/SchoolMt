@@ -1,0 +1,246 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="~/assets/css/bootstrap.css">
+<link rel="stylesheet" href="~/assets/vendors/iconly/bold.css">
+<link rel="stylesheet" href="~/assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+<link rel="stylesheet" href="~/assets/vendors/bootstrap-icons/bootstrap-icons.css">
+<link rel="stylesheet" href="~/assets/css/style-bod.css">
+<link rel="shortcut icon" href="~/assets/images/favicon.png" type="image/x-icon">
+
+<div id="main-content">
+    <div class="page-heading mb-0">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Agency Dashboard</h3>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Agency Dashboard</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-content">
+        <section class="row">
+            <div class="col-12 col-lg-12">
+                <div class="row">
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body px-3 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="stats-icon purple"> <i class="iconly-boldNotification"></i> </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6 class="text-muted font-semibold">
+                                            Total Available<br>Jobs
+                                        </h6>
+                                        <h4 class="font-extrabold mb-0 text-right">@ViewBag.TotalJobs</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body px-3 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="stats-icon blue"> <i class="iconly-boldProfile"></i> </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6 class="text-muted font-semibold">
+                                            My Available <br>Profiles
+                                        </h6>
+                                        <h4 class="font-extrabold mb-0">@ViewBag.TotalProfile</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body px-3 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="stats-icon green"> <i class="iconly-boldCalendar"></i> </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6 class="text-muted font-semibold">
+                                            Scheduled<br>Interviews
+                                        </h6>
+                                        <h4 class="font-extrabold mb-0">@ViewBag.TotalShedInterview</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body px-3 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="stats-icon red"> <i class="iconly-boldTick-Square"></i> </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6 class="text-muted font-semibold">Total<br>Selected</h6>
+                                        <h4 class="font-extrabold mb-0">@ViewBag.TotalOnboard</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Total Open Jobs</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-profile-visit1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Location Wise Open Jobs</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-visitors-profile"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Joining Time Wise Open Jobs</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-profile-visit"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+    @*<footer>
+            <div class="footer clearfix mb-0 text-muted">
+                <div class="float-start">
+                    <p>2021 &copy; BenchOnDemand</p>
+                </div>
+            </div>
+        </footer>*@
+</div>
+@*<script src="~/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="~/assets/js/bootstrap.bundle.min.js"></script>*@
+<script src="~/assets/vendors/apexcharts/apexcharts.js"></script>
+@*<script src="~/assets/js/dashboard-bod.js"></script>*@
+<script src="~/assets/js/main-bod.js"></script>
+<script type="text/javascript">
+    @*var str = [@Html.Raw(ViewBag.Time_List)];
+    console.log(str);
+    str.charAt(str);*@
+
+    var optionsProfileVisit = {
+        annotations: {
+            position: 'back'
+        },
+        dataLabels: {
+            enabled: false
+        },
+        chart: {
+            type: 'bar',
+            height: 300
+        },
+        fill: {
+            opacity: 1
+        },
+        plotOptions: {
+        },
+        series: [{
+            name: '',
+            data: [@ViewBag.CountTime]
+        }],
+        colors: '#bf1e2e',
+        xaxis: {
+
+            categories: [@Html.Raw(ViewBag.Time_List)]
+           // categories:["<15days","< 30days","7 days","immediate"]
+        },
+    }
+
+    var optionsProfileVisit1 = {
+        annotations: {
+            position: 'back'
+        },
+        dataLabels: {
+            enabled: false
+        },
+        chart: {
+            type: 'bar',
+            height: 300
+        },
+        fill: {
+            opacity: 1
+        },
+        plotOptions: {
+        },
+        series: [{
+            name: '',
+            data: [@ViewBag.OpenJobs]
+        }],
+        colors: '#917BD9',
+        xaxis: {
+            categories: ["Non-Tech", "Tech"],
+        },
+    }
+    let optionsVisitorsProfile = {
+
+        series: [@ViewBag.countLocation],
+        labels:  [@Html.Raw(ViewBag.Location)],
+        colors: ['#57caeb', '#9694ff', '#ff7976', '#FEBF44', '#5ddab4', '#e87e30', '#41f713', '#171201'],
+        chart: {
+            type: 'donut',
+            width: '100%',
+            height: '350px'
+        },
+        legend: {
+            position: 'bottom'
+        },
+        plotOptions: {
+            pie: {
+                donut: {
+                    size: '30%'
+                }
+            }
+        }
+    }
+
+    var chartProfileVisit = new ApexCharts(document.querySelector("#chart-profile-visit"), optionsProfileVisit);
+    var chartProfileVisit1 = new ApexCharts(document.querySelector("#chart-profile-visit1"), optionsProfileVisit1);
+    var chartVisitorsProfile = new ApexCharts(document.getElementById('chart-visitors-profile'), optionsVisitorsProfile)
+    chartProfileVisit.render();
+    chartProfileVisit1.render();
+    chartVisitorsProfile.render()
+
+
+
+</script>
+

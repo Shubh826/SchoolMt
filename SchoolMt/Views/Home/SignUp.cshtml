@@ -1,0 +1,235 @@
+﻿@model MDL.signupMDL
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - True Sunshine Academy Portal</title>@*Mazer*@
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="~/assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/assets/css/style-bod.css">
+    <link rel="shortcut icon" href="~/assets/images/favicon.png" type="image/x-icon">
+
+
+</head>
+
+
+<body class="bg-white">
+    <div id="auth">
+        <div class="row h-100">
+            <div class="col-md-8 offset-md-2">
+                <div id="auth-left">
+                    <div id="msgDiv">
+                        @if (ViewBag.Message != null && (ViewBag.Message) == "Your request has been registered!")
+                        {
+                            <div id="myAlert" class="alert alert-success">
+                                <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close" onclick="DivHide()">&times;</a>
+                                <strong>@ViewBag.Message</strong>
+                            </div>
+                        }
+                        else
+                        {
+                            if (ViewBag.Message != null)
+                            {
+                                <div id="myAlert" class="alert alert-danger">
+                                    <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close" onclick="DivHide()">&times;</a>
+                                    <strong> @ViewBag.Message</strong>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div class="auth-logo"> <a href="http://erp.truesunshineacademy.com/"><img src="~/assets/images/logo/logo.png" alt="Logo"></a> </div>
+                    <h1 class="auth-title">Sign Up</h1>
+                    <p class="auth-subtitle mb-4">Welcome to Bench on Demand</p>
+                    @using (Html.BeginForm())
+                    {
+                        <form action="">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul class="list-unstyled mb-4">
+                                        <li class="d-inline-block me-2 mb-1">
+                                            <div class="form-check">
+                                                @Html.CheckBoxFor(model => model.IsClient, new { htmlAttributes = new { @class = "form-check-input c1", @checkedtype = "radio", @value = "1", @id = "flexRadioDefault1"} })
+                                                @*<input class="form-check-input" checked type="radio" name="flexRadioDefault" id="flexRadioDefault1">*@
+                                                <label class="form-check-label c1" for="flexRadioDefault1" data-toggle="tooltip" data-placement="left" title="If you need bech resources">
+                                                    Client 
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li class="d-inline-block me-2 mb-1">
+                                            <div class="form-check c1">
+                                                @Html.CheckBoxFor(model => model.IsAgency, new { htmlAttributes = new { @class = "form-check-input c1", name = "flexRadioDefault", @checkedtype = "radio", @value = "2", @id = "flexRadioDefault2" } })
+                                                @*<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">*@
+                                                <label class="form-check-label c1" for="flexRadioDefault1" data-toggle="tooltip" data-placement="left" title="If you have bench resources">
+                                                    Agency
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li class="d-inline-block me-2 mb-1">
+                                            <div class="form-check c1">
+                                                @Html.CheckBoxFor(model => model.IsBoth, new { htmlAttributes = new { @class = "form-check-input c1", @checkedtype = "radio", @value = "3", @id = "flexRadioDefault3" } })
+                                                @*<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">*@
+                                                <label class="form-check-label c1" for="flexRadioDefault1" data-toggle="tooltip" data-placement="left" title="Both">
+                                                    Both
+                                                </label>
+                                            </div>
+                                        </li>
+
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group position-relative has-icon-left mb-4">
+                                        @Html.EditorFor(model => model.EmailID, new { htmlAttributes = new { @class = "form-control form-control-xl", @placeholder = "Email ID" } })
+                                        @Html.ValidationMessageFor(model => model.EmailID, "", new { @class = "text-danger" })
+                                        @*<input type="text" class="form-control form-control-xl" placeholder="Email">*@
+                                        <div class="form-control-icon"> <i class="bi bi-envelope"></i> </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group position-relative has-icon-left mb-4">
+                                        @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control form-control-xl", @placeholder = "Company Name" } })
+                                        @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                                        <div class="form-control-icon"> <i class="bi bi-building"></i> </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group position-relative has-icon-left mb-4">
+                                        @Html.EditorFor(model => model.FName, new { htmlAttributes = new { @class = "form-control form-control-xl", @placeholder = "First Name" } })
+                                        @Html.ValidationMessageFor(model => model.FName, "", new { @class = "text-danger" })
+                                        @*<input type="text" class="form-control form-control-xl" placeholder="First Name">*@
+                                        <div class="form-control-icon"> <i class="bi bi-person"></i> </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group position-relative has-icon-left mb-4">
+                                        @Html.EditorFor(model => model.LName, new { htmlAttributes = new { @class = "form-control form-control-xl", @placeholder = "Last Name" } })
+                                        @Html.ValidationMessageFor(model => model.LName, "", new { @class = "text-danger" })
+                                        @*<input type="text" class="form-control form-control-xl" placeholder="Last Name">*@
+                                        <div class="form-control-icon"> <i class="bi bi-person"></i> </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group position-relative has-icon-left mb-4">
+                                        @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control form-control-xl", @placeholder = "Contact No." } })
+                                        @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+                                        @*<input type="text" class="form-control form-control-xl" placeholder="Contact No.">*@
+                                        <div class="form-control-icon"> <i class="bi bi-phone"></i> </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group position-relative has-icon-left mb-4">
+                                        @Html.EditorFor(model => model.AlternateNo, new { htmlAttributes = new { @class = "form-control form-control-xl", @placeholder = "Alternate No." } })
+                                        @Html.ValidationMessageFor(model => model.AlternateNo, "", new { @class = "text-danger" })
+                                        @*<input type="text" class="form-control form-control-xl" placeholder="Alternate No.">*@
+                                        <div class="form-control-icon"> <i class="bi bi-phone"></i> </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group position-relative has-icon-left mb-4">
+                                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control form-control-xl", @placeholder = "Password" } })
+                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                        @*<input type="password" class="form-control form-control-xl" placeholder="Password">*@
+                                        <div class="form-control-icon"> <i class="bi bi-shield-lock"></i> </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group position-relative has-icon-left mb-4">
+                                        @Html.EditorFor(model => model.CPassword, new { htmlAttributes = new { @class = "form-control form-control-xl CPassword", @placeholder = " Confirm Password" } })
+                                        @Html.ValidationMessageFor(model => model.CPassword, "", new { @class = "text-danger" })
+                                        @*<input type="password" class="form-control form-control-xl" placeholder="Confirm Password">*@
+                                        <div class="form-control-icon"> <i class="bi bi-shield-lock"></i> </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <button class="btn btn-primary btn-lg shadow-lg mt-4" id="btnsubmit">Sign Up</button>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                    <div class="text-center mt-4 text-lg fs-5">
+                        <div class='text-gray-600 mb-1'>
+                            Already have an account? <a href="@Url.Action("Login","Home")">
+                                Log
+                                in
+                            </a>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#IsAgency').on('change', function () {
+
+            $('#IsClient').not(this).prop('checked', false);
+            $('#IsBoth').not(this).prop('checked', false);
+        });
+        $('#IsClient').on('change', function () {
+
+            $('#IsAgency').not(this).prop('checked', false);
+            $('#IsBoth').not(this).prop('checked', false);
+        });
+        $('#IsBoth').on('change', function () {
+
+            $('#IsAgency').not(this).prop('checked', false);
+            $('#IsClient').not(this).prop('checked', false);
+        });
+
+
+        $("#btnsubmit").click(function (event) {
+            var ckb_status = ($("#IsBoth").prop('checked') || $("#IsAgency").prop('checked') || $("#IsClient").prop('checked'))
+            var pass = $("#Password").val();
+            var Cpass = $("#CPassword").val();
+            if (ckb_status) {
+            }
+            else {
+
+                alert("Please Select One of this Client/Agency/Both")
+                $('#IsAgency').css(
+                    {
+                        'Text-color': '#de1414', "border-width": "0px"
+                    }
+                );
+                return false;
+            }
+            if (pass == Cpass) {
+
+            }
+            else {
+                alert("Password and Confirm Password not matched");
+                $('#CPassword').css(
+                    {
+                        'background- color': 'red',
+                        'border': '1px solid #dc354',
+                    }
+                );
+                return false;
+            }
+        })
+    });
+        setTimeout(function () {
+            $('#msgDiv').fadeOut('fast');
+    }, 2000);
+</script>

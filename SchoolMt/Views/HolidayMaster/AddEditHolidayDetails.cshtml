@@ -1,0 +1,300 @@
+﻿@model MDL.HolidayMDL
+@{
+    ViewBag.Title = "AddEditHolidayDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+
+<div class="page-heading mb-0">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Add/Edit Holiday</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Add/Edit Holiday</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-content">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-1">
+                    @*<form class="form form-horizontal">*@
+                    <div class="form-body">
+                        <div class="row">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div class="col-md-3 ClientDiv">
+                                <label class="setForm bold">Holyday Type<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group ClientDiv">
+                                @Html.DropDownListFor(E => E.HolidayType, new List<SelectListItem>()
+                                                                                                         {
+                                                                                                              new SelectListItem() { Value = "Other", Text = "Other",Selected = true},
+                                                                                                              new SelectListItem() { Value = "Week Off", Text = "Week Off" },
+
+                                                                                                         }, new { style = "width: 100%;", @class = "form-control" })
+                            </div>
+                            <div class="col-md-3">
+                                <label class="setForm  bold">Holiday Name<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.TextBoxFor(E => E.HolidayName, new { @class = "form-control", maxlength = "50", @placeholder = "Holiday Name" })
+                                @Html.ValidationMessageFor(E => E.HolidayName, "", new { @class = "redText", @style = "color:red" })
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="setForm  bold">Select Date<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.TextBoxFor(E => E.HolidayDate, new { @class = "form-control Date", @placeholder = "Holiday Date", @readonly = "readonly", @Style = "background:white" })
+                            </div>
+                            <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span> </span>
+                            <div class="col-md-3">
+                                <label class="setForm  bold">Status<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.CheckBoxFor(E => E.IsActive, new { @checked = true })
+                            </div>
+                            <div class="col-md-3 ClientDiv">
+                                <label class="setForm bold">Applicability<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.DropDownListFor(E => E.Applicability, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "Value"), new { @class = "form-control ddlMultiSlectBox", @multiple = "multiple", @placeholder = "Please Select Applicability" })
+                            </div>
+                            <input type="hidden" id="hdnCityName" value="@Model.CityName" />
+                            <input type="hidden" id="hdnCityId" value="@Model.FK_City_Id" />
+
+                            <div class="col-sm-9 d-flex justify-content-end center">
+                                <button type="submit" class="btn btn-primary me-1 mb-1" id="btnsubmit">Submit</button>
+                                <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                    @*</form>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*******Start Loader******@
+<div class="modalBgLoader" style="display: none"></div>
+<div class="modalLoaderCenter" style="display: none">
+    <img alt="" src="~/images/loader.gif" />
+    <span>Loading...</span>
+</div>
+
+@*******End Loader******@
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Select2/js/select2.min.js"></script>
+<link href="~/Select2/css/select2.min.css" rel="stylesheet" />
+<script src="~/js/jquery.sumoselect.js"></script>
+<link href="~/css/sumoselect.css" rel="stylesheet" />
+<script type="text/javascript">
+
+
+        var Alphabet_Only = /^[A-Z a-z ]+$/;
+
+        $(document).ready(function () {
+
+            BindCities();
+
+
+            $('#HolidayType').change(function () {
+                if ($('#HolidayType').val() == 'Other') {
+                    $('#DivWeekDays').hide();
+                    $('#DivDate').show();
+                    $('#HolidayName').val('');
+                    //$('#HolidayName').prop('readonly',false);
+                }
+                else {
+                    $('#DivWeekDays').show();
+                    $('#DivDate').hide();
+                    $('#HolidayName').val('Week Off');
+                    //$('#HolidayName').prop('readonly', true);
+
+                }
+            });
+
+            $(function () {
+
+                $('#Applicability').SumoSelect();
+                $("#Applicability").html("");
+                $('#Applicability')[0].sumo.unload();
+                $('#Applicability').SumoSelect();
+
+            });
+
+            window.asd = $('.ddlMultiSlectBox').SumoSelect({ okCancelInMulti: true, selectAll: true });
+            $('#Applicability').SumoSelect({ okCancelInMulti: true, selectAll: true });
+
+            //$('#HolidayDate').datepicker(
+            // {
+            //     dateFormat: 'dd/mm/yy'
+            // });
+            $('#HolidayDate').datepicker(
+                {
+                    dateFormat: 'dd/mm/yy',
+                    changeMonth: true,
+                    changeYear: true,
+                    yearRange: "-100:+0",
+                    onSelect: function (dateText) {
+                        $('#HolidayDate').keyup();
+                        if ($('#HolidayDate').val() == '') {
+                            alert('Please Select Date Of Holiday.');
+                            e.preventDefault();
+                            return false;
+                        }
+                        else {
+                            return true;
+                        }
+                    }
+                });
+
+
+            function BindCities() {
+                $("#Applicability").html("");
+
+                $('#Applicability').SumoSelect();
+                $.ajax({
+                    url: "@Url.Action("GetCities", "HolidayMaster")",
+                    type: "GET",
+                    dataType: "JSON",
+                    data: {},
+                    success: function (Tags) {
+                        debugger
+                        $('#Applicability')[0].sumo.unload();
+
+                        $.each(Tags, function (i, Tag) {
+                            $('#Applicability').SumoSelect({ okCancelInMulti: true, selectAll: true, csvDispCount: 3, });
+                            $('#Applicability')[0].sumo.add(Tag.ID, Tag.Value);
+
+                        });
+
+                        if ($('#hdnCityName').val() != '' && $('#hdnCityName').val() != null) {
+
+                            var SelectedTagsArray = [];
+                            SelectedTagsArray = $('#hdnCityId').val().split(',');
+                            for (var i = 0; i < SelectedTagsArray.length; i++) {
+                                $('#Applicability')[0].sumo.selectItem(SelectedTagsArray[i].trim());
+                                SelectedTagsArray[i].selected = true;
+                            }
+                        }
+
+                    }
+
+
+                });
+            }
+
+            $('#btnsubmit').click(function (e) {
+
+                if (!Validate(e)) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    SaveHolidayList();
+                }
+
+
+            });
+
+        });
+
+        function SaveHolidayList() {
+            if ($('#Applicability').val() != "") {
+                $.ajax({
+                    type: 'POST',
+                    cache: false,
+                    async: false,
+                    url: "@Url.Action("AddEditHolidayDetails", "HolidayMaster")",
+                    data: { 'Holidaydate': $('#HolidayDate').val(), 'HolidayName': $('#HolidayName').val(), 'HolidayType': $('#HolidayType').val(), 'WeekDay': $('#WeekDays').val(), 'CityIds': $('#Applicability').val(), 'PKHolidayId': $('#PK_HolidayId').val() },
+                    beforeSend: function () {
+                        $(".modalBgLoader, .modalLoaderCenter").show();
+                    },
+                    complete: function () {
+                        $(".modalBgLoader, .modalLoaderCenter").hide();
+                    },
+
+                    success: function (data) {
+                        alert(data);
+                        window.location = '@Url.Action("Index", "HolidayMaster")';// CODE TO REIRECT TO INDEX
+                    }
+                });
+            }
+            else {
+                alert('please select Applicability ');
+            }
+        }
+
+
+        function Validate(e) {
+
+            var IsValidRequst = true;
+            if ($('#HolidayType').val() == 'Other') {
+                if ($('#HolidayDate').val() == '' || $('#HolidayDate').val() == null) {
+                    alert('Please Select Holiday Date.');
+                    e.preventDefault();
+                    return IsValidRequst = false;
+                }
+            }
+            if ($('#HolidayType').val()!= 'Other') {
+                if ($('#WeekDays').val() == '' || $('#WeekDays').val() == null) {
+                    alert('Please Select Day.');
+                    e.preventDefault();
+                    return IsValidRequst = false;
+                }
+            }
+
+            if (IsNullOrWhitespace($('#HolidayName').val())) {
+                alert('Please Enter Holiday Name.');
+                e.preventDefault();
+                return IsValidRequst = false;
+            }
+
+            else {
+                $('#HolidayName').val($('#HolidayName').val().trim());
+            }
+
+          if (!$('#HolidayName').val().match(Alphabet_Only))
+            {
+                alert("Only Alphabets Are Allowed For Holiday Name.");
+                $('#HolidayName').val('');
+                e.preventDefault();
+                return IsValidRequst = false;
+
+            }
+
+            if ($('#Applicability').val() == '' || $('#Applicability').val() == '0' || $('#Applicability').val() == null) {
+                alert('Please Select Applicability.');
+                e.preventDefault();
+                return IsValidRequst = false;
+            }
+
+            return IsValidRequst;
+        }
+
+        function IsNullOrWhitespace(input) {
+            if (typeof input === 'undefined' || input == null) return true;
+            return input.replace(/\s/g, '').length < 1;
+        }
+
+
+
+
+</script>
+
+

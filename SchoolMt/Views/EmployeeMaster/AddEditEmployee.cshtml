@@ -1,0 +1,285 @@
+﻿@model MDL.EmployeeMasterMDL
+
+@{
+    ViewBag.Title = "AddEditStudent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("AddEmployee", "EmployeeMaster", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(E => E.PK_Employee_ID)
+    @Html.HiddenFor(E => E.Region_Name)
+    @Html.HiddenFor(E => E.Area_Name)
+    @Html.HiddenFor(E => E.Address)
+    @Html.HiddenFor(E => E.Address_Lat)
+    @Html.HiddenFor(E => E.Address_Long)
+    @Html.HiddenFor(E => E.Pick_Lat)
+    @Html.HiddenFor(E => E.Pick_Long)
+    @Html.HiddenFor(E => E.Drop_Lat)
+    @Html.HiddenFor(E => E.Drop_Long)
+    @Html.HiddenFor(E => E.Landmark_Lat)
+    @Html.HiddenFor(E => E.Landmark_Long)
+    @Html.HiddenFor(E => E.Gender)
+    @Html.HiddenFor(E => E.FK_Shift_ID)
+    @Html.HiddenFor(E => E.FK_Geofence_ID)
+    @Html.HiddenFor(E => E.Geofence_Center_Lat)
+    @Html.HiddenFor(E => E.Geofence_Center_Long)
+    @Html.HiddenFor(E => E.ImageName)
+    @Html.HiddenFor(E => E.EMPImageName)
+
+    <div class="page-heading mb-0">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Add Edit Employee</h3>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Add Edit Employee</li>
+                            @*<li id="excelDownload"><a data-toggle="tab" href="#sectionB">Upload From Excel</a></li>*@
+
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-1">
+                        @*<form class="form form-horizontal">*@
+                        <div class="form-body">
+                            <div class="row">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="col-md-3">
+                                    <label class="setForm bold">School Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv">
+                                    @Html.DropDownListFor(E => E.FK_CompanyId, new SelectList((System.Collections.IEnumerable)ViewData["CompanyList"], "ID", "Value"), "--Select--", new { @class = "form-select select2" })
+                                    @Html.ValidationMessageFor(E => E.FK_CompanyId, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Employee Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.TextBoxFor(E => E.Employee_Name, new { @class = "form-control", maxlength = "250", @placeholder = "Employee Name" })
+                                    @Html.ValidationMessageFor(E => E.Employee_Name, "", new { @class = "redText", @style = "color:red" })
+
+                                </div>
+                                <div class="col-md-3 ClientDiv1">
+                                    <label class="setForm bold">Employee Code<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv1">
+                                    @Html.TextBoxFor(E => E.Employee_Code, new { @class = "form-control", maxlength = "50", @placeholder = "Employee Code" })
+                                    @Html.ValidationMessageFor(E => E.Employee_Code, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Gender<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    Male  @Html.RadioButtonFor(E => E.Gender, "Male", new { @checked = true })
+                                    Female @Html.RadioButtonFor(E => E.Gender, "Female")
+                                </div>
+                                <div class="col-md-3 ClientDiv2">
+                                    <label class="setForm bold">Mobile No.<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv2">
+                                    @Html.TextBoxFor(E => E.Mobile_No, new { @class = "form-control", maxlength = "20", @placeholder = "Mobile No." })
+                                    @Html.ValidationMessageFor(E => E.Mobile_No, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+                                <div class="col-md-3 ClientDiv3">
+                                    <label class="setForm bold">Emergency Contact No.<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv3">
+                                    @Html.TextBoxFor(E => E.Emergency_Contact_No, new { @class = "form-control", maxlength = "20", @placeholder = "Emergency Contact No." })
+                                    @Html.ValidationMessageFor(E => E.Emergency_Contact_No, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+
+                                <div class="col-md-3 ClientDiv4">
+                                    <label class="setForm bold">Employee Address<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv4">
+                                    @Html.TextAreaFor(E => E.Address, new { @class = "form-control", maxlength = "250", @placeholder = "Employee Address" })
+                                    @Html.ValidationMessageFor(E => E.Address, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Employee Image</label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.DisplayFor(E => E.ImageName)
+                                    @Html.TextBoxFor(E => E.EmpImage, new { @type = "file", @class = "form-control" })
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="setForm bold">EMP. ID-Proof Name</label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv">
+                                    @Html.DropDownListFor(E => E.FK_EMPProofId, new SelectList((System.Collections.IEnumerable)ViewData["IDCardlist"], "ID", "Value"), "--Select--", new { @class = "form-select select2" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Employee ID-Proof</label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.DisplayFor(E => E.EMPImageName)
+                                    @Html.TextBoxFor(E => E.EmpProofImage, new { @type = "file", @class = "form-control" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Status</label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.CheckBoxFor(E => E.IsActive, new { @checked = true })
+                                </div>
+
+                                <div class="col-sm-9 d-flex justify-content-end center">
+                                    <button type="submit" id="btnSubmit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                    <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        @*</form>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Select2/js/select2.min.js"></script>
+<link href="~/Select2/css/select2.min.css" rel="stylesheet" />
+
+
+
+
+<script type="text/javascript">
+
+
+        $(document).ready(function () {
+            $("#FK_CompanyId").select2();
+
+            $('#Address').focus(function (e) {
+                //alert('Hi');
+                //initBlankMap();
+                //$("#EmployeeLocationModal").modal('show');
+            });
+
+            
+            $('#btnSubmit').click(function (e) { Validate(e); });
+
+            if ($('#PK_Employee_ID').val() != '0') {
+
+                $('#IsActive').prop("checked", true);
+
+                if ($('#Gender').val() == 'Male') {
+                    $('#rdbMale').prop('checked', true);
+                    $('#rdbFemale').prop('checked', false);
+                }
+                if ($('#Gender').val() == 'Female') {
+                    $('#rdbMale').prop('checked', false);
+                    $('#rdbFemale').prop('checked', true);
+                }
+
+                //AutoCompleteAddress("Landmark");
+            }
+
+            if ($('#PK_Employee_ID').val() == '0') {
+                $('#IsActive').prop("checked", true);
+            }
+
+        });
+
+        //New Methods For Submit
+        function Validate(e) {
+
+            var Alphabet_Only = /^[A-Z a-z ]+$/;
+            var Alpha_Numeric = /^[a-zA-Z0-9 ]+$/;
+
+            if ($('#FK_CompanyId').val() == '') {
+                alert('Please Select Company Name.');
+                e.preventDefault();
+                return false;
+            }
+
+            if ($('#Employee_Name').val() == '') {
+                alert('Please Enter Employee Name.');
+                e.preventDefault();
+                return false;
+            }
+
+            if (!$('#Employee_Name').val().match(Alphabet_Only)) {
+                alert('Only Alphabets Are Allowed For Employee Name.')
+                $("#Employee_Name").val('');
+                e.preventDefault();
+                return false;
+            }
+
+            if ($('#Employee_Code').val() == '') {
+                alert('Please Enter Employee Code.');
+                e.preventDefault();
+                return false;
+            }
+
+            if (!$('#Employee_Code').val().match(Alpha_Numeric)) {
+                alert('Only Alpha-Numeric Is Allowed For Employee Code.')
+                $("#Employee_Code").val('');
+                e.preventDefault();
+                return false;
+            }
+
+            if ($('#Mobile_No').val() == '') {
+                alert('Please Enter Mobile No.');
+                e.preventDefault();
+                return false;
+            }
+
+            if (isNaN($("#Mobile_No").val()) || $("#Mobile_No").val().length != 10) {
+                alert('Mobile No. Not Valid');
+                $("#Mobile_No").val('');
+                e.preventDefault();
+                return false;
+            }
+
+            if ($('#Emergency_Contact_No').val() == '') {
+                alert('Please Enter Emergency Contact No.');
+                e.preventDefault();
+                return false;
+            }
+
+            if (isNaN($("#Emergency_Contact_No").val()) || $("#Emergency_Contact_No").val().length < 10) {
+                alert('Emergency Contact No. Not Valid');
+                $("#Emergency_Contact_No").val('');
+                e.preventDefault();
+                return false;
+            }
+           AssignHiddenFieldValues();
+        }
+
+        //Assigns values to hidden fields taken in form
+        function AssignHiddenFieldValues() {
+
+            $('#Region_Name').val($("#FK_Region_ID option:selected").text());
+            $('#Area_Name').val($("#FK_Area_ID option:selected").text());
+            $('#Pick_Lat').val(Address_Latitute);
+            $('#Pick_Long').val(Address_Longitute);
+            $('#Drop_Lat').val(Drop_Address_Lat);
+            $('#Drop_Long').val(Drop_Address_Long);
+            $('#Address').val($("#Drop_Address").val());
+            //$('#Landmark_Lat').val(Landmark_Latitute);
+            //$('#Landmark_Long').val(Landmark_Longitute);
+            $('#Geofence_Center_Lat').val(Geofence_Lat);
+            $('#Geofence_Center_Long').val(Geofence_Long);
+            if ($('#rdbMale').is(':checked')) {
+                $('#Gender').val('Male');
+            }
+            else {
+                $('#Gender').val('Female');
+            }
+        }
+
+</script>
+

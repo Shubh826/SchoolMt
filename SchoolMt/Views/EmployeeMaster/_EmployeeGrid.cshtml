@@ -1,0 +1,200 @@
+﻿@model List<MDL.EmployeeMasterMDL>
+@{
+    var objPagingmdl = (MDL.Common.BasicPagingMDL)ViewBag.paging;
+    int SerialNo = (objPagingmdl.CurrentPage - 1) * objPagingmdl.RowParPage + 1;
+}
+<div class="col-md-12">
+    <div class="table-responsive">
+        <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover" id="">
+            <thead>
+                <tr>
+                    <th class="text-center">Sr. No.</th>
+                    <th class="text-center">School Name</th>
+                    <th class="text-center">Employee Name</th>
+                    <th class="text-center">Employee Code</th>
+                    <th class="text-center">Mobile No.</th>
+                    <th class="text-center">Emergency Contact No.</th>
+                    <th class="text-center">Empolyee Image</th>
+                    <th class="text-center">Empolyee ID-Proof Name</th>
+                    <th class="text-center">Empolyee ID-Proof Image</th>
+                    @*<th class="text-center">Shift Name</th>
+                        <th class="text-center">Shift Start Time</th>
+                        <th class="text-center">Shift End Time</th>
+                        <th class="text-center">Region Name</th>
+                        <th class="text-center">Area Name</th>
+                        <th class="text-center">Pickup Address</th>
+                        <th class="text-center">Drop Address</th>*@
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Created DateTime</th>
+                    <th class="text-center">Updated DateTime</th>
+                    @*<th class="text-center">OTP</th>*@
+                    @*<th class="text-center">Landmark</th>*@
+                    @*<th class="text-center">Is On Route</th>*@
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr>
+                        <td colspan="14">
+                            <div class="text-danger">No Record Found </div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@SerialNo</td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.CompanyName)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Employee_Name)
+                            </td>
+
+                            @if (!item.IsOnRoute)
+                            {
+                                <td class="text-center">
+                                    <a data-toggle="tab" href="#" onclick="GetDetails(@item.PK_Employee_ID);">
+                                        <font color="#006600">
+                                            @Html.DisplayFor(modelItem => item.Employee_Code)
+                                        </font>
+                                    </a>
+                                </td>
+                            }
+
+                            else
+                            {
+                                <td class="text-center">
+                                    <font color="#ff0000">@Html.DisplayFor(modelItem => item.Employee_Code)</font>
+                                </td>
+                            }
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Mobile_No)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Emergency_Contact_No)
+                            </td>
+                            <td class="text-center">
+
+                                @if (@item.ImageName == "")
+                                {
+
+                                    <img src="/App_Images/man.png" height="25" width="25">
+                                }
+                                else
+                                {
+                                    var imageurl = "/App_Images/SBTMSEMPImages/EMPImage/" + @item.ImageName;
+                                    <a class="example-image-link" href="@imageurl" data-lightbox="example-1">
+                                        <img src="@imageurl" height="60" width="60" />
+                                    </a>
+                                }
+
+
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.EMPIdProofName)
+                            </td>
+                            <td class="text-center">
+
+                                @if (@item.EMPImageName == "")
+                                {
+
+                                    <img src="/App_Images/man.png" height="25" width="25">
+                                }
+                                else
+                                {
+                                    var EMPimageurl = "/App_Images/SBTMSEMPPoofImages/EMPProofImage/" + @item.EMPImageName;
+                                    <a class="example-image-link" href="@EMPimageurl" data-lightbox="example-1">
+                                        <img src="@EMPimageurl" height="60" width="60" />
+                                    </a>
+                                }
+
+
+                            </td>
+                            @*<td class="text-center">
+                                    @Html.DisplayFor(modelItem => item.Shift_Name)
+                                </td>
+
+                                <td class="text-center">
+                                    @Html.DisplayFor(modelItem => item.Shift_Start_Time)
+                                </td>
+
+                                <td class="text-center">
+                                    @Html.DisplayFor(modelItem => item.Shift_End_Time)
+                                </td>
+
+                                <td class="text-center">
+                                    @Html.DisplayFor(modelItem => item.Region_Name)
+                                </td>
+
+                                <td class="text-center">
+                                    @Html.DisplayFor(modelItem => item.Area_Name)
+                                </td>
+
+                                <td class="text-center">
+                                    @Html.DisplayFor(modelItem => item.Pick_Up_Addres)
+                                </td>
+                                <td class="text-center">
+                                    @Html.DisplayFor(modelItem => item.Drop_Address)
+                                </td>*@
+                            @if (item.IsActive == true)
+                            {
+                                <td class="text-center">
+                                    Active
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="text-center">
+                                    InActive
+                                </td>
+                            }
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Created_Datetime)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Updated_Datetime)
+                            </td>
+                            @*<td class="text-center">
+                                    @Html.DisplayFor(modelItem => item.Landmark)
+                                </td>
+
+                                @if (item.IsOnRoute)
+                                {
+                                    <td class="text-center">YES</td>
+                                }
+
+                                else
+                                {
+                                    <td class="text-center">NO</td>
+                                }*@
+                            @*<td class="text-center">
+                                    @Html.DisplayFor(modelItem => item.OTP)
+                                </td>*@
+                            <td class="text-center">
+
+                                <a class="btn btn-primary" href="@Url.Action("AddEmployee", new { id = item.PK_Employee_ID })">Edit</a><br />
+
+                            </td>
+                        </tr>
+                        SerialNo++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@Html.Partial("_Paging", (MDL.Common.BasicPagingMDL)ViewBag.paging)
+<link rel="stylesheet" type="text/css" href="~/assets/lib/datatables/css/dataTables.bootstrap.min.css" />
+<script src="~/assets/lib/datatables/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="~/assets/lib/datatables/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+<script src="~/assets/lib/lightbox/js/lightbox.js"></script>

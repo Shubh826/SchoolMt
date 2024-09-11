@@ -1,0 +1,543 @@
+﻿@model MDL.StudentMasterMDL
+
+@{
+    ViewBag.Title = "AddEditStudent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+@using (Html.BeginForm("AddEditStudent", "StudentMaster", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(E => E.PK_SudentId)
+    @Html.HiddenFor(E => E.CompanyName)
+    @Html.HiddenFor(E => E.ImageName)
+    <div class="page-heading mb-0">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Add Edit Student</h3>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Add Edit Student</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-1">
+                        @*<form class="form form-horizontal">*@
+                        <div class="form-body">
+                            <div class="row">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="col-md-3 ClientDiv">
+                                    <label class="setForm bold">School Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv">
+                                    @Html.DropDownListFor(E => E.FK_CompanyId, new SelectList((System.Collections.IEnumerable)ViewData["companylist"], "ID", "Value"), "--SELECT--", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(E => E.FK_CompanyId, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Class Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.DropDownListFor(E => E.ClassName, new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Value", "Value"), "--SELECT--", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(E => E.ClassName, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+                                <div class="col-md-3 ClientDiv">
+                                    <label class="setForm bold">Section<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv">
+                                    @Html.DropDownListFor(E => E.ClassCode, new SelectList((System.Collections.IEnumerable)ViewData["ClassCodelist"], "Value", "Value"), "--SELECT--", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(E => E.ClassCode, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+
+                                <div class="col-md-3 ClientDiv">
+                                    <label class="setForm bold">Student Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv">
+                                    @Html.TextBoxFor(E => E.StudentName, new { @class = "form-control", maxlength = "200", @placeholder = "Student Name" })
+                                    @Html.ValidationMessageFor(E => E.StudentName, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+                                <div class="col-md-3 ClientDiv">
+                                    <label class="setForm bold">Student Code<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv">
+                                    @Html.TextBoxFor(E => E.Student_Code, new { @class = "form-control", maxlength = "20", @placeholder = "Student Code" })
+                                    @Html.ValidationMessageFor(E => E.Student_Code, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+
+
+
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Guardian Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.TextBoxFor(E => E.GuardianName, new { @class = "form-control", maxlength = "200", @placeholder = "Guardian Name" })
+                                    @Html.ValidationMessageFor(E => E.GuardianName, "", new { @class = "redText", @style = "color:red" })
+
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Gender<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    Male  @Html.RadioButtonFor(E => E.Gender, "Male", new { @checked = true })
+                                    Female @Html.RadioButtonFor(E => E.Gender, "Female")
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Student Image</label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.DisplayFor(E => E.ImageName)
+                                    @Html.TextBoxFor(E => E.StudentImage, new { @type = "file", @class = "form-control" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Relation<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.DropDownListFor(E => E.Relation, new SelectList((System.Collections.IEnumerable)ViewData["Relationlist"], "Value", "Value"), "--SELECT--", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(E => E.Relation, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Guardian Contact No.<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.TextBoxFor(E => E.GuardianContactNo, new { @class = "form-control", @placeholder = "Guardian Mobile No.", @maxlength = "10" })
+                                    @Html.ValidationMessageFor(E => E.GuardianContactNo, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+
+                                <div class="col-md-3 ClientDiv">
+                                    <label class="setForm bold">Alternate Guardian Contact No.</label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv">
+                                    @Html.TextBoxFor(E => E.AlternateGuardianContactNo, new { @class = "form-control", maxlength = "10", @placeholder = "Alternate Guardian Contact No." })
+                                    @Html.ValidationMessageFor(E => E.AlternateGuardianContactNo, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+
+                                <div class="col-md-3 ClientDiv">
+                                    <label class="setForm bold">Emergency Contact No.</label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv">
+                                    @Html.TextBoxFor(E => E.Emergency_Contact_No, new { @class = "form-control", maxlength = "10", @placeholder = "Emergency Contact No." })
+                                    @Html.ValidationMessageFor(E => E.Emergency_Contact_No, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+
+
+                                <div class="col-md-3 ClientDiv">
+                                    <label class="setForm bold">Student Address<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv">
+                                    @Html.TextAreaFor(E => E.Address, new { @class = "form-control", maxlength = "250", @placeholder = " Address" })
+                                    @Html.ValidationMessageFor(E => E.Address, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+
+                                @*<div class="col-md-3 ClientDiv">
+                                        <label class="setForm bold"> Stoppage Name<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group ClientDiv">
+                                        @Html.TextBoxFor(E => E.StoppageName, new { @class = "form-control", maxlength = "20", @placeholder = "Stoppage Name" })
+                                        @Html.ValidationMessageFor(E => E.StoppageName, "", new { @class = "redText", @style = "color:red" })
+                                    </div>*@
+
+                                <div class="col-md-3 ClientDiv">
+                                    <label class="setForm bold">RF ID</label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv">
+                                    @Html.TextBoxFor(E => E.RFID, new { @class = "form-control", maxlength = "40", @placeholder = "RF ID" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Status</label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.CheckBoxFor(E => E.IsActive, new { @checked = true })
+                                </div>
+
+                                <div class="col-sm-9 d-flex justify-content-end center">
+                                    <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                    <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        @*</form>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+<!--<div class="modal fade in" id="mod-progress" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog" style="margin-top:277px;">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <div class="warning">
+                        <img src="~/images/loader.gif" />
+
+                    </div>-->
+@*<div class="i-circle warning"><i class="fa fa-info"></i></div>*@
+<!--<div id="result" style="font-size: 1.1em; padding-bottom: 5px">
+                <p id="progressBarParagraph"></p>
+            </div>
+            <div style="width: 30%; margin: 0 auto; display:none;">
+                <div id="progressbar" style="width: 300px; height: 15px"></div>
+                <br />
+            </div>
+            <div id="ProgressStripe" class="progress progress-striped active" style="position:relative; top:10px; width:100%;">
+                <div id="ProgressMessage" class="progress-bar progress-bar-info" style="width: 100%; border:none;"></div>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>-->
+<!-- /.modal-content -->
+<!--</div>-->
+<!-- /.modal-dialog -->
+<!--</div>-->
+
+
+
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASRefCtH3KvL3jfNIn8LbBdTXtBEaXFWQ&libraries=geometry"></script>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyASRefCtH3KvL3jfNIn8LbBdTXtBEaXFWQ& callback=initMap"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASRefCtH3KvL3jfNIn8LbBdTXtBEaXFWQ&libraries=places"></script>
+
+<script src="~/js/jquery.sumoselect.js"></script>
+<link href="~/css/sumoselect.css" rel="stylesheet" />
+
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/Helper.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery.signalR-2.2.1.min.js" type="text/javascript"></script>
+
+<script src="/signalr/hubs"></script>
+
+<script src="~/Select2/js/select2.min.js"></script>
+<link href="~/Select2/css/select2.min.css" rel="stylesheet" />
+
+<script type="text/javascript">
+
+    $(document).ready(function (e) {
+        $('.FK_CompanyID').select2();
+        $(function () {
+
+            // Reference the auto-generated proxy for the hub.
+            var progress = $.connection.progressHub;
+            console.log(progress);
+
+            // Create a function that the hub can call back to display messages.
+            progress.client.AddProgress = function (message, percentage) {
+                ProgressBarModal("show", message + " " + percentage);
+                $('#ProgressMessage').width(percentage);
+                if (percentage == "100%") {
+                    ProgressBarModal();
+                }
+            };
+
+            $.connection.hub.start().done(function () {
+                var connectionId = $.connection.hub.id;
+                console.log(connectionId);
+            });
+
+        });
+
+        if ($("#PK_SudentId").val() != "" && $("#PK_SudentId").val() != null && $("#PK_SudentId").val() != "0") {
+            var companyID = $("#FK_CompanyId").val();
+            BindStopage(companyID);
+        }
+
+        if ($("#FK_CompanyId").val() != "" && $("#FK_CompanyId").val() != null && $("#FK_CompanyId").val() != "0") {
+            var companyID = $("#FK_CompanyId").val();
+            BindStopage(companyID);
+        }
+
+        $('#btnSubmit').click(function (e) {
+
+            if ($('#StudentImage').val() != '' && $('#StudentImage').val() != null) {
+                var filename = $('#StudentImage').val();
+                var extension = '.' + filename.replace(/^.*\./, '');
+
+                switch (extension) {
+                    case ".jpeg":
+                    case ".jpg":
+                        return true;
+                    default:
+                        alert("Only jpeg/jpg Images upto 3MB are allowed For Student Image.");
+                        $('#StudentImage').val('')
+                        e.preventDefault();
+                        return false;
+                }
+                var file_size = $('#StudentImage')[0].files[0].size;
+                if (file_size > 3145728) {
+                    alert("File Size Can Not Be Greater Than 3MB");
+                    $('#StudentImage').val('')
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        });
+
+
+        $('#btnEmpBulk').click(function (e) {
+            //debugger
+
+            // DisplayProgressMessage(this, 'Saving...');
+            if ($("#CompanyId").val() == "" || $("#CompanyId").val() == "0") {
+                alert("Please Select Company.");
+                //$(".modalBgLoader, .modalLoaderCenter").hide();
+                e.preventDefault();
+                return false;
+            }
+
+            var CompanyId = $("#CompanyId").val();
+
+            var checkExcel = $("#ExcelFile").val();
+
+            if (checkExcel == '' || checkExcel == null) {
+                alert("Please select excel file for upload data.");
+                //$(".modalBgLoader, .modalLoaderCenter").hide();
+                e.preventDefault();
+
+                return false;
+            }
+
+            var ValidateExcelFile = $('#ExcelFile').val();
+
+            var ext = ValidateExcelFile.split(".");
+            ext = ext[ext.length - 1].toLowerCase();
+            var arrayExtensions = ['xlsx', 'xls'];
+
+            if (arrayExtensions.lastIndexOf(ext) == -1) {
+                alert("Only '.xls','.xlsx' excel formats are allowed.");
+                // $(".modalBgLoader, .modalLoaderCenter").hide();
+                $("#ExcelFile").val("");
+                return false;
+            }
+
+            StartUploadExcelProcess();
+            //  $('#Items').val(items);
+        });
+
+        $('#btnValidate').click(function (e) {
+            //debugger
+            // DisplayProgressMessage(this, 'Saving...');
+            if ($("#vCompanyId").val() == "" || $("#vCompanyId").val() == "0") {
+                alert("Please Select Company.");
+                //$(".modalBgLoader, .modalLoaderCenter").hide();
+                e.preventDefault();
+                return false;
+            }
+            var CompanyId = $("#vCompanyId").val();
+
+            var checkExcel = $("#ValidateExcel").val();
+
+            if (checkExcel == '' || checkExcel == null) {
+                alert("Please select excel file for upload data.");
+                //$(".modalBgLoader, .modalLoaderCenter").hide();
+                e.preventDefault();
+
+                return false;
+            }
+
+            var ValidateExcelFile = $('#ValidateExcel').val();
+
+            var ext = ValidateExcelFile.split(".");
+            ext = ext[ext.length - 1].toLowerCase();
+            var arrayExtensions = ['xlsx', 'xls'];
+
+            if (arrayExtensions.lastIndexOf(ext) == -1) {
+                alert("Only '.xls','.xlsx' excel formats are allowed.");
+                // $(".modalBgLoader, .modalLoaderCenter").hide();
+                $("#ValidateExcel").val("");
+                return false;
+            }
+
+            ValidateExcelProcess();
+            //  $('#Items').val(items);
+        });
+    });
+
+    function BindStopage(companyID) {
+
+        $("Fk_StoppageID").html("");
+        $("Fk_StoppageID").append(
+            $('<option></option>').val("0").html("--Select--")
+        )
+        if (companyID == "0" || companyID == "" || companyID == null) {
+            return false;
+        }
+
+        $.ajax({
+            /**/
+            /**/
+            url: "@Url.Action("BindStopage", "StudentMaster")",
+    /**/
+    /**/
+    type: "GET",
+    cache: false,
+    data: { 'companyID': companyID },
+    success: function (data) {
+
+        if (data.length > 0) {
+            $.each(data, function (i, data) {
+
+                $("#Fk_StoppageID").append(
+                    $('<option></option>').val(data.ID).html(data.Value));
+            });
+        }
+        else {
+
+        }
+        if ($('#hdnStopageID').val() != '0') {
+            $('#Fk_StoppageID').val($('#hdnStopageID').val());
+        }
+    },
+});
+}
+
+     function StartUploadExcelProcess() {
+            //debugger;
+            var Data = new FormData();
+            var files = $("#ExcelFile").get(0).files;
+
+
+            var comId = $('#CompanyId').val();
+
+            for (var i = 0; i < files.length; i++) {
+                Data.append("fileInput", files[i]);
+            }
+
+            Data.append("companyId", comId);
+
+
+
+            $.ajax({
+                /**/
+                url: "@Url.Action("ExcelData", "StudentMaster")",
+                /**/
+                type: "POST",
+                dataType: "json",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: Data,
+                success: function (result, status, xhr) {
+                    //debugger;
+                    /**/
+                    location.href = '@(Url.Action("Index"))';
+                /**/
+                /**/
+                //location.href = '@(Url.Action("Index"))?userid=' + data.UserID;
+                /**/
+                //alert("Success");
+                // alert(result);
+            },
+            error: function (xhr, status, error) {
+                //debugger;
+                alert("error");
+                /**/
+                location.href = '@(Url.Action("Index"))';
+                /**/
+                //alert(status);
+            }
+            });
+                }
+
+
+        function ValidateExcelProcess() {
+            //debugger
+
+                var Data = new FormData();
+                var files = $("#ValidateExcel").get(0).files;
+                var comId = $('#vCompanyId').val();
+
+                for (var i = 0; i < files.length; i++) {
+                    Data.append("fileInput", files[i]);
+                }
+                //debugger;
+                Data.append("companyId", comId);
+
+
+
+                $.ajax({
+                    /**/
+                    url: "@Url.Action("ValidateExcelData", "StudentMaster")",
+                    /**/
+                    type: "POST",
+                    dataType: "json",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: Data,
+                    success: function (result, status, xhr) {
+                        //debugger;
+                        /**/
+                        location.href = '@(Url.Action("Index"))';
+                    /**/
+                    /**/
+                    //location.href = '@(Url.Action("Index"))?userid=' + data.UserID;
+                    /**/
+                    //alert("Success");
+                    // alert(result);
+                },
+                error: function (xhr, status, error) {
+                    //debugger;
+                    alert("error");
+                    /**/
+                    location.href = '@(Url.Action("Index"))';
+                    /**/
+                    //alert(status);
+                }
+                });
+                }
+
+                /**/
+                /**/
+                @*function BindRoute(companyID) {
+                            $("FK_RouteId").html("");
+                            $("FK_RouteId").append(
+                                $("<option></option>").val("0").html("--Select--")
+                            );
+                            if (companyID == "0" || companyID == "" || companyID == null) {
+                                return false;
+                            }
+
+                            $.ajax({
+
+                                url: "@Url.Action("BindStopage", "StudentMaster")",
+                                type: "GET",
+                                cache: false,
+                                data{'companyID': companyID },
+                                success: function (data) {
+                                    if (data.length > 0) {
+                                        $.each(data, function (i, data) {
+                                            $("#FK_RouteId").append(
+                                                $("<option></option>").val(data.PK_RouteID).html(data.RouteName)
+                                            );
+                                        });
+                                    }
+                                    else { }
+                                    if ($("#hdnRouteID").val() != "0") {
+                                        $("##FK_RouteId").val($("#hdnRouteID").val());
+                                    }
+
+                                }
+                            });
+                        }*@
+                /**/
+                /**/
+</script>

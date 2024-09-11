@@ -1,0 +1,303 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="~/assets/css/bootstrap.css">
+<link rel="stylesheet" href="~/assets/vendors/iconly/bold.css">
+<link rel="stylesheet" href="~/assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+<link rel="stylesheet" href="~/assets/vendors/bootstrap-icons/bootstrap-icons.css">
+<!-- Include Choices CSS -->
+<link rel="stylesheet" href="~/assets/vendors/choices.js/choices.min.css" />
+<link rel="stylesheet" href="~/assets/css/style-bod.css">
+<link rel="shortcut icon" href="~/assets/images/favicon.png" type="image/x-icon">
+
+<div id="main-content">
+    <div class="page-heading">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3 class="mb-0">Dashboard</h3>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="page-content">
+        <section class="row">
+            <div class="col-12 col-lg-12 dashboardView">
+                <div class="row">
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card purple">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h6 class="text-white mb-0 font-semibold">
+                                            Total <br>Clients
+                                        </h6>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h4 class="font-extrabold mb-0 text-right text-white">@ViewBag.TotalClient</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card blue">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h6 class="text-white mb-0 font-semibold">
+                                            Total <br>Agencies
+                                        </h6>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h4 class="font-extrabold mb-0 text-right text-white">@ViewBag.TotalAgencies</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card green">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h6 class="text-white mb-0 font-semibold">
+                                            Total Active <br>Profiles
+                                        </h6>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h4 class="font-extrabold mb-0 text-right text-white">@ViewBag.TotalActiveProfiles</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card red">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h6 class="text-white mb-0 font-semibold">Total Selected <br>Jobs</h6>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h4 class="font-extrabold mb-0 text-right text-white">@ViewBag.TotalClosedJobs</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card green-dark">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h6 class="text-white mb-0 font-semibold">
+                                            Current Scheduled <br>Interviews
+                                        </h6>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h4 class="font-extrabold mb-0 text-right text-white">@ViewBag.CurrentScheduledInterviews</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card purple-light">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h6 class="text-white mb-0 font-semibold">
+                                            Total Shortlisted <br>Profiles
+                                        </h6>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h4 class="font-extrabold mb-0 text-right text-white">@ViewBag.TotalShortlistedProfiles</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card blue-sky">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h6 class="text-white mb-0 font-semibold">
+                                            Open <br>Jobs
+                                        </h6>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h4 class="font-extrabold mb-0 text-right text-white">@ViewBag.OpenJobs</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card orange">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h6 class="text-white mb-0 font-semibold">Active <br>Agencies/Clients</h6>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h4 class="font-extrabold mb-0 text-right text-white">@ViewBag.ActiveAgenciesorClients</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-8"><h4>Month Wise Growth</h4> </div>
+                                    <div class="col-sm-12 col-md-4">
+                                        <select class="choices form-select" id="target">
+                                            <option value="2021">2021</option>
+                                            <option value="2020">2020</option>
+                                            <option value="2019">2019</option>
+
+
+
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</div>
+
+@*<script src="~/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="~/assets/js/bootstrap.bundle.min.js"></script>*@
+<script src="~/assets/vendors/apexcharts/apexcharts.js"></script>
+@*<script src="~/assets/js/dashboard-bod.js"></script>*@
+<script src="~/assets/js/main-bod.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+    var years = new Date().getFullYear();
+        //window.onload =\
+        GetMonthWiseData(years);
+
+        $("#target").change(function () {
+            GetMonthWiseData($("#target").val())
+            //alert($("#target").val())
+        });
+
+   });
+    function GetMonthWiseData(Year) {
+        //if (Year == "undefined") {
+        //    Year == years;
+        //}
+       // data.reset();
+        $.ajax({
+            // url: "../User/getUsers",
+            url:"@Url.Action("GetMonthWiseData", "AdminDashboard")",
+            type: 'GET',
+            async: true,
+            cache: false,
+            data: { 'Year': Year},
+            success: function (data) {
+                 month = data[1].Value;
+                client = data[2].Value;
+                agency = data[3].Value;
+                Profile = data[4].Value;
+                Job = data[5].Value;
+                var barOptions = {
+                    series: [
+                        {
+                            name: "Clients",
+                            //data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
+                            data: client,
+                        },
+                        {
+                            name: "Agencies",
+                            //data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
+                            data: agency,
+                        },
+                        {
+                            name: "Profiles",
+                           // data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
+                            data: Profile,
+                        },
+                        {
+                            name: "Jobs",
+                            //data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
+                            data: Job,
+                        },
+                    ],
+                    chart: {
+                        type: "bar",
+                        height: 350,
+                    },
+                    plotOptions: {
+                        bar: {
+                            horizontal: false,
+                            columnWidth: "55%",
+                            endingShape: "rounded",
+                        },
+                    },
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    stroke: {
+                        show: true,
+                        width: 2,
+                        colors: ["transparent"],
+                    },
+                    xaxis: {
+                        //categories: ["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+                        categories: month,
+                    },
+                    yaxis: {
+                        title: {
+                            text: "Unit",
+                        },
+                    },
+                    fill: {
+                        opacity: 1,
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function (val) {
+                                return val;
+                            },
+                        },
+                    },
+                };
+
+                var bar = new ApexCharts(document.querySelector("#bar"), barOptions);
+                bar.render();
+
+            },
+            });
+            return false;
+            }
+
+
+
+
+
+
+</script>

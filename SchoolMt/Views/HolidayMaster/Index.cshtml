@@ -1,0 +1,145 @@
+﻿@model MDL.HolidayMDL
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="main-content">
+    <div class="page-heading">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>School Holiday Master</h3>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+
+                    <a class="btn btn-purple" href="@Url.Action("AddEditHolidayDetails")" style="float: right;"><i class="fa fa-plus"></i> Add New</a>
+
+                </div>
+            </div>
+        </div>
+        <section class="section">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col col-lg-5">
+                            <div class="form-group">
+                                <select class="form-control" id="SearchCreteria">
+                                    <option selected="selected" value="">Select</option>
+                                    <option value="CompanyName">Company Name</option>
+                                    <option value="HolidayName">Holiday Name</option>
+                                    <option value="HolidayDate">Holiday Date</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col col-lg-5">
+                            <div class="form-group position-relative has-icon-right">
+                                <input type="text" class="form-control" id="SearchValue" placeholder="Search Value">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block" onclick="paging(1)">Search</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:20px;">
+                        <div id="msgDiv">
+                            @if (ViewBag.msg != null && (ViewBag.msg).Message_Id == 1)
+                            {
+                                <div id="myAlert" class="alert alert-success">
+                                    <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close" onclick="DivHide()">&times;</a>
+                                    <strong>@ViewBag.msg.Message</strong>
+                                </div>
+                            }
+                            else
+                            {
+                                if (ViewBag.msg != null)
+                                {
+                                    <div id="myAlert" class="alert alert-danger">
+                                        <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close" onclick="DivHide()">&times;</a>
+                                        <strong> @ViewBag.msg.Message</strong>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div id="GridDiv">
+                            @{Html.RenderAction("getHolidayDetails"); }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    @*<footer>
+            <div class="footer clearfix mb-0 text-muted">
+                <div class="float-start">
+                    <p>2022 &copy; SchoolMt</p>
+                </div>
+            </div>
+        </footer>*@
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //var MyRows = $('#data').find('tbody').find('tr');
+        //for (var i = 0; i < MyRows.length; i++) {
+
+        //    var CellValue = $(MyRows[i]).find('td:eq(3)').html();
+        //    var GridDate = new Date(CellValue.trim())
+
+        //    var DateToday = new Date();
+        //    if (GridDate < DateToday)
+        //    {
+        //        $('#btnEdit').prop('disabled', true); //set the ID of edit button in grid html as btnEdit
+        //        $('#lblStatus').text('Holiday Expired.')
+        //    }
+
+        //}
+
+        $(function () {
+            $('#SearchCreteria').change(function () {
+                $('#SearchValue').val('');
+                if ($('#SearchCreteria').val() == '') {
+                    paging(1);
+                }
+
+            })
+        });
+
+    });
+
+
+    /*************Paging**************/
+    function paging(currentpage) {
+        if (currentpage == NaN || currentpage <= 0) {
+            return false;
+        }
+
+        $.ajax({
+            // url: "../Holiday/getHolidayDetails",
+            url:"@Url.Action("getHolidayDetails", "HolidayMaster")",
+            type: 'GET',
+            cache: false,
+            data: { 'CurrentPage': parseInt(currentpage), 'SearchBy': $("#SearchCreteria").val(), 'SearchValue': $("#SearchValue").val() },
+            success: function (data) {
+                debugger
+                $('#GridDiv').html(data);
+                $('.disabled').prop('disabled', true);
+            },
+        });
+        return false;
+    }
+
+
+
+
+</script>
+

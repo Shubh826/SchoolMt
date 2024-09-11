@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{246984D8-0215-4E5B-AF70-08C8E0EB59B0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DAL</RootNamespace>
+    <AssemblyName>DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\LoginBAL.cs" />
+    <Compile Include="AdminDashboardDAL.cs" />
+    <Compile Include="AgencyDashboardDAL.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="ClientDashboardDAL.cs" />
+    <Compile Include="Common\CommonDAL.cs" />
+    <Compile Include="Common\ErrorLogDAL.cs" />
+    <Compile Include="CompanyDAL.cs" />
+    <Compile Include="DataUtility\CheckParameters.cs" />
+    <Compile Include="DataUtility\Command.cs" />
+    <Compile Include="DataUtility\Connection.cs" />
+    <Compile Include="DataUtility\DataFunctions.cs" />
+    <Compile Include="DataUtility\DataTransformer.cs" />
+    <Compile Include="DataUtility\dataUtilityEnum.cs" />
+    <Compile Include="DataUtility\WrapDbNull.cs" />
+    <Compile Include="EmployeeMasterDAL.cs" />
+    <Compile Include="ExpenseHeadMasterDAL.cs" />
+    <Compile Include="FeeHeadMasterDAL.cs" />
+    <Compile Include="FormMasterDAL.cs" />
+    <Compile Include="GenerateInvoiceDAL.cs" />
+    <Compile Include="HolidayDAL.cs" />
+    <Compile Include="InstallationDAL.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoleMstDAL.cs" />
+    <Compile Include="StudentFeeDetailsDAL.cs" />
+    <Compile Include="StudentMasterDAL.cs" />
+    <Compile Include="UserMstDAL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MDL\MDL.csproj">
+      <Project>{4F7CD35D-D773-4471-94D7-7EF4EE408C62}</Project>
+      <Name>MDL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
