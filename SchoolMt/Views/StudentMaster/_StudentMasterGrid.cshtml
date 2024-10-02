@@ -12,22 +12,14 @@
                 <tr>
                     <th class="text-center">Sr. No.</th>
                     <th class="text-center">Student Name</th>
-                    <th class="text-center">Student Code</th>
-                    @*
-                        <th class="text-center">Father Name</th>
-                        <th class="text-center">Mother Name</th>*@
-                    <th class="text-center">Guardian Name</th>
-                    <th class="text-center">Relation</th>
-                    <th class="text-center">Gender</th>
-                    @*<th class="text-center">Shift</th>*@
-                    <th class="text-center">Student Address</th>
                     <th class="text-center">Class Name</th>
                     <th class="text-center">Class Code</th>
+                    <th class="text-center">Father Name</th>
+                    <th class="text-center">Mother Name</th>
+                    <th class="text-center">Gender</th>
+                    <th class="text-center">Student Address</th>
                     <th class="text-center">Guardian Mobile No.</th>
-                    @*<th class="text-center">Stoppage Name</th>*@
-                    <th class="text-center">Guardian Alternate Contact No.</th>
                     <th class="text-center">Emergency ContactNo.</th>
-                    <th class="text-center">RF Id</th>
                     <th class="text-center">Student Image</th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Action</th>
@@ -54,24 +46,20 @@
                             </td>
 
                             <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.Student_Code)
+                                @Html.DisplayFor(modelItem => item.ClassName)
                             </td>
 
-                            @*
-                                <td class="text-center">
-                                    @Html.DisplayFor(modelItem => item.FatherName)
-                                </td>
-
-                                <td class="text-center">
-                                    @Html.DisplayFor(modelItem => item.MotherName)
-                                </td>*@
 
                             <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.GuardianName)
+                                @Html.DisplayFor(modelItem => item.ClassCode)
                             </td>
 
                             <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.Relation)
+                                @Html.DisplayFor(modelItem => item.FatherName)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.MotherName)
                             </td>
                             <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.Gender)
@@ -83,33 +71,14 @@
                             <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.Address)
                             </td>
-
-                            <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.ClassName)
-                            </td>
-
-                            <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.ClassCode)
-                            </td>
-
                             <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.GuardianContactNo)
                             </td>
 
-                            @*<td class="text-center">
-                                    @Html.DisplayFor(modelItem => item.StoppageName)
-                                </td>*@
 
                             <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.AlternateGuardianContactNo)
-                            </td>
-                            <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.Emergency_Contact_No)
-                            </td>
-                            <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.RFID)
-                            </td>
-
+                                    @Html.DisplayFor(modelItem => item.Emergency_Contact_No)
+                                </td>
                             <td class="text-center">
 
                                 @if (@item.ImageName == "")
@@ -124,7 +93,7 @@
                                         <img src="@imageurl" height="60" width="60" />
                                     </a>
                                     @*var imageurl = "/App_Images/SBTMSStudentImages/StudentImage/" + @item.ImageName;
-            <img src="@imageurl" height="60" width="60" onclick="showimage('@imageurl');" />*@
+                                        <img src="@imageurl" height="60" width="60" onclick="showimage('@imageurl');" />*@
                                 }
 
 

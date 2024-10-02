@@ -28,20 +28,10 @@ namespace BAL
             objBasicPagingMDL = new BasicPagingMDL();
             return objStudentMasterDal.GetStudentData(out objStudentList, out objBasicPagingMDL, id, rowPerpage, currentPage, FK_CompanyId, SearchBy, SearchValue);
         }
-
-        public bool GetAllStoppageByCompany(out List<StoppageMDL> objStoppageList, int FK_CompanyId)
-        {
-            objStoppageList = new List<StoppageMDL>();
-            return objStudentMasterDal.GetAllStoppageByCompany(out objStoppageList, FK_CompanyId);
-        }
-        public bool GetAllAddressWithoutFilter(DataTable dt, int companyId, out List<StoppageMDL> objNewAddress, out List<StoppageMDL> objAlreadyAddress)
-        {
-            return objStudentMasterDal.GetAllAddressWithoutFilter(dt, companyId, out objNewAddress, out objAlreadyAddress);
-        }
         
-        public bool GetStudentList(int companyId, out List<StudentMasterMDL> objStudentLst)
-        {
-            return objStudentMasterDal.GetStudentList(companyId, out objStudentLst);
-        }
+        //public bool GetStudentList(int companyId, out List<StudentMasterMDL> objStudentLst)
+        //{
+        //    return objStudentMasterDal.GetStudentList(companyId, out objStudentLst);
+        //}
     }
 }

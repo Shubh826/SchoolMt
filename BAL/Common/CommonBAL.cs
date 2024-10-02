@@ -121,5 +121,9 @@ namespace BAL.Common
         {
             return CommonDAL.FillIdCard();
         }
+        public static List<DropDownMDL> BindArea(int companyID)
+        {
+            return CommonDAL.BindArea(companyID);
+        }
     }
 }

@@ -34,147 +34,172 @@
         <div class="card-content">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-lg-8 offset-lg-1">
+                    <div class="col-lg-11 offset-lg-1">
                         @*<form class="form form-horizontal">*@
                         <div class="form-body">
                             <div class="row">
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                                <div class="col-md-3 ClientDiv">
-                                    <label class="setForm bold">School Name<span style="color:red">*</span></label>
-                                </div>
-                                <div class="col-md-7 form-group ClientDiv">
-                                    @Html.DropDownListFor(E => E.FK_CompanyId, new SelectList((System.Collections.IEnumerable)ViewData["companylist"], "ID", "Value"), "--SELECT--", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(E => E.FK_CompanyId, "", new { @class = "redText", @style = "color:red" })
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="setForm  bold">Class Name<span style="color:red">*</span></label>
-                                </div>
-                                <div class="col-md-7 form-group">
-                                    @Html.DropDownListFor(E => E.ClassName, new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Value", "Value"), "--SELECT--", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(E => E.ClassName, "", new { @class = "redText", @style = "color:red" })
-                                </div>
-                                <div class="col-md-3 ClientDiv">
-                                    <label class="setForm bold">Section<span style="color:red">*</span></label>
-                                </div>
-                                <div class="col-md-7 form-group ClientDiv">
-                                    @Html.DropDownListFor(E => E.ClassCode, new SelectList((System.Collections.IEnumerable)ViewData["ClassCodelist"], "Value", "Value"), "--SELECT--", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(E => E.ClassCode, "", new { @class = "redText", @style = "color:red" })
-                                </div>
-
-                                <div class="col-md-3 ClientDiv">
+                                <div class="col-md-2 ClientDiv">
                                     <label class="setForm bold">Student Name<span style="color:red">*</span></label>
                                 </div>
-                                <div class="col-md-7 form-group ClientDiv">
+                                <div class="col-md-4 form-group ClientDiv">
                                     @Html.TextBoxFor(E => E.StudentName, new { @class = "form-control", maxlength = "200", @placeholder = "Student Name" })
                                     @Html.ValidationMessageFor(E => E.StudentName, "", new { @class = "redText", @style = "color:red" })
                                 </div>
-                                <div class="col-md-3 ClientDiv">
-                                    <label class="setForm bold">Student Code<span style="color:red">*</span></label>
-                                </div>
-                                <div class="col-md-7 form-group ClientDiv">
-                                    @Html.TextBoxFor(E => E.Student_Code, new { @class = "form-control", maxlength = "20", @placeholder = "Student Code" })
-                                    @Html.ValidationMessageFor(E => E.Student_Code, "", new { @class = "redText", @style = "color:red" })
-                                </div>
-
-
-
-                                <div class="col-md-3">
-                                    <label class="setForm  bold">Guardian Name<span style="color:red">*</span></label>
-                                </div>
-                                <div class="col-md-7 form-group">
-                                    @Html.TextBoxFor(E => E.GuardianName, new { @class = "form-control", maxlength = "200", @placeholder = "Guardian Name" })
-                                    @Html.ValidationMessageFor(E => E.GuardianName, "", new { @class = "redText", @style = "color:red" })
-
-                                </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label class="setForm  bold">Gender<span style="color:red">*</span></label>
                                 </div>
-                                <div class="col-md-7 form-group">
+                                <div class="col-md-4 form-group">
                                     Male  @Html.RadioButtonFor(E => E.Gender, "Male", new { @checked = true })
                                     Female @Html.RadioButtonFor(E => E.Gender, "Female")
                                 </div>
 
-                                <div class="col-md-3">
-                                    <label class="setForm  bold">Student Image</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="setForm  bold">Category<span style="color:red">*</span></label>
                                 </div>
-                                <div class="col-md-7 form-group">
-                                    @Html.DisplayFor(E => E.ImageName)
-                                    @Html.TextBoxFor(E => E.StudentImage, new { @type = "file", @class = "form-control" })
+                                <div class="col-md-4 form-group">
+                                    @Html.DropDownListFor(E => E.Category, new List<SelectListItem>()
+                                                       {
+                                                         new SelectListItem() { Value = "General", Text ="General",Selected=true },
+                                                         new SelectListItem() { Value="OBC", Text="OBC"},
+                                                         new SelectListItem() { Value="SC", Text="SC"},
+                                                         new SelectListItem() { Value="ST", Text="ST"},
+
+                                                       }, new { @class = "form-select select2" })
                                 </div>
-                                <div class="col-md-3">
-                                    <label class="setForm  bold">Relation<span style="color:red">*</span></label>
+                                <div class="col-md-2">
+                                    <label class="setForm  bold">Class Name<span style="color:red">*</span></label>
                                 </div>
-                                <div class="col-md-7 form-group">
-                                    @Html.DropDownListFor(E => E.Relation, new SelectList((System.Collections.IEnumerable)ViewData["Relationlist"], "Value", "Value"), "--SELECT--", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(E => E.Relation, "", new { @class = "redText", @style = "color:red" })
+                                <div class="col-md-4 form-group">
+                                    @Html.DropDownListFor(E => E.ClassName, new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Value", "Value"), "--SELECT--", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(E => E.ClassName, "", new { @class = "redText", @style = "color:red" })
                                 </div>
-                                <div class="col-md-3">
-                                    <label class="setForm  bold">Guardian Contact No.<span style="color:red">*</span></label>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 ClientDiv">
+                                    <label class="setForm bold">Section<span style="color:red">*</span></label>
                                 </div>
-                                <div class="col-md-7 form-group">
-                                    @Html.TextBoxFor(E => E.GuardianContactNo, new { @class = "form-control", @placeholder = "Guardian Mobile No.", @maxlength = "10" })
+                                <div class="col-md-4 form-group ClientDiv">
+                                    @Html.DropDownListFor(E => E.ClassCode, new SelectList((System.Collections.IEnumerable)ViewData["ClassCodelist"], "Value", "Value"), "--SELECT--", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(E => E.ClassCode, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+
+
+                                <div class="col-md-2 ClientDiv">
+                                    <label class="setForm bold">Father Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-4 form-group ClientDiv">
+                                    @Html.TextBoxFor(E => E.FatherName, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name" })
+                                    @Html.ValidationMessageFor(E => E.FatherName, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="setForm  bold">Mother Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.TextBoxFor(E => E.MotherName, new { @class = "form-control", maxlength = "200", @placeholder = "Mother Name" })
+                                    @Html.ValidationMessageFor(E => E.MotherName, "", new { @class = "redText", @style = "color:red" })
+
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="setForm  bold">Student DOB<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.TextBoxFor(E => E.StudentDOB, new { @class = "form-control", maxlength = "200", @placeholder = "StudentDOB" })
+                                    @Html.ValidationMessageFor(E => E.StudentDOB, "", new { @class = "redText", @style = "color:red" })
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="setForm  bold">Contact No.<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.TextBoxFor(E => E.GuardianContactNo, new { @class = "form-control", maxlength = "20", @placeholder = "Contact No." })
                                     @Html.ValidationMessageFor(E => E.GuardianContactNo, "", new { @class = "redText", @style = "color:red" })
+
                                 </div>
 
-                                <div class="col-md-3 ClientDiv">
-                                    <label class="setForm bold">Alternate Guardian Contact No.</label>
-                                </div>
-                                <div class="col-md-7 form-group ClientDiv">
-                                    @Html.TextBoxFor(E => E.AlternateGuardianContactNo, new { @class = "form-control", maxlength = "10", @placeholder = "Alternate Guardian Contact No." })
-                                    @Html.ValidationMessageFor(E => E.AlternateGuardianContactNo, "", new { @class = "redText", @style = "color:red" })
-                                </div>
-
-                                <div class="col-md-3 ClientDiv">
+                                <div class="col-md-2 ClientDiv">
                                     <label class="setForm bold">Emergency Contact No.</label>
                                 </div>
-                                <div class="col-md-7 form-group ClientDiv">
+                                <div class="col-md-4 form-group ClientDiv">
                                     @Html.TextBoxFor(E => E.Emergency_Contact_No, new { @class = "form-control", maxlength = "10", @placeholder = "Emergency Contact No." })
                                     @Html.ValidationMessageFor(E => E.Emergency_Contact_No, "", new { @class = "redText", @style = "color:red" })
                                 </div>
-
-
-                                <div class="col-md-3 ClientDiv">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="setForm  bold">Student Image</label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.DisplayFor(E => E.ImageName)
+                                    @Html.TextBoxFor(E => E.StudentImage, new { @type = "file", @class = "form-control" })
+                                </div>
+                                <div class="col-md-2 ClientDiv">
                                     <label class="setForm bold">Student Address<span style="color:red">*</span></label>
                                 </div>
-                                <div class="col-md-7 form-group ClientDiv">
+                                <div class="col-md-4 form-group ClientDiv">
                                     @Html.TextAreaFor(E => E.Address, new { @class = "form-control", maxlength = "250", @placeholder = " Address" })
                                     @Html.ValidationMessageFor(E => E.Address, "", new { @class = "redText", @style = "color:red" })
                                 </div>
-
-                                @*<div class="col-md-3 ClientDiv">
-                                        <label class="setForm bold"> Stoppage Name<span style="color:red">*</span></label>
-                                    </div>
-                                    <div class="col-md-7 form-group ClientDiv">
-                                        @Html.TextBoxFor(E => E.StoppageName, new { @class = "form-control", maxlength = "20", @placeholder = "Stoppage Name" })
-                                        @Html.ValidationMessageFor(E => E.StoppageName, "", new { @class = "redText", @style = "color:red" })
-                                    </div>*@
-
-                                <div class="col-md-3 ClientDiv">
-                                    <label class="setForm bold">RF ID</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="setForm  bold">Area<span style="color:red">*</span></label>
                                 </div>
-                                <div class="col-md-7 form-group ClientDiv">
-                                    @Html.TextBoxFor(E => E.RFID, new { @class = "form-control", maxlength = "40", @placeholder = "RF ID" })
+                                <div class="col-md-4 form-group">
+                                    @Html.DropDownListFor(E => E.FK_AreaId, new SelectList((System.Collections.IEnumerable)ViewData["Arealist"], "ID", "Value"), "--SELECT--", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(E => E.FK_AreaId, "", new { @class = "redText", @style = "color:red" })
                                 </div>
-                                <div class="col-md-3">
-                                    <label class="setForm  bold">Status</label>
+                                <div class="col-md-2">
+                                    <label class="setForm  bold">Monthly Fee<span style="color:red">*</span></label>
                                 </div>
-                                <div class="col-md-7 form-group">
-                                    @Html.CheckBoxFor(E => E.IsActive, new { @checked = true })
-                                </div>
-
-                                <div class="col-sm-9 d-flex justify-content-end center">
-                                    <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-                                    <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                <div class="col-md-4 form-group">
+                                    @Html.TextBoxFor(E => E.MonthlyFee, new { @class = "form-control", @placeholder = "Monthly Fee", @maxlength = "10" })
+                                    @Html.ValidationMessageFor(E => E.GuardianContactNo, "", new { @class = "redText", @style = "color:red" })
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="setForm  bold">Transport Fee<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.TextBoxFor(E => E.TransportFee, new { @class = "form-control", @placeholder = "Transport Fee", @maxlength = "10" })
+                                    @Html.ValidationMessageFor(E => E.TransportFee, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="setForm  bold">Discount %<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.TextBoxFor(E => E.Discount, new { @class = "form-control", @placeholder = "Discount", @maxlength = "10" })
+                                    @Html.ValidationMessageFor(E => E.Discount, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="setForm  bold">Status</label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.CheckBoxFor(E => E.IsActive, new { @checked = true })
+                                </div>
+                            </div>
+                            <div class="col-sm-12 d-flex justify-content-end Left">
+                                <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                            </div>
                         </div>
-                        @*</form>*@
                     </div>
+                    @*</form>*@
                 </div>
             </div>
         </div>
     </div>
+    @*</div>*@
 }
 
 

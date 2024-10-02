@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="main-content">
+    <div class="page-heading">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Class Master</h3>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                  
+                    <a class="btn btn-purple" href="@Url.Action("AddEditClass")" style="float: right;"><i class="fa fa-plus"></i> Add New</a>
+                    @*}*@
+                </div>
+            </div>
+        </div>
+        <section class="section">
+            <div class="card">
+                <div class="card-body">
+                    
+
+                    <div class="row" style="margin-top:20px;">
+                        <div id="msgDiv">
+                            @if (ViewBag.msg != null && (ViewBag.msg).Message_Id == 1)
+                            {
+                                <div id="myAlert" class="alert alert-success">
+                                    <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close" onclick="DivHide()">&times;</a>
+                                    <strong>@ViewBag.msg.Message</strong>
+                                </div>
+                            }
+                            else
+                            {
+                                if (ViewBag.msg != null)
+                                {
+                                    <div id="myAlert" class="alert alert-danger">
+                                        <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close" onclick="DivHide()">&times;</a>
+                                        <strong> @ViewBag.msg.Message</strong>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div id="GridDiv">
+                            @{Html.RenderAction("getClassList"); }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    @*<footer>
+            <div class="footer clearfix mb-0 text-muted">
+                <div class="float-start">
+                    <p>2022 &copy; SchoolMt</p>
+                </div>
+            </div>
+        </footer>*@
+</div>
+<script type="text/javascript">
+
+    function DivHide() {
+        $('#msgDiv').hide();
+    }
+
+    $(function () {
+        $('#SearchCreteria').change(function () {
+            $('#SearchValue').val('');
+            if ($('#SearchCreteria').val() == '') {
+                paging(1);
+            }
+
+        })
+    });
+
+    /*************Paging**************/
+    function paging(currentpage) {
+        if (currentpage == NaN || currentpage <= 0) {
+            return false;
+        }
+        var input = { CurrentPage: parseInt(currentpage), SearchBy: $("#SearchCreteria").val(), SearchValue: $("#SearchValue").val() };
+        $.ajax({
+            url:"@Url.Action("GetUsers", "UserMst")",
+            type: 'GET',
+            cache: false,
+            data: { 'CurrentPage': parseInt(currentpage), 'SearchBy': $("#SearchCreteria").val(), 'SearchValue': $("#SearchValue").val() },
+            success: function (data) {
+                $('#GridDiv').html(data);
+                $('.disabled').prop('disabled', true);
+            },
+        });
+        return false;
+    }
+</script>
+
+

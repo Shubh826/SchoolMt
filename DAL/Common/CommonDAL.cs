@@ -388,6 +388,21 @@ namespace DAL
             }).ToList();
             return _dropdownlist;
         }
+        public static List<DropDownMDL> BindArea(int CompanyId)
+        {
+            CommandText = "[usp_GetAreasByCompanyId]";
+            var para = new SqlParameter[1];
+            para[0] = new SqlParameter("@CompanyId", SqlDbType.Int) { Value = Convert.ToInt32(CompanyId) };
+            DataSet ds = (DataSet)objDataFunctions.getQueryResult(CommandText, DataReturnType.DataSet, para.ToList());
 
+            List<DropDownMDL> _dropdownlist = new List<DropDownMDL>();
+            _dropdownlist = ds.Tables[0].AsEnumerable().Select(dr => new DropDownMDL()
+            {
+                ID = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("PK_AreaId")),
+                Value = dr.Field<string>("AreaName"),
+
+            }).ToList();
+            return _dropdownlist;
+        }
     }
 }

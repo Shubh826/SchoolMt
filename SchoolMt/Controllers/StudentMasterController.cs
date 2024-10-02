@@ -63,7 +63,7 @@ namespace SchoolMt.Controllers
             ViewData["companylist"] = CommonBAL.FillCompany(SessionInfo.User.fk_companyid);
             ViewData["Classlist"] = CommonBAL.FillClass();
             ViewData["ClassCodelist"] = CommonBAL.FillClassCode();
-            ViewData["Relationlist"] = CommonBAL.FillRelation();
+            ViewData["Arealist"] = CommonBAL.BindArea(SessionInfo.User.fk_companyid);
 
             if (id > 0)
             {
@@ -75,7 +75,7 @@ namespace SchoolMt.Controllers
                 StudentMasterMDL obj = new StudentMasterMDL();
                 obj.FK_CompanyId = 1;
                 obj.CompanyId = 1;
-                obj.vCompanyId = 1;
+                //obj.vCompanyId = 1;
                 obj.IsActive = true;
                 return View("AddEditStudent", obj);
             }
@@ -86,7 +86,7 @@ namespace SchoolMt.Controllers
             ViewData["companylist"] = CommonBAL.FillCompany(SessionInfo.User.fk_companyid);
             ViewData["Classlist"] = CommonBAL.FillClass();
             ViewData["ClassCodelist"] = CommonBAL.FillClassCode();
-            ViewData["Relationlist"] = CommonBAL.FillRelation();
+            ViewData["Arealist"] = CommonBAL.BindArea(SessionInfo.User.fk_companyid);
             // Profile Pic upload[Code Start]
             #region
             if (objStudentMasterMDL.StudentImage != null)
@@ -95,7 +95,7 @@ namespace SchoolMt.Controllers
                 ImageError ErrorEmpImg = VTSFileHelper.CheckValidImage(objStudentMasterMDL.StudentImage);
                 if (ImageError.None == ErrorEmpImg)
                 {
-                    objStudentMasterMDL.ImageName = VTSFileHelper.ResetFileNames(objStudentMasterMDL.StudentImage, objStudentMasterMDL.Student_Code + "_StudentImage");
+                    objStudentMasterMDL.ImageName = VTSFileHelper.ResetFileNames(objStudentMasterMDL.StudentImage, "_StudentImage");
 
                     DeleteIfFileExists(ServerImagePath + objStudentMasterMDL.StudentImage);//DELETES IF FILE EXISTS BEFORE UPLOADING   
                     objStudentMasterMDL.StudentImageUrl = ServerImagePath + objStudentMasterMDL.ImageName;
@@ -117,6 +117,7 @@ namespace SchoolMt.Controllers
 
             int roleId = SessionInfo.User.roleid;
             objStudentMasterMDL.CreatedBy = SessionInfo.User.userid;
+            objStudentMasterMDL.FK_CompanyId = SessionInfo.User.fk_companyid;
             if (ModelState.IsValid)
             {
                 Messages msg = objStudentMasterBal.InsertStudentData(objStudentMasterMDL);
@@ -127,10 +128,6 @@ namespace SchoolMt.Controllers
 
 
         }
-        //public JsonResult BindStopage(int companyID)
-        //{
-        //    return Json(CommonBAL.BindStopage(companyID), JsonRequestBehavior.AllowGet);
-        //}
         public string DeleteIfFileExists(string FileFullPath)
         {
             if (System.IO.File.Exists(@FileFullPath))
