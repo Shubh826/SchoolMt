@@ -148,7 +148,7 @@
         }
         $.ajax({
 
-            url:"@Url.Action("GetStudentData", "StudentMaster")",
+            url:"@Url.Action("GetStudentFeeData", "StudentFeeDetails")",
             type: 'GET',
             cache: false,
             data: { 'CurrentPage': parseInt(currentpage), 'SearchBy': $("#SearchCreteria").val(), 'SearchValue': $("#SearchValue").val() },

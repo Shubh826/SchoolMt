@@ -1,0 +1,869 @@
+﻿@model MDL.FeeBillMDL
+@{
+    ViewBag.Title = "AddEditFeeBill";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+@using (Html.BeginForm("AddEditFeeBill", "FeeBill", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(E => E.ApplicableMonthFee)
+    @Html.HiddenFor(E => E.ApplicableTrnsFee)
+    <div class="page-heading mb-0">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Add Edit Fee Bill</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="form-horizontal">
+
+
+
+                                    <div class="form-group row">
+                                        <div class="col-md-2 ">
+                                            <label class="setForm bold">Student Name<span style="color:red">*</span></label>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+
+                                            @Html.TextBoxFor(E => E.StudentName, new { @class = "form-control", maxlength = "30", @placeholder = "Student Name", @disabled = "disabled" })
+                                            @Html.ValidationMessageFor(E => E.StudentName)
+                                        </div>
+                                        <div class="col-md-2 ">
+                                            <label class="control-label" for="FatherName">
+                                                Father Name <span style="color:red">*</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            @Html.TextBoxFor(E => E.FatherName, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name", @disabled = "disabled" })
+                                            @Html.ValidationMessageFor(E => E.FatherName)
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-2 ">
+                                            <label class="setForm bold">Class Name<span style="color:red">*</span></label>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+
+                                            @Html.TextBoxFor(E => E.ClassName, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name", @disabled = "disabled" })
+                                            @Html.ValidationMessageFor(E => E.ClassName)
+                                        </div>
+                                        <div class="col-md-2 ">
+                                            <label class="control-label">
+                                                Mobile No. <span style="color:red">*</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            @Html.TextBoxFor(E => E.MobileNumber, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name", @disabled = "disabled" })
+                                            @Html.ValidationMessageFor(E => E.MobileNumber)
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="section-body">
+                                        <div class="container-fluid contentHeightShow">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-body">
+                                                            <div class="form-horizontal">
+
+                                                                <div class="page-heading mb-0">
+                                                                    <div class="page-title">
+                                                                        <div class="row">
+                                                                            <div class="col-12 col-md-6 order-md-1 order-last">
+                                                                                <h3>Fee Details</h3>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+
+                                                                        <label class="setForm bold">April Fees<span style="color:red">*</span></label>
+                                                                    </div>
+
+
+                                                                    <div class="col-md-3 form-group">
+                                                                        @Html.TextBoxFor(E => E.AprilFee, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name" })
+                                                                    </div>
+                                                                    @if (Model.AprilFee < 1)
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                            <input class="form-check-input me-1" id="chkAprilFee" name="chkAprilFee" type="checkbox" />
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                        </div>
+                                                                    }
+
+
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="control-label">
+                                                                            Transport Fees <span style="color:red">*</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        @Html.TextBoxFor(E => E.AprilTrnsFee, new { @class = "form-control" })
+                                                                        @Html.ValidationMessageFor(E => E.AprilTrnsFee)
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="setForm bold">May Fees<span style="color:red">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-group">
+
+                                                                        @Html.TextBoxFor(E => E.MayFee, new { @class = "form-control", maxlength = "15", @placeholder = "May fee" })
+                                                                        @Html.ValidationMessageFor(E => E.MarchTrnsFee)
+                                                                    </div>
+                                                                    @if (Model.MayFee < 1)
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                            <input class="form-check-input me-1" id="chkMayFee" name="chkMayFee" type="checkbox" />
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                        </div>
+                                                                    }
+
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="control-label">
+                                                                            Transport Fees <span style="color:red">*</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        @Html.TextBoxFor(E => E.MayTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name" })
+                                                                        @Html.ValidationMessageFor(E => E.MayTrnsFee)
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="setForm bold">June Fees<span style="color:red">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-group">
+
+                                                                        @Html.TextBoxFor(E => E.JuneFee, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name" })
+                                                                        @Html.ValidationMessageFor(E => E.JuneFee)
+                                                                    </div>
+                                                                    @if (Model.JuneFee < 1)
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                            <input class="form-check-input me-1" id="chkJuneFee" name="JuneFee" type="checkbox" />
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                        </div>
+                                                                    }
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="control-label">
+                                                                            Transport Fees <span style="color:red">*</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        @Html.TextBoxFor(E => E.JuneTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name" })
+                                                                        @Html.ValidationMessageFor(E => E.JuneTrnsFee)
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="setForm bold">July Fees<span style="color:red">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-group">
+
+                                                                        @Html.TextBoxFor(E => E.JulyFee, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name" })
+                                                                        @Html.ValidationMessageFor(E => E.JulyTrnsFee)
+                                                                    </div>
+                                                                    @if (Model.JulyFee < 1)
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                            <input class="form-check-input me-1" id="chkJulyFee" name="chkJulyFee" type="checkbox" />
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                        </div>
+                                                                    }
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="control-label">
+                                                                            Transport Fees <span style="color:red">*</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        @Html.TextBoxFor(E => E.JulyTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name" })
+                                                                        @Html.ValidationMessageFor(E => E.JulyTrnsFee)
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="setForm bold">August Fees<span style="color:red">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-group">
+
+                                                                        @Html.TextBoxFor(E => E.AugustFee, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name" })
+                                                                        @Html.ValidationMessageFor(E => E.AugustTrnsFee)
+                                                                    </div>
+
+                                                                    @if (Model.AugustFee < 1)
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                            <input class="form-check-input me-1" id="chkAugustFee" name="chkAugustFee" type="checkbox" />
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                        </div>
+                                                                    }
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="control-label">
+                                                                            Transport Fees <span style="color:red">*</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        @Html.TextBoxFor(E => E.AugustTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name" })
+                                                                        @Html.ValidationMessageFor(E => E.AugustTrnsFee)
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="setForm bold">September Fees<span style="color:red">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-group">
+
+                                                                        @Html.TextBoxFor(E => E.SeptemberFee, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name" })
+                                                                        @Html.ValidationMessageFor(E => E.SeptemberFee)
+                                                                    </div>
+                                                                    @if (Model.SeptemberFee < 1)
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                            <input class="form-check-input me-1" id="chkSeptemberFee" name="chkSeptemberFee" type="checkbox" />
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                        </div>
+                                                                    }
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="control-label">
+                                                                            Transport Fees <span style="color:red">*</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        @Html.TextBoxFor(E => E.SeptemberTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name" })
+                                                                        @Html.ValidationMessageFor(E => E.SeptemberTrnsFee)
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="setForm bold">Half Yearly Exam Fees<span style="color:red">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-group">
+
+                                                                        @Html.TextBoxFor(E => E.HalfYearlyExamFee, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name" })
+                                                                        @Html.ValidationMessageFor(E => E.HalfYearlyExamFee)
+                                                                    </div>
+                                                                    @if (Model.HalfYearlyExamFee < 1)
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                            <input class="form-check-input me-1" id="chkHalfYearlyExamFee" name="chkHalfYearlyExamFee" type="checkbox" />
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                        </div>
+                                                                    }
+                                                                    <div class="col-md-2 ">
+
+                                                                    </div>
+                                                                    <div class="col-md-3">
+
+                                                                    </div>
+                                                                </div>
+
+
+
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="setForm bold">October Fees<span style="color:red">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-group">
+
+                                                                        @Html.TextBoxFor(E => E.OctoberFee, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name" })
+                                                                        @Html.ValidationMessageFor(E => E.OctoberFee)
+                                                                    </div>
+                                                                    @if (Model.OctoberFee < 1)
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                            <input class="form-check-input me-1" id="chkOctoberFee" name="chkOctoberFee" type="checkbox" />
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                        </div>
+                                                                    }
+
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="control-label">
+                                                                            Transport Fees <span style="color:red">*</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        @Html.TextBoxFor(E => E.OctoberTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name" })
+                                                                        @Html.ValidationMessageFor(E => E.OctoberTrnsFee)
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="setForm bold">November Fees<span style="color:red">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-group">
+
+                                                                        @Html.TextBoxFor(E => E.NovemberFee, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name" })
+                                                                        @Html.ValidationMessageFor(E => E.NovemberFee)
+                                                                    </div>
+                                                                    @if (Model.NovemberFee < 1)
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                            <input class="form-check-input me-1" id="chkNovemberFee" name="chkNovemberFee" type="checkbox" />
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                        </div>
+                                                                    }
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="control-label">
+                                                                            Transport Fees <span style="color:red">*</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        @Html.TextBoxFor(E => E.NovemberTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name" })
+                                                                        @Html.ValidationMessageFor(E => E.NovemberTrnsFee)
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="setForm bold">December Fees<span style="color:red">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-group">
+
+                                                                        @Html.TextBoxFor(E => E.DecemberFee, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name" })
+                                                                        @Html.ValidationMessageFor(E => E.DecemberFee)
+                                                                    </div>
+                                                                    @if (Model.DecemberFee < 1)
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                            <input class="form-check-input me-1" id="chkDecemberFee" name="chkDecemberFee" type="checkbox" />
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                        </div>
+                                                                    }
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="control-label">
+                                                                            Transport Fees <span style="color:red">*</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        @Html.TextBoxFor(E => E.DecemberTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name" })
+                                                                        @Html.ValidationMessageFor(E => E.DecemberTrnsFee)
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="setForm bold">January Fees<span style="color:red">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+
+                                                                        @Html.TextBoxFor(E => E.JanuaryFee, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name" })
+                                                                        @Html.ValidationMessageFor(E => E.JanuaryFee)
+                                                                    </div>
+                                                                    @if (Model.JanuaryFee < 1)
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                            <input class="form-check-input me-1" id="chkJanuaryFee" name="chkJanuaryFee" type="checkbox" />
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                        </div>
+                                                                    }
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="control-label">
+                                                                            Transport Fees <span style="color:red">*</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        @Html.TextBoxFor(E => E.JanuaryTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name" })
+                                                                        @Html.ValidationMessageFor(E => E.JanuaryTrnsFee)
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="setForm bold">Februrary Fees<span style="color:red">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-group">
+
+                                                                        @Html.TextBoxFor(E => E.FebruaryFee, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name" })
+                                                                        @Html.ValidationMessageFor(E => E.FebruaryFee)
+                                                                    </div>
+
+                                                                    @if (Model.FebruaryFee < 1)
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                            <input class="form-check-input me-1" id="chkFebruaryFee" name="chkFebruaryFee" type="checkbox" />
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                        </div>
+                                                                    }
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="control-label">
+                                                                            Transport Fees <span style="color:red">*</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        @Html.TextBoxFor(E => E.FebruaryTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name" })
+                                                                        @Html.ValidationMessageFor(E => E.FebruaryTrnsFee)
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="setForm bold">Yearly Exam Fees<span style="color:red">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-group">
+
+                                                                        @Html.TextBoxFor(E => E.YearlyExamFee, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name" })
+                                                                        @Html.ValidationMessageFor(E => E.YearlyExamFee)
+                                                                    </div>
+                                                                    @if (Model.YearlyExamFee < 1)
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                            <input class="form-check-input me-1" id="chkYearlyExamFee" name="chkYearlyExamFee" type="checkbox" />
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                        </div>
+                                                                    }
+                                                                    <div class="col-md-2 ">
+
+                                                                    </div>
+                                                                    <div class="col-md-3">
+
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="setForm bold">March Fees<span style="color:red">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-3 form-group">
+
+                                                                        @Html.TextBoxFor(E => E.MarchFee, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name" })
+                                                                        @Html.ValidationMessageFor(E => E.MarchFee)
+                                                                    </div>
+                                                                    @if (Model.FebruaryFee < 1)
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                            <input class="form-check-input me-1" id="chkMarchFee" name="chkMarchFee" type="checkbox" />
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="col-md-1 ">
+                                                                        </div>
+                                                                    }
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="control-label">
+                                                                            Transport Fees <span style="color:red">*</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        @Html.TextBoxFor(E => E.MarchTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name" })
+                                                                        @Html.ValidationMessageFor(E => E.MarchTrnsFee)
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="setForm bold">Total Fees<span style="color:red">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-4 form-group">
+
+                                                                        @Html.TextBoxFor(E => E.Totalfee, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name" })
+                                                                        @Html.ValidationMessageFor(E => E.Totalfee)
+                                                                    </div>
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="control-label">
+                                                                            Discount <span style="color:red">*</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        @Html.TextBoxFor(E => E.Discount, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name" })
+                                                                        @Html.ValidationMessageFor(E => E.Discount)
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="setForm bold">Cash<span style="color:red">*</span></label>
+                                                                    </div>
+                                                                    <div class="col-md-4 form-group">
+
+                                                                        @Html.TextBoxFor(E => E.Cash, new { @class = "form-control", maxlength = "15", @placeholder = "Class Name" })
+                                                                        @Html.ValidationMessageFor(E => E.Cash)
+                                                                    </div>
+                                                                    <div class="col-md-2 ">
+                                                                        <label class="control-label">
+                                                                            Online <span style="color:red">*</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        @Html.TextBoxFor(E => E.Online, new { @class = "form-control", maxlength = "50", @placeholder = "Father Name" })
+                                                                        @Html.ValidationMessageFor(E => E.Online)
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group btnShowDIv">
+                                        <div class="col-md-12 text-right">
+                                            <button type="submit" class="btn btn-primary" id="submitform">Submit</button>
+                                            <a href='@Url.Action("Index")' class="btn btn-primary">Cancel</a>
+                                        </div>
+                                    </div>
+                                    <div id="GridDiv"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        function checkFeeInputs() {
+            $('.fee-input').each(function () {
+                const value = parseFloat($(this).val());
+                $(this).prop('disabled', value > 0);
+            });
+        }
+
+        $('.fee-input').on('input', checkFeeInputs);
+        checkFeeInputs();
+
+
+
+        $('#chkAprilFee').change(function () {
+            if (this.checked) {
+                debugger;
+                $('#AprilFee').val($('#ApplicableMonthFee').val());
+                $('#AprilTrnsFee').val($('#ApplicableTrnsFee').val());
+                var a = parseInt($('#Totalfee').val()) + parseInt($('#AprilFee').val()) + parseInt($('#AprilTrnsFee').val());
+
+                $('#Totalfee').val(a);
+
+            }
+            else {
+                var a = parseInt($('#Totalfee').val()) -parseInt($('#AprilFee').val()) -parseInt($('#AprilTrnsFee').val());
+
+                $('#Totalfee').val(a);
+                $('#AprilFee').val(0);
+                $('#AprilTrnsFee').val(0)
+            }
+           
+        });
+
+        $('#chkMayFee').change(function () {
+            if (this.checked) {
+                debugger;
+                $('#MayFee').val($('#ApplicableMonthFee').val());
+                $('#MayTrnsFee').val($('#ApplicableTrnsFee').val());
+                var a = parseInt($('#Totalfee').val()) + parseInt($('#MayFee').val()) + parseInt($('#MayTrnsFee').val());
+               
+                $('#Totalfee').val(a);
+
+            }
+            else {
+                var a = parseInt($('#Totalfee').val()) - parseInt($('#MayFee').val()) - parseInt($('#MayTrnsFee').val());
+
+                $('#Totalfee').val(a);
+                $('#MayFee').val(0);
+                $('#MayTrnsFee').val(0)
+            }
+        });
+
+        $('#chkJuneFee').change(function () {
+            if (this.checked) {
+                debugger;
+                $('#JuneFee').val($('#ApplicableMonthFee').val());
+                $('#JuneTrnsFee').val($('#ApplicableTrnsFee').val());
+                var a = parseInt($('#Totalfee').val()) + parseInt($('#JuneFee').val()) + parseInt($('#JuneTrnsFee').val());
+               
+                $('#Totalfee').val(a);
+
+            }
+            else {
+                var a = parseInt($('#Totalfee').val()) - parseInt($('#JuneFee').val()) - parseInt($('#JuneTrnsFee').val());
+
+                $('#Totalfee').val(a);
+                $('#JuneFee').val(0);
+                $('#JuneTrnsFee').val(0)
+            }
+        });
+        $('#chkJulyFee').change(function () {
+            if (this.checked) {
+                debugger;
+                $('#JulyFee').val($('#ApplicableMonthFee').val());
+                $('#JulyTrnsFee').val($('#ApplicableTrnsFee').val());
+                var a = parseInt($('#Totalfee').val()) + parseInt($('#JulyFee').val()) + parseInt($('#JulyTrnsFee').val());
+              
+                $('#Totalfee').val(a);
+
+            }
+            else {
+                var a = parseInt($('#Totalfee').val()) - parseInt($('#JulyFee').val()) - parseInt($('#JulyTrnsFee').val());
+
+                $('#Totalfee').val(a);
+                $('#JulyFee').val(0);
+                $('#JulyTrnsFee').val(0)
+            }
+          
+        });
+
+        $('#chkAugustFee').change(function () {
+            if (this.checked) {
+                debugger;
+                $('#AugustFee').val($('#ApplicableMonthFee').val());
+                $('#AugustTrnsFee').val($('#ApplicableTrnsFee').val());
+                var a = parseInt($('#Totalfee').val()) + parseInt($('#AugustFee').val()) + parseInt($('#AugustTrnsFee').val());
+               
+                $('#Totalfee').val(a);
+
+            }
+            else {
+                var a = parseInt($('#Totalfee').val()) - parseInt($('#AugustFee').val()) - parseInt($('#AugustTrnsFee').val());
+
+                $('#Totalfee').val(a);
+                $('#AugustFee').val(0);
+                $('#AugustTrnsFee').val(0)
+            }
+
+        });
+
+        $('#chkSeptemberFee').change(function () {
+            if (this.checked) {
+                debugger;
+                $('#SeptemberFee').val($('#ApplicableMonthFee').val());
+                $('#SeptemberTrnsFee').val($('#ApplicableTrnsFee').val());
+                var a = parseInt($('#Totalfee').val()) + parseInt($('#SeptemberFee').val()) + parseInt($('#SeptemberTrnsFee').val());
+              
+                $('#Totalfee').val(a);
+
+            }
+            else {
+                var a = parseInt($('#Totalfee').val()) - parseInt($('#SeptemberFee').val()) - parseInt($('#SeptemberTrnsFee').val());
+
+                $('#Totalfee').val(a);
+                $('#SeptemberFee').val(0);
+                $('#SeptemberTrnsFee').val(0)
+            }
+        });
+
+        $('#chkOctoberFee').change(function () {
+            if (this.checked) {
+                debugger;
+                $('#OctoberFee').val($('#ApplicableMonthFee').val());
+                $('#OctoberTrnsFee').val($('#ApplicableTrnsFee').val());
+                var a = parseInt($('#Totalfee').val()) + parseInt($('#OctoberFee').val()) + parseInt($('#OctoberTrnsFee').val());
+               
+                $('#Totalfee').val(a);
+
+            }
+            else {
+                var a = parseInt($('#Totalfee').val()) - parseInt($('#OctoberFee').val()) - parseInt($('#OctoberTrnsFee').val());
+
+                $('#Totalfee').val(a);
+                $('#OctoberFee').val(0);
+                $('#OctoberTrnsFee').val(0)
+            }
+        });
+        $('#chkNovemberFee').change(function () {
+            if (this.checked) {
+                debugger;
+                $('#NovemberFee').val($('#ApplicableMonthFee').val());
+                $('#NovemberTrnsFee').val($('#ApplicableTrnsFee').val());
+                var a = parseInt($('#Totalfee').val()) + parseInt($('#NovemberFee').val()) + parseInt($('#NovemberTrnsFee').val());
+             
+                $('#Totalfee').val(a);
+
+            }
+            else {
+                var a = parseInt($('#Totalfee').val()) - parseInt($('#NovemberFee').val()) - parseInt($('#NovemberTrnsFee').val());
+
+                $('#Totalfee').val(a);
+                $('#NovemberFee').val(0);
+                $('#NovemberTrnsFee').val(0)
+            }
+        });
+        $('#chkDecemberFee').change(function () {
+            if (this.checked) {
+                debugger;
+                $('#DecemberFee').val($('#ApplicableMonthFee').val());
+                $('#DecemberTrnsFee').val($('#ApplicableTrnsFee').val());
+                var a = parseInt($('#Totalfee').val()) + parseInt($('#DecemberFee').val()) + parseInt($('#DecemberTrnsFee').val());
+             
+                $('#Totalfee').val(a);
+
+            }
+            else {
+                var a = parseInt($('#Totalfee').val()) - parseInt($('#DecemberFee').val()) - parseInt($('#DecemberTrnsFee').val());
+
+                $('#Totalfee').val(a);
+                $('#DecemberFee').val(0);
+                $('#DecemberTrnsFee').val(0)
+            }
+        });
+
+        $('#chkJanuaryFee').change(function () {
+            if (this.checked) {
+                debugger;
+                $('#JanuaryFee').val($('#ApplicableMonthFee').val());
+                $('#JanuaryTrnsFee').val($('#ApplicableTrnsFee').val());
+                var a = parseInt($('#Totalfee').val()) + parseInt($('#JanuaryFee').val()) + parseInt($('#JanuaryTrnsFee').val());
+               
+                $('#Totalfee').val(a);
+
+            }
+            else {
+                var a = parseInt($('#Totalfee').val()) - parseInt($('#JanuaryFee').val()) - parseInt($('#JanuaryTrnsFee').val());
+
+                $('#Totalfee').val(a);
+                $('#JanuaryFee').val(0);
+                $('#JanuaryTrnsFee').val(0)
+            }
+        });
+
+        $('#chkFebruaryFee').change(function () {
+            if (this.checked) {
+                debugger;
+                $('#FebruaryFee').val($('#ApplicableMonthFee').val());
+                $('#FebruaryTrnsFee').val($('#ApplicableTrnsFee').val());
+                var a = parseInt($('#Totalfee').val()) + parseInt($('#FebruaryFee').val()) + parseInt($('#FebruaryTrnsFee').val());
+              
+                $('#Totalfee').val(a);
+
+            }
+            else {
+                var a = parseInt($('#Totalfee').val()) - parseInt($('#FebruaryFee').val()) - parseInt($('#JanuaryTrnsFee').val());
+
+                $('#Totalfee').val(a);
+                $('#FebruaryFee').val(0);
+                $('#FebruaryTrnsFee').val(0)
+            }
+        });
+
+        $('#chkMarchFee').change(function () {
+            if (this.checked) {
+                debugger;
+                $('#MarchFee').val($('#ApplicableMonthFee').val());
+                $('#MarchTrnsFee').val($('#ApplicableTrnsFee').val());
+                var a = parseInt($('#Totalfee').val()) + parseInt($('#MarchFee').val()) + parseInt($('#MarchTrnsFee').val());
+               
+                $('#Totalfee').val(a);
+
+            }
+            else {
+                var a = parseInt($('#Totalfee').val()) - parseInt($('#MarchFee').val()) - parseInt($('#MarchTrnsFee').val());
+
+                $('#Totalfee').val(a);
+                $('#MarchFee').val(0);
+                $('#MarchTrnsFee').val(0)
+            }
+          
+        });
+
+
+        //$('#chkDecemberFee).change(function () {
+        //    if (this.checked) {
+        //        debugger;
+        //        $('#DecemberFee').val($('#ApplicableMonthFee').val());
+        //        $('#DecemberTrnsFee').val($('#ApplicableTrnsFee').val());
+        //        var a = parseInt($('#Totalfee').val()) + parseInt($('#DecemberFee').val()) + parseInt($('#DecemberTrnsFee').val());
+        //        //  var a = parseInt($('#MayFee').val()) + parseInt( $('#Totalfee').val());
+        //        // alert(a);
+        //        $('#Totalfee').val(a);
+
+        //    }
+        //    // $('#textbox1').val(this.checked);
+        //});
+    });
+
+
+
+</script>
+
+
+
+
+

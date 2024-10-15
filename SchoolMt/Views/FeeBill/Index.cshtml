@@ -1,0 +1,188 @@
+﻿@model MDL.FeeBillMDL
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="section-body">
+    <div class="container-fluid contentHeightShow">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="textHead">Fee Payment</h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="row">
+                            <!-- First Row: Class and Section -->
+                            <div class="col-md-12">
+                                <div class="row col-md-12 form-horizontal">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="inputClass" class="control-label col-md-4">
+                                                Class <span style="color: red;">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(E => E.ClassName, new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Value", "Value"), "--SELECT--", new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(E => E.ClassName, "", new { @class = "redText", @style = "color:red" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="inputSection" class="control-label col-md-4">
+                                                Section <span style="color: red;">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(E => E.ClassCode, new SelectList((System.Collections.IEnumerable)ViewData["ClassCodelist"], "Value", "Value"), "--SELECT--", new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(E => E.ClassCode, "", new { @class = "redText", @style = "color:red" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row col-md-12 form-horizontal">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="SearchCreteria" class="control-label col-md-4">Search By</label>
+                                            <div class="col-md-8">
+                                                <select class="form-control ResetField" id="SearchCreteria">
+                                                    <option selected="selected" value="">Search By</option>
+                                                    <option value="StudentName">Student Name</option>
+                                                    <option value="FatherName">Father Name</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group" id="searchValue">
+                                            <label for="SearchValue" class="control-label col-md-4">Search Value</label>
+                                            <div class="col-md-8">
+                                                <input type="text" id="SearchValue" class="form-control ResetField" placeholder="Search">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group btnShowDIv text-right">
+                            <div class="col-md-12">
+                                <a href="javascript:void(0)" id="btnsearch" class="btn btn-primary" onclick="paging(1)">Search</a>
+                                <a href="javascript:void(0)" id="btnReset" class="btn btn-primary">Reset</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget widget-small">
+
+            <div id="msgDiv">
+                @if (ViewBag.msg != null && (ViewBag.msg).Message_Id == 1)
+                {
+                    <div id="myAlert" class="alert alert-success">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>@ViewBag.msg.Message</strong>
+                    </div>
+                }
+                else
+                {
+                    if (ViewBag.msg != null)
+                    {
+                        <div id="myAlert" class="alert alert-danger">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong> @ViewBag.msg.Message</strong>
+                        </div>
+                    }
+                }
+            </div>
+
+            <div id="GridDiv">
+            </div>
+        </div>
+    </div>
+</div>
+   
+    <script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#SearchCreteria').change(function () {
+            $('#SearchValue').val('');
+            if ($('#SearchCreteria').val() == '') {
+                paging(1);
+            }
+        })
+        $('#btnReset').click(function (e) {
+            $('.ResetField').val("");
+            $('#InValidUpload').hide();
+            $('#InValidDelete').hide();
+        });
+        $('#btnsearch').click(function (e) {
+
+            $('#InValidUpload').hide();
+            $('#InValidDelete').hide();
+        });
+
+
+        $('#btnReset').click(function (e) {
+            $('#SearchCreteria').val('');
+            $('#SearchValue').val('');
+            $("#FromToDate").val('');
+        });
+    });
+                    $(function () {
+                        $('#SearchCreteria').change(function () {
+                            $('#SearchValue').val('');
+                            if ($('#SearchCreteria').val() == '') {
+                                //paging(1);
+                            }
+                        })
+                    });
+
+
+    function paging(currentpage) {
+        if (currentpage == NaN || currentpage <= 0) {
+            return false;
+        }
+        debugger
+
+        var input = { CurrentPage: parseInt(currentpage), SearchBy: $("#SearchCreteria").val(), SearchValue: $("#SearchValue").val() };
+        $.ajax({
+
+            url:"@Url.Action("GetFeeBillData", "FeeBill")",
+            type: 'GET',
+            cache: false,
+            data: { 'CurrentPage': parseInt(currentpage), 'SearchBy': $("#SearchCreteria").val(), 'SearchValue': $("#SearchValue").val() },
+            success: function (data) {
+                $('#GridDiv').html(data);
+                $('.disabled').prop('disabled', true);
+            },
+        });
+        return false;
+    }
+    </script>
+
+
+
+
+
+
+
+
+
+

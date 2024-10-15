@@ -20,10 +20,11 @@ using Newtonsoft.Json;
 using Microsoft.Ajax.Utilities;
 using Org.BouncyCastle.Asn1.X509;
 using BAL.Common;
+using FRGMBSystem.Controllers;
 
 namespace SchoolMt.Controllers
 {
-    public class StudentFeeDetailsController : Controller
+    public class StudentFeeDetailsController : BasicController
     {
         // GET: StudentFeeDetails
         private List<StudentFeeDetailsMDL> _Studentlist;
@@ -46,6 +47,14 @@ namespace SchoolMt.Controllers
             }
             return View();
         }
+        public PartialViewResult GetStudentFeeData(int CurrentPage = 1, string SearchBy = "", string SearchValue = "")
+        {
+            objStudentFeeDetailsBAL.GetStudentFeeData(out _Studentlist, out objBasicPagingMDL, 0, SessionInfo.User.fk_companyid, Convert.ToInt32(20), CurrentPage, SearchBy, SearchValue);
+            ViewBag.paging = objBasicPagingMDL;
+            TempData["studentlist"] = _Studentlist;
+            return PartialView("_StudentFeeDetailsGrid", _Studentlist);
+        }
+
         [HttpGet]
         public ActionResult AddBulkStudentDetails(int id = 0)
         {
@@ -53,9 +62,9 @@ namespace SchoolMt.Controllers
         }
         public FileResult DownloadFile()
         {
-            return new FilePathResult("~//App_Data//Student Fee Details.xls", "application/vnd.ms-excel")
+            return new FilePathResult("~//App_Data//Student Fee Details.xlsx", "application/vnd.ms-excel")
             {
-                FileDownloadName = "Student Fee Details.xls"
+                FileDownloadName = "Student Fee Details.xlsx"
             };
         }
         public ActionResult ValidateExcelData(StudentFeeDetailsMDL objStudentFeeDetailsMDL, int id = 0)
@@ -230,7 +239,9 @@ namespace SchoolMt.Controllers
                             vdr["Mobile No."] = Convert.ToString(dr["Mobile No."]).Trim();
                             vdr["Address"] = Convert.ToString(dr["Address"]).Trim();
                             vdr["Admission Fee"] = Convert.ToInt32(dr["Admission Fee"]);
-                            vdr["Admission Date"] = dr["Admission Date"]; // Assuming date formats are handled elsewhere
+                            vdr["Admission Date"] = dr["Admission Date"];
+
+                            // Assuming date formats are handled elsewhere
                             vdr["April Fee"] = Convert.ToInt32(dr["April Fee"]);
                             vdr["April Trans Fee"] = Convert.ToInt32(dr["April Trans Fee"]);
                             vdr["May Fee"] = Convert.ToInt32(dr["May Fee"]);
@@ -456,7 +467,7 @@ namespace SchoolMt.Controllers
                                             StudentInvalid.ExaminationFee2 = Convert.ToInt32(row["Examination Fee 2"]);
                                             StudentInvalid.ClassName = Convert.ToString(row["Class Name"]);
                                             StudentInvalid.ApplicableMonthFee = Convert.ToInt32(row["Applicable Month Fee"]);
-                                            StudentInvalid.ApplicableTransFee = Convert.ToInt32(row["Applicable Trans Fee"]);
+                                            StudentInvalid.ApplicableTrnsFee = Convert.ToInt32(row["Applicable Trans Fee"]);
                                             StudentInvalid.ApplicableMonth = Convert.ToString(row["Applicable Month"]);
                                             StudentInvalid.PreviousDueAmount = Convert.ToInt32(row["Previous Due Amount"]);
                                             StudentInvalid.Remark = Convert.ToString(sb);
@@ -466,12 +477,14 @@ namespace SchoolMt.Controllers
                                         else
                                         {
                                             StudentFeeDetailsValidExcelDataMDL Studenvalid = new StudentFeeDetailsValidExcelDataMDL();
+                                            DateTime admissionDate = Convert.ToDateTime(row["Admission Date"]);
+
                                             Studenvalid.StudentName = Convert.ToString(row["Student Name"]);
                                             Studenvalid.FatherName = Convert.ToString(row["Father Name"]);
                                             Studenvalid.MobileNo = Convert.ToString(row["Mobile No."]);
                                             Studenvalid.Address = Convert.ToString(row["Address"]);
                                             Studenvalid.AdmissionFee = Convert.ToInt32(row["Admission Fee"]);
-                                            Studenvalid.AdmissionDate = Convert.ToString(row["Admission Date"]);
+                                            Studenvalid.AdmissionDate = admissionDate.ToString("dd/MM/yyyy"); 
                                             Studenvalid.AprilFee = Convert.ToInt32(row["April Fee"]);
                                             Studenvalid.AprilTrnsFee = Convert.ToInt32(row["April Trans Fee"]);
                                             Studenvalid.MayFee = Convert.ToInt32(row["May Fee"]);
@@ -789,7 +802,7 @@ namespace SchoolMt.Controllers
                                      ExaminationFee2 = Convert.ToInt32(dr["Examination Fee 2"]),
                                      ClassName = Convert.ToString(dr["Class Name"]),
                                      ApplicableMonthFee = Convert.ToInt32(dr["Applicable Month Fee"]),
-                                     ApplicableTransFee = Convert.ToInt32(dr["Applicable Trans Fee"]),
+                                     ApplicableTrnsFee = Convert.ToInt32(dr["Applicable Trans Fee"]),
                                      ApplicableMonth = Convert.ToString(dr["Applicable Month"]),
                                      PreviousDueAmount = Convert.ToInt32(dr["Previous Due Amount"]),
                                      Remark = "This Student Details is Already Exist in Excel so Please Remove then Upload !"

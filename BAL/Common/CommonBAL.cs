@@ -15,6 +15,10 @@ namespace BAL.Common
         {
             return CommonDAL.FillCompany(CompanyId);
         }
+        public static List<DropDownMDL> FillClassName(int CompanyId)
+        {
+            return CommonDAL.FillClassName(CompanyId);
+        }
         public static List<CompanywiseDataMDL> FillCompanyByID(int CompanyId)
         {
             return CommonDAL.FillCompanyById(CompanyId);

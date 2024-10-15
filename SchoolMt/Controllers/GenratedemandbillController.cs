@@ -1,6 +1,7 @@
 ﻿using BAL;
 using BAL.Common;
 using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -116,7 +117,7 @@ namespace SchoolMt.Controllers
             //AddCellToHeader(tableLayout, "City");
             //AddCellToHeader(tableLayout, "Hire Date");
             //// Add body
-            int j = 0;
+            int j = 0,k= _StudentFeeDetailsMDL.Count();
             foreach (var stu in _StudentFeeDetailsMDL)
             {
 
@@ -184,7 +185,7 @@ namespace SchoolMt.Controllers
                     PdfPCell cellclass = new PdfPCell(new Phrase("Class :" + stu.ClassName));
                     
                     table.AddCell(cellclass);
-                    PdfPCell celldate = new PdfPCell(new Phrase("Date :" + DateTime.Now.ToString("MM/dd/yyyy")));
+                    PdfPCell celldate = new PdfPCell(new Phrase("Date :" + DateTime.Now.ToString("dd/MM/yyyy")));
                     celldate.HorizontalAlignment = Element.ALIGN_CENTER;
                     table.AddCell(celldate);
 
@@ -209,7 +210,8 @@ namespace SchoolMt.Controllers
                 int startMonth = DateTime.ParseExact(stu.ApplicableMonth, "MMMM", CultureInfo.CurrentCulture).Month;
                     // Loop through 12 months starting from the specified start month
                     int dueamount = 0;
-                    int duetrnsamount = 0;
+                int examfee = 0;
+                int duetrnsamount = 0;
                     string duemonthName = string.Empty;
                     for (int m = 0; m < 12; m++)
                     {
@@ -218,74 +220,111 @@ namespace SchoolMt.Controllers
                         // Calculate the current year
                         int currentYear = startYear + (startMonth + m - 1) / 12;
                         
-                        if(currentMonth == 4 && stu.AprilFee==0)
+                        if(currentMonth == 4 && stu.AprilFee==0 &&  stu.AprilTrnsFee == 0)
                         {
                             duemonthName = "April";
                             dueamount = stu.ApplicableMonthFee;
                             duetrnsamount = stu.ApplicableTrnsFee;
                         }
-                        if (currentMonth == 5 && stu.MayFee == 0)
+                        if (currentMonth == 5 && stu.MayFee == 0 && stu.MayTrnsFee==0)
                         {
                             duemonthName = duemonthName+","+"May";
                             dueamount = dueamount+stu.ApplicableMonthFee;
                             duetrnsamount = duetrnsamount+stu.ApplicableTrnsFee;
                         }
-                        if (currentMonth == 6 && stu.JuneFee == 0)
+                        if (currentMonth == 6 && stu.JuneFee == 0 )
                         {
                             duemonthName = duemonthName + "," + "June";
                             dueamount = dueamount + stu.ApplicableMonthFee;
                         }
-                        if (currentMonth == 7 && stu.JulyFee == 0)
+                        if (currentMonth == 7 && stu.JulyFee == 0 && stu.JulyTrnsFee == 0)
                         {
                             duemonthName = duemonthName + "," + "July";
                             dueamount = dueamount + stu.ApplicableMonthFee;
                             duetrnsamount = duetrnsamount + stu.ApplicableTrnsFee;
                         }
-                        if (currentMonth == 8 && stu.AugustFee == 0)
+                        if (currentMonth == 8 && stu.AugustFee == 0 && stu.AugustTrnsFee == 0)
                         {
                             duemonthName = duemonthName + "," + "August";
                             dueamount = dueamount + stu.ApplicableMonthFee;
                             duetrnsamount = duetrnsamount + stu.ApplicableTrnsFee;
                         }
-                        if (currentMonth == 9 && stu.SeptemberFee == 0)
+                        if (currentMonth == 9 && stu.SeptemberFee == 0 && stu.SeptemberTrnsFee == 0)
                         {
                             duemonthName = duemonthName + "," + "September";
+                        if (stu.ExaminationFee1 == 0)
+                        {
+                            examfee = 500;
+                        }
                             dueamount = dueamount + stu.ApplicableMonthFee;
                             duetrnsamount = duetrnsamount + stu.ApplicableTrnsFee;
                         }
-                        if (currentMonth == 10 && stu.OctoberFee == 0)
+                        if (currentMonth == 10 && stu.OctoberFee == 0 && stu.OctoberTrnsFee == 0)
                         {
-                            duemonthName = duemonthName + "," + "October";
+                        if (stu.ExaminationFee1 == 0 && examfee==0)
+                        {
+                            examfee = 500;
+                        }
+                        duemonthName = duemonthName + "," + "October";
                             dueamount = dueamount + stu.ApplicableMonthFee;
                             duetrnsamount = duetrnsamount + stu.ApplicableTrnsFee;
                         }
-                        if (currentMonth == 11 && stu.NovemberFee == 0)
+                        if (currentMonth == 11 && stu.NovemberFee == 0 && stu.NovemberTrnsFee == 0)
                         {
-                            duemonthName = duemonthName + "," + "November";
+                        if (stu.ExaminationFee1 == 0 && examfee == 0)
+                        {
+                            examfee = 500;
+                        }
+                        duemonthName = duemonthName + "," + "November";
                             dueamount = dueamount + stu.ApplicableMonthFee;
                             duetrnsamount = duetrnsamount + stu.ApplicableTrnsFee;
                         }
-                        if (currentMonth == 12 && stu.DecemberFee == 0)
+                        if (currentMonth == 12 && stu.DecemberFee == 0 && stu.DecemberTrnsFee == 0)
                         {
-                            duemonthName = duemonthName + "," + "December";
+                        if (stu.ExaminationFee1 == 0 && examfee == 0)
+                        {
+                            examfee = 500;
+                        }
+                        duemonthName = duemonthName + "," + "December";
                             dueamount = dueamount + stu.ApplicableMonthFee;
                             duetrnsamount = duetrnsamount + stu.ApplicableTrnsFee;
                         }
-                        if (currentMonth == 1 && stu.JanuaryFee == 0)
+                        if (currentMonth == 1 && stu.JanuaryFee == 0 && stu.JanuaryTrnsFee == 0)
                         {
-                            duemonthName = duemonthName + "," + "January";
+                        if (stu.ExaminationFee1 == 0 && examfee == 0)
+                        {
+                            examfee = 500;
+                        }
+                        duemonthName = duemonthName + "," + "January";
                             dueamount = dueamount + stu.ApplicableMonthFee;
+                            
                             duetrnsamount = duetrnsamount + stu.ApplicableTrnsFee;
                         }
-                        if (currentMonth == 2 && stu.FebruaryFee == 0)
+                        if (currentMonth == 2 && stu.FebruaryFee == 0 && stu.FebruaryTrnsFee == 0)
                         {
-                            duemonthName = duemonthName + "," + "February";
-                            dueamount = dueamount + stu.ApplicableMonthFee;
-                            duetrnsamount = duetrnsamount + stu.ApplicableTrnsFee;
+                        if (stu.ExaminationFee1 == 0 && examfee == 0)
+                        {
+                            examfee = 500;
                         }
-                        if (currentMonth == 3 && stu.MarchFee == 0)
+                        duemonthName = duemonthName + "," + "February";
+                            dueamount = dueamount + stu.ApplicableMonthFee;
+                        if (stu.ExaminationFee2 == 0)
                         {
-                            duemonthName = duemonthName + "," + "March";
+                            examfee = examfee + 500;
+                        }
+                        duetrnsamount = duetrnsamount + stu.ApplicableTrnsFee;
+                        }
+                        if (currentMonth == 3 && stu.MarchFee == 0 && stu.MarchTrnsFee == 0)
+                        {
+                        if (stu.ExaminationFee1 == 0 && examfee == 0)
+                        {
+                            examfee = 500;
+                        }
+                        if (stu.ExaminationFee2 == 0 && examfee == 0)
+                        {
+                            examfee = 500;
+                        }
+                        duemonthName = duemonthName + "," + "March";
                             dueamount = dueamount + stu.ApplicableMonthFee;
                             duetrnsamount = duetrnsamount + stu.ApplicableTrnsFee;
                         }
@@ -309,13 +348,21 @@ namespace SchoolMt.Controllers
                     PdfPCell cellmonthduetrns = new PdfPCell(new Phrase("Transport"));
                     cellmonthduetrns.HorizontalAlignment = Element.ALIGN_RIGHT;
                     table.AddCell(cellmonthduetrns);
-                    PdfPCell cellmonthduetrnsamt = new PdfPCell(new Phrase(duetrnsamount.ToString()));
+               
+                PdfPCell cellmonthduetrnsamt = new PdfPCell(new Phrase(duetrnsamount.ToString()));
                     cellmonthduetrnsamt.HorizontalAlignment = Element.ALIGN_CENTER;
                     table.AddCell(cellmonthduetrnsamt);
-                    PdfPCell celltotal= new PdfPCell(new Phrase("Total Amount", RED));
+
+                PdfPCell cellexam = new PdfPCell(new Phrase("Exam Fee"));
+                cellexam.HorizontalAlignment = Element.ALIGN_RIGHT;
+                table.AddCell(cellexam);
+                PdfPCell cellexamamt = new PdfPCell(new Phrase(examfee.ToString()));
+                cellexamamt.HorizontalAlignment = Element.ALIGN_CENTER;
+                table.AddCell(cellexamamt);
+                PdfPCell celltotal= new PdfPCell(new Phrase("Total Amount", RED));
                     celltotal.HorizontalAlignment = Element.ALIGN_RIGHT;
                     table.AddCell(celltotal);
-                    PdfPCell celltotalamt = new PdfPCell(new Phrase((duetrnsamount+dueamount).ToString(), RED)); ;
+                    PdfPCell celltotalamt = new PdfPCell(new Phrase((duetrnsamount+dueamount+ stu.PreviousDueAmount+ examfee).ToString(), RED)); ;
                     celltotalamt.HorizontalAlignment = Element.ALIGN_CENTER;
                     table.AddCell(celltotalamt);
 
@@ -328,10 +375,18 @@ namespace SchoolMt.Controllers
 
                     // PdfPCell mcell = new PdfPCell(new Phrase(table));
                     tableLayout.AddCell(table);
+                if (k % 2 != 0)
+                {
+                    if (k == j + 1)
+                    {
+                        PdfPCell cell = new PdfPCell(new Phrase(""));
+                        tableLayout.AddCell(cell);
+                    }
+                }
 
-               // }
+                // }
 
-                if (j > 0 && tableLayout.Rows.Count % 7 == 0)
+                if (j > 0 && tableLayout.Rows.Count % 7== 0)
                 {
                      doc.Add(tableLayout);
                     tableLayout.DeleteBodyRows();
