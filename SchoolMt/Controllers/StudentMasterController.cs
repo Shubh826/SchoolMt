@@ -1,6 +1,6 @@
 ﻿using BAL;
 using BAL.Common;
-using FRGMBSystem.Controllers;
+using SchoolMt.Controllers;
 using MDL;
 using MDL.Common;
 using SchoolMt.Common;
@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using FRGMBSystem.Controllers;
 
 namespace SchoolMt.Controllers
 {
