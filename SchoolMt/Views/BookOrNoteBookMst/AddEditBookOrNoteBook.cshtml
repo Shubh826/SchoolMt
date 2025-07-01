@@ -1,0 +1,179 @@
+﻿@model MDL.BookOrNoteBookMst
+
+@{
+    ViewBag.Title = "AddEditBookOrNoteBook";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("AddEditBookOrNoteBook", "BookOrNoteBookMst"))
+{
+    @Html.HiddenFor(E => E.PK_BookId)
+    <div class="page-heading mb-0">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Add/Edit Book or Notebook</h3>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Add/Edit Book or Notebook</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-1">
+                        <div class="form-body">
+                            <div class="row">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div id="TypeFields" class="row">
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Type<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.DropDownListFor(E => E.Type, new List<SelectListItem>()
+                                        {
+                                            new SelectListItem() { Value = "Book", Text = "Book" },
+                                            new SelectListItem() { Value = "Notebook", Text = "Notebook" }
+                                        }, "--Select Type--", new { @class = "form-select select2", id = "Type" })
+                                        @Html.ValidationMessageFor(E => E.Type, "", new { @class = "redText", @style = "color:red" })
+                                    </div>
+                                </div>
+                                <!-- Book Fields (Visible only if Type = Book) -->
+                                <div id="bookFields" class="row">
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Class Name<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.DropDownListFor(E => E.ClassName, new SelectList((System.Collections.IEnumerable)ViewData["ClassList"], "Value", "Value"), "--Select--", new { @class = "form-select select2", id = "ClassName" })
+                                        @Html.ValidationMessageFor(E => E.ClassName, "", new { @class = "redText", @style = "color:red" })
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Book Name<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.TextBoxFor(E => E.BookName, new { @class = "form-control", @maxlength = "200", @placeholder = "Enter Book Name", id = "BookName" })
+                                        @Html.ValidationMessageFor(E => E.BookName, "", new { @class = "redText", @style = "color:red" })
+                                    </div>
+                                </div>
+
+                                <!-- Notebook Fields (Visible only if Type = Notebook) -->
+                                <div id="notebookFields" class="row">
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Notebook Page Count<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.TextBoxFor(E => E.NoteBookPageCount, new { @class = "form-control", @maxlength = "5", @placeholder = "Enter Page Count", id = "NoteBookPageCount" })
+                                        @Html.ValidationMessageFor(E => E.NoteBookPageCount, "", new { @class = "redText", @style = "color:red" })
+                                    </div>
+                                </div>
+
+                                <!-- Price -->
+                                <div id="allFields" class="row">
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Price<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.TextBoxFor(E => E.Price, new { @class = "form-control", @maxlength = "10", @placeholder = "Enter Price" })
+                                        @Html.ValidationMessageFor(E => E.Price, "", new { @class = "redText", @style = "color:red" })
+                                    </div>
+
+                                    <!-- Status (Active/Inactive) -->
+                                    <div class="col-md-3">
+                                        <label class="setForm bold">Status<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        @Html.DropDownListFor(E => E.Status, new List<SelectListItem>(){
+                                            new SelectListItem() { Value = "Active", Text = "Active" },
+                                            new SelectListItem() { Value = "Inactive", Text = "Inactive" }
+                                        }, new { @class = "form-select select2" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-9 d-flex justify-content-end center">
+                                    <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                    <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                </div>
+
+                            </div> <!-- row ends -->
+                        </div> <!-- form-body ends -->
+                    </div> <!-- col-lg-8 offset-lg-1 ends -->
+                </div> <!-- row ends -->
+            </div> <!-- card-body ends -->
+        </div> <!-- card-content ends -->
+    </div> <!-- card ends -->
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        function toggleFields() {
+            var selectedType = $("#Type").val();
+
+            if (selectedType === "Book") {
+                $("#bookFields").show();
+                $("#notebookFields").hide();
+
+                // Enable Book Name & Class Name validation
+                $("#BookName").prop("required", true);
+                $("#ClassName").prop("required", true);
+                $("#NoteBookPageCount").prop("required", false).val("");
+            }
+            else if (selectedType === "Notebook") {
+                $("#bookFields").hide();
+                $("#notebookFields").show();
+
+                // Enable Notebook Page Count validation
+                $("#BookName").prop("required", false).val("");
+                $("#ClassName").prop("required", false).val("");
+                $("#NoteBookPageCount").prop("required", true);
+            }
+            else {
+                $("#bookFields, #notebookFields").hide();
+            }
+        }
+
+        // Run on page load
+        toggleFields();
+
+        // Run on Type change
+        $("#Type").change(function () {
+            toggleFields();
+        });
+    });
+</script>
+@*<script>
+        $(document).ready(function () {
+            function toggleFields() {
+                var selectedType = $("#TypeDropdown").val();
+                if (selectedType === "Book") {
+                    $(".class-book-section").show();
+                    $(".notebook-section").hide();
+                } else if (selectedType === "Notebook") {
+                    $(".class-book-section").hide();
+                    $(".notebook-section").show();
+                } else {
+                    $(".class-book-section").hide();
+                    $(".notebook-section").hide();
+                }
+            }
+
+            // Initial call on page load
+            toggleFields();
+
+            // Change event listener
+            $("#TypeDropdown").change(function () {
+                toggleFields();
+            });
+        });
+    </script>*@

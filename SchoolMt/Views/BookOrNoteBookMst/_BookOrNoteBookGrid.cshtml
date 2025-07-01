@@ -1,0 +1,64 @@
+﻿@model List<MDL.BookOrNoteBookMst>
+
+@{
+    var objPagingmdl = (MDL.Common.BasicPagingMDL)ViewBag.paging;
+    int SerialNo = (objPagingmdl.CurrentPage - 1) * objPagingmdl.RowParPage + 1;
+}
+
+<div class="col-md-12">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th class="text-center text-nowrap">S.No.</th>
+                    <th class="text-center text-nowrap">Type</th>
+                    <th class="text-center text-nowrap">Class</th>
+                    <th class="text-center text-nowrap">Book Name</th>
+                    <th class="text-center text-nowrap">Notebook Pages</th>
+                    <th class="text-center text-nowrap">Price</th>
+                    <th class="text-center text-nowrap">Status</th>
+                    <th class="text-center text-nowrap">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr>
+                        <td colspan="8" class="text-center text-danger">No Record Found</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@SerialNo</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.Type)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.ClassName)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.BookName)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.NoteBookPageCount)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.Price)</td>
+                            <td class="text-center">
+                                @if (item.IsActive)
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Inactive</span>
+                                }
+                            </td>
+                            <td class="text-center text-nowrap">
+                                <a class="btn btn-sm btn-primary" href="@Url.Action("AddEditBookOrNoteBook", new { id = item.PK_BookId })">Edit</a>
+                                @*<a class="btn btn-sm btn-danger" href="@Url.Action("DeleteBookOrNoteBook", new { id = item.PK_BookId })" onclick="return confirm('Are you sure?');">Delete</a>*@
+                            </td>
+                        </tr>
+                        SerialNo++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@Html.Partial("_Paging", (MDL.Common.BasicPagingMDL)ViewBag.paging)

@@ -57,5 +57,50 @@ namespace DAL.Common
             catch { }
 
         }
+
+
+        public void SetError(string name, string controller, string action, string Source, string message, string type, string Remarks)
+        {
+            try
+            {
+                commandText = "[dbo].[usp_LogApplicationError]";
+                List<SqlParameter> paramList = new List<SqlParameter>();
+
+                SqlParameter objSqlParameter = new SqlParameter("@cSource", SqlDbType.VarChar);
+                objSqlParameter.Value = Source;
+                paramList.Add(objSqlParameter);
+
+                objSqlParameter = new SqlParameter("@cAssemblyName", SqlDbType.VarChar);
+                objSqlParameter.Value = name;
+                paramList.Add(objSqlParameter);
+
+                objSqlParameter = new SqlParameter("@cClassName", SqlDbType.VarChar);
+                objSqlParameter.Value = controller;
+                paramList.Add(objSqlParameter);
+
+                objSqlParameter = new SqlParameter("@cMethodName", SqlDbType.VarChar);
+                objSqlParameter.Value = action;
+                paramList.Add(objSqlParameter);
+
+                objSqlParameter = new SqlParameter("@cErrorMessage", SqlDbType.VarChar);
+                objSqlParameter.Value = message;
+                paramList.Add(objSqlParameter);
+
+                objSqlParameter = new SqlParameter("@cErrorType", SqlDbType.VarChar);
+                objSqlParameter.Value = type;
+                paramList.Add(objSqlParameter);
+
+
+                objSqlParameter = new SqlParameter("@cRemarks", SqlDbType.VarChar);
+                objSqlParameter.Value = Remarks;
+                paramList.Add(objSqlParameter);
+
+                objDataFunctions.executeCommand(commandText, paramList);
+
+
+            }
+            catch { }
+            // throw new NotImplementedException();
+        }
     }
 }

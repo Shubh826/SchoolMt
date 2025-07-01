@@ -117,6 +117,10 @@ namespace BAL.Common
         {
             return CommonDAL.BindStudent(ClassName);
         }
+        public static List<DropDownMDL> GetStudent(string term)
+        {
+            return CommonDAL.GetStudent(term);
+        }
         public static List<DropDownMDL> CheckStudentMonth(int Id)
         {
             return CommonDAL.CheckStudentMonth(Id);

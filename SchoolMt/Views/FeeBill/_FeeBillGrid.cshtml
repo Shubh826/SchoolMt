@@ -15,6 +15,7 @@
                     <th class="text-center text-nowrap">Father Name</th>
                     <th class="text-center text-nowrap">Mobile Number</th>
                     <th class="text-center text-nowrap">Address</th>
+                    <th class="text-center text-nowrap">Pre Due Amount</th>
                     <th class="text-center text-nowrap">Action</th>
 
 
@@ -51,6 +52,9 @@
                             </td>
                             <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.PreDueAmount)
                             </td>
                             <td class="text-center">
                                 <a class="btn btn-primary" href="@Url.Action("AddEditFeeBill", new { id = item.PK_BillId })">Pay Bill</a><br />

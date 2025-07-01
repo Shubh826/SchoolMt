@@ -9,6 +9,8 @@ namespace MDL
 {
    public class FeeBillMDL
     {
+        public int PK_StudentId { get; set; }
+        public int PK_StudentFeeDetId { get; set; }
         public int PK_BillId { get; set; }
 
         public string ClassName { get; set; }
@@ -54,6 +56,30 @@ namespace MDL
         public int ApplicableTrnsFee { get; set; }
         public int CreatedBy { get; set; }
         public int FK_CompanyId { get; set; }
+        public string Months { get; set; }
+        public int DueAmount { get; set; }
+        public int PreDueAmount { get; set; }
 
     }
+    public class PaymentDetails
+    {
+        public int PK_BillId { get; set; }
+        public string StudentName { get; set; }
+        public string PaymentDate { get; set; }
+        public string FatherName { get; set; }
+        public string ClassName { get; set; }
+        public string BillNo { get; set; }
+        public int PreDue { get; set; } 
+        public string Months { get; set; }
+        public int MonthFee { get; set; }  
+        public int TransFee { get; set; }  
+        public int ExamFee { get; set; }  
+       
+        public int TotalFee { get; set; }
+        public string PdfContent { get; set; }
+        public int DueAmount { get; set; }
+        public int PreviousDueAmount { get; set; }
+        
+    }
+
 }

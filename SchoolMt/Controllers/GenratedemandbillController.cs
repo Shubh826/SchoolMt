@@ -206,7 +206,7 @@ namespace SchoolMt.Controllers
                 }
                
 
-                int endmonth = DateTime.Now.Month; // Current month
+                int endmonth = DateTime.Now.Month+1; // Current month
                 int startMonth = DateTime.ParseExact(stu.ApplicableMonth, "MMMM", CultureInfo.CurrentCulture).Month;
                     // Loop through 12 months starting from the specified start month
                     int dueamount = 0;
@@ -216,7 +216,7 @@ namespace SchoolMt.Controllers
                     for (int m = 0; m < 12; m++)
                     {
                         // Calculate the current month
-                        int currentMonth = (startMonth + m- 1) % 12 + 1;
+                        int currentMonth = (startMonth + m) % 12 + 1;
                         // Calculate the current year
                         int currentYear = startYear + (startMonth + m - 1) / 12;
                         

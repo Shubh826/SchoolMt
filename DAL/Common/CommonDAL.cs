@@ -376,6 +376,21 @@ namespace DAL
             }).ToList();
             return _dropdownlist;
         }
+        public static List<DropDownMDL> GetStudent(string term)
+        {
+            CommandText = "USP_GetAllStudent";
+            var para = new SqlParameter[1];
+            para[0] = new SqlParameter("@term", SqlDbType.VarChar) { Value = term };
+            DataSet ds = (DataSet)objDataFunctions.getQueryResult(CommandText, DataReturnType.DataSet, para.ToList());
+
+            List<DropDownMDL> _dropdownlist = new List<DropDownMDL>();
+            _dropdownlist = ds.Tables[0].AsEnumerable().Select(dr => new DropDownMDL()
+            {
+                ID = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("ID")),
+                Value = dr.Field<string>("VALUE"),
+            }).ToList();
+            return _dropdownlist;
+        }
         public static List<DropDownMDL> CheckStudentMonth(int Id)
         {
             CommandText = "USP_GetMonthByStudentId";

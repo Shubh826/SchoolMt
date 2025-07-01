@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -61,7 +62,7 @@ namespace SchoolMt.Filter
             var currentActionName = (string)filterContext.RouteData.Values["action"];
 
             var objBase = System.Reflection.MethodBase.GetCurrentMethod();
-            //ErrorLogBAL.SetError(filterContext.Exception, objBase, currentController, currentActionName, "AMS WebApp", "Application Level Error");
+            ErrorLogBAL.SetError(filterContext.Exception, objBase, currentController, currentActionName, "AMS WebApp", "Application Level Error");
 
 
             filterContext.Result = new RedirectToRouteResult(

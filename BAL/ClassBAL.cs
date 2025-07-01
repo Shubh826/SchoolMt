@@ -27,5 +27,5 @@ namespace BAL
         {
             return objclassDAL.AddEditClass(ObjClassMDL);
         }
-        }
+    }
 }

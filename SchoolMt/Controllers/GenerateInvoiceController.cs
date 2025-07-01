@@ -1,5 +1,6 @@
 ﻿using BAL;
 using BAL.Common;
+using FRGMBSystem.Controllers;
 using MDL;
 using MDL.Common;
 using SchoolMt.Common;
@@ -11,7 +12,7 @@ using System.Web.Mvc;
 
 namespace SchoolMt.Controllers
 {
-    public class GenerateInvoiceController : Controller
+    public class GenerateInvoiceController : BasicController
     {
         // GET: GenerateInvoice
         private List<GenerateInvoiceMDL> _GenerateInvoicelist;

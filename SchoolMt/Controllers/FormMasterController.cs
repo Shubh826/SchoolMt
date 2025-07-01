@@ -1,4 +1,5 @@
 ﻿using BAL;
+using FRGMBSystem.Controllers;
 using MDL;
 using MDL.Common;
 using SchoolMt.Common;
@@ -10,7 +11,7 @@ using System.Web.Mvc;
 
 namespace SchoolMt.Controllers
 {
-    public class FormMasterController : Controller
+    public class FormMasterController : BasicController
     {
         // GET: FormMST
         private List<FormMasterMDL> _FormMasterlist;
