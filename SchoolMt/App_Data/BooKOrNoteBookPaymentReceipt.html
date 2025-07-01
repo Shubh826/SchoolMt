@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BooK/NoteBook Bill</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+        }
+
+        .pdf-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /*.bill-container {
+            border: 1px solid black;
+            width: 600px;
+            padding: 20px;
+            text-align: center;
+            background: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }*/
+
+        .bill-header {
+            font-weight: bold;
+        }
+
+            .bill-header .school-name {
+                font-size: 18px;
+                text-decoration: underline;
+            }
+
+            .bill-header .address {
+                font-size: 14px;
+            }
+
+        .bill-details, .item-details {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+            .item-details th, .item-details td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+            }
+
+            .item-details th {
+                text-align: center;
+            }
+
+        .total-amount {
+            color: red;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .signature {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .date {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .item-details thead {
+            background-color: #bf1e2e;
+            color: white;
+        }
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+
+        .bill-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: white;
+        }
+        .bill-header {
+            text-align: center;
+        }
+        .bill-details tr:nth-child(2) {
+            height: 15px; /* Adds vertical spacing between rows */
+        }
+    </style>
+</head>
+<body>
+    <div class="pdf-container">
+        <div class="bill-container">
+            <div class="bill-header">
+                <div class="BillNo">Bill No.: {BillNo}</div>
+                <div class="demand">Book Or NoteBook Bill Receipt</div>
+                <div class="school-name">True Sunshine Academy</div>
+                <div class="address">Jahanabad Saifabad, Patti, Pratapgarh (U.P.)</div>
+            </div>
+
+            <table class="bill-details">
+                <tr>
+                    <td><strong>Student Name:</strong> {StudentName}</td>
+                    <td><strong>Date:</strong> {PaymentDate}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="height: 10px;"></td> <!-- Spacer row -->
+                </tr>
+                <tr>
+                    <td><strong>Father Name:</strong> {FatherName}</td>
+                    <td><strong>Class:</strong> {Class}</td>
+                </tr>
+            </table>
+
+            <table class="item-details">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Type</th>
+                        <th>Pages</th>
+                        <th>Quantity</th>
+                        <th>Price (₹)</th>
+                        <th>Total (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--ITEM_DETAILS_PLACEHOLDER-->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5" class="total-amount">Total Amount</td>
+                        <td class="total-amount">{TotalAmount}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="total-amount">Discount</td>
+                        <td class="total-amount">{Discount}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="total-amount">Due Amount</td>
+                        <td class="total-amount">{DueAmount}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="total-amount">Paid Amount</td>
+                        <td class="total-amount">{PaidAmount}</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="date">
+                <strong>Date :</strong> {PaymentDate}
+            </div>
+            <div class="signature">
+                <strong>Signature :</strong>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

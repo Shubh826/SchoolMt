@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fee Bill</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        /*.bill-container {
+            border: 1px solid black;
+            width: 600px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }*/
+
+        /*.bill-header {
+            text-align: center;
+            font-weight: bold;
+        }*/
+
+            .bill-header .school-name {
+                font-size: 18px;
+                text-decoration: underline;
+            }
+
+            .bill-header .address {
+                font-size: 14px;
+            }
+
+        .bill-details, .fee-details {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+            .fee-details th, .fee-details td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+            }
+
+            .fee-details th {
+                text-align: center;
+            }
+
+        .total-amount {
+            color: red;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .signature {
+            margin-top: 20px;
+            margin-right: 20px;
+            text-align: Left;
+        }
+
+        .Date {
+            margin-top: 20px;
+            margin-right: 20px;
+            text-align: Left;
+        }
+
+        /*.BillNo {
+            text-align: left;
+        }*/
+
+        .watermark {
+            <!-- height: 95%; -->
+            width: 85%;
+            <!-- position: absolute; -->
+            <!-- top: 0; -->
+            <!-- left: 0; -->
+            <!-- background-repeat: no-repeat; -->
+            background-repeat: repeat-y;
+            z-index: 9999;
+            opacity: 0.2;
+        }
+        .bill-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: white;
+        }
+        .bill-header {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .bill-details tr:nth-child(2) {
+            height: 15px; /* Adds vertical spacing between rows */
+        }
+        .fee-details thead {
+            background-color: #bf1e2e;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="pdf-container">
+        <div class="bill-container">
+            <div class="bill-header">
+                <div class="BillNo">Bill No.: {BillNo}</div>
+                <div class="demand">Fee Bill Receipt</div>
+                <div class="school-name">True Sunshine Academy</div>
+                <div class="address">Jahanabad Saifabad, Patti, Pratapgarh (U.P.)</div>
+            </div>
+
+            <table class="bill-details">
+                <tr>
+                    <td><strong>Student Name:</strong> {StudentName}</td>
+                    <td><strong>Date:</strong> {PaymentDate}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="height: 10px;"></td> <!-- Spacer row -->
+                </tr>
+                <tr>
+                    <td><strong>Father Name:</strong> {FatherName}</td>
+                    <td><strong>Class:</strong> {Class}</td>
+                </tr>
+            </table>
+
+            <table class="fee-details">
+                <thead>
+                    <tr>
+                        <th>Details</th>
+                        <th>Amount (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--<tr>
+                        <td>Previous Due</td>
+                        <td>{PrevDue}</td>
+                    </tr>-->
+                    <tr>
+                        <td>Months</td>
+                        <td>{MonthsName}</td>
+                    </tr>
+                    <tr>
+                        <td>Months Fee</td>
+                        <td>{MonthsFee}</td>
+                    </tr>
+                    <tr>
+                        <td>Months Transport Fee</td>
+                        <td>{TranFee}</td>
+                    </tr>
+                    <tr>
+                        <td>Exam Fee</td>
+                        <td>{ExamFee}</td>
+                    </tr>
+                    <tr>
+                        <td>Due Amount</td>
+                        <td>{DueAmount}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="total-amount">Total Amount</td>
+                        <td class="total-amount">{totalAmount}</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="date">
+                <strong>Date :</strong> {PaymentDate}
+            </div>
+            <div class="signature">
+                <strong>Signature :</strong>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
