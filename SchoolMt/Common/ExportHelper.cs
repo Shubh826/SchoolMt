@@ -5,6 +5,7 @@ using System.Web;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
+using System.Text;
 namespace SchoolMt.Common
 {
     public class ExportHelper
@@ -72,5 +73,16 @@ namespace SchoolMt.Common
 
             return bytes;
         }
+
+      
+        public string GetHtmlString(string HTMLContent = "")
+        {
+            string printJs = @"<script>window.print();</script>";
+            string _HTMLContent = HTMLContent.ToString(); 
+            return _HTMLContent;
+
+        }
+
+
     }
 }

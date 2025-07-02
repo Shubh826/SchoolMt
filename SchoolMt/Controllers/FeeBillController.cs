@@ -21,6 +21,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Diagnostics;
+using System.Windows.Interop;
 
 namespace SchoolMt.Controllers
 {
@@ -51,10 +52,10 @@ namespace SchoolMt.Controllers
             }
             return View();
         }
-        public PartialViewResult GetFeeBillData(int CurrentPage = 1, string SearchBy = "", string SearchValue = "",string ClassName = "", string Section = "")
+        public PartialViewResult GetFeeBillData(int CurrentPage = 1, string SearchBy = "", string SearchValue = "", string ClassName = "", string Section = "")
         {
-            objFeeBillBal.GetFeeBillData(out _FeeBillList, out objBasicPagingMDL, 0, SessionInfo.User.fk_companyid, Convert.ToInt32(20), CurrentPage, SearchBy, SearchValue,ClassName,Section);
-            
+            objFeeBillBal.GetFeeBillData(out _FeeBillList, out objBasicPagingMDL, 0, SessionInfo.User.fk_companyid, Convert.ToInt32(20), CurrentPage, SearchBy, SearchValue, ClassName, Section);
+
             ViewBag.paging = objBasicPagingMDL;
             TempData["FeeBillList"] = _FeeBillList;
             return PartialView("_FeeBillGrid", _FeeBillList);
@@ -75,92 +76,154 @@ namespace SchoolMt.Controllers
             }
 
         }
+        //[HttpPost]
+        //public ActionResult AddEditFeeBill(FeeBillMDL objFeeBillMDL)
+        //{
+        //    objFeeBillMDL.CreatedBy = SessionInfo.User.userid;
+        //    objFeeBillMDL.FK_CompanyId = SessionInfo.User.fk_companyid;
+        //    List<FeeBillMDL> _StudentFeeBillMDL = new List<FeeBillMDL>();
+        //    PaymentDetails _PaymentDetails = new PaymentDetails();
+        //    if (ModelState.IsValid)
+        //    {
+        //        Messages msg = objFeeBillBal.AddEditFeeBill(objFeeBillMDL, out _PaymentDetails);
+        //        TempData["PaymentDetails"] = _PaymentDetails;
+        //        TempData["Message"] = msg;
+        //        //return RedirectToAction("Index");
+        //        if(msg.Message_Id == 1)
+        //        {
+        //            return GeneratePaymentReceiptAfterPayment(_PaymentDetails);
+        //        }
+        //        //else
+        //        //{
+        //        //    return RedirectToAction("Index");
+        //        //}
+        //    }
+        //    return View("AddEditFeeBill");
+        //    //return GeneratePaymentReceiptAfterPayment(_PaymentDetails);
+
+
+        //}
+
         [HttpPost]
-        public ActionResult AddEditFeeBill(FeeBillMDL objFeeBillMDL)
+        public JsonResult AddEditFeeBill(FeeBillMDL objFeeBillMDL)
         {
             objFeeBillMDL.CreatedBy = SessionInfo.User.userid;
             objFeeBillMDL.FK_CompanyId = SessionInfo.User.fk_companyid;
             List<FeeBillMDL> _StudentFeeBillMDL = new List<FeeBillMDL>();
             PaymentDetails _PaymentDetails = new PaymentDetails();
-            if (ModelState.IsValid)
-            {
-                Messages msg = objFeeBillBal.AddEditFeeBill(objFeeBillMDL, out _PaymentDetails);
-                TempData["Message"] = msg;
-                //return RedirectToAction("Index");
-                if(msg.Message_Id == 1)
-                {
-                    return GeneratePaymentReceiptAfterPayment(_PaymentDetails);
-                }
-                //else
-                //{
-                //    return RedirectToAction("Index");
-                //}
-            }
-            return View("AddEditFeeBill");
+            Messages msg = objFeeBillBal.AddEditFeeBill(objFeeBillMDL, out _PaymentDetails);
+
+            TempData["PaymentDetails"] = _PaymentDetails;
+            TempData["Message"] = msg;
+            return Json(msg, JsonRequestBehavior.AllowGet);
             //return GeneratePaymentReceiptAfterPayment(_PaymentDetails);
 
 
         }
-        private ActionResult GeneratePaymentReceiptAfterPayment(PaymentDetails _dataList)
-        {
-            Messages msg = new Messages();
 
+        #region PDF RECEIPT
+        [HttpGet]
+        public string GeneratePaymentReceiptAfterPayment()
+        {
+            string htmlForPdf = "";
             try
             {
-                // Define the base folder path
-                string baseFolderPath = Server.MapPath("~/Public_Doc/FeePaymentReceipt/");
+                TempData.Keep();
+                PaymentDetails data = TempData["PaymentDetails"] as PaymentDetails;
+                if (data == null)
+                    throw new Exception("Payment details not found.");
 
-                // Ensure the directory exists
-                if (!Directory.Exists(baseFolderPath))
-                {
-                    Directory.CreateDirectory(baseFolderPath);
-                }
+                StringBuilder html = new StringBuilder();
 
-                // Define the file path (without creating a directory at file level)
-                string paymentReceiptPath = baseFolderPath + "FeePayment_" + _dataList.PK_BillId.ToString() + DateTime.Now.ToString("ddMMyyyy") + ".pdf";
+                html.AppendLine("<!DOCTYPE html>");
+                html.AppendLine("<html lang='en'>");
+                html.AppendLine("<head>");
+                html.AppendLine("    <meta charset='UTF-8' />");
+                html.AppendLine("    <meta name='viewport' content='width=device-width, initial-scale=1.0' />");
+                html.AppendLine("    <title>Fee Bill</title>");
+                html.AppendLine("    <style>");
+                html.AppendLine("        body { font-family: Arial, sans-serif; margin: 20px; }");
+                html.AppendLine("        .bill-header .school-name { font-size: 18px; text-decoration: underline; }");
+                html.AppendLine("        .bill-header .address { font-size: 14px; }");
+                html.AppendLine("        .bill-details, .fee-details { width: 100%; margin-top: 20px; border-collapse: collapse; }");
+                html.AppendLine("        .fee-details th, .fee-details td { border: 1px solid black; padding: 8px; text-align: left; }");
+                html.AppendLine("        .fee-details th { text-align: center; background-color: #bf1e2e; color: white; }");
+                html.AppendLine("        .total-amount { color: red; font-weight: bold; text-align: right; }");
+                html.AppendLine("        .signature, .date { margin-top: 20px; margin-right: 20px; text-align: left; }");
+                html.AppendLine("        .bill-container { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white; }");
+                html.AppendLine("        .bill-header { text-align: center; font-weight: bold; }");
+                html.AppendLine("        @media print {");
+                html.AppendLine("            th {");
+                html.AppendLine("                -webkit-print-color-adjust: exact;");
+                html.AppendLine("                print-color-adjust: exact;");
+                html.AppendLine("            }");
+                html.AppendLine("        }");
+                html.AppendLine("    </style>");
+                html.AppendLine("</head>");
+                html.AppendLine("<body>");
+                html.AppendLine("    <div class='pdf-container'>");
+                html.AppendLine("        <div class='bill-container'>");
+                html.AppendLine("            <div class='bill-header'>");
+                html.AppendLine($"                <div class='BillNo'>Bill No.: {data.BillNo}</div>");
+                html.AppendLine("                <div class='demand'>Fee Bill Receipt</div>");
+                html.AppendLine("                <div class='school-name'>True Sunshine Academy</div>");
+                html.AppendLine("                <div class='address'>Jahanabad Saifabad, Patti, Pratapgarh (U.P.)</div>");
+                html.AppendLine("            </div>");
 
-                // Define the HTML template file path
-                string templatePath = Server.MapPath("~/App_Data/Payment Receipt.html");
-                if (!System.IO.File.Exists(templatePath))
-                {
-                    throw new FileNotFoundException("Template file not found: " + templatePath);
-                }
+                html.AppendLine("            <table class='bill-details'>");
+                html.AppendLine("                <tr>");
+                html.AppendLine($"                    <td><strong>Student Name:</strong> {data.StudentName}</td>");
+                html.AppendLine($"                    <td><strong>Date:</strong> {data.PaymentDate}</td>");
+                html.AppendLine("                </tr>");
+                html.AppendLine("                <tr><td colspan='2' style='height: 10px;'></td></tr>");
+                html.AppendLine("                <tr>");
+                html.AppendLine($"                    <td><strong>Father Name:</strong> {data.FatherName}</td>");
+                html.AppendLine($"                    <td><strong>Class:</strong> {data.ClassName}</td>");
+                html.AppendLine("                </tr>");
+                html.AppendLine("            </table>");
 
-                // Read the HTML template file (UTF-8 Encoding to prevent missing data issue)
-                string htmlContent = System.IO.File.ReadAllText(templatePath, Encoding.UTF8);
-                StringBuilder strHtml = new StringBuilder(htmlContent);
+                html.AppendLine("            <table class='fee-details'>");
+                html.AppendLine("                <thead>");
+                html.AppendLine("                    <tr>");
+                html.AppendLine("                        <th>Details</th>");
+                html.AppendLine("                        <th>Amount (₹)</th>");
+                html.AppendLine("                    </tr>");
+                html.AppendLine("                </thead>");
+                html.AppendLine("                <tbody>");
+                html.AppendLine($"                    <tr><td>Months</td><td>{data.Months}</td></tr>");
+                html.AppendLine($"                    <tr><td>Months Fee</td><td>{data.MonthFee:0.00}</td></tr>");
+                html.AppendLine($"                    <tr><td>Months Transport Fee</td><td>{data.TransFee:0.00}</td></tr>");
+                html.AppendLine($"                    <tr><td>Exam Fee</td><td>{data.ExamFee:0.00}</td></tr>");
+                html.AppendLine($"                    <tr><td>Due Amount</td><td>{data.DueAmount:0.00}</td></tr>");
+                html.AppendLine("                </tbody>");
+                html.AppendLine("                <tfoot>");
+                html.AppendLine("                    <tr>");
+                html.AppendLine("                        <td class='total-amount'>Total Amount</td>");
+                html.AppendLine($"                        <td class='total-amount'>{data.TotalFee:0.00}</td>");
+                html.AppendLine("                    </tr>");
+                html.AppendLine("                </tfoot>");
+                html.AppendLine("            </table>");
 
-                // Replace placeholders with actual values (Check for null values)
-                strHtml.Replace("{BillNo}", !string.IsNullOrEmpty(_dataList.BillNo) ? _dataList.BillNo : "");
-                strHtml.Replace("{StudentName}", !string.IsNullOrEmpty(_dataList.StudentName) ? _dataList.StudentName : "");
-                strHtml.Replace("{PaymentDate}", !string.IsNullOrEmpty(_dataList.PaymentDate) ? _dataList.PaymentDate : "");
-                strHtml.Replace("{FatherName}", !string.IsNullOrEmpty(_dataList.FatherName) ? _dataList.FatherName : "");
-                strHtml.Replace("{Class}", !string.IsNullOrEmpty(_dataList.ClassName) ? _dataList.ClassName : "");
-                //strHtml.Replace("{PrevDue}", _dataList.PreDue != 0 ? _dataList.PreDue.ToString() : "");
-                strHtml.Replace("{MonthsName}", !string.IsNullOrEmpty(_dataList.Months) ? _dataList.Months : "");
-                strHtml.Replace("{MonthsFee}", _dataList.MonthFee != 0 ? _dataList.MonthFee.ToString() : "");
-                strHtml.Replace("{TranFee}", _dataList.TransFee != 0 ? _dataList.TransFee.ToString() : "");
-                strHtml.Replace("{ExamFee}", _dataList.ExamFee != 0 ? _dataList.ExamFee.ToString() : "");
-                strHtml.Replace("{DueAmount}", _dataList.DueAmount != 0 ? _dataList.DueAmount.ToString() : "");
-                strHtml.Replace("{totalAmount}", _dataList.TotalFee != 0 ? _dataList.TotalFee.ToString() : "");
-                // Convert HTML to PDF
-                _dataList.PdfContent = strHtml.ToString();
-                ExportHelper objExportHelper = new ExportHelper();
-                byte[] pdfData = objExportHelper.ExportPDF_ByteAarray(_dataList.PdfContent, pageSize: "A4");
+                html.AppendLine($"            <div class='date'><strong>Date :</strong> {data.PaymentDate}</div>");
+                html.AppendLine("            <div class='signature'><strong>Signature :</strong></div>");
+                html.AppendLine("        </div>");
+                html.AppendLine("    </div>");
+                html.AppendLine("</body>");
+                html.AppendLine("</html>");
 
-                // Save PDF to the server
-                System.IO.File.WriteAllBytes(paymentReceiptPath, pdfData);
-
-                // Return file as a downloadable response
-                return File(paymentReceiptPath, "application/pdf", "FeePaymentReceipt.pdf");
+                htmlForPdf = html.ToString();
+                data.PdfContent = htmlForPdf;
             }
             catch (Exception ex)
             {
-                msg.Message_Id = -1;
-                msg.Message = "Error: " + ex.Message;
-                return Content(msg.Message);
+                htmlForPdf = "<div style='color:red'>Error: " + ex.Message + "</div>";
             }
+
+            return htmlForPdf;
         }
+        #endregion
+
+
 
         //private ActionResult GeneratePaymentReceiptAfterPayment(PaymentDetails _dataList)
         //{

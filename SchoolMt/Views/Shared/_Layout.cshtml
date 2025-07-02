@@ -57,7 +57,7 @@
                         <ul class="menu">
                             @foreach (var item in headerMenu)
                             {
-                               
+
                                 if (!enumerable.Any(x => x.FK_ParentId == item.PK_FormId))
                                 {
                                     if (item.FK_ParentId == 0)
@@ -70,64 +70,64 @@
                                 else
                                 {
                                     inc++;
-                        <li class="sidebar-item active has-sub">
-                            <a href="#" class="sidebar-link"> <i class="@item.ClassName"></i> <span>@item.FormName</span> </a>
+                                    <li class="sidebar-item active has-sub">
+                                        <a href="#" class="sidebar-link"> <i class="@item.ClassName"></i> <span>@item.FormName</span> </a>
 
-                            @if (inc == 1)
-                            {
-                                <ul class="submenu active" style="display: block;">
-
-
-                                    @foreach (var menuItem in enumerable.Where(x => x.FK_ParentId == item.PK_FormId && x.LevelId == 1).OrderBy(x => x.SortId))
-                                    {
-                                        if (menuItem.ControllerName == HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString())
+                                        @if (inc == 1)
                                         {
-                                            <li class="submenu-item ">
-                                                <a href="@Url.Action(@menuItem.ActionName, @menuItem.ControllerName, new { area = @menuItem.Area })">
-                                                    <i class="@menuItem.ClassName"></i> <span>@menuItem.FormName</span>
-                                                </a>
-                                            </li>
+                                            <ul class="submenu active" style="display: block;">
+
+
+                                                @foreach (var menuItem in enumerable.Where(x => x.FK_ParentId == item.PK_FormId && x.LevelId == 1).OrderBy(x => x.SortId))
+                                                {
+                                                    if (menuItem.ControllerName == HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString())
+                                                    {
+                                                        <li class="submenu-item ">
+                                                            <a href="@Url.Action(@menuItem.ActionName, @menuItem.ControllerName, new { area = @menuItem.Area })">
+                                                                <i class="@menuItem.ClassName"></i> <span>@menuItem.FormName</span>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li class="submenu-item ">
+                                                            <a href="@Url.Action(@menuItem.ActionName, @menuItem.ControllerName, new { area = @menuItem.Area })">
+                                                                <i class="@menuItem.ClassName"></i> <span>@menuItem.FormName</span>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                }
+
+                                            </ul>
                                         }
                                         else
                                         {
-                                            <li class="submenu-item ">
-                                                <a href="@Url.Action(@menuItem.ActionName, @menuItem.ControllerName, new { area = @menuItem.Area })">
-                                                    <i class="@menuItem.ClassName"></i> <span>@menuItem.FormName</span>
-                                                </a>
-                                            </li>
+                                            <ul class="submenu" style="display: none;">
+
+
+                                                @foreach (var menuItem in enumerable.Where(x => x.FK_ParentId == item.PK_FormId && x.LevelId == 1).OrderBy(x => x.SortId))
+                                                {
+                                                    if (menuItem.ControllerName == HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString())
+                                                    {
+                                                        <li class="submenu-item ">
+                                                            <a href="@Url.Action(@menuItem.ActionName, @menuItem.ControllerName, new { area = @menuItem.Area })">
+                                                                <i class="@menuItem.ClassName"></i> <span>@menuItem.FormName</span>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li class="submenu-item ">
+                                                            <a href="@Url.Action(@menuItem.ActionName, @menuItem.ControllerName, new { area = @menuItem.Area })">
+                                                                <i class="@menuItem.ClassName"></i> <span>@menuItem.FormName</span>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                }
+
+                                            </ul>
                                         }
-                                    }
-
-                                </ul>
-                            }
-                            else
-                            {
-                                <ul class="submenu" style="display: none;">
-
-
-                                    @foreach (var menuItem in enumerable.Where(x => x.FK_ParentId == item.PK_FormId && x.LevelId == 1).OrderBy(x => x.SortId))
-                                    {
-                                        if (menuItem.ControllerName == HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString())
-                                        {
-                                            <li class="submenu-item ">
-                                                <a href="@Url.Action(@menuItem.ActionName, @menuItem.ControllerName, new { area = @menuItem.Area })">
-                                                    <i class="@menuItem.ClassName"></i> <span>@menuItem.FormName</span>
-                                                </a>
-                                            </li>
-                                        }
-                                        else
-                                        {
-                                            <li class="submenu-item ">
-                                                <a href="@Url.Action(@menuItem.ActionName, @menuItem.ControllerName, new { area = @menuItem.Area })">
-                                                    <i class="@menuItem.ClassName"></i> <span>@menuItem.FormName</span>
-                                                </a>
-                                            </li>
-                                        }
-                                    }
-
-                                </ul>
-                            }
-                        </li>
+                                    </li>
                                 }
 
 
@@ -281,6 +281,8 @@
             </div>
         </div>
     </div>
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
 
     <script src="~/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="~/assets/js/bootstrap.bundle.min.js"></script>
