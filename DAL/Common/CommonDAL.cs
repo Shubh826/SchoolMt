@@ -38,7 +38,7 @@ namespace DAL
             List<DropDownMDL> CompanyList = new List<DropDownMDL>();
             CompanyList = Client.Tables[0].AsEnumerable().Select(dr => new DropDownMDL()
             {
-                ID = 0,
+                ID = dr.Field<int>("PK_ClassId"),
                 Value = dr.Field<string>("ClassName"),
             }).ToList();
             return CompanyList;

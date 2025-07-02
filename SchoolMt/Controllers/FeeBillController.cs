@@ -66,7 +66,8 @@ namespace SchoolMt.Controllers
             objFeeBillMDL = new FeeBillMDL();
             if (id != 0)
             {
-                objFeeBillBal.GetFeeBillData(out _FeeBillList, out objBasicPagingMDL, id, SessionInfo.User.fk_companyid, Convert.ToInt32(20)); return View("AddEditFeeBill", _FeeBillList[0]);
+                objFeeBillBal.GetFeeBillData(out _FeeBillList, out objBasicPagingMDL, id, SessionInfo.User.fk_companyid, Convert.ToInt32(20)); 
+                return View("AddEditFeeBill", _FeeBillList[0]);
             }
             else
             {
