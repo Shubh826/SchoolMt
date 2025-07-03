@@ -149,35 +149,5 @@ namespace DAL
             }
             return result;
         }
-        //public bool GetStudentList(int companyId, out List<StudentMasterMDL> objStudentLst)
-        //{
-
-        //    objStudentLst = new List<StudentMasterMDL>();
-        //    Messages objMessages = new Messages();
-        //    _commandText = "[SBTMS].[usp_GetStudentList]";
-        //    List<SqlParameter> param = new List<SqlParameter>
-        //    {
-        //        new SqlParameter("@FK_CompanyId",companyId)
-        //    };
-        //    try
-        //    {
-        //        CheckParameters.ConvertNullToDBNull(param);
-        //        objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet, param);
-        //        if (objDataSet.Tables[0].Rows.Count > 0)
-        //        {
-        //            objStudentLst = objDataSet.Tables[0].AsEnumerable().Select(dr => new StudentMasterMDL()
-        //            {
-        //                Student_Code = dr.Field<string>("Student_Code"),
-        //                RFID = dr.Field<string>("RFId")
-        //            }).ToList();
-        //        }
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return false;
-        //    }
-
-        //}
     }
 }

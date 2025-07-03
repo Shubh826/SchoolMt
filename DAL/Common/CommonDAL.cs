@@ -449,6 +449,19 @@ namespace DAL
             }).ToList();
             return _dropdownlist;
         }
-
+        public static List<DropDownMDL> FillExpenseHead(int companyid)
+        {
+            CommandText = "[dbo].[USP_GetAllExpenseHead]";
+            var para = new SqlParameter[1];
+            para[0] = new SqlParameter("@iCompanyId", SqlDbType.Int) { Value = Convert.ToInt32(companyid) };
+            DataSet Client = (DataSet)objDataFunctions.getQueryResult(CommandText, DataReturnType.DataSet, para.ToList());
+            List<DropDownMDL> CompanyList = new List<DropDownMDL>();
+            CompanyList = Client.Tables[0].AsEnumerable().Select(dr => new DropDownMDL()
+            {
+                ID = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("PK_ExpenseHeadId")),
+                Value = dr.Field<string>("ExpenseHeadName"),
+            }).ToList();
+            return CompanyList;
+        }
     }
 }

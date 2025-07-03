@@ -138,5 +138,9 @@ namespace BAL.Common
         {
             return CommonDAL.GetStudentByClassName(className);
         }
+        public static List<DropDownMDL> FillExpenseHead(int CompanyId)
+        {
+            return CommonDAL.FillExpenseHead(CompanyId);
+        }
     }
 }

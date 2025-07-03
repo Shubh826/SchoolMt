@@ -1,0 +1,50 @@
+﻿@model List<MDL.ExpenseMasterMDL>
+@{
+    var objPagingmdl = (MDL.Common.BasicPagingMDL)ViewBag.paging;
+    int SerialNo = (objPagingmdl.CurrentPage - 1) * objPagingmdl.RowParPage + 1;
+}
+<div class="col-md-12">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th class="text-center text-nowrap">S.No.</th>
+                    <th class="text-center text-nowrap">Expense Head</th>
+                    <th class="text-center text-nowrap">Date</th>
+                    <th class="text-center text-nowrap">Amount</th>
+                    <th class="text-center text-nowrap">Remarks</th>
+                    <th class="text-center text-nowrap">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr>
+                        <td colspan="8" class="text-center text-danger">No Record Found</td>
+                    </tr>
+                }
+                else
+                {
+                    int serialNo = 1;
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@serialNo</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.ExpenseHeadName)</td>
+                            <td class="text-center">@item.Date</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.Amount)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.Remarks)</td>
+                            
+                            <td class="text-center text-nowrap">
+                                <a class="btn btn-sm btn-primary" href="@Url.Action("AddEditExpense", new { id = item.PK_ExpenseId })">Edit</a>
+                            </td>
+                        </tr>
+                        serialNo++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

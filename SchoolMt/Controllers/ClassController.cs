@@ -31,7 +31,6 @@ namespace SchoolMt.Controllers
                 TempData["Message"] = null;
             }
             return View();
-            return View();
         }
         [HttpGet]
         public PartialViewResult getClassList(int CurrentPage = 1, string SearchBy = "", string SearchValue = "")
