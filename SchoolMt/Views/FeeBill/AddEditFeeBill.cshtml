@@ -124,7 +124,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        @Html.TextBoxFor(E => E.AprilTrnsFee, new { @class = "form-control", maxlength = "15", @placeholder = "April Trns Fee" })
+                                                                        @Html.TextBoxFor(E => E.AprilTrnsFee, new { @class = "form-control", maxlength = "15", @placeholder = "April Trns Fee"})
                                                                         @Html.ValidationMessageFor(E => E.AprilTrnsFee)
                                                                     </div>
                                                                 </div>
@@ -550,7 +550,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        @Html.TextBoxFor(E => E.Discount, new { @class = "form-control", maxlength = "50", @placeholder = "Discount" })
+                                                                        @Html.TextBoxFor(E => E.Discount, new { @class = "form-control", maxlength = "50", @placeholder = "Discount"})
                                                                         @Html.ValidationMessageFor(E => E.Discount)
                                                                     </div>
                                                                 </div>
@@ -569,7 +569,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        @Html.TextBoxFor(E => E.Online, new { @class = "form-control", maxlength = "50", @placeholder = "Online" })
+                                                                        @Html.TextBoxFor(E => E.Online, new { @class = "form-control", maxlength = "50", @placeholder = "Online"})
                                                                         @Html.ValidationMessageFor(E => E.Online)
                                                                     </div>
                                                                 </div>
@@ -645,6 +645,7 @@
         let feemonth = "";
         let DueAmount = 0;
     $(document).ready(function (e) {
+
         $('#FeeBillForm').on('submit', function (e) {
           //  debugger;
             e.preventDefault(); // prevent full form submission
@@ -921,7 +922,13 @@
             });
 
             $('#submitform').click(function (e) {
-              //  debugger;
+                //  debugger;
+
+               if ($('#Totalfee').val() == "0" || $('#Totalfee').val() == '' || $('#Totalfee').val()= null)
+               {
+                   alert("Total fee should not be Zero.");
+                   return false;
+               }
                 Totalfee = Number($("#Totalfee").val());
                 Discount = Number($("#Discount").val());
                 Cash = Number($("#Cash").val());
@@ -987,6 +994,7 @@ function ReceiptPDF(e) {
         },
     });
 }
+   
 
 
         @*function ReceiptPDF(e) {

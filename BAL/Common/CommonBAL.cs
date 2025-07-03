@@ -3,6 +3,7 @@ using MDL;
 using MDL.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -132,6 +133,10 @@ namespace BAL.Common
         public static List<DropDownMDL> BindArea(int companyID)
         {
             return CommonDAL.BindArea(companyID);
+        }
+        public static List<DropDownMDL> GetStudentByClassName(string className)
+        {
+            return CommonDAL.GetStudentByClassName(className);
         }
     }
 }

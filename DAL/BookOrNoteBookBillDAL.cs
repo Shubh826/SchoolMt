@@ -78,33 +78,37 @@ namespace DAL
                     objMessages.Message_Id = objDataSet.Tables[0].Rows[0].Field<int>("Message_Id"); // ✅ Fixed column name
                     objMessages.Message = objDataSet.Tables[0].Rows[0].Field<string>("Message"); // ✅ Fixed column name
                 }
-                if (objDataSet.Tables[1].Rows.Count > 0)
-                {
-                    _BookPaymentDetails.PK_BillId = objDataSet.Tables[1].Rows[0].Field<int>("PK_BorNBillID");
-                    _BookPaymentDetails.StudentName = objDataSet.Tables[1].Rows[0].Field<string>("StudentName");
-                    _BookPaymentDetails.BillNo = objDataSet.Tables[1].Rows[0].Field<string>("BillNo");
-                    _BookPaymentDetails.ClassName = objDataSet.Tables[1].Rows[0].Field<string>("ClassName");
-                    _BookPaymentDetails.PaymentDate = objDataSet.Tables[1].Rows[0].Field<string>("BillDate");
-                    _BookPaymentDetails.TotalFee = WrapDbNull.WrapDbNullValue<decimal>(objDataSet.Tables[1].Rows[0].Field<decimal?>("Subtotal"));
-                    _BookPaymentDetails.PaymentMode = objDataSet.Tables[1].Rows[0].Field<string>("PaymentMode");
-                    _BookPaymentDetails.DueAmount = objDataSet.Tables[1].Rows[0].Field<int>("DueAmount");
-                    _BookPaymentDetails.Discount = objDataSet.Tables[1].Rows[0].Field<int>("Discount");
-                    _BookPaymentDetails.PaidAmount = objDataSet.Tables[1].Rows[0].Field<int>("PaidAmount");
-                }
 
-                if (objDataSet.Tables[2].Rows.Count > 0)
+                if(objMessages.Message_Id==1)
                 {
-                    _BookPaymentDetails.ItemList = objDataSet.Tables[2].AsEnumerable().Select(row => new ItemDetails
+                    if (objDataSet.Tables.Count>1 && objDataSet.Tables[1].Rows.Count > 0)
                     {
-                        ItemName = row.Field<string>("Item Name"),
-                        ItemType = row.Field<string>("Type"),
-                        PageCount = WrapDbNull.WrapDbNullValue<int>(row.Field<int?>("Pages")),
-                        Quantity = WrapDbNull.WrapDbNullValue<int>(row.Field<int?>("Quantity")),
-                        Price = WrapDbNull.WrapDbNullValue<decimal>(row.Field<decimal?>("Price")),
-                        TotalAmount = WrapDbNull.WrapDbNullValue<decimal>(row.Field<decimal?>("Total"))
-                    }).ToList();
-                }
+                        _BookPaymentDetails.PK_BillId = objDataSet.Tables[1].Rows[0].Field<int>("PK_BorNBillID");
+                        _BookPaymentDetails.StudentName = objDataSet.Tables[1].Rows[0].Field<string>("StudentName");
+                        _BookPaymentDetails.BillNo = objDataSet.Tables[1].Rows[0].Field<string>("BillNo");
+                        _BookPaymentDetails.ClassName = objDataSet.Tables[1].Rows[0].Field<string>("ClassName");
+                        _BookPaymentDetails.PaymentDate = objDataSet.Tables[1].Rows[0].Field<string>("BillDate");
+                        _BookPaymentDetails.TotalFee = WrapDbNull.WrapDbNullValue<decimal>(objDataSet.Tables[1].Rows[0].Field<decimal?>("Subtotal"));
+                        _BookPaymentDetails.PaymentMode = objDataSet.Tables[1].Rows[0].Field<string>("PaymentMode");
+                        _BookPaymentDetails.DueAmount = objDataSet.Tables[1].Rows[0].Field<int>("DueAmount");
+                        _BookPaymentDetails.Discount = objDataSet.Tables[1].Rows[0].Field<int>("Discount");
+                        _BookPaymentDetails.PaidAmount = objDataSet.Tables[1].Rows[0].Field<int>("PaidAmount");
+                    }
 
+                    if (objDataSet.Tables.Count > 1 && objDataSet.Tables[2].Rows.Count > 0)
+                    {
+                        _BookPaymentDetails.ItemList = objDataSet.Tables[2].AsEnumerable().Select(row => new ItemDetails
+                        {
+                            ItemName = row.Field<string>("Item Name"),
+                            ItemType = row.Field<string>("Type"),
+                            PageCount = WrapDbNull.WrapDbNullValue<int>(row.Field<int?>("Pages")),
+                            Quantity = WrapDbNull.WrapDbNullValue<int>(row.Field<int?>("Quantity")),
+                            Price = WrapDbNull.WrapDbNullValue<decimal>(row.Field<decimal?>("Price")),
+                            TotalAmount = WrapDbNull.WrapDbNullValue<decimal>(row.Field<decimal?>("Total"))
+                        }).ToList();
+                    }
+
+                }
                 else
                 {
                     objMessages.Message_Id = 0;
