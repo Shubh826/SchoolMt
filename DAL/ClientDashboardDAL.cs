@@ -105,5 +105,55 @@ namespace DAL
             }
             return result;
         }
+
+        public DashboardMDL GetDashBoardData(string fromDate, string toDate)
+        {
+            DashboardMDL objDashboardMDL = new DashboardMDL();
+            DataSet objDataSet = null;
+
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>()
+            {
+                new SqlParameter("@cFromDate", fromDate),
+                new SqlParameter("@cToDate", toDate)
+            };
+
+                _commandText = "[usp_GetDashboardData]";
+                objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet, parms);
+
+                if (objDataSet != null && objDataSet.Tables.Count > 1 && objDataSet.Tables[0].Rows.Count > 0)
+                {
+                    var messageId = Convert.ToInt32(objDataSet.Tables[0].Rows[0]["Message_Id"]);
+                    if (messageId == 1)
+                    {
+                        DataRow row = objDataSet.Tables[1].Rows[0];
+
+                        objDashboardMDL = new DashboardMDL
+                        {
+                            TotalFee = row["TotalFee"]?.ToString() ?? "0",
+                            TotalCollectedFee = row["TotalCollectedFee"]?.ToString() ?? "0",
+                            TotalPendingFee = row["TotalPendingFee"]?.ToString() ?? "0",
+                            TotalExpense = row["TotalExpense"]?.ToString() ?? "0",
+                            TotalBookCollection = row["TotalBookCollection"]?.ToString() ?? "0",
+                            TotalNoteBookCollection = row["TotalNoteBookCollection"]?.ToString() ?? "0",
+                            TotalStudent = row["TotalStudent"]?.ToString() ?? "0",
+                            ChartJsonData = row["ChartJsonData"]?.ToString() ?? ""
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Optionally log the exception
+            }
+            finally
+            {
+                objDataSet?.Dispose();
+            }
+
+            return objDashboardMDL;
+        }
+
     }
 }

@@ -18,6 +18,7 @@ namespace SchoolMt.Controllers
         private List<LocationWiseProfile> objLocationWise;
         ClientDashboardBAL objClientDashboardBAL = null;
 
+
         public ClientDashboardController()
         {
             objClientDashboardBAL = new ClientDashboardBAL();
@@ -25,26 +26,35 @@ namespace SchoolMt.Controllers
         public ActionResult Index()
         {
 
-            ClientDashboardMDL objmdl = new ClientDashboardMDL();
-            objClientDashboardBAL.getClientDashboardData(out objmdl,out objtotalSkillsProfile, out objtotalProfile, out objLocationWise, SessionInfo.User.fk_companyid, SessionInfo.User.userid, SessionInfo.User.ClientId);
-            var CountAvailability = (from temp in objtotalProfile select temp.CountAvailability).ToList();
-            var AvailabilityDuration = (from temp in objtotalProfile select temp.AvailabilityDuration).ToList();
-            var CountSkills = (from temp in objtotalSkillsProfile select temp.CountSkills).ToList();
-            var Skills = (from temp in objtotalSkillsProfile select temp.Skills).ToList();
-            var countLocation = (from temp in objLocationWise select temp.CountLocation).ToList();
-            var Location = (from temp in objLocationWise select temp.Location).ToList();
-            ViewBag.CountAvailability = string.Join(",", CountAvailability);
-            ViewBag.AvailabilityDuration = string.Join(",", AvailabilityDuration);
-            ViewBag.CountSkills = string.Join(",", CountSkills);
-            ViewBag.countLocation = string.Join(",", countLocation);
-            ViewBag.Location = string.Join(",", Location);
-            ViewBag.Skills = string.Join(",", Skills);
-            ViewBag.TotalAvbProfile = objmdl.TotalAvbProfile;
-            ViewBag.TotalShortlisted = objmdl.TotalShortlisted;
-            ViewBag.ShortlistedProfile = objmdl.ShortlistedProfile;
-            ViewBag.TotalShedInterview = objmdl.TotalShedInterview;
-            ViewBag.selectedProfile = objmdl.selectedProfile;
+            //ClientDashboardMDL objmdl = new ClientDashboardMDL();
+            //objClientDashboardBAL.getClientDashboardData(out objmdl,out objtotalSkillsProfile, out objtotalProfile, out objLocationWise, SessionInfo.User.fk_companyid, SessionInfo.User.userid, SessionInfo.User.ClientId);
+            //var CountAvailability = (from temp in objtotalProfile select temp.CountAvailability).ToList();
+            //var AvailabilityDuration = (from temp in objtotalProfile select temp.AvailabilityDuration).ToList();
+            //var CountSkills = (from temp in objtotalSkillsProfile select temp.CountSkills).ToList();
+            //var Skills = (from temp in objtotalSkillsProfile select temp.Skills).ToList();
+            //var countLocation = (from temp in objLocationWise select temp.CountLocation).ToList();
+            //var Location = (from temp in objLocationWise select temp.Location).ToList();
+            //ViewBag.CountAvailability = string.Join(",", CountAvailability);
+            //ViewBag.AvailabilityDuration = string.Join(",", AvailabilityDuration);
+            //ViewBag.CountSkills = string.Join(",", CountSkills);
+            //ViewBag.countLocation = string.Join(",", countLocation);
+            //ViewBag.Location = string.Join(",", Location);
+            //ViewBag.Skills = string.Join(",", Skills);
+            //ViewBag.TotalAvbProfile = objmdl.TotalAvbProfile;
+            //ViewBag.TotalShortlisted = objmdl.TotalShortlisted;
+            //ViewBag.ShortlistedProfile = objmdl.ShortlistedProfile;
+            //ViewBag.TotalShedInterview = objmdl.TotalShedInterview;
+            //ViewBag.selectedProfile = objmdl.selectedProfile;
             return View();
         }
+
+        [HttpGet]
+        public JsonResult GetDashBoardData(string fromDate="", string toDate="")
+        {
+            DashboardMDL objDashboardMDL = new DashboardMDL();
+            objDashboardMDL= objClientDashboardBAL.GetDashBoardData(fromDate, toDate);
+            return Json(objDashboardMDL, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

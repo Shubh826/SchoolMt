@@ -24,5 +24,10 @@ namespace BAL
             objLocationWise = new List<LocationWiseProfile>();
             return objClientDashboardDAL.getClientDashboardData(out objmdl,out objtotalSkillsProfile, out objtotalProfile, out objLocationWise, fk_companyid, userid, clientId);
         }
+        public DashboardMDL GetDashBoardData(string fromDate, string toDate)
+        {
+            return objClientDashboardDAL.GetDashBoardData(fromDate, toDate);
+        }
+
     }
 }

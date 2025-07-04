@@ -3,14 +3,8 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="~/assets/css/bootstrap.css">
-<link rel="stylesheet" href="~/assets/vendors/iconly/bold.css">
-<link rel="stylesheet" href="~/assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
-<link rel="stylesheet" href="~/assets/vendors/bootstrap-icons/bootstrap-icons.css">
-<link rel="stylesheet" href="~/assets/css/style-bod.css">
-<link rel="shortcut icon" href="~/assets/images/favicon.png" type="image/x-icon">
+
+
 
 <div id="main-content">
     <div class="page-heading mb-0">
@@ -30,169 +24,225 @@
             </div>
         </div>
     </div>
+
     <div class="page-content">
         <section class="row">
-            <div class="col-12 col-lg-12">
+            <div class="col-12">
                 <div class="row">
-                    <div class="col-6 col-lg-4 col-md-6">
-                        <div class="card">
-                            <div class="card-body px-3 py-4-5">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="stats-icon purple"> <i class="iconly-boldNotification"></i> </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Total Fee</h6>
-                                        <h4 class="font-extrabold mb-0">@ViewBag.TotalShedInterview</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-4 col-md-6">
-                        <div class="card">
-                            <div class="card-body px-3 py-4-5">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="stats-icon blue"> <i class="iconly-boldProfile"></i> </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">
-                                            Pending Fee 
-                                        </h6>
-                                        <h4 class="font-extrabold mb-0">@ViewBag.TotalShortlisted</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-4 col-md-6">
-                        <div class="card">
-                            <div class="card-body px-3 py-4-5">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="stats-icon green"> <i class="iconly-boldCalendar"></i> </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">
-                                            Total Expense
-                                        </h6>
-                                        <h4 class="font-extrabold mb-0">@ViewBag.TotalShedInterview</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="mb-3">
+                        <label for="daterange" class="form-label me-2">Date Range</label>
+                        <input type="text" id="daterange" class="form-control w-auto d-inline-block" style="min-width: 250px;" />
+                        <button class="btn btn-primary ms-2" type="submit" id="btnfilter">Apply</button>
                     </div>
                 </div>
+            </div>
+
+            <div class="col-12">
                 <div class="row">
-                    <div class="col-6 col-lg-4 col-md-6">
-                        <div class="card">
-                            <div class="card-body px-3 py-4-5">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="stats-icon red"> <i class="iconly-boldTick-Square"></i> </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Book<br>Collection</h6>
-                                        <h4 class="font-extrabold mb-0">@ViewBag.selectedProfile</h4>
-                                    </div>
+
+
+                    <!-- Total Fee -->
+                    <div class="col-sm-6 col-md-4 col-lg-3 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="me-3">
+                                    <div class="stats-icon purple"><i class="iconly-boldNotification"></i></div>
+                                </div>
+                                <div>
+                                    <h6 class="text-muted font-semibold mb-1">Total Fee</h6>
+                                    <h4 class="font-extrabold mb-0"><span id="TotalFee">0</span></h4>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-6 col-lg-4 col-md-6">
-                        <div class="card">
-                            <div class="card-body px-3 py-4-5">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="stats-icon purple"> <i class="iconly-boldNotification"></i> </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Notebook<br>Collection</h6>
-                                        <h4 class="font-extrabold mb-0">@ViewBag.TotalShedInterview</h4>
-                                    </div>
+                    <!-- Total Collected Fee -->
+                    <div class="col-sm-6 col-md-4 col-lg-3 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="me-3">
+                                    <div class="stats-icon purple"><i class="iconly-boldNotification"></i></div>
+                                </div>
+                                <div>
+                                    <h6 class="text-muted font-semibold mb-1">Total Collected Fee</h6>
+                                    <h4 class="font-extrabold mb-0"><span id="TotalCollectedFee">0</span></h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 col-lg-4 col-md-6">
-                        <div class="card">
-                            <div class="card-body px-3 py-4-5">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="stats-icon blue"> <i class="iconly-boldProfile"></i> </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">
-                                            Total<br>Student
-                                        </h6>
-                                        <h4 class="font-extrabold mb-0">@ViewBag.TotalShortlisted</h4>
-                                    </div>
+
+                    <!-- Pending Fee -->
+                    <div class="col-sm-6 col-md-4 col-lg-3 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="me-3">
+                                    <div class="stats-icon blue"><i class="iconly-boldProfile"></i></div>
+                                </div>
+                                <div>
+                                    <h6 class="text-muted font-semibold mb-1">Total Pending Fee</h6>
+                                    <h4 class="font-extrabold mb-0"><span id="TotalPendingFee">0</span></h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
+                    <!-- Total Expense -->
+                    <div class="col-sm-6 col-md-4 col-lg-3 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="me-3">
+                                    <div class="stats-icon green"><i class="iconly-boldCalendar"></i></div>
+                                </div>
+                                <div>
+                                    <h6 class="text-muted font-semibold mb-1">Total Expense</h6>
+                                    <h4 class="font-extrabold mb-0"><span id="TotalExpense">0</span></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book Collection -->
+                    <div class="col-sm-6 col-md-4 col-lg-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="me-3">
+                                    <div class="stats-icon red"><i class="iconly-boldTick-Square"></i></div>
+                                </div>
+                                <div>
+                                    <h6 class="text-muted font-semibold mb-1">Book Collection</h6>
+                                    <h4 class="font-extrabold mb-0"><span id="TotalBookCollection">0</span></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notebook Collection -->
+                    <div class="col-sm-6 col-md-4 col-lg-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="me-3">
+                                    <div class="stats-icon purple"><i class="iconly-boldNotification"></i></div>
+                                </div>
+                                <div>
+                                    <h6 class="text-muted font-semibold mb-1">Notebook Collection</h6>
+                                    <h4 class="font-extrabold mb-0"><span id="TotalNoteBookCollection">0</span></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Student -->
+                    <div class="col-sm-6 col-md-4 col-lg-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="me-3">
+                                    <div class="stats-icon blue"><i class="iconly-boldProfile"></i></div>
+                                </div>
+                                <div>
+                                    <h6 class="text-muted font-semibold mb-1">Total Student</h6>
+                                    <h4 class="font-extrabold mb-0"><span id="TotalStudent">0</span></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                @*<div class="row">
-            <div class="col-12 col-xl-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Skills Wise Profiles</h4>
-                    </div>
-                    <div class="card-body">
-                        <div id="chart-profile-visit1"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-xl-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Location Wise Profiles</h4>
-                    </div>
-                    <div class="card-body">
-                        <div id="chart-visitors-profile"></div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
+                <!-- Chart Section -->
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Profiles Joining Time</h4>
+                                @*<h4>Profiles Joining Time</h4>*@
                             </div>
                             <div class="card-body">
-                                <div id="chart-profile-visit"></div>
+                                <div id="monthlyFeeChart"></div>
+
+                                @*<div id="chart-profile-visit"></div>*@
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-        </section>
-    </div>
-    @*<footer>
-            <div class="footer clearfix mb-0 text-muted">
-                <div class="float-start">
-                    <p>2021 &copy; BenchOnDemand</p>
-                </div>
             </div>
-        </footer>*@
+        </section>
+
+
+    </div>
+
+    @*@*******START Loader******@
+    <div class="modalBgLoader" style="display: none"></div>
+    <div class="modalLoaderCenter" style="display: none">
+        <img alt="Loading..." src="~/App_Images/loader.gif" />
+        <span>Loading...</span>
+    </div>
+    @*@*******END Loader******@
 </div>
-@*<script src="~/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <script src="~/assets/js/bootstrap.bundle.min.js"></script>*@
-<script src="~/assets/vendors/apexcharts/apexcharts.js"></script>
-@*<script src="~/assets/js/dashboard-bod.js"></script>*@
-<script src="~/assets/js/main-bod.js"></script>
-<script type="text/javascript">
-    @*var str = [@Html.Raw(ViewBag.Time_List)];
+
+
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="~/assets/vendors/iconly/bold.css">
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="~/assets/vendors/apexcharts/apexcharts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript">
+        @*var str = [@Html.Raw(ViewBag.Time_List)];
     console.log(str);
     str.charAt(str);*@
+        var chartData = [];
+        //const chartData = [
+        //    { Month: "Jan", TotalFee: "12000", PendingFee: "3000", TotalExpense: "4500" },
+        //    { Month: "Feb", TotalFee: "15000", PendingFee: "4000", TotalExpense: "5000" },
+        //    { Month: "Mar", TotalFee: "18000", PendingFee: "3500", TotalExpense: "4700" },
+        //    { Month: "Apr", TotalFee: "17000", PendingFee: "2500", TotalExpense: "4200" },
+        //    { Month: "May", TotalFee: "16000", PendingFee: "2000", TotalExpense: "3900" },
+        //    { Month: "Jun", TotalFee: "14000", PendingFee: "3000", TotalExpense: "4100" },
+        //    { Month: "Jul", TotalFee: "13000", PendingFee: "2800", TotalExpense: "4000" },
+        //    { Month: "Aug", TotalFee: "15500", PendingFee: "2600", TotalExpense: "4300" },
+        //    { Month: "Sep", TotalFee: "16500", PendingFee: "2400", TotalExpense: "4200" },
+        //    { Month: "Oct", TotalFee: "17500", PendingFee: "2200", TotalExpense: "4600" },
+        //    { Month: "Nov", TotalFee: "16000", PendingFee: "2000", TotalExpense: "3900" },
+        //    { Month: "Dec", TotalFee: "15000", PendingFee: "1800", TotalExpense: "3700" }
+        //];
 
-    var optionsProfileVisit = {
+
+        $(document).ready(function (e) {
+
+            $('#daterange').daterangepicker({
+                opens: 'right',
+                locale: {
+                    format: 'DD-MM-YYYY'
+                },
+                startDate: moment(),
+                endDate: moment(),
+
+                // ✅ Allow user to pick any range, across years or months
+                showDropdowns: true,            // Allows year/month dropdown
+                alwaysShowCalendars: true,     // Keeps calendars visible when ranges exist
+                linkedCalendars: false,        // Prevents the 2 calendars from syncing month
+
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            });
+            DashboardData();
+            $('#btnfilter').click(function (e) {
+                DashboardData();
+
+            });
+
+
+
+    @*var optionsProfileVisit = {
         annotations: {
             position: 'back'
         },
@@ -273,10 +323,99 @@
     var chartVisitorsProfile = new ApexCharts(document.getElementById('chart-visitors-profile'), optionsVisitorsProfile)
     chartProfileVisit.render();
     chartProfileVisit1.render();
-    chartVisitorsProfile.render()
+    chartVisitorsProfile.render()*@
+
+    });
 
 
+  function DashboardData() {
 
-</script>
 
+    // Get and split date range from the input
+    var dateRange = $('#daterange').val();
+    var fromDate = "";
+    var toDate = "";
 
+    if (dateRange && dateRange.includes('-')) {
+        var dates = dateRange.split(' - ');
+        fromDate = dates[0].trim();
+        toDate = dates[1].trim();
+    }
+
+    $.ajax({
+        url: "@Url.Action("GetDashBoardData", "ClientDashboard")",
+        type: 'GET',
+        cache: false,
+        data: {
+            fromDate: fromDate,
+            toDate: toDate
+        },
+        beforeSend: function () {
+            $(".modalBgLoader, .modalLoaderCenter").show();
+        },
+        complete: function () {
+            $(".modalBgLoader, .modalLoaderCenter").hide();
+        },
+        success: function (data) {
+           // alert(data.ChartJsonData)
+            debugger;
+            var lbl = data;
+            chartData = JSON.parse(data.ChartJsonData);
+            console.log(chartData);
+            $('#TotalFee').text(lbl.TotalFee);
+            $('#TotalCollectedFee').text(lbl.TotalCollectedFee);
+            $('#TotalPendingFee').text(lbl.TotalPendingFee);
+            $('#TotalExpense').text(lbl.TotalExpense);
+            $('#TotalBookCollection').text(lbl.TotalBookCollection);
+            $('#TotalNoteBookCollection').text(lbl.TotalNoteBookCollection);
+            $('#TotalStudent').text(lbl.TotalStudent);
+
+            renderMonthlyApexChart(chartData);
+            // handle response
+        },
+        error: function (xhr) {
+        }
+    });
+}
+
+        function renderMonthlyApexChart(data) {
+            const months = data.map(d => d.Month);
+            const totalFees = data.map(d => parseFloat(d.TotalFee));
+            const pendingFees = data.map(d => parseFloat(d.PendingFee));
+            const totalExpenses = data.map(d => parseFloat(d.TotalExpense));
+
+            const options = {
+                chart: {
+                    type: 'bar',
+                    height: 400
+                },
+                series: [
+                    { name: 'Total Fee', data: totalFees },
+                    { name: 'Pending Fee', data: pendingFees },
+                    { name: 'Total Expense', data: totalExpenses }
+                ],
+                xaxis: {
+                    categories: months
+                },
+                title: {
+                    text: 'Monthly Fee & Expense Overview',
+                    align: 'center'
+                },
+                colors: ['#007bff', '#ffc107', '#dc3545'],
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '55%',
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                }
+            };
+
+            const chart = new ApexCharts(document.querySelector("#monthlyFeeChart"), options);
+            chart.render();
+        }
+    </script>
+
+}
