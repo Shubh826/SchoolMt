@@ -103,7 +103,7 @@
 
 
                                                                     <div class="col-md-3 form-group">
-                                                                        @Html.TextBoxFor(E => E.AprilFee, new { @class = "form-control", maxlength = "15", @placeholder = "April Fee" })
+                                                                        @Html.TextBoxFor(E => E.AprilFee, new { @class = "form-control", maxlength = "15", @placeholder = "April Fee", @readonly = "readonly" })
                                                                     </div>
                                                                     @if (Model.AprilFee < 1)
                                                                     {
@@ -124,7 +124,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        @Html.TextBoxFor(E => E.AprilTrnsFee, new { @class = "form-control", maxlength = "15", @placeholder = "April Trns Fee" })
+                                                                        @Html.TextBoxFor(E => E.AprilTrnsFee, new { @class = "form-control", maxlength = "15", @placeholder = "April Trns Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.AprilTrnsFee)
                                                                     </div>
                                                                 </div>
@@ -135,7 +135,7 @@
                                                                     </div>
                                                                     <div class="col-md-3 form-group">
 
-                                                                        @Html.TextBoxFor(E => E.MayFee, new { @class = "form-control", maxlength = "15", @placeholder = "May fee" })
+                                                                        @Html.TextBoxFor(E => E.MayFee, new { @class = "form-control", maxlength = "15", @placeholder = "May fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.MayFee)
                                                                     </div>
                                                                     @if (Model.MayFee < 1)
@@ -156,7 +156,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        @Html.TextBoxFor(E => E.MayTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "May Trns Fee" })
+                                                                        @Html.TextBoxFor(E => E.MayTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "May Trns Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.MayTrnsFee)
                                                                     </div>
                                                                 </div>
@@ -167,7 +167,7 @@
                                                                     </div>
                                                                     <div class="col-md-3 form-group">
 
-                                                                        @Html.TextBoxFor(E => E.JuneFee, new { @class = "form-control", maxlength = "15", @placeholder = "June Fee" })
+                                                                        @Html.TextBoxFor(E => E.JuneFee, new { @class = "form-control", maxlength = "15", @placeholder = "June Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.JuneFee)
                                                                     </div>
                                                                     @if (Model.JuneFee < 1)
@@ -187,7 +187,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        @Html.TextBoxFor(E => E.JuneTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "June Trns Fee" })
+                                                                        @Html.TextBoxFor(E => E.JuneTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "June Trns Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.JuneTrnsFee)
                                                                     </div>
                                                                 </div>
@@ -199,7 +199,7 @@
                                                                     </div>
                                                                     <div class="col-md-3 form-group">
 
-                                                                        @Html.TextBoxFor(E => E.JulyFee, new { @class = "form-control", maxlength = "15", @placeholder = "July Fee" })
+                                                                        @Html.TextBoxFor(E => E.JulyFee, new { @class = "form-control", maxlength = "15", @placeholder = "July Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.JulyTrnsFee)
                                                                     </div>
                                                                     @if (Model.JulyFee < 1)
@@ -219,7 +219,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        @Html.TextBoxFor(E => E.JulyTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "July Trns Fee" })
+                                                                        @Html.TextBoxFor(E => E.JulyTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "July Trns Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.JulyTrnsFee)
                                                                     </div>
                                                                 </div>
@@ -230,7 +230,7 @@
                                                                     </div>
                                                                     <div class="col-md-3 form-group">
 
-                                                                        @Html.TextBoxFor(E => E.AugustFee, new { @class = "form-control", maxlength = "15", @placeholder = "August Fee" })
+                                                                        @Html.TextBoxFor(E => E.AugustFee, new { @class = "form-control", maxlength = "15", @placeholder = "August Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.AugustTrnsFee)
                                                                     </div>
 
@@ -251,7 +251,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-3">
-                                                                        @Html.TextBoxFor(E => E.AugustTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "August Trns Fee" })
+                                                                        @Html.TextBoxFor(E => E.AugustTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "August Trns Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.AugustTrnsFee)
                                                                     </div>
 
@@ -263,7 +263,7 @@
                                                                     </div>
                                                                     <div class="col-md-3 form-group">
 
-                                                                        @Html.TextBoxFor(E => E.SeptemberFee, new { @class = "form-control", maxlength = "15", @placeholder = "September Fee" })
+                                                                        @Html.TextBoxFor(E => E.SeptemberFee, new { @class = "form-control", maxlength = "15", @placeholder = "September Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.SeptemberFee)
                                                                     </div>
                                                                     @if (Model.SeptemberFee < 1)
@@ -283,7 +283,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-3">
-                                                                        @Html.TextBoxFor(E => E.SeptemberTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "September Trns Fee" })
+                                                                        @Html.TextBoxFor(E => E.SeptemberTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "September Trns Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.SeptemberTrnsFee)
                                                                     </div>
                                                                 </div>
@@ -293,7 +293,7 @@
                                                                     </div>
                                                                     <div class="col-md-3 form-group">
 
-                                                                        @Html.TextBoxFor(E => E.HalfYearlyExamFee, new { @class = "form-control", maxlength = "15", @placeholder = "Half Yearly Exam Fee" })
+                                                                        @Html.TextBoxFor(E => E.HalfYearlyExamFee, new { @class = "form-control", maxlength = "15", @placeholder = "Half Yearly Exam Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.HalfYearlyExamFee)
                                                                     </div>
                                                                     @if (Model.HalfYearlyExamFee < 1)
@@ -324,7 +324,7 @@
                                                                     </div>
                                                                     <div class="col-md-3 form-group">
 
-                                                                        @Html.TextBoxFor(E => E.OctoberFee, new { @class = "form-control", maxlength = "15", @placeholder = "October Fee" })
+                                                                        @Html.TextBoxFor(E => E.OctoberFee, new { @class = "form-control", maxlength = "15", @placeholder = "October Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.OctoberFee)
                                                                     </div>
                                                                     @if (Model.OctoberFee < 1)
@@ -345,7 +345,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        @Html.TextBoxFor(E => E.OctoberTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "October Trns Fee" })
+                                                                        @Html.TextBoxFor(E => E.OctoberTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "October Trns Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.OctoberTrnsFee)
                                                                     </div>
                                                                 </div>
@@ -355,7 +355,7 @@
                                                                     </div>
                                                                     <div class="col-md-3 form-group">
 
-                                                                        @Html.TextBoxFor(E => E.NovemberFee, new { @class = "form-control", maxlength = "15", @placeholder = "November Fee" })
+                                                                        @Html.TextBoxFor(E => E.NovemberFee, new { @class = "form-control", maxlength = "15", @placeholder = "November Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.NovemberFee)
                                                                     </div>
                                                                     @if (Model.NovemberFee < 1)
@@ -375,7 +375,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-3">
-                                                                        @Html.TextBoxFor(E => E.NovemberTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "November Trns Fee" })
+                                                                        @Html.TextBoxFor(E => E.NovemberTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "November Trns Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.NovemberTrnsFee)
                                                                     </div>
 
@@ -387,7 +387,7 @@
                                                                     </div>
                                                                     <div class="col-md-3 form-group">
 
-                                                                        @Html.TextBoxFor(E => E.DecemberFee, new { @class = "form-control", maxlength = "15", @placeholder = "December Fee" })
+                                                                        @Html.TextBoxFor(E => E.DecemberFee, new { @class = "form-control", maxlength = "15", @placeholder = "December Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.DecemberFee)
                                                                     </div>
                                                                     @if (Model.DecemberFee < 1)
@@ -407,7 +407,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        @Html.TextBoxFor(E => E.DecemberTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "December Trns Fee" })
+                                                                        @Html.TextBoxFor(E => E.DecemberTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "December Trns Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.DecemberTrnsFee)
                                                                     </div>
                                                                 </div>
@@ -417,7 +417,7 @@
                                                                     </div>
                                                                     <div class="col-md-3">
 
-                                                                        @Html.TextBoxFor(E => E.JanuaryFee, new { @class = "form-control", maxlength = "15", @placeholder = "January Fee" })
+                                                                        @Html.TextBoxFor(E => E.JanuaryFee, new { @class = "form-control", maxlength = "15", @placeholder = "January Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.JanuaryFee)
                                                                     </div>
                                                                     @if (Model.JanuaryFee < 1)
@@ -437,7 +437,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        @Html.TextBoxFor(E => E.JanuaryTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "January Trns Fee" })
+                                                                        @Html.TextBoxFor(E => E.JanuaryTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "January Trns Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.JanuaryTrnsFee)
                                                                     </div>
                                                                 </div>
@@ -448,7 +448,7 @@
                                                                     </div>
                                                                     <div class="col-md-3 form-group">
 
-                                                                        @Html.TextBoxFor(E => E.FebruaryFee, new { @class = "form-control", maxlength = "15", @placeholder = "February Fee" })
+                                                                        @Html.TextBoxFor(E => E.FebruaryFee, new { @class = "form-control", maxlength = "15", @placeholder = "February Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.FebruaryFee)
                                                                     </div>
 
@@ -469,7 +469,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        @Html.TextBoxFor(E => E.FebruaryTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "February Trns Fee" })
+                                                                        @Html.TextBoxFor(E => E.FebruaryTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "February Trns Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.FebruaryTrnsFee)
                                                                     </div>
                                                                 </div>
@@ -480,7 +480,7 @@
                                                                     </div>
                                                                     <div class="col-md-3 form-group">
 
-                                                                        @Html.TextBoxFor(E => E.YearlyExamFee, new { @class = "form-control", maxlength = "15", @placeholder = "Yearly Exam Fee" })
+                                                                        @Html.TextBoxFor(E => E.YearlyExamFee, new { @class = "form-control", maxlength = "15", @placeholder = "Yearly Exam Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.YearlyExamFee)
                                                                     </div>
                                                                     @if (Model.YearlyExamFee < 1)
@@ -509,7 +509,7 @@
                                                                     </div>
                                                                     <div class="col-md-3 form-group">
 
-                                                                        @Html.TextBoxFor(E => E.MarchFee, new { @class = "form-control", maxlength = "15", @placeholder = "March Fee" })
+                                                                        @Html.TextBoxFor(E => E.MarchFee, new { @class = "form-control", maxlength = "15", @placeholder = "March Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.MarchFee)
                                                                     </div>
                                                                     @if (Model.MarchFee < 1)
@@ -529,7 +529,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        @Html.TextBoxFor(E => E.MarchTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "March Trns Fee" })
+                                                                        @Html.TextBoxFor(E => E.MarchTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "March Trns Fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.MarchTrnsFee)
                                                                     </div>
                                                                 </div>
@@ -555,7 +555,7 @@
                                                                             @Html.TextBoxFor(E => E.PreDueAmount, new { @class = "form-control", maxlength = "15", @placeholder = "Due Amount" })
                                                                             @Html.ValidationMessageFor(E => E.PreDueAmount)
                                                                         </div>
-                                                                        
+
                                                                     }
 
                                                                 </div>
@@ -568,7 +568,7 @@
                                                                     </div>
                                                                     <div class="col-md-4 form-group">
 
-                                                                        @Html.TextBoxFor(E => E.Totalfee, new { @class = "form-control", maxlength = "15", @placeholder = "Total fee" })
+                                                                        @Html.TextBoxFor(E => E.Totalfee, new { @class = "form-control", maxlength = "15", @placeholder = "Total fee", @readonly = "readonly" })
                                                                         @Html.ValidationMessageFor(E => E.Totalfee)
                                                                     </div>
                                                                     <div class="col-md-2 ">
@@ -610,20 +610,21 @@
                                                                         @Html.ValidationMessageFor(E => E.DueAmount)
                                                                     </div>
                                                                 </div>
-                                                                </div>
                                                             </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group btnShowDIv">
-                                            <div class="col-md-12 text-right">
-                                                <button type="submit" class="btn btn-primary" id="submitform">Submit</button>
-                                                <a href='@Url.Action("Index")' class="btn btn-primary">Cancel</a>
-                                            </div>
+                                        <div class="col-md-12 text-right">
+                                            <button type="submit" class="btn btn-primary" id="submitform">Submit</button>
+                                            <a href='@Url.Action("Index")' class="btn btn-primary">Cancel</a>
                                         </div>
-                       
+                                    </div>
+                                    
+                                    <input type="hidden" id="PreDueAmountId" name="PreDueAmountId" value="@Model.PreDueAmount">
 
                                     <div id="GridDiv"></div>
                                 </div>
@@ -922,6 +923,23 @@
                     $('#Totalfee').val(a);
                     $('#MarchFee').val(0);
                     $('#MarchTrnsFee').val(0)
+                }
+
+            });
+            $('#chkPreDue').change(function () {
+                if (this.checked) {
+                     debugger;
+                    var a = parseInt($('#Totalfee').val()) + parseInt($('#PreDueAmount').val());
+
+                    $('#Totalfee').val(a);
+                    parseInt($('#PreDueAmount').val(0));
+                    //feemonth += ",MarchFee";
+                }
+                else {
+                    var a = parseInt($('#Totalfee').val()) - parseInt($('#PreDueAmountId').val());
+
+                    $('#Totalfee').val(a);
+                    parseInt($('#PreDueAmount').val(parseInt($('#PreDueAmountId').val())));
                 }
 
             });
