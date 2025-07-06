@@ -40,6 +40,8 @@ namespace MDL
         public int DueAmount { get; set; }
         public string PaymentDate { get; set; }
 
+        public string HdnPaymentDate { get; set; }
+
         [Required]
         [StringLength(50)]
         public string PaymentMode { get; set; }

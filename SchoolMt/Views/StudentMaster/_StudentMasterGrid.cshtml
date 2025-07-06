@@ -4,10 +4,15 @@
     int SerialNo = (objPagingmdl.CurrentPage - 1) * objPagingmdl.RowParPage + 1;
 
 }
+<style>
+    #tbl {
+        margin-top: -3px;
+    }
+</style>
 
-<div class="col-md-12">
-    <div class="table-responsive">
-        <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover" id="data">
+@*<div class="col-md-12">*@
+    <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+        <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover" id="tbl">
             <thead>
                 <tr>
                     <th class="text-center">Sr. No.</th>
@@ -124,7 +129,7 @@
             </tbody>
         </table>
     </div>
-</div>
+@*</div>*@
 
 @Html.Partial("_Paging", (MDL.Common.BasicPagingMDL)ViewBag.paging)
 <link rel="stylesheet" type="text/css" href="~/assets/lib/datatables/css/dataTables.bootstrap.min.css" />

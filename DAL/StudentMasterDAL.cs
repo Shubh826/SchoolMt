@@ -49,6 +49,9 @@ namespace DAL
                     new SqlParameter("@CreatedBy"                   ,   objStudentMasterMDL.CreatedBy),
                     new SqlParameter("@IsActive"                    ,   objStudentMasterMDL.IsActive),
                     new SqlParameter("@ImageName"                   ,   objStudentMasterMDL.ImageName),
+                    new SqlParameter("@StudentDOB"                   ,   objStudentMasterMDL.StudentDOB)
+
+                    
               };
             try
             {
@@ -114,6 +117,7 @@ namespace DAL
                             Category = dr.Field<string>("Category"),
                             IsActive = dr.Field<bool>("IsActive"),
                             ImageName = dr.Field<string>("ImageName"),
+                            StudentDOB= dr.Field<string>("StudentDOB"),
                             FK_AreaId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_AreaId")),
                             MonthlyFee = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("MonthlyFee")),
                             TransportFee = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("TransportFee")),

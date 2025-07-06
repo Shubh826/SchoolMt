@@ -37,7 +37,9 @@ namespace SchoolMt.Controllers
             ViewData["ClassList"] = CommonBAL.FillClass();
             List<DropDownMDL> _StudentList = new List<DropDownMDL>();
             TempData["StudentList"] = _StudentList = CommonBAL.GetStudentByClassName("");
-            objBookOrNoteBookBillMDL.PaymentDate = DateTime.Today.ToString("dd-MM-yyyy");
+            // objBookOrNoteBookBillMDL.PaymentDate = DateTime.Today.ToString("dd-MM-yyyy");
+             objBookOrNoteBookBillMDL.PaymentDate = "";
+             objBookOrNoteBookBillMDL.HdnPaymentDate = "";
             return View(objBookOrNoteBookBillMDL);
         }
         [HttpPost]
@@ -45,6 +47,10 @@ namespace SchoolMt.Controllers
         {
             BookPaymentDetails _BookPaymentDetails = new BookPaymentDetails();
             
+            if(!string.IsNullOrEmpty(obj.HdnPaymentDate))
+            {
+                obj.PaymentDate = obj.HdnPaymentDate;
+            }
               
                     obj.CreatedBy = SessionInfo.User.userid;
                     obj.CompanyId = SessionInfo.User.fk_companyid;

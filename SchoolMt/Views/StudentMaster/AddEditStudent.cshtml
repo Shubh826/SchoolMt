@@ -191,6 +191,8 @@
                             <div class="col-sm-12 d-flex justify-content-end Left">
                                 <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
                                 <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                @*<a href='@Url.Action("Index")' class="btn btn-secondary me-1 mb-1">Cancel</a>*@
+
                             </div>
                         </div>
                     </div>
@@ -200,6 +202,7 @@
         </div>
     </div>
     @*</div>*@
+    <input type="hidden" value="@Model.StudentDOB" id="hdnStudentDOB" />
 }
 
 
@@ -237,30 +240,55 @@
 <!--</div>-->
 
 
+@section scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="~/Select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/assets/css/daterangepicker.css" rel="stylesheet" />
+    <script src="~/assets/js/moment.min.js"></script>
+    <script src="~/assets/js/daterangepicker.min.js"></script>
 
 
-@Scripts.Render("~/bundles/jqueryval")
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASRefCtH3KvL3jfNIn8LbBdTXtBEaXFWQ&libraries=geometry"></script>
-<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyASRefCtH3KvL3jfNIn8LbBdTXtBEaXFWQ& callback=initMap"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASRefCtH3KvL3jfNIn8LbBdTXtBEaXFWQ&libraries=places"></script>
+    @*<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASRefCtH3KvL3jfNIn8LbBdTXtBEaXFWQ&libraries=geometry"></script>
+        <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyASRefCtH3KvL3jfNIn8LbBdTXtBEaXFWQ& callback=initMap"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASRefCtH3KvL3jfNIn8LbBdTXtBEaXFWQ&libraries=places"></script>*@
 
-<script src="~/js/jquery.sumoselect.js"></script>
-<link href="~/css/sumoselect.css" rel="stylesheet" />
+    @*<script src="~/js/jquery.sumoselect.js"></script>*@
 
-<script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/Scripts/Helper.js" type="text/javascript"></script>
-<script src="~/Scripts/jquery.signalR-2.2.1.min.js" type="text/javascript"></script>
 
-<script src="/signalr/hubs"></script>
+    @*<script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/Helper.js" type="text/javascript"></script>*@
+    @*<script src="~/Scripts/jquery.signalR-2.2.1.min.js" type="text/javascript"></script>
 
-<script src="~/Select2/js/select2.min.js"></script>
-<link href="~/Select2/css/select2.min.css" rel="stylesheet" />
+        <script src="/signalr/hubs"></script>*@
 
-<script type="text/javascript">
+    <script src="~/Select2/js/select2.min.js"></script>
+
+
+    <script type="text/javascript">
 
     $(document).ready(function (e) {
         $('.FK_CompanyID').select2();
         $(function () {
+
+            $('#StudentDOB').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                autoUpdateInput: true,
+                opens: 'right',
+                locale: {
+                  //  format: 'YYYY-MM-DD'
+                    format: 'DD-MM-YYYY'
+                },
+                maxDate: moment() // disable future dates
+            });
+
+            // Set value if DOB exists
+            if ($('#hdnStudentDOB').val() !== '' && $('#hdnStudentDOB').val() !== null) {
+                var existingDob = $('#hdnStudentDOB').val(); // e.g. "2020-01-01"
+                $('#StudentDOB').data('daterangepicker').setStartDate(moment(existingDob, 'YYYY-MM-DD'));
+            }
+
 
             // Reference the auto-generated proxy for the hub.
             var progress = $.connection.progressHub;
@@ -565,4 +593,5 @@
                         }*@
                 /**/
                 /**/
-</script>
+    </script>
+}

@@ -1408,4 +1408,17 @@ a {
 		color: white;
 		font-size: 16px;
 	}
+
 /**END :: LOADER BY PRINCE*/
+
+/**START :: TABLE HEADER COLOR & Freeze table Header CHANGE BY PRINCE*/
+.table thead th {
+	background-color: #393b4a;
+	color: #fff;
+	vertical-align: middle;
+}
+thead {
+	position: sticky;
+	top: -1px;
+}
+/**END :: TABLE HEADER COLOR & Freeze table Header CHANGE BY PRINCE*/

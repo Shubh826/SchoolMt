@@ -7,206 +7,316 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
- 
-        @using (Html.BeginForm("PostBookOrNoteBookBill", "BookOrNoteBookBill", FormMethod.Post, new { enctype = "multipart/form-data", id = "PostBookOrNoteBookBillForm" }))
-        {
-            @Html.HiddenFor(model => model.PK_BorNBillID)
-            @Html.HiddenFor(model => model.SelectedBookIds)
-            @Html.HiddenFor(model => model.SelectedNotebookIds)
-            <div class="container mt-4">
-                <h3 class="text-center mb-3">Add/Edit Book or Notebook Bill</h3>
-                <div class="card">
-                    <div class="card-body">
+
+@using (Html.BeginForm("PostBookOrNoteBookBill", "BookOrNoteBookBill", FormMethod.Post, new { enctype = "multipart/form-data", id = "PostBookOrNoteBookBillForm" }))
+{
+    @Html.HiddenFor(model => model.PK_BorNBillID)
+    @Html.HiddenFor(model => model.SelectedBookIds)
+    @Html.HiddenFor(model => model.SelectedNotebookIds)
+    @Html.HiddenFor(model => model.HdnPaymentDate)
+    <div class="container mt-4">
+        <h3 class="text-center mb-3">Add/Edit Book or Notebook Bill</h3>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
                         <div class="row">
-                            <div class="col-md-8 offset-md-2">
-                                <div class="row">
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                                    <!-- Class Name -->
-                                    <div class="col-md-3">
-                                        <label class="bold">Class Name<span class="text-danger">*</span></label>
-                                    </div>
-                                    <div class="col-md-7 form-group">
-                                        @Html.DropDownListFor(E => E.ClassName, new SelectList((System.Collections.IEnumerable)ViewData["ClassList"], "Value", "Value"), "--Select--", new { @class = "form-select select2", id = "ClassName" })
-                                        @Html.ValidationMessageFor(E => E.ClassName, "", new { @class = "redText", @style = "color:red" })
-                                    </div>
+                            <!-- Class Name -->
+                            <div class="col-md-3">
+                                <label class="bold">Class Name<span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.DropDownListFor(E => E.ClassName, new SelectList((System.Collections.IEnumerable)ViewData["ClassList"], "Value", "Value"), "--Select--", new { @class = "form-select select2", id = "ClassName" })
+                                @*@Html.ValidationMessageFor(E => E.ClassName, "", new { @class = "redText", @style = "color:red" })*@
+                            </div>
 
 
 
-                                    <!-- Student Name -->
-                                    <div class="col-md-3">
-                                        <label class="bold">Student Name<span class="text-danger">*</span></label>
-                                    </div>
-                                    <div class="col-md-7 form-group">
-                                        @Html.TextBoxFor(model => model.StudentName, new { @class = "form-control", @placeholder = "Enter Student Name", autocomplete = "off", @id = "StudentName" })
-                                        @Html.ValidationMessageFor(model => model.StudentName, "", new { @class = "text-danger" })
-                                    </div>
+                            <!-- Student Name -->
+                            <div class="col-md-3">
+                                <label class="bold">Student Name<span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.TextBoxFor(model => model.StudentName, new { @class = "form-control", @placeholder = "Enter Student Name", autocomplete = "off", @id = "StudentName" })
+                                @*@Html.ValidationMessageFor(model => model.StudentName, "", new { @class = "text-danger" })*@
+                            </div>
 
 
 
-                                    <!-- Type Selection -->
-                                    <div class="col-md-3">
-                                        <label class="bold">Type:</label>
-                                    </div>
-                                    <div class="col-md-7 form-group">
-                                        <div class="form-check form-check-inline">
-                                            @Html.CheckBoxFor(model => model.IsBook, new { @class = "form-check-input", @id = "bookCheck" })
-                                            <label class="form-check-label" for="bookCheck">Book</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            @Html.CheckBoxFor(model => model.IsNotebook, new { @class = "form-check-input", @id = "notebookCheck" })
-                                            <label class="form-check-label" for="notebookCheck">Notebook</label>
-                                        </div>
-                                    </div>
-
-                                    <!-- Book List -->
-                                    <div id="bookListSection" style="display: none;">
-                                        <h5>Book List</h5>
-                                        <table class="table table-bordered" id="bookList">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        <input type="checkbox" id="selectAllBooks" class="form-check-input" />
-                                                        Select
-                                                    </th>
-                                                    @*<th>Select</th>*@
-                                                    <th>Book Name</th>
-                                                    <th>Price</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <!-- Books will be appended here dynamically via jQuery -->
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <!-- Notebook List -->
-                                    <div id="notebookListSection" style="display: none;">
-                                        <h5>Notebook List</h5>
-                                        <table class="table table-bordered" id="notebookList">
-                                            <thead>
-                                                <tr>
-                                                    <th>Select</th>
-                                                    <th>Notebook Page</th>
-                                                    <th>Price</th>
-                                                    <th>Quantity</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <!-- Notebooks will be appended here dynamically via jQuery -->
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <!-- Subtotal -->
-                                    <div class="col-md-3">
-                                        <label class="bold">Subtotal<span class="text-danger">*</span></label>
-                                    </div>
-                                    <div class="col-md-7 form-group">
-                                        @Html.TextBoxFor(model => model.Subtotal, new { @class = "form-control", @readonly = "readonly", @id = "subtotal" })
-                                    </div>
-                                    <!--Discount-->
-                                    <div class="col-md-3">
-                                        <label class="bold">Discount<span class="text-danger">*</span></label>
-                                    </div>
-                                    <div class="col-md-7 form-group">
-                                        @Html.TextBoxFor(model => model.Discount, new { @class = "form-control", @type = "number", @id = "Discount" })
-                                    </div>
-                                    <!-- GST -->
-                                    @*<div class="col-md-3">
-                                            <label class="bold">GST (%)<span class="text-danger">*</span></label>
-                                        </div>
-                                        <div class="col-md-7 form-group">
-                                            @Html.TextBoxFor(model => model.GST, new { @class = "form-control", @type = "number", @step = "0.01", @id = "gst" })
-                                        </div>*@
-
-                                    <!-- Grand Total -->
-                                    <div class="col-md-3">
-                                        <label class="bold">Grand Total<span class="text-danger">*</span></label>
-                                    </div>
-                                    <div class="col-md-7 form-group">
-                                        @Html.TextBoxFor(model => model.GrandTotal, new { @class = "form-control", @readonly = "readonly", @id = "grandTotal" })
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="bold">Due Amount<span class="text-danger">*</span></label>
-                                    </div>
-                                    <div class="col-md-7 form-group">
-                                        @Html.TextBoxFor(model => model.DueAmount, new { @class = "form-control", @type = "number", @id = "Discount" })
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="bold">Payment Date<span class="text-danger">*</span></label>
-                                    </div>
-                                    <div class="col-md-7 form-group">
-                                        @Html.TextBoxFor(model => model.PaymentDate, new
-                                   {
-                                       @class = "form-control",
-                                       @type = "date",
-                                       @id = "PaymentDate",
-                                       @Value = Model.PaymentDate != null
-                                     ? Model.PaymentDate
-                                     : DateTime.Now.ToString("dd-MM-yyyy")
-                                   })
-                                    </div>
-                                    <!-- Payment Mode -->
-                                    <div class="col-md-3">
-                                        <label class="bold">Payment Mode<span class="text-danger">*</span></label>
-                                    </div>
-                                    <div class="col-md-7 form-group">
-                                        @Html.DropDownListFor(model => model.PaymentMode, new List<SelectListItem>
-                                        {
-                                            new SelectListItem { Value = "Cash", Text = "Cash" },
-                                            //new SelectListItem { Value = "Credit Card", Text = "Credit Card" },
-                                            new SelectListItem { Value = "UPI", Text = "UPI" }
-                                        }, "-- Select Payment Mode --", new { @class = "form-select" })
-                                    </div>
-                                    <input type="hidden" id="tempMessage" value='@JsonConvert.SerializeObject(TempData["Message"])' />
-                                    <!-- Submit & Reset Buttons -->
-                                    <div class="col-md-9 d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-                                        <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
-                                    </div>
+                            <!-- Type Selection -->
+                            <div class="col-md-3">
+                                <label class="bold">Type:</label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                <div class="form-check form-check-inline">
+                                    @Html.CheckBoxFor(model => model.IsBook, new { @class = "form-check-input", @id = "bookCheck" })
+                                    <label class="form-check-label" for="bookCheck">Book</label>
                                 </div>
+                                <div class="form-check form-check-inline">
+                                    @Html.CheckBoxFor(model => model.IsNotebook, new { @class = "form-check-input", @id = "notebookCheck" })
+                                    <label class="form-check-label" for="notebookCheck">Notebook</label>
+                                </div>
+                            </div>
+
+                            <!-- Book List -->
+                            <div id="bookListSection" style="display: none;">
+                                <h5>Book List</h5>
+                                <table class="table table-bordered" id="bookList">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox" id="selectAllBooks" class="form-check-input" />
+                                                Select
+                                            </th>
+                                            @*<th>Select</th>*@
+                                            <th>Book Name</th>
+                                            <th>Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Books will be appended here dynamically via jQuery -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Notebook List -->
+                            <div id="notebookListSection" style="display: none;">
+                                <h5>Notebook List</h5>
+                                <table class="table table-bordered" id="notebookList">
+                                    <thead>
+                                        <tr>
+                                            <th>Select</th>
+                                            <th>Notebook Page</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Notebooks will be appended here dynamically via jQuery -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Subtotal -->
+                            <div class="col-md-3">
+                                <label class="bold">Subtotal<span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.TextBoxFor(model => model.Subtotal, new { @class = "form-control", @readonly = "readonly", @id = "subtotal" })
+                            </div>
+                            <!--Discount-->
+                            <div class="col-md-3">
+                                <label class="bold">Discount<span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.TextBoxFor(model => model.Discount, new { @class = "form-control", @type = "number", @id = "Discount" })
+                            </div>
+                            <!-- GST -->
+                            @*<div class="col-md-3">
+                                    <label class="bold">GST (%)<span class="text-danger">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.TextBoxFor(model => model.GST, new { @class = "form-control", @type = "number", @step = "0.01", @id = "gst" })
+                                </div>*@
+
+                            <!-- Grand Total -->
+                            <div class="col-md-3">
+                                <label class="bold">Grand Total<span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.TextBoxFor(model => model.GrandTotal, new { @class = "form-control", @readonly = "readonly", @id = "grandTotal" })
+                            </div>
+                            <div class="col-md-3">
+                                <label class="bold">Due Amount<span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.TextBoxFor(model => model.DueAmount, new { @class = "form-control", @type = "number", @id = "Discount" })
+                            </div>
+                            <div class="col-md-3">
+                                <label class="bold">Payment Date<span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @*@Html.TextBoxFor(model => model.PaymentDate, new
+                                    {
+                                        @class = "form-control",
+                                        @type = "date",
+                                        @id = "PaymentDate",
+                                        @Value = Model.PaymentDate != null
+                                      ? Model.PaymentDate
+                                      : DateTime.Now.ToString("dd-MM-yyyy")
+                                    })*@
+                                @Html.TextBoxFor(E => E.PaymentDate, new { @class = "form-control", maxlength = "200", @placeholder = "PaymentDate" })
+
+                            </div>
+                            <!-- Payment Mode -->
+                            <div class="col-md-3">
+                                <label class="bold">Payment Mode<span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.DropDownListFor(model => model.PaymentMode, new List<SelectListItem>
+                                {
+                                    new SelectListItem { Value = "Cash", Text = "Cash" },
+                                    //new SelectListItem { Value = "Credit Card", Text = "Credit Card" },
+                                    new SelectListItem { Value = "UPI", Text = "UPI" }
+                                }, "-- Select Payment Mode --", new { @class = "form-select" })
+                            </div>
+                            <input type="hidden" id="tempMessage" value='@JsonConvert.SerializeObject(TempData["Message"])' />
+                            <!-- Submit & Reset Buttons -->
+                            <div class="col-md-9 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        }
-        @section scripts {
-            @Scripts.Render("~/bundles/jqueryval")
+        </div>
+    </div>
+}
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 
-            @*<link href="~/app-assets/vendors/css/forms/selects/select2.min.css" rel="stylesheet" />
-                <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>*@
+    @*<link href="~/app-assets/vendors/css/forms/selects/select2.min.css" rel="stylesheet" />
+        <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>*@
 
-            @*<link href="~/assets/css/select2.min.css" rel="stylesheet" />*@
-
-
-            <link href="~/assets/css/jquery-ui.css" rel="stylesheet" />
-            <script src="~/assets/js/jquery-ui.js"></script>
-            @*<script src="~/assets/js/select2.min.js"></script>*@
+    @*<link href="~/assets/css/select2.min.css" rel="stylesheet" />*@
 
 
-
-
-
-
-
+    <link href="~/assets/css/jquery-ui.css" rel="stylesheet" />
+    <link href="~/assets/css/daterangepicker.css" rel="stylesheet" />
+    <script src="~/assets/js/moment.min.js"></script>
+    <script src="~/assets/js/daterangepicker.min.js"></script>
+    <script src="~/assets/js/jquery-ui.js"></script>
+    @*<script src="~/assets/js/select2.min.js"></script>*@
 
 
 
-<script>
+
+
+
+
+
+
+
+    <script>
     $(document).ready(function (e) {
         //window.onload = function () {
         //    window.location.reload();
         //};
         // $("#ClassName").select2();
 
+        $('#PaymentDate').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            autoUpdateInput: true,
+            opens: 'right',
+            locale: {
+                //  format: 'YYYY-MM-DD'
+                format: 'DD-MM-YYYY'
+            },
+            maxDate: moment() // disable future dates
+        });
+
 
    $('#PostBookOrNoteBookBillForm').on('submit', function (e) {
    //  debugger;
-     e.preventDefault(); // prevent full form submission
+       e.preventDefault(); // prevent full form submission
 
-       var form = $('#PostBookOrNoteBookBillForm')[0];
+       // 2️⃣ **Class Name Validation**
+       let className = $("#ClassName").val();
+       if (className === "" || className === "--Select--") {
+           alert("Please Select Class.");
+           e.preventDefault();
+           return false;
+       }
+
+
+       // 1️⃣ **Student Name Validation**
+       let studentName = $("#StudentName").val().trim();
+       if (studentName === "") {
+           alert("Please Enter Student Name.");
+           e.preventDefault();
+           return false;
+       }
+
+       // 3️⃣ **Book or Notebook Selection Validation**
+       let isBookChecked = $("#bookCheck").is(":checked");
+       let isNotebookChecked = $("#notebookCheck").is(":checked");
+
+       if (!isBookChecked && !isNotebookChecked) {
+           alert("At least one option (Book or Notebook) must be selected.");
+           e.preventDefault();
+           return false;
+       }
+       // 4️⃣ **Check if Book or Notebook List is Visible**
+       let bookListVisible = $("#bookListSection").is(":visible");
+       let notebookListVisible = $("#notebookListSection").is(":visible");
+
+       // ✅ **Book List Validation**
+       if (bookListVisible) {
+           let bookSelected = $(".book-checkbox:checked").length > 0;
+           if (!bookSelected) {
+               alert("Please select at least one Book from the list.");
+               e.preventDefault();
+               return false;
+           }
+       }
+
+       // ✅ **Notebook List Validation**
+       if (notebookListVisible) {
+           let notebookSelected = $(".notebook-checkbox:checked").length > 0;
+           if (!notebookSelected) {
+               alert("Please select at least one Notebook from the list.");
+               e.preventDefault();
+               return false;
+           }
+       }
+       // 5️⃣ **Subtotal Validation**
+       let subtotal = parseFloat($("#subtotal").val()) || 0;
+       if (subtotal <= 0) {
+           alert("Subtotal must be greater than 0.");
+           e.preventDefault();
+           return false;
+       }
+
+       // 6️⃣ **GST Validation**
+       //let gst = parseFloat($("#gst").val()) || 0;
+       //if (gst < 0) {
+       //    alert("GST cannot be negative.");
+       //    event.preventDefault();
+       //    return false;
+       //}
+
+       // 7️⃣ **Grand Total Validation**
+       let grandTotal = parseFloat($("#grandTotal").val()) || 0;
+       if (grandTotal <= 0) {
+           alert("Grand Total must be greater than 0.");
+           e.preventDefault();
+           return false;
+       }
+
+       // 8️⃣ **Payment Mode Validation**
+       let paymentMode = $("#PaymentMode").val();
+       if (paymentMode === "" || paymentMode === "-- Select Payment Mode --") {
+           alert("Please select a Payment Mode.");
+           e.preventDefault();
+           return false;
+       }
+      // HdnPaymentDate
+       var inputDate = $('#PaymentDate').val(); // Example: "06-07-2025"
+       if (inputDate) {
+           var parts = inputDate.split("-");
+           // Convert to YYYY-MM-DD
+           var formattedDate = parts[2] + "-" + parts[1] + "-" + parts[0];
+           $('#HdnPaymentDate').val(formattedDate);
+           // Now send this to the controller
+           // e.g., if using form or ajax:
+           // data: { PaymentDate: formattedDate }
+       }
+
+     var form = $('#PostBookOrNoteBookBillForm')[0];
      var formData = new FormData(form); // support for file upload
 
      $.ajax({
@@ -371,7 +481,7 @@
               }
               calculateTotal(); // Update total
           });
-        
+
           // Event listener for dynamically added checkboxes
           $(document).on("change", ".book-checkbox", function () {
               calculateTotal();
@@ -394,98 +504,16 @@
               calculateTotal();  // Call total calculation on quantity change
               SetNoteBookID();
           });
-          $("form").submit(function (event) {
+        $("form").submit(function (e) {
+            e.preventDefault();
               let isValid = true; // By default, assume form is valid
-
-              // 1️⃣ **Student Name Validation**
-              let studentName = $("#StudentName").val().trim();
-              if (studentName === "") {
-                  alert("Please enter Student Name.");
-                  event.preventDefault();
-                  return false;
-              }
-
-              // 2️⃣ **Class Name Validation**
-              let className = $("#ClassName").val();
-              if (className === "" || className === "--Select--") {
-                  alert("Please select a Class.");
-                  event.preventDefault();
-                  return false;
-              }
-
-              // 3️⃣ **Book or Notebook Selection Validation**
-              let isBookChecked = $("#bookCheck").is(":checked");
-              let isNotebookChecked = $("#notebookCheck").is(":checked");
-
-              if (!isBookChecked && !isNotebookChecked) {
-                  alert("At least one option (Book or Notebook) must be selected.");
-                  event.preventDefault();
-                  return false;
-              }
-
-              // 4️⃣ **Check if Book or Notebook List is Visible**
-              let bookListVisible = $("#bookListSection").is(":visible");
-              let notebookListVisible = $("#notebookListSection").is(":visible");
-
-              // ✅ **Book List Validation**
-              if (bookListVisible) {
-                  let bookSelected = $(".book-checkbox:checked").length > 0;
-                  if (!bookSelected) {
-                      alert("Please select at least one Book from the list.");
-                      event.preventDefault();
-                      return false;
-                  }
-              }
-
-              // ✅ **Notebook List Validation**
-              if (notebookListVisible) {
-                  let notebookSelected = $(".notebook-checkbox:checked").length > 0;
-                  if (!notebookSelected) {
-                      alert("Please select at least one Notebook from the list.");
-                      event.preventDefault();
-                      return false;
-                  }
-              }
-
-              // 5️⃣ **Subtotal Validation**
-              let subtotal = parseFloat($("#subtotal").val()) || 0;
-              if (subtotal <= 0) {
-                  alert("Subtotal must be greater than 0.");
-                  event.preventDefault();
-                  return false;
-              }
-
-              // 6️⃣ **GST Validation**
-              //let gst = parseFloat($("#gst").val()) || 0;
-              //if (gst < 0) {
-              //    alert("GST cannot be negative.");
-              //    event.preventDefault();
-              //    return false;
-              //}
-
-              // 7️⃣ **Grand Total Validation**
-              let grandTotal = parseFloat($("#grandTotal").val()) || 0;
-              if (grandTotal <= 0) {
-                  alert("Grand Total must be greater than 0.");
-                  event.preventDefault();
-                  return false;
-              }
-
-              // 8️⃣ **Payment Mode Validation**
-              let paymentMode = $("#PaymentMode").val();
-              if (paymentMode === "" || paymentMode === "-- Select Payment Mode --") {
-                  alert("Please select a Payment Mode.");
-                  event.preventDefault();
-                  return false;
-              }
-
 
               //if (!isValid) {
               //    event.preventDefault();
               //    return false;
               //}
 
-              return true; // ✅ Form Submited
+              return false; // ✅ Form Submited
           });
       });
     function SetBookID() {
@@ -703,328 +731,328 @@ function ReceiptPDF(e) {
 
 
 
-</script>
+    </script>
 
+}
+
+@*<script>
+        $(document).ready(function () {
+            // Student Name Autocomplete
+            $("#StudentName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("GetStudentNames", "BookOrNoteBookBill")',
+                        type: "GET",
+                        dataType: "json",
+                        data: { term: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.Value,
+                                    value: item.Value,
+                                    id: item.ID
+                                };
+                            }));
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error in autocomplete: ", error);
+                        }
+                    });
+                },
+                minLength: 2,
+                select: function (event, ui) {
+                    $("#StudentName").val(ui.item.value);
+                    $("#StudentID").val(ui.item.id);
+                    return false;
+                }
+            });
+
+            // Event listener for checkboxes (Book Section)
+            $("#bookCheck").change(function () {
+                if ($(this).is(":checked")) {
+                    if ($('#ClassName').val() != '') {
+                        $("#bookListSection").show();
+                        fetchBooks(); // Fetch book list
+                        $('#selectAllBooks').prop('checked', true).trigger('change');
+                    } else {
+                        alert('Please Select Class Name!');
+                    }
+                } else {
+                    $("#bookListSection").hide();
+                    $("#bookList tbody").empty();
+                }
+                calculateTotal(); // Update total
+            });
+
+            // Event listener for checkboxes (Notebook Section)
+            $("#notebookCheck").change(function () {
+                if ($(this).is(":checked")) {
+                    if ($('#ClassName').val() != '') {
+                        $("#notebookListSection").show();
+                        fetchNotebooks(); // Fetch notebook list
+                    } else {
+                        alert('Please Select Class Name!');
+                    }
+                } else {
+                    $("#notebookListSection").hide();
+                    $("#notebookList tbody").empty();
+                }
+                calculateTotal(); // Update total
+            });
+
+            // Event listener for dynamically added book checkboxes
+            $(document).on("change", ".book-checkbox", function () {
+                calculateTotal();
+                SetBookID();
+            });
+
+            // Event listener for dynamically added notebook checkboxes
+            $(document).on("change", ".notebook-checkbox", function () {
+                calculateTotal();
+                SetNoteBookID();
+            });
+
+            // Event listener for the Discount input change
+            $("#Discount").on("input", function () {
+                calculateTotal();
+            });
+
+            // Event listener for quantity change on notebooks
+            $(document).on("change", ".quantity-input", function () {
+                calculateTotal();  // Recalculate total on quantity change
+                SetNoteBookID();
+            });
+
+            // Form submission validation
+            $("form").submit(function (event) {
+                let isValid = true; // Default validation flag
+
+                // Student Name Validation
+                let studentName = $("#StudentName").val().trim();
+                if (studentName === "") {
+                    alert("Please enter Student Name.");
+                    event.preventDefault();
+                    return false;
+                }
+
+                // Class Name Validation
+                let className = $("#ClassName").val();
+                if (className === "" || className === "--Select--") {
+                    alert("Please select a Class.");
+                    event.preventDefault();
+                    return false;
+                }
+
+                // Book or Notebook Selection Validation
+                let isBookChecked = $("#bookCheck").is(":checked");
+                let isNotebookChecked = $("#notebookCheck").is(":checked");
+
+                if (!isBookChecked && !isNotebookChecked) {
+                    alert("At least one option (Book or Notebook) must be selected.");
+                    event.preventDefault();
+                    return false;
+                }
+
+                // Book List Validation
+                if ($("#bookListSection").is(":visible") && $(".book-checkbox:checked").length === 0) {
+                    alert("Please select at least one Book from the list.");
+                    event.preventDefault();
+                    return false;
+                }
+
+                // Notebook List Validation
+                if ($("#notebookListSection").is(":visible") && $(".notebook-checkbox:checked").length === 0) {
+                    alert("Please select at least one Notebook from the list.");
+                    event.preventDefault();
+                    return false;
+                }
+
+                // Subtotal Validation
+                let subtotal = parseFloat($("#subtotal").val()) || 0;
+                if (subtotal <= 0) {
+                    alert("Subtotal must be greater than 0.");
+                    event.preventDefault();
+                    return false;
+                }
+
+                // Grand Total Validation
+                let grandTotal = parseFloat($("#grandTotal").val()) || 0;
+                if (grandTotal <= 0) {
+                    alert("Grand Total must be greater than 0.");
+                    event.preventDefault();
+                    return false;
+                }
+
+                // Payment Mode Validation
+                let paymentMode = $("#PaymentMode").val();
+                if (paymentMode === "" || paymentMode === "-- Select Payment Mode --") {
+                    alert("Please select a Payment Mode.");
+                    event.preventDefault();
+                    return false;
+                }
+
+                return true; // Form submission allowed
+            });
+        });
+
+        // Function to set Book IDs (for selected books)
+        function SetBookID() {
+            let selectedBooks = [];
+            $(".book-checkbox:checked").each(function () {
+                let row = $(this).closest("tr");
+                let bookId = $(this).data("id");
+                let BookName = row.find(".book-Name").text().trim();
+                let price = $(this).data("price");
+
+                selectedBooks.push({
+                    id: bookId,
+                    BookName: BookName,
+                    price: parseFloat(price)
+                });
+            });
+
+            $("#SelectedBookIds").val(JSON.stringify(selectedBooks));
         }
 
-        @*<script>
-                $(document).ready(function () {
-                    // Student Name Autocomplete
-                    $("#StudentName").autocomplete({
-                        source: function (request, response) {
-                            $.ajax({
-                                url: '@Url.Action("GetStudentNames", "BookOrNoteBookBill")',
-                                type: "GET",
-                                dataType: "json",
-                                data: { term: request.term },
-                                success: function (data) {
-                                    response($.map(data, function (item) {
-                                        return {
-                                            label: item.Value,
-                                            value: item.Value,
-                                            id: item.ID
-                                        };
-                                    }));
-                                },
-                                error: function (xhr, status, error) {
-                                    console.error("Error in autocomplete: ", error);
-                                }
-                            });
-                        },
-                        minLength: 2,
-                        select: function (event, ui) {
-                            $("#StudentName").val(ui.item.value);
-                            $("#StudentID").val(ui.item.id);
-                            return false;
-                        }
-                    });
+        // Function to set Notebook IDs (for selected notebooks)
+        function SetNoteBookID() {
+            let selectedNotebooks = [];
+            $(".notebook-checkbox:checked").each(function () {
+                let row = $(this).closest("tr");
+                let notebookId = $(this).data("id");
+                let notebookPage = row.find(".notebook-page").text().trim();
+                let price = $(this).data("price");
+                let quantity = row.find(".quantity-input").val() || 1;
 
-                    // Event listener for checkboxes (Book Section)
-                    $("#bookCheck").change(function () {
-                        if ($(this).is(":checked")) {
-                            if ($('#ClassName').val() != '') {
-                                $("#bookListSection").show();
-                                fetchBooks(); // Fetch book list
-                                $('#selectAllBooks').prop('checked', true).trigger('change');
-                            } else {
-                                alert('Please Select Class Name!');
-                            }
-                        } else {
-                            $("#bookListSection").hide();
-                            $("#bookList tbody").empty();
-                        }
-                        calculateTotal(); // Update total
-                    });
-
-                    // Event listener for checkboxes (Notebook Section)
-                    $("#notebookCheck").change(function () {
-                        if ($(this).is(":checked")) {
-                            if ($('#ClassName').val() != '') {
-                                $("#notebookListSection").show();
-                                fetchNotebooks(); // Fetch notebook list
-                            } else {
-                                alert('Please Select Class Name!');
-                            }
-                        } else {
-                            $("#notebookListSection").hide();
-                            $("#notebookList tbody").empty();
-                        }
-                        calculateTotal(); // Update total
-                    });
-
-                    // Event listener for dynamically added book checkboxes
-                    $(document).on("change", ".book-checkbox", function () {
-                        calculateTotal();
-                        SetBookID();
-                    });
-
-                    // Event listener for dynamically added notebook checkboxes
-                    $(document).on("change", ".notebook-checkbox", function () {
-                        calculateTotal();
-                        SetNoteBookID();
-                    });
-
-                    // Event listener for the Discount input change
-                    $("#Discount").on("input", function () {
-                        calculateTotal();
-                    });
-
-                    // Event listener for quantity change on notebooks
-                    $(document).on("change", ".quantity-input", function () {
-                        calculateTotal();  // Recalculate total on quantity change
-                        SetNoteBookID();
-                    });
-
-                    // Form submission validation
-                    $("form").submit(function (event) {
-                        let isValid = true; // Default validation flag
-
-                        // Student Name Validation
-                        let studentName = $("#StudentName").val().trim();
-                        if (studentName === "") {
-                            alert("Please enter Student Name.");
-                            event.preventDefault();
-                            return false;
-                        }
-
-                        // Class Name Validation
-                        let className = $("#ClassName").val();
-                        if (className === "" || className === "--Select--") {
-                            alert("Please select a Class.");
-                            event.preventDefault();
-                            return false;
-                        }
-
-                        // Book or Notebook Selection Validation
-                        let isBookChecked = $("#bookCheck").is(":checked");
-                        let isNotebookChecked = $("#notebookCheck").is(":checked");
-
-                        if (!isBookChecked && !isNotebookChecked) {
-                            alert("At least one option (Book or Notebook) must be selected.");
-                            event.preventDefault();
-                            return false;
-                        }
-
-                        // Book List Validation
-                        if ($("#bookListSection").is(":visible") && $(".book-checkbox:checked").length === 0) {
-                            alert("Please select at least one Book from the list.");
-                            event.preventDefault();
-                            return false;
-                        }
-
-                        // Notebook List Validation
-                        if ($("#notebookListSection").is(":visible") && $(".notebook-checkbox:checked").length === 0) {
-                            alert("Please select at least one Notebook from the list.");
-                            event.preventDefault();
-                            return false;
-                        }
-
-                        // Subtotal Validation
-                        let subtotal = parseFloat($("#subtotal").val()) || 0;
-                        if (subtotal <= 0) {
-                            alert("Subtotal must be greater than 0.");
-                            event.preventDefault();
-                            return false;
-                        }
-
-                        // Grand Total Validation
-                        let grandTotal = parseFloat($("#grandTotal").val()) || 0;
-                        if (grandTotal <= 0) {
-                            alert("Grand Total must be greater than 0.");
-                            event.preventDefault();
-                            return false;
-                        }
-
-                        // Payment Mode Validation
-                        let paymentMode = $("#PaymentMode").val();
-                        if (paymentMode === "" || paymentMode === "-- Select Payment Mode --") {
-                            alert("Please select a Payment Mode.");
-                            event.preventDefault();
-                            return false;
-                        }
-
-                        return true; // Form submission allowed
-                    });
+                selectedNotebooks.push({
+                    id: notebookId,
+                    NotebookPage: notebookPage,
+                    price: parseFloat(price),
+                    quantity: parseInt(quantity)
                 });
+            });
 
-                // Function to set Book IDs (for selected books)
-                function SetBookID() {
-                    let selectedBooks = [];
-                    $(".book-checkbox:checked").each(function () {
-                        let row = $(this).closest("tr");
-                        let bookId = $(this).data("id");
-                        let BookName = row.find(".book-Name").text().trim();
-                        let price = $(this).data("price");
+            $("#SelectedNotebookIds").val(JSON.stringify(selectedNotebooks));
+        }
 
-                        selectedBooks.push({
-                            id: bookId,
-                            BookName: BookName,
-                            price: parseFloat(price)
+        // Function to calculate the subtotal and grand total
+        function calculateTotal() {
+            let subtotal = 0;
+
+            // Add prices of selected books
+            $(".book-checkbox:checked").each(function () {
+                subtotal += parseFloat($(this).data("price")) || 0;
+            });
+
+            // Add prices of selected notebooks (including quantity)
+            $(".notebook-checkbox:checked").each(function () {
+                subtotal += parseFloat($(this).data("price")) * parseInt($(this).closest("tr").find(".quantity-input").val()) || 0;
+            });
+
+            // Set subtotal
+            $("#subtotal").val(subtotal.toFixed(2));
+
+            // Calculate GST and grand total
+            let gst = parseFloat($("#gst").val()) || 0;
+            let discount = parseFloat($("#Discount").val()) || 0;
+            let grandTotal = subtotal + gst - discount;
+
+            $("#grandTotal").val(grandTotal.toFixed(2));
+        }
+
+        // Fetch the list of books from the server
+        function fetchBooks() {
+            $.ajax({
+                url: '@Url.Action("GetBooksOrNoteBooks", "BookOrNoteBookBill")',
+                type: "GET",
+                dataType: "json",
+                data: { Type: 'Book', ClassName: $('#ClassName').val() },
+                success: function (data) {
+                    let bookTable = $("#bookList tbody");
+                    bookTable.empty();
+
+                    if (data.length > 0) {
+                        $.each(data, function (index, book) {
+                            let row = `<tr>
+                                <td><input type="checkbox" class="form-check-input book-checkbox" data-price="${book.Price}" data-id="${book.PK_BookId}"></td>
+                                <td class="book-Name">${book.BookName}</td>
+                                <td>${book.Price}</td>
+                            </tr>`;
+                            bookTable.append(row);
                         });
-                    });
 
-                    $("#SelectedBookIds").val(JSON.stringify(selectedBooks));
+                        // Re-bind event listeners for checkboxes after table is populated
+                        bindCheckboxEvents();
+                    } else {
+                        bookTable.append("<tr><td colspan='3' class='text-center'>No Books Available</td></tr>");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching book list: ", error);
                 }
+            });
+        }
 
-                // Function to set Notebook IDs (for selected notebooks)
-                function SetNoteBookID() {
-                    let selectedNotebooks = [];
-                    $(".notebook-checkbox:checked").each(function () {
-                        let row = $(this).closest("tr");
-                        let notebookId = $(this).data("id");
-                        let notebookPage = row.find(".notebook-page").text().trim();
-                        let price = $(this).data("price");
-                        let quantity = row.find(".quantity-input").val() || 1;
+        // Function to bind "Select All" event handlers
+        function bindCheckboxEvents() {
+            // "Select All" for books
+            $('#selectAllBooks').off().on('change', function () {
+                let isChecked = $(this).is(':checked');
+                $('.book-checkbox').prop('checked', isChecked);
+                calculateTotal();  // Recalculate total
+                SetBookID();  // Update selected book IDs
+            });
 
-                        selectedNotebooks.push({
-                            id: notebookId,
-                            NotebookPage: notebookPage,
-                            price: parseFloat(price),
-                            quantity: parseInt(quantity)
+            // "Select All" for notebooks
+            $('#selectAllNotebooks').off().on('change', function () {
+                let isChecked = $(this).is(':checked');
+                $('.notebook-checkbox').prop('checked', isChecked);
+                calculateTotal();  // Recalculate total
+                SetNoteBookID();  // Update selected notebook IDs
+            });
+
+            // Individual book checkbox change
+            $('#bookList').on('change', '.book-checkbox', function () {
+                let allChecked = $('.book-checkbox').length === $('.book-checkbox:checked').length;
+                $('#selectAllBooks').prop('checked', allChecked);
+            });
+
+            // Individual notebook checkbox change
+            $('#notebookList').on('change', '.notebook-checkbox', function () {
+                let allChecked = $('.notebook-checkbox').length === $('.notebook-checkbox:checked').length;
+                $('#selectAllNotebooks').prop('checked', allChecked);
+            });
+        }
+
+        // Fetch the list of notebooks from the server
+        function fetchNotebooks() {
+            $.ajax({
+                url: '@Url.Action("GetBooksOrNoteBooks", "BookOrNoteBookBill")',
+                type: "GET",
+                dataType: "json",
+                data: { Type: 'NoteBook', ClassName: $('#ClassName').val() },
+                success: function (data) {
+                    let notebookTable = $("#notebookList tbody");
+                    notebookTable.empty();
+
+                    if (data.length > 0) {
+                        $.each(data, function (index, notebook) {
+                            let row = `<tr>
+                                <td><input type="checkbox" class="form-check-input notebook-checkbox" data-price="${notebook.Price}" data-id="${notebook.PK_BookId}"></td>
+                                <td class="notebook-page">${notebook.NotebookPage}</td>
+                                <td>${notebook.Price}</td>
+                                <td><input type="number" class="form-control quantity-input" value="1" min="1"></td>
+                            </tr>`;
+                            notebookTable.append(row);
                         });
-                    });
-
-                    $("#SelectedNotebookIds").val(JSON.stringify(selectedNotebooks));
+                    } else {
+                        notebookTable.append("<tr><td colspan='3' class='text-center'>No Notebooks Available</td></tr>");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching notebook list: ", error);
                 }
-
-                // Function to calculate the subtotal and grand total
-                function calculateTotal() {
-                    let subtotal = 0;
-
-                    // Add prices of selected books
-                    $(".book-checkbox:checked").each(function () {
-                        subtotal += parseFloat($(this).data("price")) || 0;
-                    });
-
-                    // Add prices of selected notebooks (including quantity)
-                    $(".notebook-checkbox:checked").each(function () {
-                        subtotal += parseFloat($(this).data("price")) * parseInt($(this).closest("tr").find(".quantity-input").val()) || 0;
-                    });
-
-                    // Set subtotal
-                    $("#subtotal").val(subtotal.toFixed(2));
-
-                    // Calculate GST and grand total
-                    let gst = parseFloat($("#gst").val()) || 0;
-                    let discount = parseFloat($("#Discount").val()) || 0;
-                    let grandTotal = subtotal + gst - discount;
-
-                    $("#grandTotal").val(grandTotal.toFixed(2));
-                }
-
-                // Fetch the list of books from the server
-                function fetchBooks() {
-                    $.ajax({
-                        url: '@Url.Action("GetBooksOrNoteBooks", "BookOrNoteBookBill")',
-                        type: "GET",
-                        dataType: "json",
-                        data: { Type: 'Book', ClassName: $('#ClassName').val() },
-                        success: function (data) {
-                            let bookTable = $("#bookList tbody");
-                            bookTable.empty();
-
-                            if (data.length > 0) {
-                                $.each(data, function (index, book) {
-                                    let row = `<tr>
-                                        <td><input type="checkbox" class="form-check-input book-checkbox" data-price="${book.Price}" data-id="${book.PK_BookId}"></td>
-                                        <td class="book-Name">${book.BookName}</td>
-                                        <td>${book.Price}</td>
-                                    </tr>`;
-                                    bookTable.append(row);
-                                });
-
-                                // Re-bind event listeners for checkboxes after table is populated
-                                bindCheckboxEvents();
-                            } else {
-                                bookTable.append("<tr><td colspan='3' class='text-center'>No Books Available</td></tr>");
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            console.error("Error fetching book list: ", error);
-                        }
-                    });
-                }
-
-                // Function to bind "Select All" event handlers
-                function bindCheckboxEvents() {
-                    // "Select All" for books
-                    $('#selectAllBooks').off().on('change', function () {
-                        let isChecked = $(this).is(':checked');
-                        $('.book-checkbox').prop('checked', isChecked);
-                        calculateTotal();  // Recalculate total
-                        SetBookID();  // Update selected book IDs
-                    });
-
-                    // "Select All" for notebooks
-                    $('#selectAllNotebooks').off().on('change', function () {
-                        let isChecked = $(this).is(':checked');
-                        $('.notebook-checkbox').prop('checked', isChecked);
-                        calculateTotal();  // Recalculate total
-                        SetNoteBookID();  // Update selected notebook IDs
-                    });
-
-                    // Individual book checkbox change
-                    $('#bookList').on('change', '.book-checkbox', function () {
-                        let allChecked = $('.book-checkbox').length === $('.book-checkbox:checked').length;
-                        $('#selectAllBooks').prop('checked', allChecked);
-                    });
-
-                    // Individual notebook checkbox change
-                    $('#notebookList').on('change', '.notebook-checkbox', function () {
-                        let allChecked = $('.notebook-checkbox').length === $('.notebook-checkbox:checked').length;
-                        $('#selectAllNotebooks').prop('checked', allChecked);
-                    });
-                }
-
-                // Fetch the list of notebooks from the server
-                function fetchNotebooks() {
-                    $.ajax({
-                        url: '@Url.Action("GetBooksOrNoteBooks", "BookOrNoteBookBill")',
-                        type: "GET",
-                        dataType: "json",
-                        data: { Type: 'NoteBook', ClassName: $('#ClassName').val() },
-                        success: function (data) {
-                            let notebookTable = $("#notebookList tbody");
-                            notebookTable.empty();
-
-                            if (data.length > 0) {
-                                $.each(data, function (index, notebook) {
-                                    let row = `<tr>
-                                        <td><input type="checkbox" class="form-check-input notebook-checkbox" data-price="${notebook.Price}" data-id="${notebook.PK_BookId}"></td>
-                                        <td class="notebook-page">${notebook.NotebookPage}</td>
-                                        <td>${notebook.Price}</td>
-                                        <td><input type="number" class="form-control quantity-input" value="1" min="1"></td>
-                                    </tr>`;
-                                    notebookTable.append(row);
-                                });
-                            } else {
-                                notebookTable.append("<tr><td colspan='3' class='text-center'>No Notebooks Available</td></tr>");
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            console.error("Error fetching notebook list: ", error);
-                        }
-                    });
-                }
-            </script>*@
+            });
+        }
+    </script>*@
 

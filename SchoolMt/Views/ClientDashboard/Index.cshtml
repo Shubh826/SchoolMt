@@ -183,12 +183,11 @@
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-    <link rel="stylesheet" href="~/assets/vendors/iconly/bold.css">
-    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <script src="~/assets/vendors/apexcharts/apexcharts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+     <link rel="stylesheet" href="~/assets/vendors/iconly/bold.css">
+    <link href="~/assets/css/daterangepicker.css" rel="stylesheet" />
+    <script src="~/assets/js/moment.min.js"></script>
+    <script src="~/assets/js/daterangepicker.min.js"></script>
+       <script src="~/assets/vendors/apexcharts/apexcharts.js"></script>
     <script type="text/javascript">
         @*var str = [@Html.Raw(ViewBag.Time_List)];
     console.log(str);
@@ -215,7 +214,8 @@
             $('#daterange').daterangepicker({
                 opens: 'right',
                 locale: {
-                    format: 'DD-MM-YYYY'
+                    //format: 'YYYY-MM-DD'
+                     format: 'DD-MM-YYYY'
                 },
                 startDate: moment(),
                 endDate: moment(),
