@@ -113,7 +113,7 @@ namespace SchoolMt.Controllers
             List<FeeBillMDL> _StudentFeeBillMDL = new List<FeeBillMDL>();
             PaymentDetails _PaymentDetails = new PaymentDetails();
             Messages msg = objFeeBillBal.AddEditFeeBill(objFeeBillMDL, out _PaymentDetails);
-
+            TempData["predueamounchecked"] = objFeeBillMDL.predueamounchecked;
             TempData["PaymentDetails"] = _PaymentDetails;
             TempData["Message"] = msg;
             return Json(msg, JsonRequestBehavior.AllowGet);
@@ -130,7 +130,16 @@ namespace SchoolMt.Controllers
             try
             {
                 TempData.Keep();
+                int predueamounchecked = 0;
                 PaymentDetails data = TempData["PaymentDetails"] as PaymentDetails;
+                if (TempData["predueamounchecked"] != null)
+                {
+                     predueamounchecked = (int)TempData["predueamounchecked"];
+                }
+                else
+                {
+                     predueamounchecked = 0;
+                }
                 if (data == null)
                     throw new Exception("Payment details not found.");
 
@@ -196,6 +205,7 @@ namespace SchoolMt.Controllers
                 html.AppendLine($"                    <tr><td>Months Transport Fee</td><td>{data.TransFee:0.00}</td></tr>");
                 html.AppendLine($"                    <tr><td>Exam Fee</td><td>{data.ExamFee:0.00}</td></tr>");
                 html.AppendLine($"                    <tr><td>Due Amount</td><td>{data.DueAmount:0.00}</td></tr>");
+                html.AppendLine($"                    <tr><td>Previous Due Amount</td><td>{predueamounchecked:0.00}</td></tr>");
                 html.AppendLine("                </tbody>");
                 html.AppendLine("                <tfoot>");
                 html.AppendLine("                    <tr>");
@@ -204,9 +214,19 @@ namespace SchoolMt.Controllers
                 html.AppendLine("                    </tr>");
                 html.AppendLine("                </tfoot>");
                 html.AppendLine("            </table>");
-
-                html.AppendLine($"            <div class='date'><strong>Date :</strong> {data.PaymentDate}</div>");
-                html.AppendLine("            <div class='signature'><strong>Signature :</strong></div>");
+                html.AppendLine("            <table class='bill-details'>");
+                html.AppendLine("                <tr>");
+                html.AppendLine($"                    <td><strong>Date :</strong> {data.PaymentDate}</td>");
+                html.AppendLine($"                    <td></td>");
+                html.AppendLine("                </tr>");
+                html.AppendLine("                <tr><td colspan='2' style='height: 10px;'></td></tr>");
+                html.AppendLine("                <tr>");
+                html.AppendLine($"                    <td><strong>Signature :</strong></td>");
+                html.AppendLine($"                    <td></td>");
+                html.AppendLine("                </tr>");
+                html.AppendLine("            </table>");
+                //html.AppendLine($"            <div class='date' style='text-align: left;'><strong>Date :</strong> {data.PaymentDate}</div>");
+                //html.AppendLine("            <div class='signature' style='text-align: left;'><strong>Signature :</strong></div>");
                 html.AppendLine("        </div>");
                 html.AppendLine("    </div>");
                 html.AppendLine("</body>");

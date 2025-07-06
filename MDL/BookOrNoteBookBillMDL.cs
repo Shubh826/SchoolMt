@@ -16,8 +16,9 @@ namespace MDL
         [Required]
         [StringLength(100)]
         public string StudentName { get; set; }
+        public int FK_StudentId { get; set; }
         public string FatherName { get; set; }
-
+        public int FK_ClassId { get; set; }
         [Required]
         [StringLength(30)]
         public string ClassName { get; set; }

@@ -134,9 +134,9 @@ namespace BAL.Common
         {
             return CommonDAL.BindArea(companyID);
         }
-        public static List<DropDownMDL> GetStudentByClassName(string className)
+        public static List<DropDownMDL> GetStudentByClassName(int FK_ClassId)
         {
-            return CommonDAL.GetStudentByClassName(className);
+            return CommonDAL.GetStudentByClassName(FK_ClassId);
         }
         public static List<DropDownMDL> FillExpenseHead(int CompanyId)
         {

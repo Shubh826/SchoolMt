@@ -64,7 +64,9 @@ namespace DAL
                 new SqlParameter("@PaymentMode",obj.PaymentMode),
                 new SqlParameter("@DueAmount",obj.DueAmount),
                 new SqlParameter("@Discount",obj.Discount),
-                new SqlParameter("@PaymentDate",obj.PaymentDate)
+                new SqlParameter("@PaymentDate",obj.PaymentDate),
+                new SqlParameter("@FK_StudentId",obj.FK_StudentId),
+                new SqlParameter("@FK_ClassId",obj.FK_ClassId)
 
             };
 

@@ -36,7 +36,7 @@ namespace SchoolMt.Controllers
         {
             ViewData["ClassList"] = CommonBAL.FillClass();
             List<DropDownMDL> _StudentList = new List<DropDownMDL>();
-            TempData["StudentList"] = _StudentList = CommonBAL.GetStudentByClassName("");
+            TempData["StudentList"] = _StudentList = CommonBAL.GetStudentByClassName(0);
             // objBookOrNoteBookBillMDL.PaymentDate = DateTime.Today.ToString("dd-MM-yyyy");
              objBookOrNoteBookBillMDL.PaymentDate = "";
              objBookOrNoteBookBillMDL.HdnPaymentDate = "";
@@ -307,12 +307,12 @@ namespace SchoolMt.Controllers
         //    }
         //}
 
-        public JsonResult GetStudentNameByClassName(string className = "")
+        public JsonResult GetStudentNameByClassName(int FK_ClassId = 0)
         {
            // className = "";
             TempData.Keep();
             List<DropDownMDL> _StudentList = new List<DropDownMDL>();
-            _StudentList = CommonBAL.GetStudentByClassName(className);
+            _StudentList = CommonBAL.GetStudentByClassName(FK_ClassId);
             TempData["StudentList"] = _StudentList;
             return Json(1, JsonRequestBehavior.AllowGet);
             //return Json(CommonBAL.GetStudent(term), JsonRequestBehavior.AllowGet);

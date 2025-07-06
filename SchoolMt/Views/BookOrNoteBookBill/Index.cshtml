@@ -14,6 +14,8 @@
     @Html.HiddenFor(model => model.SelectedBookIds)
     @Html.HiddenFor(model => model.SelectedNotebookIds)
     @Html.HiddenFor(model => model.HdnPaymentDate)
+    @Html.HiddenFor(model => model.ClassName)
+    @Html.HiddenFor(model => model.FK_StudentId)
     <div class="container mt-4">
         <h3 class="text-center mb-3">Add/Edit Book or Notebook Bill</h3>
         <div class="card">
@@ -28,7 +30,7 @@
                                 <label class="bold">Class Name<span class="text-danger">*</span></label>
                             </div>
                             <div class="col-md-7 form-group">
-                                @Html.DropDownListFor(E => E.ClassName, new SelectList((System.Collections.IEnumerable)ViewData["ClassList"], "Value", "Value"), "--Select--", new { @class = "form-select select2", id = "ClassName" })
+                                @Html.DropDownListFor(E => E.FK_ClassId, new SelectList((System.Collections.IEnumerable)ViewData["ClassList"], "ID", "Value"), "--Select--", new { @class = "form-select select2" })
                                 @*@Html.ValidationMessageFor(E => E.ClassName, "", new { @class = "redText", @style = "color:red" })*@
                             </div>
 
@@ -163,6 +165,8 @@
                                 }, "-- Select Payment Mode --", new { @class = "form-select" })
                             </div>
                             <input type="hidden" id="tempMessage" value='@JsonConvert.SerializeObject(TempData["Message"])' />
+                            <input type="hidden" id="StudentID" value='@Model.FK_StudentId' />
+                            <input type="hidden" id="ClassNameId" value='@Model.ClassName' />
                             <!-- Submit & Reset Buttons -->
                             <div class="col-md-9 d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
@@ -177,29 +181,11 @@
 }
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
-
-    @*<link href="~/app-assets/vendors/css/forms/selects/select2.min.css" rel="stylesheet" />
-        <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>*@
-
-    @*<link href="~/assets/css/select2.min.css" rel="stylesheet" />*@
-
-
     <link href="~/assets/css/jquery-ui.css" rel="stylesheet" />
     <link href="~/assets/css/daterangepicker.css" rel="stylesheet" />
     <script src="~/assets/js/moment.min.js"></script>
     <script src="~/assets/js/daterangepicker.min.js"></script>
     <script src="~/assets/js/jquery-ui.js"></script>
-    @*<script src="~/assets/js/select2.min.js"></script>*@
-
-
-
-
-
-
-
-
-
-
     <script>
     $(document).ready(function (e) {
         //window.onload = function () {
@@ -222,16 +208,18 @@
 
    $('#PostBookOrNoteBookBillForm').on('submit', function (e) {
    //  debugger;
+
        e.preventDefault(); // prevent full form submission
 
        // 2️⃣ **Class Name Validation**
-       let className = $("#ClassName").val();
+       let className = $("#FK_ClassId").val();
        if (className === "" || className === "--Select--") {
            alert("Please Select Class.");
            e.preventDefault();
            return false;
        }
-
+       $('#ClassNameId').val($('#FK_ClassId option:selected').text());
+       $('#ClassName').val($('#FK_ClassId option:selected').text());
 
        // 1️⃣ **Student Name Validation**
        let studentName = $("#StudentName").val().trim();
@@ -348,13 +336,15 @@
 
 
        $("#StudentName").autocomplete({
-            source: function (request, response) {
+           source: function (request, response) {
+               debugger
                 $.ajax({
                     url: '@Url.Action("GetStudentNames", "BookOrNoteBookBill")',
                     type: "GET",
                     dataType: "json",
                     data: { term: request.term },
                     success: function (data) {
+                        debugger
                         response($.map(data, function (item) {
                             return {
                                 label: item.Value,
@@ -371,27 +361,27 @@
             minLength: 2,
             select: function (event, ui) {
                 $("#StudentName").val(ui.item.value);
-                $("#StudentID").val(ui.item.id);
+                $("#FK_StudentId").val(ui.item.id);
                 return false;
             }
        });
 
 
-              $('#ClassName').change(function () {
+        $('#FK_ClassId').change(function () {
            // Clear student name and ID on class change
            $('#StudentName').val('');
           // $('#StudentID').val('');
             $.ajax({
-    url: '@Url.Action("GetStudentNameByClassName", "BookOrNoteBookBill")',
-    type: "GET",
-              //  dataType: "json",
-                data: { "className": $('#ClassName').val() },
-    success: function (data) {
-    },
-    error: function (xhr, status, error) {
-        console.error("Error in autocomplete: ", error);
-    }
-});
+                 url: '@Url.Action("GetStudentNameByClassName", "BookOrNoteBookBill")',
+                 type: "GET",
+                 //  dataType: "json",
+                data: { "FK_ClassId": $('#FK_ClassId').val() },
+                 success: function (data) {
+                 },
+                 error: function (xhr, status, error) {
+                     console.error("Error in autocomplete: ", error);
+                 }
+            });
        });
 
 
@@ -402,7 +392,7 @@
 
             if ($(this).is(":checked")) {
 
-                if ($('#ClassName').val() !== '' && $('#StudentName').val()) {
+                if ($('#FK_ClassId').val() !== '' && $('#StudentName').val()) {
 
                     // 1. Fetch books first (assuming this appends rows)
                     fetchBooksonchange();
@@ -468,7 +458,7 @@
 
           $("#notebookCheck").change(function () {
               if ($(this).is(":checked")) {
-                  if ($('#ClassName').val() != '') {
+                  if ($('#FK_ClassId').val() != '') {
                   $("#notebookListSection").show();
                       fetchNotebooks(); // Fetch notebook list
                   }
@@ -588,7 +578,7 @@
         url: '@Url.Action("GetBooksOrNoteBooks", "BookOrNoteBookBill")',
         type: "GET",
         dataType: "json",
-        data: { Type: 'Book', ClassName: $('#ClassName').val() },
+        data: { Type: 'Book', ClassName: $('#FK_ClassId option:selected').text() },
         success: function (data) {
             let bookTable = $("#bookList tbody");
             bookTable.empty(); // Clear old data
@@ -633,7 +623,7 @@ function fetchBooks() {
             url: '@Url.Action("GetBooksOrNoteBooks", "BookOrNoteBookBill")',
             type: "GET",
             dataType: "json",
-            data: { Type: 'Book', ClassName: $('#ClassName').val() },
+            data: { Type: 'Book', ClassName: $('#FK_ClassId option:selected').text() },
             success: function (data) {
                 let bookTable = $("#bookList tbody");
                 bookTable.empty(); // Clear old data
@@ -664,7 +654,7 @@ function fetchBooks() {
             url: '@Url.Action("GetBooksOrNoteBooks", "BookOrNoteBookBill")',
             type: "GET",
             dataType: "json",
-            data: { Type: 'NoteBook', ClassName: $('#ClassName').val() },
+            data: { Type: 'NoteBook', ClassName: $('#FK_ClassId option:selected').text() },
             success: function (data) {
                 debugger
                 let notebookTable = $("#notebookList tbody");

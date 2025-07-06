@@ -623,9 +623,9 @@
                                             <a href='@Url.Action("Index")' class="btn btn-primary">Cancel</a>
                                         </div>
                                     </div>
-                                    
-                                    <input type="hidden" id="PreDueAmountId" name="PreDueAmountId" value="@Model.PreDueAmount">
 
+                                    <input type="hidden" id="PreDueAmountId" name="PreDueAmountId" value="@Model.PreDueAmount">
+                                    <input type="hidden" id="predueamounchecked" name="predueamounchecked" value="@Model.predueamounchecked">
                                     <div id="GridDiv"></div>
                                 </div>
                             </div>
@@ -932,8 +932,11 @@
                     var a = parseInt($('#Totalfee').val()) + parseInt($('#PreDueAmount').val());
 
                     $('#Totalfee').val(a);
+                    parseInt($('#predueamounchecked').val(parseInt($('#PreDueAmount').val())));
                     parseInt($('#PreDueAmount').val(0));
                     //feemonth += ",MarchFee";
+                    
+                    
                 }
                 else {
                     var a = parseInt($('#Totalfee').val()) - parseInt($('#PreDueAmountId').val());

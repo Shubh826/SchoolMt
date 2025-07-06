@@ -59,6 +59,8 @@ namespace MDL
         public string Months { get; set; }
         public int DueAmount { get; set; }
         public int PreDueAmount { get; set; }
+        public bool IsCheckPreDueAmount { get; set; }
+        public int predueamounchecked { get; set; }
 
     }
     public class PaymentDetails

@@ -309,6 +309,7 @@ namespace DAL
             List<DropDownMDL> ClassList = new List<DropDownMDL>();
             ClassList = Client.Tables[0].AsEnumerable().Select(dr => new DropDownMDL()
             {
+                ID = dr.Field<int>("ID"),
                 Value = dr.Field<string>("VALUE"),
             }).ToList();
             return ClassList;
@@ -434,11 +435,11 @@ namespace DAL
             return _dropdownlist;
         }
 
-        public static List<DropDownMDL> GetStudentByClassName(string className)
+        public static List<DropDownMDL> GetStudentByClassName(int FK_ClassId)
         {
             CommandText = "USP_GetAllStudentByClassName";
             var para = new SqlParameter[1];
-            para[0] = new SqlParameter("@cClassName", SqlDbType.VarChar) { Value = className };
+            para[0] = new SqlParameter("@iFK_ClassId", SqlDbType.VarChar) { Value = FK_ClassId };
             DataSet ds = (DataSet)objDataFunctions.getQueryResult(CommandText, DataReturnType.DataSet, para.ToList());
 
             List<DropDownMDL> _dropdownlist = new List<DropDownMDL>();

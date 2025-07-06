@@ -167,6 +167,7 @@ namespace DAL
                 new SqlParameter("@Months", objFeeBillMDL.Months),
                 new SqlParameter("@DueAmount", objFeeBillMDL.DueAmount),
                 new SqlParameter("@PreDueAmount", objFeeBillMDL.PreDueAmount),
+                new SqlParameter("@predueamounchecked",objFeeBillMDL.predueamounchecked)
             };
 
             try
