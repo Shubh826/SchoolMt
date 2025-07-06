@@ -1,0 +1,175 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="main-content">
+    <div class="page-heading">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Student Report</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="daterange" class="form-label me-2">Date Range</label>
+                            <input type="text" id="daterange" class="form-control w-auto d-inline-block" style="min-width: 250px;" />
+                            <button class="btn btn-primary ms-2" type="submit" id="btnfilter">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="section">
+            <div class="card">
+                <div class="card-body">
+                    @*<div class="row">
+                            <div class="col col-lg-5">
+                                <div class="form-group">
+                                    <select class="form-control" id="SearchCreteria">
+                                        <option selected="selected" value="">Select</option>
+                                        <option value="StudentName">Student Name</option>
+                                        <option value="StudentCode">Student Code</option>
+                                        <option value="ClassName">Class Name</option>
+                                        <option value="ClassCode">Class Code</option>
+                                        <option value="Stop">Stoppage</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col col-lg-5">
+                                <div class="form-group position-relative has-icon-right">
+                                    <input type="text" class="form-control" id="SearchValue" placeholder="Search Value">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block" onclick="paging(1)">Search</button>
+                                </div>
+                            </div>
+                        </div>*@
+
+
+
+                    <div class="row">
+                        @*<div class="col-md-12 excelPdfIcon" id="Export">
+                                @using (Html.BeginForm("ExportToExcel", "StudentMaster"))
+                                {
+                                    <input type="image" class="iconSet" title="Download Excel" src="~/App_Images/excel.jpg" style="float:right;" alt="Submit" id="Excel">
+                                }
+                                <input type="image" class="iconSet" title="Download PDF" src="~/App_Images/pdf.jpg" alt="Submit" id="PDF">
+                            </div>*@
+                        <div id="GridDiv">
+                            @*@{Html.RenderAction("GetStudentData"); }*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    @*<footer>
+            <div class="footer clearfix mb-0 text-muted">
+                <div class="float-start">
+                    <p>2022 &copy; SchoolMt</p>
+                </div>
+            </div>
+        </footer>*@
+</div>
+
+@*@*******START Loader******@
+<div class="modalBgLoader" style="display: none"></div>
+<div class="modalLoaderCenter" style="display: none">
+    <img alt="Loading..." src="~/App_Images/loader.gif" />
+    <span>Loading...</span>
+</div>
+@*@*******END Loader******@
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="~/assets/css/daterangepicker.css" rel="stylesheet" />
+    <script src="~/assets/js/moment.min.js"></script>
+    <script src="~/assets/js/daterangepicker.min.js"></script>
+
+    <script type="text/javascript">
+
+    $(document).ready(function (e) {
+        //debugger
+
+        $('#daterange').daterangepicker({
+            opens: 'right',
+            locale: {
+                //format: 'YYYY-MM-DD'
+                format: 'DD-MM-YYYY'
+            },
+            startDate: moment(),
+            endDate: moment(),
+
+            // ✅ Allow user to pick any range, across years or months
+            showDropdowns: true,            // Allows year/month dropdown
+            alwaysShowCalendars: true,     // Keeps calendars visible when ranges exist
+            linkedCalendars: false,        // Prevents the 2 calendars from syncing month
+
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        });
+
+        $('#btnfilter').click(function (e) {
+            paging(1);
+
+        });
+
+        paging(1);
+        $('#SearchCreteria').change(function () {
+            $('#SearchValue').val('');
+            if ($('#SearchCreteria').val() == '') {
+                paging(1);
+            }
+
+        });
+    });
+    function paging(currentpage) {
+        if (currentpage == NaN || currentpage <= 0) {
+            return false;
+        }
+        var dateRange = $('#daterange').val();
+        var fromDate = "";
+        var toDate = "";
+        if (dateRange && dateRange.includes('-')) {
+            var dates = dateRange.split(' - ');
+            fromDate = dates[0].trim();
+            toDate = dates[1].trim();
+        }
+
+        $.ajax({
+
+            url:"@Url.Action("GetStudentData", "StudentReport")",
+            type: 'GET',
+            cache: false,
+            data: {
+                'CurrentPage': parseInt(currentpage), 'SearchBy': $("#SearchCreteria").val(), 'SearchValue': $("#SearchValue").val(), fromDate: fromDate,toDate: toDate },
+            beforeSend: function () {
+                $(".modalBgLoader, .modalLoaderCenter").show();
+            },
+            complete: function () {
+                $(".modalBgLoader, .modalLoaderCenter").hide();
+            },
+            success: function (data) {
+                $('#GridDiv').html(data);
+                if ($('tbody > tr > td > div').html() == 'No Record Found. '){ $('#Export').hide(); }else{ $('#Export').show(); } //Disable "Export to Excel/PDF" Button if there No Record in table.
+                $('.disabled').prop('disabled', true);
+            },
+        });
+        return false;
+    }
+
+    </script>
+}

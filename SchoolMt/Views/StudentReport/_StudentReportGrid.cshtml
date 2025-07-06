@@ -1,0 +1,71 @@
+﻿@model IEnumerable<MDL.StudentReportMDL>
+
+@{
+    var objPagingmdl = (MDL.Common.BasicPagingMDL)ViewBag.paging;
+    int SerialNo = (objPagingmdl.CurrentPage - 1) * objPagingmdl.RowParPage + 1;
+}
+
+<style>
+    #tbl {
+        margin-top: -3px;
+    }
+
+    .wrap-text {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        word-break: break-word !important;
+        max-width: 200px;
+    }
+
+    .word-break-all {
+        word-break: break-all;
+        white-space: normal;
+        max-width: 120px;
+    }
+</style>
+
+<div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+    <table class="table table-bordered table-hover" id="tbl">
+        <thead class="table-light">
+            <tr>
+                <th class="text-center">Sr. No.</th>
+                <th class="text-center wrap-text">Student Name</th>
+                <th class="text-center wrap-text">Class Name</th>
+                <th class="text-center wrap-text">Father Name</th>
+                <th class="text-center wrap-text">Mobile No.</th>
+                <th class="text-center wrap-text">Bill No.</th>
+                <th class="text-center wrap-text">Address</th>
+                <th class="text-center word-break-all">Date</th>
+                <th class="text-center wrap-text">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model == null || !Model.Any())
+            {
+                <tr>
+                    <td colspan="9" class="text-center text-danger">No Record Found</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">@SerialNo</td>
+                        <td class="text-center wrap-text">@item.StudentName</td>
+                        <td class="text-center wrap-text">@item.ClassName</td>
+                        <td class="text-center wrap-text">@item.FatherName</td>
+                        <td class="text-center wrap-text">@item.MobileNo</td>
+                        <td class="text-center wrap-text">@item.BillNo</td>
+                        <td class="text-center wrap-text">@item.Address</td>
+                        <td class="text-center word-break-all">@item.Date</td>
+                        <td class="text-center wrap-text">@item.Amount</td>
+                    </tr>
+                    SerialNo++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@Html.Partial("_Paging", (MDL.Common.BasicPagingMDL)ViewBag.paging)

@@ -4,8 +4,8 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.js"></script>
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.js"></script>*@
 <div id="main-content">
     <div class="page-heading">
         <div class="page-title">
@@ -91,15 +91,18 @@
         </section>
     </div>
 </div>
-@*<script src="~/assets/vendors/jquery/jquery.min.js"></script>*@
-<link href="~/Select2/css/select2.css" rel="stylesheet" />
-<script src="~/Select2/js/select2.js"></script>
-<script type="text/javascript">
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @*<script src="~/assets/vendors/jquery/jquery.min.js"></script>*@
+    @*<link href="~/Select2/css/select2.css" rel="stylesheet" />
+    <script src="~/Select2/js/select2.js"></script>*@
+    <script type="text/javascript">
     $(document).ready(function () {
-        $('#MappingFor').select2();
-        $("#FK_CompanyID").select2();
-        $("#FK_RoleId").select2();
-        $("#FK_FormId").select2();
+        //$('#MappingFor').select2();
+        //$("#FK_CompanyID").select2();
+        //$("#FK_RoleId").select2();
+        //$("#FK_FormId").select2();
 
         if ($('#hdncompanyId').val() != '0') {
 
@@ -224,6 +227,7 @@
     }
 
 
-</script>
+    </script>
+    }
 
 
