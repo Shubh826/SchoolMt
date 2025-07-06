@@ -183,17 +183,20 @@
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-     <link rel="stylesheet" href="~/assets/vendors/iconly/bold.css">
+    <link rel="stylesheet" href="~/assets/vendors/iconly/bold.css">
     <link href="~/assets/css/daterangepicker.css" rel="stylesheet" />
     <script src="~/assets/js/moment.min.js"></script>
     <script src="~/assets/js/daterangepicker.min.js"></script>
-       <script src="~/assets/vendors/apexcharts/apexcharts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    @*<script src="~/assets/vendors/apexcharts/apexcharts.js"></script>*@
+
+
     <script type="text/javascript">
         @*var str = [@Html.Raw(ViewBag.Time_List)];
     console.log(str);
     str.charAt(str);*@
         var chartData = [];
-        //const chartData = [
+        // chartData = [
         //    { Month: "Jan", TotalFee: "12000", PendingFee: "3000", TotalExpense: "4500" },
         //    { Month: "Feb", TotalFee: "15000", PendingFee: "4000", TotalExpense: "5000" },
         //    { Month: "Mar", TotalFee: "18000", PendingFee: "3500", TotalExpense: "4700" },
@@ -361,7 +364,7 @@
             debugger;
             var lbl = data;
             chartData = JSON.parse(data.ChartJsonData);
-            console.log(chartData);
+           // console.log(chartData);
             $('#TotalFee').text(lbl.TotalFee);
             $('#TotalCollectedFee').text(lbl.TotalCollectedFee);
             $('#TotalPendingFee').text(lbl.TotalPendingFee);
@@ -379,6 +382,13 @@
 }
 
         function renderMonthlyApexChart(data) {
+            debugger;
+            const chartContainer = document.querySelector("#monthlyFeeChart");
+            if (!chartContainer) {
+               // console.error("Chart container '#monthlyFeeChart' not found.");
+                return;
+            }
+
             const months = data.map(d => d.Month);
             const totalFees = data.map(d => parseFloat(d.TotalFee));
             const pendingFees = data.map(d => parseFloat(d.PendingFee));
