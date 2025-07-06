@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -108,6 +109,9 @@ namespace DAL
 
         public DashboardMDL GetDashBoardData(string fromDate, string toDate)
         {
+            var fromDateSql = DateTime.ParseExact(fromDate, "dd-MM-yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd");
+            var toDateSql = DateTime.ParseExact(toDate, "dd-MM-yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd");
+
             DashboardMDL objDashboardMDL = new DashboardMDL();
             DataSet objDataSet = null;
 
@@ -115,8 +119,8 @@ namespace DAL
             {
                 List<SqlParameter> parms = new List<SqlParameter>()
             {
-                new SqlParameter("@cFromDate", fromDate),
-                new SqlParameter("@cToDate", toDate)
+                new SqlParameter("@cFromDate", fromDateSql),
+                new SqlParameter("@cToDate", toDateSql)
             };
 
                 _commandText = "[usp_GetDashboardData]";
@@ -131,13 +135,13 @@ namespace DAL
 
                         objDashboardMDL = new DashboardMDL
                         {
-                            TotalFee = row["TotalFee"]?.ToString() ?? "0",
-                            TotalCollectedFee = row["TotalCollectedFee"]?.ToString() ?? "0",
-                            TotalPendingFee = row["TotalPendingFee"]?.ToString() ?? "0",
-                            TotalExpense = row["TotalExpense"]?.ToString() ?? "0",
-                            TotalBookCollection = row["TotalBookCollection"]?.ToString() ?? "0",
-                            TotalNoteBookCollection = row["TotalNoteBookCollection"]?.ToString() ?? "0",
-                            TotalStudent = row["TotalStudent"]?.ToString() ?? "0",
+                            TotalFee = string.IsNullOrWhiteSpace(row["TotalFee"]?.ToString()) ? "0" : row["TotalFee"].ToString(),
+                            TotalCollectedFee = string.IsNullOrWhiteSpace(row["TotalCollectedFee"]?.ToString()) ? "0" : row["TotalCollectedFee"].ToString(),
+                            TotalPendingFee = string.IsNullOrWhiteSpace(row["TotalPendingFee"]?.ToString()) ? "0" : row["TotalPendingFee"].ToString(),
+                            TotalExpense = string.IsNullOrWhiteSpace(row["TotalExpense"]?.ToString()) ? "0" : row["TotalExpense"].ToString(),
+                            TotalBookCollection = string.IsNullOrWhiteSpace(row["TotalBookCollection"]?.ToString()) ? "0" : row["TotalBookCollection"].ToString(),
+                            TotalNoteBookCollection = string.IsNullOrWhiteSpace(row["TotalNoteBookCollection"]?.ToString()) ? "0" : row["TotalNoteBookCollection"].ToString(),
+                            TotalStudent = string.IsNullOrWhiteSpace(row["TotalStudent"]?.ToString()) ? "0" : row["TotalStudent"].ToString(),
                             ChartJsonData = row["ChartJsonData"]?.ToString() ?? ""
                         };
                     }
