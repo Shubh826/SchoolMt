@@ -34,16 +34,45 @@ namespace SchoolMt.Controllers
         }
         public ActionResult Index()
         {
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Msg = (Messages)TempData["Message"];
+                TempData["Message"] = null;
+            }
+            return View();
+        }
+        [HttpGet]
+        public ActionResult GetBookOrNoteBookBillData(int CurrentPage = 1, string SearchBy = "", string SearchValue = "", string FromDate = "", string ToDate = "")
+        {
+            List<BookOrNoteBookBillMDL> billList = new List<BookOrNoteBookBillMDL>();
+
+            try
+            {
+                objBookOrNoteBookBillBAL.GetBookOrNoteBookBillData(out billList, out objBasicPagingMDL, 0, SessionInfo.User.fk_companyid, Convert.ToInt32(20), CurrentPage, SearchBy, SearchValue, FromDate, ToDate);
+                ViewBag.paging = objBasicPagingMDL;
+                TempData["studentlist"] = billList;
+
+            }
+            catch (Exception ex)
+            {
+                // log your exception
+            }
+
+            return PartialView("_GridBookOrNoteBookBill", billList);
+        }
+        [HttpGet]
+        public ActionResult AddEditBookOrNoteBookBill()
+        {
             ViewData["ClassList"] = CommonBAL.FillClass();
             List<DropDownMDL> _StudentList = new List<DropDownMDL>();
             TempData["StudentList"] = _StudentList = CommonBAL.GetStudentByClassName(0);
-            // objBookOrNoteBookBillMDL.PaymentDate = DateTime.Today.ToString("dd-MM-yyyy");
-             objBookOrNoteBookBillMDL.PaymentDate = "";
-             objBookOrNoteBookBillMDL.HdnPaymentDate = "";
+            objBookOrNoteBookBillMDL.PaymentDate = "";
+            objBookOrNoteBookBillMDL.HdnPaymentDate = "";
             return View(objBookOrNoteBookBillMDL);
         }
+
         [HttpPost]
-        public JsonResult PostBookOrNoteBookBill(BookOrNoteBookBillMDL obj)
+        public JsonResult AddEditBookOrNoteBookBill(BookOrNoteBookBillMDL obj)
         {
             BookPaymentDetails _BookPaymentDetails = new BookPaymentDetails();
             

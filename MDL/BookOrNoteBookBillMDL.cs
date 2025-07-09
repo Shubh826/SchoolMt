@@ -12,7 +12,7 @@ namespace MDL
     {
         [Key]
         public int PK_BorNBillID { get; set; }
-
+        public string BILLNo { get; set; }
         [Required]
         [StringLength(100)]
         public string StudentName { get; set; }

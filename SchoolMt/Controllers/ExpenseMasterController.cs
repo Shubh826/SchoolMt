@@ -63,9 +63,17 @@ namespace SchoolMt.Controllers
             ViewData["ExpenseHeadList"] = CommonBAL.FillExpenseHead(SessionInfo.User.fk_companyid);
             if (id != 0)
             {
-                //objExpenseMasterBAL.GetExpensesData(out _ExpenseMasterList, out objBasicPagingMDL, id, SessionInfo.User.fk_companyid, Convert.ToInt32(20)); 
-                //return View("AddEditFeeBill", _ExpenseMasterList[0]);
-                return View("AddEditFeeBill", objExpenseMasterMDL);
+                objExpenseMasterBAL.GetExpenseList(
+                out _ExpenseMasterList,
+                out objBasicPagingMDL,
+                id,
+                SessionInfo.User.fk_companyid,
+                20,
+                1,
+                "",
+                ""
+            );
+                return View("AddEditExpense", _ExpenseMasterList[0]);
             }
             else
             {

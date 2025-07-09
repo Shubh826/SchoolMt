@@ -1,0 +1,60 @@
+﻿@model List<MDL.BookOrNoteBookBillMDL>
+@{
+    var objPagingmdl = (MDL.Common.BasicPagingMDL)ViewBag.paging;
+    int SerialNo = (objPagingmdl.CurrentPage - 1) * objPagingmdl.RowParPage + 1;
+}
+
+<div class="col-md-12">
+    <div class="table-responsive">
+        <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center text-nowrap">S.No.</th>
+                    <th class="text-center text-nowrap">Bill No</th>
+                    <th class="text-center text-nowrap">Student Name</th>
+                    <th class="text-center text-nowrap">Father Name</th>
+                    <th class="text-center text-nowrap">Class</th>
+                    <th class="text-center text-nowrap">Subtotal</th>
+                    <th class="text-center text-nowrap">Grand Total</th>
+                    <th class="text-center text-nowrap">Payment Mode</th>
+                    <th class="text-center text-nowrap">Payment Date</th>
+                    <th class="text-center text-nowrap">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr>
+                        <td colspan="13">
+                            <div class="text-danger text-center">No Record Found</div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@SerialNo</td>
+                            <td class="text-center">@item.BILLNo</td>
+                            <td class="text-center">@item.StudentName</td>
+                            <td class="text-center">@item.FatherName</td>
+                            <td class="text-center">@item.ClassName</td>
+                            <td class="text-center">@item.Subtotal.ToString("0.00")</td>
+                            <td class="text-center">@item.GrandTotal.ToString("0.00")</td>
+                            <td class="text-center">@item.PaymentMode</td>
+                            <td class="text-center">@String.Format("{0:dd-MM-yyyy}", item.PaymentDate)</td>
+                            <td class="text-center">
+                                <a class="btn btn-sm btn-primary" href="@Url.Action("PrintBill", new { id = item.PK_BorNBillID })">Print</a>
+                            </td>
+                        </tr>
+                        SerialNo++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@Html.Partial("_Paging", (MDL.Common.BasicPagingMDL)ViewBag.paging)

@@ -42,6 +42,85 @@ namespace DAL
             }).ToList();
             return _BookOrNoteBookData;
         }
+        public bool GetBookOrNoteBookBillData(out List<BookOrNoteBookBillMDL> billList, out BasicPagingMDL objBasicPagingMDL, int id, int fk_companyid, int rowPerPage, int currentPage, string searchBy, string searchValue, string fromDate, string toDate)
+        {
+            billList = new List<BookOrNoteBookBillMDL>();
+            objBasicPagingMDL = new BasicPagingMDL();
+            bool result = false;
+            Messages objMessages = new Messages();
+            _commandText = "SMS.usp_GetStudentBillList";  // your proc name
+
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter("@iRowperPage", rowPerPage),
+                new SqlParameter("@iCurrentPage", currentPage),
+                new SqlParameter("@Fk_CompanyId", fk_companyid),
+                new SqlParameter("@SearchBy", searchBy),
+                new SqlParameter("@SearchValue", searchValue),
+                new SqlParameter("@PK_BorNBillID", id),
+                new SqlParameter("@FromDate", string.IsNullOrEmpty(fromDate) ? (object)DBNull.Value : fromDate),
+                new SqlParameter("@ToDate", string.IsNullOrEmpty(toDate) ? (object)DBNull.Value : toDate)
+            };
+
+            try
+            {
+                CheckParameters.ConvertNullToDBNull(parms);
+                objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet, parms);
+
+                if (objDataSet.Tables[0].Rows.Count > 0)
+                {
+                    if (objDataSet.Tables[0].Rows[0].Field<int>("Message_Id") == 1)
+                    {
+                        billList = objDataSet.Tables[1].AsEnumerable().Select(dr => new BookOrNoteBookBillMDL()
+                        {
+                            PK_BorNBillID = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("PK_BorNBillID")),
+                            BILLNo = dr.Field<string>("BILLNo"),
+                            StudentName = dr.Field<string>("StudentName"),
+                            FatherName = dr.Field<string>("FatherName"),
+                            ClassName = dr.Field<string>("ClassName"),
+                            Subtotal = WrapDbNull.WrapDbNullValue<decimal>(dr.Field<decimal?>("Subtotal")),
+                            GrandTotal = WrapDbNull.WrapDbNullValue<decimal>(dr.Field<decimal?>("GrandTotal")),
+                            PaymentMode = dr.Field<string>("PaymentMode"),
+                            PaymentDate = dr.Field<string>("PaymentDate"),
+                            IsActive = dr.Field<bool>("IsActive"),
+                            IsDeleted = dr.Field<bool>("IsDeleted"),
+                            CompanyId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("CompanyId")),
+                            DueAmount = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("DueAmount")),
+                            Discount = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("Discount"))
+                        }).ToList();
+
+                        objBasicPagingMDL = new BasicPagingMDL()
+                        {
+                            TotalItem = WrapDbNull.WrapDbNullValue<int>(objDataSet.Tables[2].Rows[0].Field<int?>("TotalItem")),
+                            RowParPage = rowPerPage,
+                            CurrentPage = currentPage
+                        };
+
+                        if (objBasicPagingMDL.TotalItem % objBasicPagingMDL.RowParPage == 0)
+                        {
+                            objBasicPagingMDL.TotalPage = objBasicPagingMDL.TotalItem / objBasicPagingMDL.RowParPage;
+                        }
+                        else
+                        {
+                            objBasicPagingMDL.TotalPage = (objBasicPagingMDL.TotalItem / objBasicPagingMDL.RowParPage) + 1;
+                        }
+
+                        objDataSet.Dispose();
+                        result = true;
+                    }
+                }
+                else
+                {
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+
+            return result;
+        }
 
         public Messages PostBookOrNoteBookBill(BookOrNoteBookBillMDL obj,out BookPaymentDetails _BookPaymentDetails)
         {

@@ -8,6 +8,8 @@
 @using (Html.BeginForm("AddEditExpense", "ExpenseMaster"))
 {
     @Html.HiddenFor(model => model.PK_ExpenseId)
+    @*@Html.HiddenFor(model => model.HdnDate)*@
+
 
     <div class="page-heading mb-0">
         <div class="page-title">
@@ -53,7 +55,9 @@
                                     <label class="setForm bold">Date<span style="color:red">*</span></label>
                                 </div>
                                 <div class="col-md-7 form-group">
-                                    @Html.TextBoxFor(model => model.Date, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                    @Html.TextBoxFor(model => model.Date, new { @class = "form-control", maxlength = "200", @placeholder = "Date" })
+
+                                    @*@Html.TextBoxFor(model => model.Date, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })*@
                                     @Html.ValidationMessageFor(model => model.Date, "", new { @class = "redText", style = "color:red" })
                                 </div>
 
@@ -89,5 +93,29 @@
     </div>
 }
 
-@Scripts.Render("~/bundles/jqueryval")
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="~/assets/css/jquery-ui.css" rel="stylesheet" />
+    <link href="~/assets/css/daterangepicker.css" rel="stylesheet" />
+    <script src="~/assets/js/moment.min.js"></script>
+    <script src="~/assets/js/daterangepicker.min.js"></script>
+    <script src="~/assets/js/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $('#Date').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                autoUpdateInput: true,
+                opens: 'right',
+                locale: {
+                    //  format: 'YYYY-MM-DD'
+                    format: 'DD-MM-YYYY'
+                },
+                maxDate: moment() // disable future dates
+            });
+
+        });
+    </script>
+}
 
