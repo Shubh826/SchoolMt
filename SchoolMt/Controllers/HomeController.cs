@@ -89,6 +89,7 @@ namespace SchoolMt.Controllers
                         actionName = "HomePage";
                         controllerName = "Home";
                     }
+                    SessionInfo.User.LandingPageURL = (!string.IsNullOrEmpty(area) ? area + "/" : "") + controllerName + "/" + actionName;
 
                     return RedirectToAction(actionName, controllerName, new { Area = area });
                 }

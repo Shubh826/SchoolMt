@@ -77,8 +77,10 @@
 
 
                     <div class="row">
-                        <div id="GridDiv">
-                            @{Html.RenderAction("getForms"); }
+                        <div class="col-md-12">
+                            <div id="GridDiv">
+                                @{Html.RenderAction("getForms"); }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -93,9 +95,10 @@
             </div>
         </footer>*@
 </div>
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 
-
-<script type="text/javascript">
+    <script type="text/javascript">
 
     $(function () {
         $('#SearchCreteria').change(function () {
@@ -126,6 +129,6 @@
         });
         return false;
     }
-</script>
-
+    </script>
+    }
 

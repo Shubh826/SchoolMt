@@ -12,7 +12,7 @@
                     <h3>Class Master</h3>
                 </div>
                 <div class="col-12 col-md-6 order-md-2 order-first">
-                  
+
                     <a class="btn btn-purple" href="@Url.Action("AddEditClass")" style="float: right;"><i class="fa fa-plus"></i> Add New</a>
                     @*}*@
                 </div>
@@ -21,7 +21,7 @@
         <section class="section">
             <div class="card">
                 <div class="card-body">
-                    
+
 
                     <div class="row" style="margin-top:20px;">
                         <div id="msgDiv">
@@ -47,8 +47,10 @@
 
 
                     <div class="row">
-                        <div id="GridDiv">
-                            @{Html.RenderAction("getClassList"); }
+                        <div class="col-md-12">
+                            <div id="GridDiv">
+                                @{Html.RenderAction("getClassList"); }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -63,7 +65,10 @@
             </div>
         </footer>*@
 </div>
-<script type="text/javascript">
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
 
     function DivHide() {
         $('#msgDiv').hide();
@@ -97,6 +102,7 @@
         });
         return false;
     }
-</script>
+    </script>
+    }
 
 

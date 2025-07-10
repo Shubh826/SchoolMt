@@ -5,19 +5,19 @@
 }
 
 
-
-<div id="main-content">
-    <div class="page-heading mb-0">
+<div id="main-content" class="container-fluid">
+    <!-- Page Heading -->
+    <div class="page-heading mb-3">
         <div class="page-title">
-            <div class="row">
-                <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Dashboard</h3>
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h3 class="fw-bold mb-0">Dashboard</h3>
                 </div>
-                <div class="col-12 col-md-6 order-md-2 order-first">
-                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                <div class="col-md-6 text-md-end">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">School Dashboard</li>
                         </ol>
                     </nav>
                 </div>
@@ -26,149 +26,146 @@
     </div>
 
     <div class="page-content">
-        <section class="row">
-            <div class="col-12">
-                <div class="row">
-                    <div class="mb-3">
-                        <label for="daterange" class="form-label me-2">Date Range</label>
-                        <input type="text" id="daterange" class="form-control w-auto d-inline-block" style="min-width: 250px;" />
-                        <button class="btn btn-primary ms-2" type="submit" id="btnfilter">Apply</button>
+        <!-- Date Range Filter -->
+        <div class="row mb-4 justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="row align-items-center g-2">
+                    <div class="col-auto">
+                        <label for="daterange" class="form-label fw-semibold mb-0">Date Range</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="daterange" class="form-control" placeholder="Select date range" />
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary" type="button" id="btnfilter">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stat Cards -->
+        <section class="row g-3">
+            <!-- Total Fee -->
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="me-3">
+                            <div class="stats-icon purple"><i class="iconly-boldNotification"></i></div>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Total Fee</h6>
+                            <h4 class="fw-bold mb-0" id="TotalFee">0</h4>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-12">
-                <div class="row">
-
-
-                    <!-- Total Fee -->
-                    <div class="col-sm-6 col-md-4 col-lg-3 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body d-flex align-items-center">
-                                <div class="me-3">
-                                    <div class="stats-icon purple"><i class="iconly-boldNotification"></i></div>
-                                </div>
-                                <div>
-                                    <h6 class="text-muted font-semibold mb-1">Total Fee</h6>
-                                    <h4 class="font-extrabold mb-0"><span id="TotalFee">0</span></h4>
-                                </div>
-                            </div>
+            <!-- Total Collected Fee -->
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="me-3">
+                            <div class="stats-icon green"><i class="iconly-boldNotification"></i></div>
                         </div>
-                    </div>
-
-                    <!-- Total Collected Fee -->
-                    <div class="col-sm-6 col-md-4 col-lg-3 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body d-flex align-items-center">
-                                <div class="me-3">
-                                    <div class="stats-icon purple"><i class="iconly-boldNotification"></i></div>
-                                </div>
-                                <div>
-                                    <h6 class="text-muted font-semibold mb-1">Total Collected Fee</h6>
-                                    <h4 class="font-extrabold mb-0"><span id="TotalCollectedFee">0</span></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pending Fee -->
-                    <div class="col-sm-6 col-md-4 col-lg-3 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body d-flex align-items-center">
-                                <div class="me-3">
-                                    <div class="stats-icon blue"><i class="iconly-boldProfile"></i></div>
-                                </div>
-                                <div>
-                                    <h6 class="text-muted font-semibold mb-1">Total Pending Fee</h6>
-                                    <h4 class="font-extrabold mb-0"><span id="TotalPendingFee">0</span></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Total Expense -->
-                    <div class="col-sm-6 col-md-4 col-lg-3 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body d-flex align-items-center">
-                                <div class="me-3">
-                                    <div class="stats-icon green"><i class="iconly-boldCalendar"></i></div>
-                                </div>
-                                <div>
-                                    <h6 class="text-muted font-semibold mb-1">Total Expense</h6>
-                                    <h4 class="font-extrabold mb-0"><span id="TotalExpense">0</span></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Book Collection -->
-                    <div class="col-sm-6 col-md-4 col-lg-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body d-flex align-items-center">
-                                <div class="me-3">
-                                    <div class="stats-icon red"><i class="iconly-boldTick-Square"></i></div>
-                                </div>
-                                <div>
-                                    <h6 class="text-muted font-semibold mb-1">Book Collection</h6>
-                                    <h4 class="font-extrabold mb-0"><span id="TotalBookCollection">0</span></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Notebook Collection -->
-                    <div class="col-sm-6 col-md-4 col-lg-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body d-flex align-items-center">
-                                <div class="me-3">
-                                    <div class="stats-icon purple"><i class="iconly-boldNotification"></i></div>
-                                </div>
-                                <div>
-                                    <h6 class="text-muted font-semibold mb-1">Notebook Collection</h6>
-                                    <h4 class="font-extrabold mb-0"><span id="TotalNoteBookCollection">0</span></h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Total Student -->
-                    <div class="col-sm-6 col-md-4 col-lg-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body d-flex align-items-center">
-                                <div class="me-3">
-                                    <div class="stats-icon blue"><i class="iconly-boldProfile"></i></div>
-                                </div>
-                                <div>
-                                    <h6 class="text-muted font-semibold mb-1">Total Student</h6>
-                                    <h4 class="font-extrabold mb-0"><span id="TotalStudent">0</span></h4>
-                                </div>
-                            </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Collected Fee</h6>
+                            <h4 class="fw-bold mb-0" id="TotalCollectedFee">0</h4>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Chart Section -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                @*<h4>Profiles Joining Time</h4>*@
-                            </div>
-                            <div class="card-body">
-                                <div id="monthlyFeeChart"></div>
-
-                                @*<div id="chart-profile-visit"></div>*@
-                            </div>
+            <!-- Pending Fee -->
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="me-3">
+                            <div class="stats-icon blue"><i class="iconly-boldProfile"></i></div>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Pending Fee</h6>
+                            <h4 class="fw-bold mb-0" id="TotalPendingFee">0</h4>
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <!-- Total Expense -->
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="me-3">
+                            <div class="stats-icon red"><i class="iconly-boldCalendar"></i></div>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Total Expense</h6>
+                            <h4 class="fw-bold mb-0" id="TotalExpense">0</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book Collection -->
+            <div class="col-sm-6 col-md-4 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="me-3">
+                            <div class="stats-icon red"><i class="iconly-boldTick-Square"></i></div>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Book Collection</h6>
+                            <h4 class="fw-bold mb-0" id="TotalBookCollection">0</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notebook Collection -->
+            <div class="col-sm-6 col-md-4 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="me-3">
+                            <div class="stats-icon purple"><i class="iconly-boldNotification"></i></div>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Notebook Collection</h6>
+                            <h4 class="fw-bold mb-0" id="TotalNoteBookCollection">0</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Student -->
+            <div class="col-sm-6 col-md-4 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="me-3">
+                            <div class="stats-icon blue"><i class="iconly-boldProfile"></i></div>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Total Students</h6>
+                            <h4 class="fw-bold mb-0" id="TotalStudent">0</h4>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-
+        <!-- Chart Section -->
+        <section class="row mt-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Monthly Fee & Expense Chart</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="monthlyFeeChart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-
+    </div>
     @*@*******START Loader******@
     <div class="modalBgLoader" style="display: none"></div>
     <div class="modalLoaderCenter" style="display: none">
@@ -176,18 +173,24 @@
         <span>Loading...</span>
     </div>
     @*@*******END Loader******@
-</div>
 
 
 
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/assets/css/bootstrap.css">
     <link rel="stylesheet" href="~/assets/vendors/iconly/bold.css">
     <link href="~/assets/css/daterangepicker.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="~/assets/vendors/bootstrap-icons/bootstrap-icons.css">
+
     <script src="~/assets/js/moment.min.js"></script>
     <script src="~/assets/js/daterangepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
     @*<script src="~/assets/vendors/apexcharts/apexcharts.js"></script>*@
 
 

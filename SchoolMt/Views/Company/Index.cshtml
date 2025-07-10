@@ -1,6 +1,6 @@
 ﻿@model MDL.CompanyMDL
 @{ ViewBag.Title = "Index";
-                Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div id="main-content">
@@ -75,8 +75,10 @@
 
 
                     <div class="row">
-                        <div id="GridDiv">
-                            @{Html.RenderAction("getCompany"); }
+                        <div class="col-md-12">
+                            <div id="GridDiv">
+                                @{Html.RenderAction("getCompany"); }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -114,8 +116,10 @@
         </div>
     </div>
 </div>
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 
-<script type="text/javascript">
+    <script type="text/javascript">
     $(function () {
         $('#SearchCreteria').change(function () {
             $('#SearchValue').val('');
@@ -156,4 +160,5 @@
         $("#CompanyLogoModal").modal('hide');
     }
 
-</script>
+    </script>
+    }

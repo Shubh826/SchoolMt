@@ -1,0 +1,750 @@
+﻿
+@{ var menusList = SchoolMt.Common.SessionInfo.formlist as IEnumerable<MDL.FormMDL>;}
+@{
+    var user = SchoolMt.Common.SessionInfo.User as MDL.UserMDL;
+    var enumerable = menusList as IList<MDL.FormMDL> ?? menusList.ToList();
+    var headerMenu = enumerable.Where(x => x.FK_ParentId == 0).OrderBy(x => x.SortId);
+
+    string actionName = menusList.FirstOrDefault(x => x.PK_FormId == Convert.ToInt32(x.HomePage)).ActionName;
+    string controllerName = menusList.FirstOrDefault(x => x.PK_FormId == Convert.ToInt32(x.HomePage)).ControllerName;
+    string Area = menusList.FirstOrDefault(x => x.PK_FormId == Convert.ToInt32(x.HomePage)).Area;
+    string logo = user.logoClass;
+    if (string.IsNullOrWhiteSpace(actionName) || string.IsNullOrWhiteSpace(actionName))
+    {
+        actionName = "Dashboard";
+        controllerName = "Dashboard";
+    }
+
+
+
+}
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Fleetrobo">
+    <title>True Sunshine Academy Admin Dashboard</title>
+
+    <link rel="apple-touch-icon" href="~/app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" href="~/assets/images/favicon.png" type="image/x-icon">
+    @*<link rel="shortcut icon" type="image/x-icon" href="~/app-assets/images/ico/favicon.ico">*@
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+    <!-- BEGIN VENDOR CSS-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/vendors.css">
+    @*<link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/datatables.min.css">*@
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/datatables.min.css?v=1.1">
+    <!-- END VENDOR CSS-->
+    <!-- BEGIN MODERN CSS-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/app.css">
+    <!-- END MODERN CSS-->
+    <!-- BEGIN Page Level CSS-->
+    @*<link rel="stylesheet" type="text/css" href="~/app-assets/css/core/menu/menu-types/vertical-menu.css">*@
+    @*<link rel="stylesheet" type="text/css" href="~/app-assets/css/core/menu/menu-types/vertical-menu.min.css">*@
+
+    <link href="~/assets/css/new_sidenav.css" rel="stylesheet" />
+
+    <link href="~/assets/css/vehicle.css" rel="stylesheet" />
+
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" async>
+
+
+
+    <!-- END Page Level CSS-->
+    <!-- BEGIN Custom CSS-->
+    <style>
+        .btn btn-purple {
+            border-top: 1px solid #ddd;
+            color: #2b335e !important;
+            padding: 10px !important;
+            display: block !important;
+            font-weight: 700;
+        }
+
+        #headerID {
+            padding-right: 0px !important;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style.min.css">
+    <style>
+        @{
+            var logoImage = String.IsNullOrEmpty(ViewBag.WebLogo) ? "../../app-assets/images/logo/logo-light.png" : ViewBag.WebLogo;
+
+       }
+         .header-navbar .navbar-header .navbar-brand .brand-logo, .header-navbar .navbar-container .navbar-brand .brand-logo {
+	background-image:url(@logoImage);
+}
+    </style>
+    @* @Scripts.Render("~/bundles/bootstrap")*@
+    @*@RenderSection("scripts", required: false)*@
+    <!-- END Custom CSS-->
+</head>
+<body id="expand_section" class="expand_section dashboard-screen">
+    @*<body class="vertical-layout vertical-menu 2-columns   menu-expanded fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns" style="width:100%; padding-right:0px !important" id="headerID">*@
+    <!-- fixed-top-->
+    <div class="fr-vts-content">
+        <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow">
+            <div class="navbar-wrapper">
+
+                <div class="navbar-container content">
+                    <div class="collapse navbar-collapse" id="navbar-mobile">
+
+                        <div class="navbar-header-mobile">
+                            <a href="#" class="nav-left-sidebar" onclick="myFunction2()">
+                                <span class="icon-bar"><span></span><span></span><span></span></span>
+                            </a>
+
+                        </div>
+
+                        <ul class="nav navbar-nav mr-auto float-left">
+
+                            <li class="nav-item d-md-block">
+                                <div class="main">
+                                    <!-- Actual search box with the icon on the right -->
+                                    <div class="form-group has-search-right" style="display:none;">
+                                        <div class="form-control-feedback">
+                                            <a href="#">
+                                                <span><img src="~/assets/img/search.svg" alt="" /></span>
+                                            </a>
+                                            <a href="javascript:void(0)">
+                                                <span><img src="~/assets/img/search-close.svg" alt="" id="CloseBtnIdForMenu" /></span>
+                                            </a>
+                                        </div>
+                                        <input type="text" class="form-control" id="searchByMenu" placeholder="Search" onkeyup="searchMenu(this)">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav float-right">
+                            <li class="dropdown dropdown-notification nav-item" style="display:none">
+                                <a class="nav-link nav-link-label" href="#" data-toggle="dropdown">
+                                    <i class="fa-solid fa-bell ficon"></i>
+                                    <span class="notification_badge badge badge-pill badge-default badge-danger badge-up">5</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
+                                    <li class="dropdown-menu-header">
+                                        <h6 class="dropdown-header m-0"><span class="grey darken-2">Notifications</span></h6>
+                                        <span class="notification-tag badge badge-default badge-danger float-right m-0">5 New</span>
+                                    </li>
+                                    <li class="scrollable-container media-list w-100">
+                                        <a href="javascript:void(0)">
+                                            <div class="media">
+                                                <div class="media-left align-self-center">
+                                                    <i class="ft-plus-square icon-bg-circle bg-cyan"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">You have new order!</h6>
+                                                    <p class="notification-text font-small-3 text-muted">
+                                                        Lorem ipsum dolor sit amet,
+                                                        consectetuer elit.
+                                                    </p>
+                                                    <small>
+                                                        <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">
+                                                            30
+                                                            minutes ago
+                                                        </time>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="javascript:void(0)">
+                                            <div class="media">
+                                                <div class="media-left align-self-center">
+                                                    <i class="ft-download-cloud icon-bg-circle bg-red bg-darken-1"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading red darken-1">99% Server load</h6>
+                                                    <p class="notification-text font-small-3 text-muted">
+                                                        Aliquam tincidunt mauris eu
+                                                        risus.
+                                                    </p>
+                                                    <small>
+                                                        <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">
+                                                            Five
+                                                            hour ago
+                                                        </time>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="javascript:void(0)">
+                                            <div class="media">
+                                                <div class="media-left align-self-center">
+                                                    <i class="ft-alert-triangle icon-bg-circle bg-yellow bg-darken-3"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading yellow darken-3">Warning notifixation</h6>
+                                                    <p class="notification-text font-small-3 text-muted">
+                                                        Vestibulum auctor dapibus
+                                                        neque.
+                                                    </p>
+                                                    <small>
+                                                        <time class="media-meta text-muted"
+                                                              datetime="2015-06-11T18:29:20+08:00">Today</time>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="javascript:void(0)">
+                                            <div class="media">
+                                                <div class="media-left align-self-center">
+                                                    <i class="ft-check-circle icon-bg-circle bg-cyan"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">Complete the task</h6>
+                                                    <small>
+                                                        <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">
+                                                            Last
+                                                            week
+                                                        </time>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="javascript:void(0)">
+                                            <div class="media">
+                                                <div class="media-left align-self-center">
+                                                    <i class="ft-file icon-bg-circle bg-teal"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">Generate monthly report</h6>
+                                                    <small>
+                                                        <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">
+                                                            Last
+                                                            month
+                                                        </time>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-menu-footer">
+                                        <a class="dropdown-item text-muted text-center"
+                                           href="javascript:void(0)">Read all notifications</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown dropdown-user nav-item">
+                                <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                                    <span class="mr-1 hello_txt">Hello,<span class="user-name text-bold-700">@user.name</span></span><span class="avatar avatar-online">
+                                        <img src="~/app-assets/images/avatar.jpg"
+                                             alt="avatar"><i></i>
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="@Url.Action("AddEditProfile","MyCompanyProfile",new { id= user.fk_companyid})"><i class="ft-user"></i>My Company Profile</a>
+                                    @*<a class="dropdown-item" href="#"><i class="ft-settings"></i>Setting</a>*@
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="@Url.Action("Login","Home", new { Area = "" })"><i class="ft-power"></i>Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////-->
+    <!-- Start Left Menu -->
+    <div class="sidebar close" id="navbarSupportedContent">
+        <div class="logo-details">
+            <div class="flex align-center logo_navbar_section">
+                <div class="flex">
+                    <span class="logo-icon1"><img src="~/assets/img/logo-icon-collapse.png" /></span>
+                    <span class="logo_name"><img src="~/assets/img/logo.png" /></span>
+                </div>
+                <div class="desktop_close_arrow">
+                    <span class=" logo_arrow_icon logo-icon">
+                        <i class='bx bx-chevron-left '></i>
+                    </span>
+                </div>
+                <div class="mobile_close_arrow">
+                    <span class="logo_arrow_icon" onclick="myFunction1()">
+                        <i class='bx bx-chevron-left '></i>
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div>
+            <div class="main-menu-content">
+                <ul class="nav-links" id="main-menu-navigation" data-menu="menu-navigation">
+
+                    @foreach (var parentItem in headerMenu)
+                    {
+                        <li>
+                            <div class="iocn-link">
+                                @if (parentItem.ControllerName != "#" && parentItem.ActionName != "#")
+                                {
+                                    <a href="@Url.Action(parentItem.ActionName, parentItem.ControllerName, new { area = parentItem.Area })">
+                                        <span class="menu_icon">
+                                            @if (!string.IsNullOrEmpty(parentItem.Image))
+                                            {
+                                                <img src="~/assets/img/menu-icon/@parentItem.Image" alt="Icon" />
+                                            }
+                                        </span>
+                                        <span class="link_name">@parentItem.FormName.ToString()</span>
+                                    </a>
+
+
+                                }
+                                else
+                                {
+                                    <a href="javascript:void(0);">
+                                        <span class="menu_icon">
+                                            @if (!string.IsNullOrEmpty(parentItem.Image))
+                                            {
+                                                <img src="~/assets/img/menu-icon/@parentItem.Image" alt="Icon" />
+                                            }
+                                        </span>
+                                        <span class="link_name">@parentItem.FormName.ToString()</span>
+                                    </a>
+                                    <i class="bx bxs-chevron-down arrow"></i>
+                                }
+
+                                @if (headerMenu.Any(x => x.FK_ParentId == parentItem.PK_FormId))
+                                {
+                                    <i class='bx bxs-chevron-down arrow'></i>
+                                }
+                            </div>
+                            @if (enumerable.Any(x => x.FK_ParentId == parentItem.PK_FormId))
+                            {
+
+                                <ul class="sub-menu" id="nav-item">
+                                    @foreach (var childItem in enumerable.Where(x => x.FK_ParentId == parentItem.PK_FormId).OrderBy(x => x.SortId))
+                                    {
+                                        <li>
+                                            <a class="menu-item" id="menu-item" href="@Url.Action(childItem.ActionName, childItem.ControllerName, new { area = childItem.Area })">
+                                                @*menu-title*@
+                                                @childItem.FormName.ToString()
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </li>
+
+                    }
+
+
+
+
+                    @*<li>
+                                <div class="iocn-link">
+                                    <a href="#">
+                                        <span class="menu_icon"><img src="~/assets/img/menu-icon/dashboard_icon.png"/></span>
+                                        <span class="link_name">Dashboard</span>
+                                    </a>
+                                    <i class='bx bxs-chevron-down arrow'></i>
+                                </div>
+                                <ul class="sub-menu">
+                                    <li><a href="#">Vehicle Dashboard</a></li>
+                                    <li><a href="#">Usage Dashboard</a></li>
+                                </ul>
+                            </li>
+                        <li>
+                                <div class="iocn-link">
+                                    <a href="#">
+                                        <span class="menu_icon"><img src="~/assets/img/menu-icon/setting_icon.png" /></span>
+                                        <span class="link_name">Setting</span>
+                                    </a>
+                                    <i class='bx bxs-chevron-down arrow'></i>
+                                </div>
+                                <ul class="sub-menu">
+                                    <li><a href="#">Alarm Setting</a></li>
+                                    <li><a href="#">Notification Setting</a></li>
+                                    <li><a href="#">Group Setting</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <div class="iocn-link">
+                                    <a href="#">
+                                        <span class="menu_icon"><img src="~/assets/img/menu-icon/report_icon.png" /></span>
+                                        <span class="link_name">Report</span>
+                                    </a>
+                                    <i class='bx bxs-chevron-down arrow'></i>
+                                </div>
+                                <ul class="sub-menu">
+
+                                    <li><a href="#">Activity</a></li>
+                                    <li><a href="#">Movement</a></li>
+                                    <li><a href="#">Speed</a></li>
+                                    <li><a href="#">Geofence</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <div class="iocn-link">
+                                    <a href="#">
+                                        <span class="menu_icon"><img src="~/assets/img/menu-icon/driver_icon.png" /></span>
+                                        <span class="link_name">Driver Management</span>
+                                    </a>
+                                    <i class='bx bxs-chevron-down arrow'></i>
+                                </div>
+                                <ul class="sub-menu">
+
+                                    <li><a href="#">Behaviours Overview</a> </li>
+                                    <li><a href="#">Behaviours Report</a> </li>
+                                    <li><a href="#">Behaviours Details</a> </li>
+                                    <li><a href="#">Drivers</a> </li>
+                                    <li><a href="#">Assign Driver</a> </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="iocn-link">
+                                    <a href="#">
+                                        <span class="menu_icon"><img src="~/assets/img/menu-icon/vehiclemanagement_icon.png" /></span>
+                                        <span class="link_name">Vehicle Management</span>
+                                    </a>
+                                    <i class='bx bxs-chevron-down arrow'></i>
+                                </div>
+                                <ul class="sub-menu">
+
+
+                                    <li><a href="#">Expenses</a> </li>
+                                    <li><a href="#">Documents</a> </li>
+                                    <li><a href="#">Expenses &amp; Reminder Type</a> </li>
+                                    <li><a href="#">Reminders</a> </li>
+                                    <li><a href="#">Fuel GPS Analysis Report</a> </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="iocn-link">
+                                    <a href="#">
+                                        <span class="menu_icon"><img src="~/assets/img/menu-icon/immobilizer.png" /></span>
+                                        <span class="link_name">Immobilizer</span>
+                                    </a>
+
+                                </div>
+
+                            </li>
+                            <li>
+                                <div class="iocn-link">
+                                    <a href="#">
+                                        <span class="menu_icon"><img src="~/assets/img/menu-icon/fuelmanagement_icon.png" /></span>
+                                        <span class="link_name">Fuel Management</span>
+                                    </a>
+                                    <i class='bx bxs-chevron-down arrow'></i>
+                                </div>
+                                <ul class="sub-menu">
+
+
+                                    <li><a href="#">Fuel Dashboard</a> </li>
+                                    <li><a href="#">Fuel Consumption</a> </li>
+                                    <li><a href="#">Refuel &amp; Drain</a> </li>
+                                    <li><a href="#">Fuel Log</a> </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="iocn-link">
+                                    <a href="#">
+                                        <span class="menu_icon"><img src="~/assets/img/menu-icon/usermanagement_icon.png" /></span>
+                                        <span class="link_name">User Management</span>
+                                    </a>
+                                    <i class='bx bxs-chevron-down arrow'></i>
+                                </div>
+                                <ul class="sub-menu">
+
+
+                                    <li><a href="#">Users</a> </li>
+                                    <li><a href="#">Roles</a> </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <div class="iocn-link">
+                                    <a href="#">
+                                        <span class="menu_icon"><img src="~/assets/img/menu-icon/accountmanagement_icon.png" /></span>
+                                        <span class="link_name">Account Management</span>
+                                    </a>
+                                    <i class='bx bxs-chevron-down arrow'></i>
+                                </div>
+                                <ul class="sub-menu">
+
+
+                                    <li><a href="#">Accounts</a> </li>
+                                    <li><a href="#">Account Category &amp; Permission</a> </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="iocn-link">
+                                    <a href="#">
+                                        <span class="menu_icon"><img src="~/assets/img/menu-icon/installer_icon.png" /></span>
+                                        <span class="link_name">Installer</span>
+                                    </a>
+                                    <i class='bx bxs-chevron-down arrow'></i>
+                                </div>
+                                <ul class="sub-menu">
+
+
+                                    <li><a href="#">Installer Report</a> </li>
+                                    <li><a href="#">Installer Type</a> </li>
+                                    <li><a href="#">Installers</a> </li>
+                                    <li><a href="#">Installer Vehicle Mapping</a> </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <div class="iocn-link">
+                                    <a href="#">
+                                        <span class="menu_icon"><img src="~/assets/img/menu-icon/command_icon.png" /></span>
+                                        <span class="link_name">Command</span>
+                                    </a>
+                                    <i class='bx bxs-chevron-down arrow'></i>
+                                </div>
+                                <ul class="sub-menu">
+                                    <li><a href="#">Command Event List</a> </li>
+                                    <li><a href="#">Device Command Log</a> </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <div class="iocn-link">
+                                    <a href="#">
+                                        <span class="menu_icon"><img src="~/assets/img/menu-icon/package_icon.png" /></span>
+                                        <span class="link_name"> Package</span>
+                                    </a>
+
+                                </div>
+
+                            </li>*@
+
+
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- End Left Menu -->
+    <div style="display:none;">
+        <img src="~/app-assets/images/logo/logo-dark.png" width="10" alt="" style="vertical-align: middle;" />
+    </div>
+    <div class="app-content content fr-vts-content">
+        @RenderBody()
+    </div>
+
+    <div class="modal fade text-left" id="maintenanceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel8" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header2">
+                </div>
+                <div style="text-align:center;margin-top:8px;"><img class="img" style="width:20px;" src="~/app-assets/images/ico/favicon.ico" /></div>
+                <div id="MaintenanceStatusId">
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade text-left" id="ServerMaintenanceAnnouncement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel8" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header2">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 5px; color: black;"> <span aria-hidden="false">&times;</span> </button>
+                </div>
+                <div style="text-align:center"><img class="img" style="width:25px;" src="~/app-assets/images/ico/favicon.ico" /></div>
+                <div id="MaintenanceAnnouncementId"></div>
+            </div>
+        </div>
+    </div>
+    <!-- ////////////////////////////////////////////////////////////////////////////-->
+    @*<footer class="footer footer-static footer-light navbar-border navbar-shadow">
+            <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">Copyright  &copy; 2019 <a class="text-bold-800 grey darken-2" href="" target="_blank">vFleet </a>, All rights reserved. </span><span class="float-md-right d-block d-md-inline-blockd-none d-lg-block">Designed and Developed by <a class="text-bold-800 grey darken-2" href="https://www.fleetrobo.com/" target="_blank">Fleetrobo<sup>TM</sup></a> </span></p>
+        </footer>*@
+    <!-- END PAGE LEVEL JS-->
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+
+    @*<script src="~/assets/js/Common.js"></script>*@
+    @*<script src="~/assets/js/Common.min.js"></script>*@
+
+    <script>
+
+        function handleSessionExpiration(xhr) {
+            if (xhr.status === 500) {
+                // Handle 401 status code (Unauthorized) for AJAX calls
+                // Redirect to the login page
+                // showLogoutPopup();
+            }
+        }
+        //  var logoutTimer;
+        // Function to reset the timer
+        function resetLogoutTimer() {
+            //alert('before  clear logoutTimer value' + logoutTimer);
+            clearTimeout(logoutTimer);
+            // alert('after  clear logoutTimer value' + logoutTimer);
+            logoutTimer = setTimeout(function () {
+                //   alert('Before Logout logoutTimer value' + logoutTimer);
+                // Redirect or trigger logout here
+                window.location.href = '/Account/Login'; // Change this URL to your logout action
+            }, 20 * 60 * 1000); // 15 minute
+            // }, 30 * 60 * 1000); // 30 minutes
+        }
+        function showLogoutPopup() {
+            if (confirm("Your session has expired. Do you want to logout?")) {
+                // Redirect to the Logout action
+                window.location.href = '@Url.Action("Login", "Account")';
+            }
+        }
+
+        //By Vinish 06022020
+        //For Active Page Menu highlighted
+        $(function () {
+            //debugger;
+            $('#CloseBtnIdForMenu').click(function () {
+                $('#searchByMenu').val('');
+                searchMenu(this);
+            });
+            // Attach event handlers to capture user activity
+            @*$(document).on('mousemove click keydown', function () {
+                // resetLogoutTimer();
+
+            });*@
+
+            // Initialize the timer
+            // resetLogoutTimer();
+
+            var landingPageUrl = @Html.Raw(Json.Encode(SchoolMt.Common.SessionInfo.User.LandingPageURL))
+            $("ol[class='breadcrumb'] > li").each(function () {
+                if ($.trim($(this).find('a').text().toLowerCase()) == "Home".toLowerCase()) {
+                    $(this).find('a').attr('href', "" + window.location.protocol + "//" + window.location.host + "/" + landingPageUrl + "");
+                    $("#logoIconeHref").attr('href', "" + window.location.protocol + "//" + window.location.host + "/" + landingPageUrl + "");
+                }
+            });
+
+            $("ul[id='main-menu-navigation'] > li").each(function () {
+                //debugger;
+                $(this).find("a[class='menu-item']").removeAttr('style');
+            });
+
+            var bool = false;
+            var pathname = window.location.pathname;
+            var bool = false;
+            $("ul[id='main-menu-navigation'] > li").each(function (i, obj) {
+               // debugger;
+                $(this).find("ul > li").each(function () {
+                  //  debugger;
+                    var href = $(this).find("a[class='menu-item']").attr('href');
+
+                    if (href) {
+                        if ((pathname.toLowerCase().indexOf(href.toLowerCase())) >= 0) {
+                            $(this).find("a[href*='" + href + "']").css({ 'color': '#28bed0', 'font-weight': '600' });
+                            bool = true;
+                        }
+                    }
+                });
+            });
+            if (!bool) {
+                pathname = "/" + window.location.pathname.split('/')[1] + "/";
+                $("ul[id='main-menu-navigation'] > li").each(function (i, obj) {
+                    $(this).find("ul > li").each(function () {
+
+                        var href = $(this).find("a[class='menu-item']").attr('href');
+
+                        if (href) {
+                            if ((href.toLowerCase().indexOf(pathname.toLowerCase())) >= 0) {
+                                $(this).find("a[href*='" + href + "']").css({ 'color': '#28bed0', 'font-weight': '600' });
+                            }
+                        }
+                    });
+                });
+
+            }
+
+
+            $('div[class="dropdown-menu"]').find("a[class='dropdown-item'][onclick*='paging']").click(function () {
+                $("#SearchValue").attr("placeholder", $(this).text());
+            });
+            $('div[class="dropdown-menu"] > a[class="dropdown-item"][onclick*="paging"]').eq('0').trigger('click');
+
+
+        });
+
+
+        function createCookie(name, value, days) {
+            var expires;
+
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toGMTString();
+            } else {
+                expires = "";
+            }
+            document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
+        }
+
+        function readCookie(name) {
+            var nameEQ = encodeURIComponent(name) + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) === ' ')
+                    c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0)
+                    return decodeURIComponent(c.substring(nameEQ.length, c.length));
+            }
+            return null;
+        }
+
+        function eraseCookie(name) {
+            createCookie(name, "", -1);
+        }
+
+
+    </script>
+</body>
+
+</html>
+@*<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - My ASP.NET Application</title>
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+    </body>
+    </html>*@

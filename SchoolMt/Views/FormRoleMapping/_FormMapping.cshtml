@@ -83,104 +83,18 @@
             {
                 <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
             }
-            <a href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Cancel</a>
+            <a href='@Url.Action("Index")' class="btn btn-danger me-1 mb-1">Cancel</a>
+
             @*<button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>*@
         </div>
     </div>
 
 
 }
-<script type="text/javascript">
+@*<script type="text/javascript">
     $(document).ready(function () {
 
-        $("button[type='submit']").on("click", function (e) {
-            //debugger
-            if ($('#MappingFor').val() == "" || $('#MappingFor').val()==null) {
-                alert("Please Select Mapping For.");
-                e.preventDefault();
-                return false;
-            }
-            else {
-                 $('#Mapping').val($('#MappingFor').val());
-            }
-            if ($('#FK_CompanyID').val() == "") {
-                alert("Please Select Company Name.");
-                return false;
-            }
-            if ($('#FK_RoleId').val() == '0') {
-                alert("Please Select Role Name.");
-                e.preventDefault();
-                return false;
-            }
-            if ($('#FK_FormId').val() == '0' || $('#FK_FormId').val() == null || $('#FK_FormId').val() == '') {
-                alert("Please Select form Name.");
-                e.preventDefault();
-                return false;
-            }
+        
+    });
+</script>*@
 
-            if ($('#table >tbody >tr').length == 0) {
-                alert("No Data Is Available, Please Select Valid Data.");
-                e.preventDefault();
-                return false;
-           }
-        });
-
-        $('.chbAll').click(function (event) {
-            var checkboxes = $(this).closest('tr').find(':checkbox');
-            //If the checkbox is checked
-            if ($(this).is(":checked")) {
-                checkboxes.prop('checked', true)
-                //Add class on checkbox checked
-            } else {
-                //Remove class on checkbox uncheck
-                checkboxes.prop('checked', false)
-            }
-        });
-
-        $('.chbADD').click(function (event) {
-
-            var checkboxes = $(this).closest('tr').find(':checkbox');
-            //If the checkbox is checked
-            if ($(this).is(":checked")) {
-                $(this).closest('tr').find(':checkbox.chbADD').prop('checked', true)
-            } else {
-                //checkboxes.prop('checked', false)
-                $(this).closest('tr').find(':checkbox.chbADD').prop('checked', false)
-            }
-        });
-        $('.chbEDIT').click(function (event) {
-
-            var checkboxes = $(this).closest('tr').find(':checkbox');
-            //If the checkbox is checked
-            if ($(this).is(":checked")) {
-                $(this).closest('tr').find(':checkbox.chbEDIT').prop('checked', true)
-            } else {
-                //checkboxes.prop('checked', false)
-                $(this).closest('tr').find(':checkbox.chbEDIT').prop('checked', false)
-            }
-        });
-        $('.chbDELETE').click(function (event) {
-            var checkboxes = $(this).closest('tr').find(':checkbox');
-            //If the checkbox is checked
-            if ($(this).is(":checked")) {
-                $(this).closest('tr').find(':checkbox.chbDELETE').prop('checked', true)
-            } else {
-                //checkboxes.prop('checked', false)
-                $(this).closest('tr').find(':checkbox.chbDELETE').prop('checked', false)
-            }
-        });
-        $('.chbView').click(function (event) {
-
-            var checkboxes = $(this).closest('tr').find(':checkbox');
-            //If the checkbox is checked
-            if ($(this).is(":checked")) {
-                $(this).closest('tr').find(':checkbox.chbView').prop('checked', true)
-            } else {
-                //checkboxes.prop('checked', false)
-                $(this).closest('tr').find(':checkbox.chbView').prop('checked', false)
-            }
-        });
-
-    })
-
-</script>

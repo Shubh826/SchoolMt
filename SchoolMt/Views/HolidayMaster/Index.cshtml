@@ -68,8 +68,10 @@
 
 
                     <div class="row">
-                        <div id="GridDiv">
-                            @{Html.RenderAction("getHolidayDetails"); }
+                        <div class="col-md-12">
+                            <div id="GridDiv">
+                                @{Html.RenderAction("getHolidayDetails"); }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -84,8 +86,9 @@
             </div>
         </footer>*@
 </div>
-
-<script type="text/javascript">
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
 
     $(document).ready(function () {
 
@@ -141,5 +144,5 @@
 
 
 
-</script>
-
+    </script>
+    }

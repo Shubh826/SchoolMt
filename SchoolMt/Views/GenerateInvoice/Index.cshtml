@@ -67,8 +67,10 @@
 
 
                     <div class="row">
-                        <div id="GridDiv">
-                            @{Html.RenderAction("GetGenerateInvoice"); }
+                        <div class="col-md-12">
+                            <div id="GridDiv">
+                                @{Html.RenderAction("GetGenerateInvoice"); }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -83,7 +85,9 @@
             </div>
         </footer>*@
 </div>
-<script type="text/javascript">
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
 
     function DivHide() {
         $('#msgDiv').hide();
@@ -118,5 +122,6 @@
             return false;
             }
 
-</script>
+    </script>
+    }
 

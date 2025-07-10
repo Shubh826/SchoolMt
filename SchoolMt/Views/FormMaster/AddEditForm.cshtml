@@ -72,7 +72,7 @@
                                     <label class="setForm  bold">Parent Form</label>
                                 </div>
                                 <div class="col-md-7 form-group">
-                                    @Html.DropDownListFor(E => E.Fk_ParentId, new SelectList((System.Collections.IEnumerable)ViewData["formSelectlist"], "Value", "Text"), "--Select--", new { @class = "form-select select2" })
+                                    @Html.DropDownListFor(E => E.Fk_ParentId, new SelectList((System.Collections.IEnumerable)ViewData["formSelectlist"], "Value", "Text"), "--Select--", new { @class = "form-control select2" })
                                 </div>
                                 <div class="col-md-3">
                                     <label class="setForm  bold">Area Name</label>
@@ -115,17 +115,19 @@
         </div>
     </div>
 }
-@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/jquery.validate.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<link href="~/Select2/css/select2.css" rel="stylesheet" />
-<script src="~/Select2/js/select2.js"></script>
-<script type="text/javascript">
-    $(document).ready(function (e) {
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @*<script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>*@
+    <link href="~/Select2/css/select2.css" rel="stylesheet" />
+    <script src="~/Select2/js/select2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function (e) {
 
-        $('.select2').select2();
+            $('.select2').select2();
 
 
 
-    });
-</script>
+        });
+    </script>
+    }

@@ -25,42 +25,39 @@
         </div>
     </div>
 </div>
-<div class="card">
+<div class="card shadow-sm rounded">
     <div class="card-content">
         <div class="card-body">
-            <div class="row">
-                <div class="col-lg-8 offset-lg-1">
-                    @*<form class="form form-horizontal">*@
-                    <div class="form-body">
-                        <div class="row">
-                            @using (Html.BeginForm("ValidateExcelData", "StudentFeeDetails", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                            {
-
-                                <div class="col-md-12 col-sm-12">
-                                    @Html.ActionLink("Download Format", "DownloadFile", "StudentFeeDetails", new { @class = "btn btn-primary" })
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    @using (Html.BeginForm("ValidateExcelData", "StudentFeeDetails", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="form-body">
+                            <div class="row mb-3">
+                                <div class="col-md-12 text-end">
+                                    @Html.ActionLink("Download Format", "DownloadFile", "StudentFeeDetails", null, new { @class = "btn btn-primary" })
                                 </div>
+                            </div>
 
-                                <div class="col-md-3">
-                                    <label class="setForm bold">Upload File<span style="color:red">*</span></label>
-                                </div>
-                                <div class="col-md-7 form-group">
+                            <div class="row mb-4 align-items-center">
+                                <label class="col-md-3 col-form-label fw-bold">
+                                    Upload File<span class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-7">
                                     @Html.TextBoxFor(E => E.ExcelFile, new { @type = "file", @class = "form-control" })
-                                    @Html.ValidationMessageFor(E => E.ExcelFile)
-                                    @*@Html.ValidationMessageFor(E => E.FK_CompanyId, "", new { @class = "redText", @style = "color:red" })*@
+                                    @Html.ValidationMessageFor(E => E.ExcelFile, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="form-group btnShowDIv">
-                                    <div class="col-md-12 text-right">
-                                        <button type="submit" id="btnsubmitBulk" class="btn btn-primary">Submit</button>
-                                        <a href='@Url.Action("Index")' class="btn btn-primary">Cancel</a>
+                            </div>
 
-                                    </div>
+                            <div class="row mt-4">
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" id="btnsubmitBulk" class="btn btn-primary me-2">Submit</button>
+                                    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancel</a>
                                 </div>
-
-                            }
+                            </div>
 
                         </div>
-                    </div>
-                    @*</form>*@
+                    }
                 </div>
             </div>
         </div>
@@ -69,3 +66,40 @@
 
 
 
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+   
+    <script type="text/javascript">
+
+        $(document).ready(function (e) {
+
+            $('#btnsubmitBulk').click(function (e) {
+                var fileInput = $('input[type="file"]')[0];
+                var filePath = fileInput.value;
+
+                // Check if file is selected
+                if (!filePath) {
+                    alert("Please select an Excel file.");
+                    e.preventDefault();
+                    return false;
+                }
+
+                // Check Excel file extension
+                var allowedExtensions = /(\.xls|\.xlsx)$/i;
+                if (!allowedExtensions.exec(filePath)) {
+                    alert("Please upload a valid Excel file (.xls or .xlsx).");
+                    fileInput.value = ''; // Clear the file input
+                    e.preventDefault();
+                    return false;
+                }
+
+                // Optionally: show a loader here
+                return true;
+            });
+
+
+
+        });
+
+    </script>
+}

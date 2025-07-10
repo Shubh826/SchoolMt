@@ -100,6 +100,8 @@ namespace MDL
         //added on 24 march 2018//
     
         public int Fk_ClientId { get; set; }
-    
+        public string LandingPageURL { get; set; }
+
+
     }
 }

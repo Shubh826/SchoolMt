@@ -1421,4 +1421,11 @@ thead {
 	position: sticky;
 	top: -1px;
 }
+.btn btn-purple {
+	border-top: 1px solid #ddd;
+	color: #2b335e !important;
+	padding: 10px !important;
+	display: block !important;
+	font-weight: 700;
+}
 /**END :: TABLE HEADER COLOR & Freeze table Header CHANGE BY PRINCE*/

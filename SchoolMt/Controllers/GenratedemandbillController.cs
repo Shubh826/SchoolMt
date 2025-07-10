@@ -18,6 +18,8 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Windows.Interop;
+using Paragraph = iTextSharp.text.Paragraph;
 
 namespace SchoolMt.Controllers
 {
@@ -42,7 +44,7 @@ namespace SchoolMt.Controllers
         }
 
         [HttpPost]
-        public ActionResult Genratedemandbill(GenrateDmdbillMdl objGenrateDmdbillMdl)
+        public JsonResult Genratedemandbill(GenrateDmdbillMdl objGenrateDmdbillMdl)
         {
            // objGenrateDmdbillMdl = new GenrateDmdbillMdl();
             int FK_CompanyId = SessionInfo.User.fk_companyid;
@@ -52,45 +54,62 @@ namespace SchoolMt.Controllers
             List<StudentFeeDetailsMDL> _StudentFeeDetailsMDL = new List<StudentFeeDetailsMDL>();
             bool a = objBal.getFeedetails(out  _StudentFeeDetailsMDL, objGenrateDmdbillMdl);
 
-
-
-
-
-            return CreatePdf(_StudentFeeDetailsMDL);
-
-
-
-
-           // return View("AddEditRole", objGenrateDmdbillMdl);
-
+            TempData["StudentList"] = _StudentFeeDetailsMDL;
+            if (_StudentFeeDetailsMDL.Count==0)
+            {
+                return Json(0, JsonRequestBehavior.AllowGet);
+            }
+            return Json(1, JsonRequestBehavior.AllowGet);
+            // return View("AddEditRole", objGenrateDmdbillMdl);
         }
 
-        public FileResult CreatePdf(List<StudentFeeDetailsMDL> _StudentFeeDetailsMDL)
+
+        public FileResult CreatePdf()
         {
-            MemoryStream workStream = new MemoryStream();
-            StringBuilder status = new StringBuilder("");
-            DateTime dTime = DateTime.Now;
-            // file name to be created
-            string strPDFFileName = string.Format("Demandbill" + dTime.ToString("yyyyMMdd") + "-" + ".pdf");
-           // Document doc = new Document();
-            Document doc = new Document(PageSize.A4, 25, 25, 25, 15);
-            doc.SetMargins(0f, 0f, 0f, 0f);
-            // Create PDF Table with 5 columns
-            PdfPTable tableLayout = new PdfPTable(2);
-            doc.SetMargins(0f, 0f, 0f, 0f);
-            // Create PDF Table
-            // file will created in this path
-            string strAttachment = Server.MapPath("~/Downloadss/" + strPDFFileName);
-            PdfWriter.GetInstance(doc, workStream).CloseStream = false;
-            doc.Open();
-            // Add Content to PDF
-            doc.Add(Add_Content_To_PDF(tableLayout, _StudentFeeDetailsMDL,doc));
-            // Closing the document
-            doc.Close();
-            byte[] byteInfo = workStream.ToArray();
-            workStream.Write(byteInfo, 0, byteInfo.Length);
-            workStream.Position = 0;
-            return File(workStream, "application/pdf", strPDFFileName);
+            try
+            {
+                TempData.Keep();
+                List<StudentFeeDetailsMDL> _StudentFeeDetailsMDL = TempData["StudentList"] as List<StudentFeeDetailsMDL>;
+
+                // Validate the list before generating PDF
+                if (_StudentFeeDetailsMDL == null || !_StudentFeeDetailsMDL.Any())
+                {
+                    // Return an empty PDF or a message PDF
+                    byte[] emptyPdf = GenerateErrorPdf("No student fee data available.");
+                    return File(emptyPdf, "application/pdf", "NoData.pdf");
+                }
+
+                MemoryStream workStream = new MemoryStream();
+                DateTime dTime = DateTime.Now;
+                string strPDFFileName = $"Demandbill_{dTime:yyyyMMdd}.pdf";
+
+                Document doc = new Document(PageSize.A4, 25, 25, 25, 15);
+                doc.SetMargins(0f, 0f, 0f, 0f);
+                PdfPTable tableLayout = new PdfPTable(2);
+
+                string strAttachment = Server.MapPath("~/Downloadss/" + strPDFFileName);
+
+                PdfWriter.GetInstance(doc, workStream).CloseStream = false;
+                doc.Open();
+
+                // Add your content
+                doc.Add(Add_Content_To_PDF(tableLayout, _StudentFeeDetailsMDL, doc));
+                doc.Close();
+
+                byte[] byteInfo = workStream.ToArray();
+                workStream.Write(byteInfo, 0, byteInfo.Length);
+                workStream.Position = 0;
+
+                return File(workStream, "application/pdf", strPDFFileName);
+            }
+            catch (Exception ex)
+            {
+                // Optionally log the error here
+
+                // Return an error PDF message instead of crashing
+                byte[] errorPdf = GenerateErrorPdf("An error occurred while generating the PDF.");
+                return File(errorPdf, "application/pdf", "Error.pdf");
+            }
         }
 
         protected PdfPTable Add_Content_To_PDF(PdfPTable tableLayout, List<StudentFeeDetailsMDL> _StudentFeeDetailsMDL, Document doc)
@@ -429,5 +448,19 @@ namespace SchoolMt.Controllers
                 BackgroundColor = new iTextSharp.text.BaseColor(255, 255, 255)
             });
         }
+        private byte[] GenerateErrorPdf(string message)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                Document doc = new Document(PageSize.A4);
+                PdfWriter.GetInstance(doc, ms);
+                doc.Open();
+                doc.Add(new Paragraph(message));
+                doc.Close();
+                return ms.ToArray();
+            }
+        }
+
+
     }
 }

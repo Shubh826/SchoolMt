@@ -1815,7 +1815,7 @@ border-radius:.25rem
 height:1.5em;
 border-radius:.25rem
 }
-.form-select {
+.form-control {
 	display: block;
 	width: 100%;
 	padding: .375rem 1.75rem .375rem .75rem;
@@ -1835,30 +1835,30 @@ border-radius:.25rem
 	-moz-appearance: none;
 	appearance: none
 }
-.form-select:focus {
+.form-control:focus {
 	border-color: #a1afdf;
 	outline: 0;
 	box-shadow: 0 0 0 .25rem rgba(67,94,190,.25)
 }
-.form-select[multiple], .form-select[size]:not([size="1"]) {
+.form-control[multiple], .form-control[size]:not([size="1"]) {
 	padding-right: .75rem;
 	background-image: none
 }
-.form-select:disabled {
+.form-control:disabled {
 	color: #6c757d;
 	background-color: #e9ecef
 }
-.form-select:-moz-focusring {
+.form-control:-moz-focusring {
 color:transparent;
 text-shadow:0 0 0 #607080
 }
-.form-select-sm {
+.form-control-sm {
 	padding-top: .25rem;
 	padding-bottom: .25rem;
 	padding-left: .5rem;
 	font-size: .875rem
 }
-.form-select-lg {
+.form-control-lg {
 	padding-top: .5rem;
 	padding-bottom: .5rem;
 	padding-left: 1rem;
@@ -2059,7 +2059,7 @@ background-color:#adb5bd
 .form-floating {
 	position: relative
 }
-.form-floating>.form-control, .form-floating>.form-select {
+.form-floating>.form-control, .form-floating>.form-control {
 	height: calc(3.5rem + 2px);
 	padding: 1rem .75rem
 }
@@ -2105,7 +2105,7 @@ color:transparent
 padding-top:1.625rem;
 padding-bottom:.625rem
 }
-.form-floating>.form-select {
+.form-floating>.form-control {
 	padding-top: 1.625rem;
 	padding-bottom: .625rem
 }
@@ -2117,7 +2117,7 @@ padding-bottom:.625rem
 	opacity: .65;
 	transform: scale(.85) translateY(-.5rem) translateX(.15rem)
 }
-.form-floating>.form-control:focus~label, .form-floating>.form-control:not(:placeholder-shown)~label, .form-floating>.form-select~label {
+.form-floating>.form-control:focus~label, .form-floating>.form-control:not(:placeholder-shown)~label, .form-floating>.form-control~label {
 	opacity: .65;
 	transform: scale(.85) translateY(-.5rem) translateX(.15rem)
 }
@@ -2132,13 +2132,13 @@ transform:scale(.85) translateY(-.5rem) translateX(.15rem)
 	align-items: stretch;
 	width: 100%
 }
-.input-group>.form-control, .input-group>.form-select {
+.input-group>.form-control, .input-group>.form-control {
 	position: relative;
 	flex: 1 1 auto;
 	width: 1%;
 	min-width: 0
 }
-.input-group>.form-control:focus, .input-group>.form-select:focus {
+.input-group>.form-control:focus, .input-group>.form-control:focus {
 	z-index: 3
 }
 .input-group .btn {
@@ -2162,17 +2162,17 @@ transform:scale(.85) translateY(-.5rem) translateX(.15rem)
 	border: 1px solid #dce7f1;
 	border-radius: .25rem
 }
-.input-group-lg>.btn, .input-group-lg>.form-control, .input-group-lg>.form-select, .input-group-lg>.input-group-text {
+.input-group-lg>.btn, .input-group-lg>.form-control, .input-group-lg>.form-control, .input-group-lg>.input-group-text {
 	padding: .5rem 1rem;
 	font-size: 1.25rem;
 	border-radius: .3rem
 }
-.input-group-sm>.btn, .input-group-sm>.form-control, .input-group-sm>.form-select, .input-group-sm>.input-group-text {
+.input-group-sm>.btn, .input-group-sm>.form-control, .input-group-sm>.form-control, .input-group-sm>.input-group-text {
 	padding: .25rem .5rem;
 	font-size: .875rem;
 	border-radius: .2rem
 }
-.input-group-lg>.form-select, .input-group-sm>.form-select {
+.input-group-lg>.form-control, .input-group-sm>.form-control {
 	padding-right: 1.75rem
 }
 .input-group.has-validation>.dropdown-toggle:nth-last-child(n+4), .input-group.has-validation>:nth-last-child(n+3):not(.dropdown-toggle):not(.dropdown-menu), .input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3), .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
@@ -2223,14 +2223,14 @@ box-shadow:0 0 0 .25rem rgba(25,135,84,.25)
 padding-right:calc(1.5em + .75rem);
 background-position:top calc(.375em + .1875rem) right calc(.375em + .1875rem)
 }
-.form-select.is-valid, .was-validated .form-select:valid {
+.form-control.is-valid, .was-validated .form-control:valid {
 border-color:#198754;
 padding-right:calc(.75em + 2.3125rem);
 background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E"), url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3E%3C/svg%3E");
 background-position:right .75rem center, center right 1.75rem;
 background-size:16px 12px, calc(.75em + .375rem) calc(.75em + .375rem)
 }
-.form-select.is-valid:focus, .was-validated .form-select:valid:focus {
+.form-control.is-valid:focus, .was-validated .form-control:valid:focus {
 border-color:#198754;
 box-shadow:0 0 0 .25rem rgba(25,135,84,.25)
 }
@@ -2288,14 +2288,14 @@ box-shadow:0 0 0 .25rem rgba(220,53,69,.25)
 padding-right:calc(1.5em + .75rem);
 background-position:top calc(.375em + .1875rem) right calc(.375em + .1875rem)
 }
-.form-select.is-invalid, .was-validated .form-select:invalid {
+.form-control.is-invalid, .was-validated .form-control:invalid {
 border-color:#dc3545;
 padding-right:calc(.75em + 2.3125rem);
 background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E"), url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545'%3E%3Ccircle cx='6' cy='6' r='4.5'/%3E%3Cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3E%3Ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3E%3C/svg%3E");
 background-position:right .75rem center, center right 1.75rem;
 background-size:16px 12px, calc(.75em + .375rem) calc(.75em + .375rem)
 }
-.form-select.is-invalid:focus, .was-validated .form-select:invalid:focus {
+.form-control.is-invalid:focus, .was-validated .form-control:invalid:focus {
 border-color:#dc3545;
 box-shadow:0 0 0 .25rem rgba(220,53,69,.25)
 }

@@ -47,8 +47,10 @@
 
 
                     <div class="row">
-                        <div id="GridDiv">
-                            @*@{Html.RenderAction("getClassList"); }*@
+                        <div class="col-md-12">
+                            <div id="GridDiv">
+                                @*@{Html.RenderAction("getClassList"); }*@
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -56,7 +58,9 @@
         </section>
     </div>
 </div>
-<script type="text/javascript">
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
 
     $(document).ready(function (e) {
         paging(1);
@@ -94,4 +98,5 @@
         });
         return false;
     }
-</script>
+    </script>
+    }

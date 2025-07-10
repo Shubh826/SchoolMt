@@ -2,10 +2,6 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link href="~/css/nanoscroller.css" rel="stylesheet" />
-<link rel="stylesheet" type="text/css" href="~/assets/lib/stroke-7/style.css" />
-<link rel="stylesheet" type="text/css" href="~/assets/lib/jquery.nanoscroller/css/nanoscroller.css" />
-<link href="~/assets/lib/lightbox/css/lightbox.css" rel="stylesheet" />
 
 <div id="main-content">
     <div class="page-heading">
@@ -83,8 +79,10 @@
                                 }
                                 <input type="image" class="iconSet" title="Download PDF" src="~/App_Images/pdf.jpg" alt="Submit" id="PDF">
                             </div>*@
-                        <div id="GridDiv">
-                            @*@{Html.RenderAction("GetStudentData"); }*@
+                        <div class="col-md-12">
+                            <div id="GridDiv">
+                                @*@{Html.RenderAction("GetStudentData"); }*@
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -117,12 +115,19 @@
     </div>
 </div>
 
-<script src="~/js/jspdf.debug.js"></script>
-<script src="~/js/jspdf.plugin.autotable.js"></script>
-<script src="~/js/ExcelPDF.js"></script>
-<script src="~/Scripts/jquery.table2excel.js"></script>
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="~/css/nanoscroller.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/assets/lib/stroke-7/style.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/lib/jquery.nanoscroller/css/nanoscroller.css" />
+    <link href="~/assets/lib/lightbox/css/lightbox.css" rel="stylesheet" />
 
-<script type="text/javascript">
+    <script src="~/js/jspdf.debug.js"></script>
+    <script src="~/js/jspdf.plugin.autotable.js"></script>
+    <script src="~/js/ExcelPDF.js"></script>
+    @*<script src="~/Scripts/jquery.table2excel.js"></script>*@
+    <script src="~/js/jquery.table2excel.js"></script>
+    <script type="text/javascript">
 
     $(document).ready(function (e) {
         //debugger
@@ -166,4 +171,5 @@
         $('#img').attr('width', 100);
         $('#myModal1').modal('show');
     }
-</script>
+    </script>
+}

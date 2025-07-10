@@ -1,0 +1,246 @@
+.license-flow {
+  box-shadow: none;
+}
+.license-flow .col-lg-1, .license-flow .col-lg-10, .license-flow .col-lg-11, .license-flow .col-lg-12, .license-flow .col-lg-2, .license-flow .col-lg-3, .license-flow .col-lg-4, .license-flow .col-lg-5, .license-flow .col-lg-6, .license-flow .col-lg-7, .license-flow .col-lg-8, .license-flow .col-lg-9, .license-flow .col-md-1, .license-flow .col-md-10, .license-flow .col-md-11, .license-flow .col-md-12, .license-flow .col-md-2, .license-flow .col-md-3, .license-flow .col-md-4, .license-flow .col-md-5, .license-flow .col-md-6, .license-flow .col-md-7, .license-flow .col-md-8, .license-flow .col-md-9, .license-flow .col-sm-1, .license-flow .col-sm-10, .license-flow .col-sm-11, .license-flow .col-sm-12, .license-flow .col-sm-2, .license-flow .col-sm-3, .license-flow .col-sm-4, .license-flow .col-sm-5, .license-flow .col-sm-6, .license-flow .col-sm-7, .license-flow .col-sm-8, .license-flow .col-sm-9, .license-flow .col-xs-1, .license-flow .col-xs-10, .license-flow .col-xs-11, .license-flow .col-xs-12, .license-flow .col-xs-2, .license-flow .col-xs-3, .license-flow .col-xs-4, .license-flow .col-xs-5, .license-flow .col-xs-6, .license-flow .col-xs-7, .license-flow .col-xs-8, .license-flow .col-xs-9, .license-flow .container, .license-flow .container-fluid {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.license-flow .top-sec.top-sec-card {
+  margin-top: 5px;
+}
+.license-flow .mt-0 {
+  margin-top: 0px !important;
+}
+.license-flow .top-sec-card .card-top-text {
+  display: flex;
+}
+.license-flow .top-sec-card .card-top-text .heading_txt {
+  display: flex;
+  align-items: center;
+}
+.license-flow .top-sec-card .card-top-text .info-icon-middle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.license-flow .top-sec-card .top-sec-card-sec {
+  padding: 8px 0px !important;
+  box-shadow: none;
+  max-height: 240px;
+  min-height: 240px;
+  box-shadow: 0px 0px 3px 3px #edeaea;
+  border: 0px;
+}
+.license-flow .top-sec-card .top-sec-card-sec .card-head-icon {
+  float: right;
+  display: flex;
+  align-items: center;
+}
+.license-flow .top-sec-card .top-sec-card-sec .card-head-icon span {
+  font-size: 16px;
+  margin-left: 10px;
+  font-weight: 500;
+  color: #161616;
+}
+.license-flow .top-sec-card h4 {
+  color: #000;
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+.license-flow .top-sec-card p {
+  color: #FF0000;
+  font-weight: 700;
+  font-size: 20px;
+  position: relative;
+  margin-bottom: 0px;
+}
+.license-flow .top-sec-card-sec.driver_performance {
+  box-shadow: none;
+  max-height: unset;
+  margin-bottom: 0px;
+  /* Style the tab content */
+}
+.license-flow .top-sec-card-sec.driver_performance .tabcontent {
+  border: 0px;
+  border-top: none;
+  margin-bottom:20px;
+  /* width */
+  /* Track */
+  /* Handle */
+  /* Handle on hover */
+}
+.license-flow .top-sec-card-sec.driver_performance .tabcontent .top_head_txt {
+  font-size: 18px;
+  margin-left: 0px;
+  font-weight: 700;
+  color: #161616;
+  padding: 10px 0px;
+}
+.license-flow .top-sec-card-sec.driver_performance .tabcontent .topperformerscroll {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+.license-flow .top-sec-card-sec.driver_performance .tabcontent .topperformerscroll::-webkit-scrollbar {
+  width: 0px;
+}
+.license-flow .top-sec-card-sec.driver_performance .tabcontent .topperformer_card:last-child {
+  margin-bottom: 0px;
+}
+.license-flow .top-sec-card-sec.driver_performance .tabcontent .cardui_sec:last-child {
+  margin-bottom: 0px;
+}
+
+@media (min-width: 992px) {
+    .license-flow .top-sec-card-sec.driver_performance .tabcontent .cardui_sec .col-lg-3 {
+        max-width: 24%;
+    }
+}
+        .license-flow .top-sec-card-sec.driver_performance .tabcontent .cardui_sec {
+  display: flex;
+  gap: 0px 16px;
+  margin-bottom: 8px;
+}
+.license-flow .top-sec-card-sec.driver_performance .tabcontent .cardui_sec a {
+  color: #000;
+}
+.license-flow .top-sec-card-sec.driver_performance .tabcontent .cardui_sec .topperformer_card {
+  border: #ccd9d1 solid 1px;
+  background: #fff;
+  padding: 0px 0px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.license-flow .top-sec-card-sec.driver_performance .tabcontent .cardui_sec .topperformer_card .top_perform_top_sec {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 12px;
+}
+.license-flow .top-sec-card-sec.driver_performance .tabcontent .cardui_sec .topperformer_card .top_perform_top_sec .alert_thumb {
+  font-size: 14px;
+}
+.license-flow .top-sec-card-sec.driver_performance .tabcontent .cardui_sec .topperformer_card .top_perform_top_sec .alert_thumb h4 {
+  margin: 0px;
+  font-weight: 600;
+  font-size: 15px;
+}
+.license-flow .top-sec-card-sec.driver_performance .tabcontent .cardui_sec .topperformer_card .bottom-card-text {
+  display: inline-block;
+  border-top: #ccd9d1 solid 1px;
+  width: 100%;
+  color: #575757;
+  font-weight: 500;
+  padding: 5px 12px;
+  max-height: 195px;
+  overflow-y: auto;
+  margin-top: 0px;
+}
+.license-flow .top-sec-card-sec.driver_performance .tabcontent .cardui_sec .topperformer_card .bottom-card-text h5 {
+  font-size: 13px;
+  margin-bottom: 5px;
+  font-weight: normal;
+  border-bottom: 0;
+  padding-bottom: 0px;
+  color: #575757;
+  display: flex;
+  justify-content: space-between;
+}
+.license-flow .top-sec-card-sec.driver_performance .tabcontent .cardui_sec .topperformer_card .bottom-card-text h5 span {
+  font-weight: 700;
+  color: #575757;
+}
+.license-flow .top-sec-card-sec.driver_performance .bottom-card-text1 {
+  display: inline-block;
+  padding: 0;
+  border-top: #EFEFEF solid 1px;
+  width: 100%;
+  font-weight: normal;
+  max-height: unset;
+  overflow-y: unset;
+  margin-top: 10px;
+}
+.license-flow .top-sec-card-sec.driver_performance .bottom-card-text1 img {
+  display: unset;
+  width: unset;
+}
+.license-flow .btn-primary.pull-right.filter_btn img {
+  max-width: 24px;
+}
+.license-flow .btn-primary.pull-right.filter_btn span {
+  padding-right: 0px !important;
+}
+.license-flow .btn-primary.pull-right.filter_btn .navbar-right {
+  padding: 0px !important;
+  margin-right: 0px;
+  margin-bottom: 0;
+}
+
+#driver_scoreboard_slide .owl-carousel.e-invoice_carousel:hover .owl-next {
+  display: block;
+}
+#driver_scoreboard_slide .owl-carousel .owl-dots {
+  display: none;
+}
+#driver_scoreboard_slide .owl-carousel.e-invoice_carousel:hover .owl-nav [class*=owl-] {
+  right: unset;
+  left: unset;
+  opacity: 1;
+  margin-right: 5px;
+}
+#driver_scoreboard_slide .owl-nav [class*=owl-]:hover {
+  background: #00283C !important;
+  color: #FFF;
+  text-decoration: none;
+}
+#driver_scoreboard_slide .owl-nav {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  display: flex;
+  flex-direction: row-reverse;
+}
+#driver_scoreboard_slide .owl-nav button {
+  transform: unset;
+}
+#driver_scoreboard_slide .owl-nav button:focus {
+        outline:none !important;
+}
+
+#driver_scoreboard_slide .owl-nav [class*=owl-] {
+  width: 18px;
+  height: 25px;
+  margin-right: 5px;
+  margin-top: 0px;
+  display: block;
+  position: relative;
+  top: 50%;
+  z-index: 10;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease 0s;
+  color: #fff;
+  background-color: #00283C !important;
+  text-align: center;
+  z-index: 200;
+  border: 0px !important;
+  box-sizing: initial;
+  opacity: unset;
+  border-radius: 50%;
+}
+#driver_scoreboard_slide .owl-carousel .owl-nav [class*=owl-] i {
+  line-height: 37px;
+  color: #262626;
+  font-size: 20px;
+  color: #fff;
+  position: relative;
+  top: -6px;
+}
+#driver_scoreboard_slide .owl-carousel:hover .owl-nav [class*=owl-] {
+  right: unset;
+  left: unset;
+  opacity: 1;
+  margin-right: 5px;
+}

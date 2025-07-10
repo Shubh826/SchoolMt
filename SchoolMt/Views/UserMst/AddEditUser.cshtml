@@ -76,7 +76,7 @@
                                         <label class="setForm bold">Role Name<span style="color:red">*</span></label>
                                     </div>
                                     <div class="col-md-7 form-group">
-                                        @Html.DropDownListFor(E => E.roleid, new SelectList((System.Collections.IEnumerable)ViewData["Rolelist"], "ID", "Value"), "--Select--", new { @class = "form-select select2" })
+                                        @Html.DropDownListFor(E => E.roleid, new SelectList((System.Collections.IEnumerable)ViewData["Rolelist"], "ID", "Value"), "--Select--", new { @class = "form-control select2" })
                                         @Html.ValidationMessageFor(E => E.roleid, "", new { @class = "redText", @style = "color:red" })
                                     </div>
 
@@ -171,7 +171,7 @@
                                                                                                 new SelectListItem() { Value = "Active", Text ="Active",Selected=true },
                                                                                                 new SelectListItem() { Value="InActive", Text="InActive"},
 
-                                                                                              }, new { @class = "form-select select2" })
+                                                                                              }, new { @class = "form-control select2" })
                                     </div>
 
                                     <div class="col-sm-9 d-flex justify-content-end">
@@ -187,24 +187,27 @@
         </div>
     </div>
 }
-<link href="~/assets/css/jquery.datetimepicker.css" rel="stylesheet" />
-<script src="~/Scripts/jquery.datetimepicker.min.js"></script>
-<script src="~/Scripts/jquery.datetimepicker.full.js"></script>
-<link href="~/Select2/css/select2.css" rel="stylesheet" />
-<script src="~/Select2/js/select2.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.select2').select2();
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="~/assets/css/jquery.datetimepicker.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.datetimepicker.min.js"></script>
+    <script src="~/Scripts/jquery.datetimepicker.full.js"></script>
+    <link href="~/Select2/css/select2.css" rel="stylesheet" />
+    <script src="~/Select2/js/select2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.select2').select2();
 
 
-    });
-    $('#DateOfBirth').datetimepicker({
-        format: "d/m/Y",
-        //maxDate: 0,
-        defaultDate: new Date(),
-        timepicker: false,
-        //defaultTime: '00:00',
+        });
+        $('#DateOfBirth').datetimepicker({
+            format: "d/m/Y",
+            //maxDate: 0,
+            defaultDate: new Date(),
+            timepicker: false,
+            //defaultTime: '00:00',
 
 
-    });
-</script>
+        });
+    </script>
+    }

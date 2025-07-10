@@ -8,7 +8,7 @@
 
 @using (Html.BeginForm("AddEditClass", "Class"))
 {
-    @Html.HiddenFor(E=>E.ClassId)
+    @Html.HiddenFor(E => E.ClassId)
     <div class="page-heading mb-0">
         <div class="page-title">
             <div class="row">
@@ -40,7 +40,7 @@
                                     <label class="setForm bold">Company Name<span style="color:red">*</span></label>
                                 </div>
                                 <div class="col-md-7 form-group ClientDiv">
-                                    @Html.DropDownListFor(E => E.CompID, new SelectList((System.Collections.IEnumerable)ViewData["CompanyList"], "ID", "Value"), "--Select--", new { @class = "form-select select2" })
+                                    @Html.DropDownListFor(E => E.CompID, new SelectList((System.Collections.IEnumerable)ViewData["CompanyList"], "ID", "Value"), "--Select--", new { @class = "form-control select2" })
                                     @Html.ValidationMessageFor(E => E.CompID, "", new { @class = "redText", @style = "color:red" })
                                 </div>
                                 <div class="col-md-3">
@@ -68,7 +68,7 @@
                                                                                             new SelectListItem() { Value = "Active", Text ="Active",Selected=true },
                                                                                             new SelectListItem() { Value="InActive", Text="InActive"},
 
-                                                                                          }, new { @class = "form-select select2" })
+                                                                                          }, new { @class = "form-control select2" })
                                 </div>
 
                                 <div class="col-sm-9 d-flex justify-content-end center">
@@ -85,4 +85,15 @@
     </div>
 }
 
-@Scripts.Render("~/bundles/jqueryval")
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="~/app-assets/vendors/css/forms/selects/select2.min.css" rel="stylesheet" />
+    <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $('.select2').select2();
+        });
+    </script>
+}

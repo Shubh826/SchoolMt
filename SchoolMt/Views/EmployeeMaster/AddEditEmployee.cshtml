@@ -59,7 +59,7 @@
                                     <label class="setForm bold">School Name<span style="color:red">*</span></label>
                                 </div>
                                 <div class="col-md-7 form-group ClientDiv">
-                                    @Html.DropDownListFor(E => E.FK_CompanyId, new SelectList((System.Collections.IEnumerable)ViewData["CompanyList"], "ID", "Value"), "--Select--", new { @class = "form-select select2" })
+                                    @Html.DropDownListFor(E => E.FK_CompanyId, new SelectList((System.Collections.IEnumerable)ViewData["CompanyList"], "ID", "Value"), "--Select--", new { @class = "form-control select2" })
                                     @Html.ValidationMessageFor(E => E.FK_CompanyId, "", new { @class = "redText", @style = "color:red" })
                                 </div>
                                 <div class="col-md-3">
@@ -118,7 +118,7 @@
                                     <label class="setForm bold">EMP. ID-Proof Name</label>
                                 </div>
                                 <div class="col-md-7 form-group ClientDiv">
-                                    @Html.DropDownListFor(E => E.FK_EMPProofId, new SelectList((System.Collections.IEnumerable)ViewData["IDCardlist"], "ID", "Value"), "--Select--", new { @class = "form-select select2" })
+                                    @Html.DropDownListFor(E => E.FK_EMPProofId, new SelectList((System.Collections.IEnumerable)ViewData["IDCardlist"], "ID", "Value"), "--Select--", new { @class = "form-control select2" })
                                 </div>
                                 <div class="col-md-3">
                                     <label class="setForm  bold">Employee ID-Proof</label>
@@ -149,14 +149,17 @@
 
 }
 
-@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Select2/js/select2.min.js"></script>
-<link href="~/Select2/css/select2.min.css" rel="stylesheet" />
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @*<script src="~/Select2/js/select2.min.js"></script>
+    <link href="~/Select2/css/select2.min.css" rel="stylesheet" />*@
+
+    <link href="~/app-assets/vendors/css/forms/selects/select2.min.css" rel="stylesheet" />
+    <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
 
 
 
-
-<script type="text/javascript">
+    <script type="text/javascript">
 
 
         $(document).ready(function () {
@@ -168,7 +171,7 @@
                 //$("#EmployeeLocationModal").modal('show');
             });
 
-            
+
             $('#btnSubmit').click(function (e) { Validate(e); });
 
             if ($('#PK_Employee_ID').val() != '0') {
@@ -256,7 +259,7 @@
                 e.preventDefault();
                 return false;
             }
-           AssignHiddenFieldValues();
+            AssignHiddenFieldValues();
         }
 
         //Assigns values to hidden fields taken in form
@@ -281,5 +284,6 @@
             }
         }
 
-</script>
+    </script>
+}
 

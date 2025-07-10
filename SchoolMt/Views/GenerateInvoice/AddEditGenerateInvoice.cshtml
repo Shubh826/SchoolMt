@@ -47,14 +47,14 @@
                                 <label class="setForm bold">School Name<span style="color:red">*</span></label>
                             </div>
                             <div class="col-md-7 form-group ClientDiv">
-                                @Html.DropDownListFor(E => E.FK_CompanyId, new SelectList((System.Collections.IEnumerable)ViewData["CompanyList"], "ID", "Value"), "--Select--", new { @class = "form-select select2" })
+                                @Html.DropDownListFor(E => E.FK_CompanyId, new SelectList((System.Collections.IEnumerable)ViewData["CompanyList"], "ID", "Value"), "--Select--", new { @class = "form-control select2" })
                                 @Html.ValidationMessageFor(E => E.FK_CompanyId, "", new { @class = "redText", @style = "color:red" })
                             </div>
                             <div class="col-md-3">
                                 <label class="setForm bold">Class Name<span style="color:red">*</span></label>
                             </div>
                             <div class="col-md-7 form-group">
-                                @Html.DropDownListFor(E => E.ClassName, new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Value", "Value"), "--Select--", new { @class = "form-select select2" })
+                                @Html.DropDownListFor(E => E.ClassName, new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Value", "Value"), "--Select--", new { @class = "form-control select2" })
                                 @Html.ValidationMessageFor(E => E.ClassName, "", new { @class = "redText", @style = "color:red" })
                             </div>
                             <div class="col-md-3">
@@ -62,14 +62,14 @@
                             </div>
                             <div class="col-md-7 form-group">
                                 @Html.DropDownListFor(E => E.FK_StudentId, new SelectList(Enumerable.Empty<SelectListItem>
-                                                                 (), "ID", "Value"), "--Select--", new { @class = "form-select select2" })
+                                                                 (), "ID", "Value"), "--Select--", new { @class = "form-control select2" })
                                 @Html.ValidationMessageFor(E => E.FK_StudentId, "", new { @class = "redText", @style = "color:red" })
                             </div>
                             <div class="col-md-3">
                                 <label class="setForm bold">Year<span style="color:red">*</span></label>
                             </div>
                             <div class="col-md-7 form-group">
-                                @Html.DropDownListFor(E => E.Year, new SelectList((System.Collections.IEnumerable)ViewData["AcYearlist"], "ID", "Value"), "--Select--", new { @class = "form-select select2" })
+                                @Html.DropDownListFor(E => E.Year, new SelectList((System.Collections.IEnumerable)ViewData["AcYearlist"], "ID", "Value"), "--Select--", new { @class = "form-control select2" })
                                 @Html.ValidationMessageFor(E => E.Year, "", new { @class = "redText", @style = "color:red" })
                             </div>
                             <div class="col-md-3">
@@ -78,7 +78,7 @@
                             <div class="col-md-7 form-group">
                                 @*@Html.DropDownListFor(E => E.Month, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Value"), new { @class = "form-control", @multiple = "multiple", placeholder = "--Select--", style = "width:100%" })*@
 
-                                @Html.DropDownListFor(E => E.Month, new SelectList((System.Collections.IEnumerable)ViewData["MonthList"], "Value", "Value"), "--Select--", new { @class = "form-select"})
+                                @Html.DropDownListFor(E => E.Month, new SelectList((System.Collections.IEnumerable)ViewData["MonthList"], "Value", "Value"), "--Select--", new { @class = "form-control"})
                                 @Html.ValidationMessageFor(E => E.Month, "", new { @class = "redText", @style = "color:red" })
                             </div>
                             <div class="row">

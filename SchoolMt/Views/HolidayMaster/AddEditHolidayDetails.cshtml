@@ -3,9 +3,8 @@
     ViewBag.Title = "AddEditHolidayDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+
+
 
 <div class="page-heading mb-0">
     <div class="page-title">
@@ -16,7 +15,7 @@
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Add/Edit Holiday</li>
                     </ol>
                 </nav>
@@ -30,65 +29,99 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-8 offset-lg-1">
-                    @*<form class="form form-horizontal">*@
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
                     <div class="form-body">
-                        <div class="row">
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                            <div class="col-md-3 ClientDiv">
-                                <label class="setForm bold">Holyday Type<span style="color:red">*</span></label>
-                            </div>
-                            <div class="col-md-7 form-group ClientDiv">
-                                @Html.DropDownListFor(E => E.HolidayType, new List<SelectListItem>()
-                                                                                                         {
-                                                                                                              new SelectListItem() { Value = "Other", Text = "Other",Selected = true},
-                                                                                                              new SelectListItem() { Value = "Week Off", Text = "Week Off" },
-
-                                                                                                         }, new { style = "width: 100%;", @class = "form-control" })
-                            </div>
+                        <div class="row mb-3">
                             <div class="col-md-3">
-                                <label class="setForm  bold">Holiday Name<span style="color:red">*</span></label>
+                                <label class="setForm bold">Holiday Type <span style="color:red">*</span></label>
                             </div>
-                            <div class="col-md-7 form-group">
-                                @Html.TextBoxFor(E => E.HolidayName, new { @class = "form-control", maxlength = "50", @placeholder = "Holiday Name" })
-                                @Html.ValidationMessageFor(E => E.HolidayName, "", new { @class = "redText", @style = "color:red" })
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="setForm  bold">Select Date<span style="color:red">*</span></label>
-                            </div>
-                            <div class="col-md-7 form-group">
-                                @Html.TextBoxFor(E => E.HolidayDate, new { @class = "form-control Date", @placeholder = "Holiday Date", @readonly = "readonly", @Style = "background:white" })
-                            </div>
-                            <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span> </span>
-                            <div class="col-md-3">
-                                <label class="setForm  bold">Status<span style="color:red">*</span></label>
-                            </div>
-                            <div class="col-md-7 form-group">
-                                @Html.CheckBoxFor(E => E.IsActive, new { @checked = true })
-                            </div>
-                            <div class="col-md-3 ClientDiv">
-                                <label class="setForm bold">Applicability<span style="color:red">*</span></label>
-                            </div>
-                            <div class="col-md-7 form-group">
-                                @Html.DropDownListFor(E => E.Applicability, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "Value"), new { @class = "form-control ddlMultiSlectBox", @multiple = "multiple", @placeholder = "Please Select Applicability" })
-                            </div>
-                            <input type="hidden" id="hdnCityName" value="@Model.CityName" />
-                            <input type="hidden" id="hdnCityId" value="@Model.FK_City_Id" />
-
-                            <div class="col-sm-9 d-flex justify-content-end center">
-                                <button type="submit" class="btn btn-primary me-1 mb-1" id="btnsubmit">Submit</button>
-                                <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(E => E.HolidayType, new List<SelectListItem>
+                                {
+                                    new SelectListItem { Value = "Other", Text = "Other", Selected = true },
+                                    new SelectListItem { Value = "Week Off", Text = "Week Off" }
+                                }, "--Select Type--", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(E => E.HolidayType, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                    </div>
-                    @*</form>*@
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="setForm bold">Holiday Name <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.TextBoxFor(E => E.HolidayName, new { @class = "form-control", maxlength = "50", placeholder = "Holiday Name" })
+                                @Html.ValidationMessageFor(E => E.HolidayName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="setForm bold">Select Date <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                    @Html.TextBoxFor(E => E.HolidayDate, new
+                                    {
+                                        @class = "form-control Date",
+                                        placeholder = "Holiday Date",
+                                        @readonly = "readonly",
+                                        style = "background:white"
+                                    })
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(E => E.HolidayDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="setForm bold">Status <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.CheckBoxFor(E => E.IsActive)
+                                <label class="ms-2">Active</label>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <label class="setForm bold">Applicability <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(E => E.Applicability,
+                                    new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "Value"),
+                                    new { @class = "form-control ddlMultiSlectBox", multiple = "multiple" })
+                                @Html.ValidationMessageFor(E => E.Applicability, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @* Hidden Fields *@
+                        @Html.Hidden("hdnCityName", Model.CityName)
+                        @Html.Hidden("hdnCityId", Model.FK_City_Id)
+
+                        @*<div class="row">
+                                <div class="col-md-10 text-end">
+                                    <button type="submit" class="btn btn-primary me-2" id="btnsubmit">Submit</button>
+                                    <a href='@Url.Action("Index")' class="btn btn-light-secondary">Cancel</a>
+                                </div>
+                            </div>*@
+                        <div class="row">
+                            <div class="col-12 text-center mt-3">
+                                <button type="submit" class="btn btn-primary me-2" id="btnsubmit">Submit</button>
+                                <a href='@Url.Action("Index")' class="btn btn-danger">Cancel</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div> <!-- col ends -->
+            </div> <!-- row ends -->
+        </div> <!-- card-body -->
+    </div> <!-- card-content -->
+</div> <!-- card -->
 @*******Start Loader******@
 <div class="modalBgLoader" style="display: none"></div>
 <div class="modalLoaderCenter" style="display: none">
@@ -98,17 +131,25 @@
 
 @*******End Loader******@
 
-@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Select2/js/select2.min.js"></script>
-<link href="~/Select2/css/select2.min.css" rel="stylesheet" />
-<script src="~/js/jquery.sumoselect.js"></script>
-<link href="~/css/sumoselect.css" rel="stylesheet" />
-<script type="text/javascript">
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @*<link href="~/Select2/css/select2.min.css" rel="stylesheet" />*@
+    <link href="~/app-assets/vendors/css/forms/selects/select2.min.css" rel="stylesheet" />
+    <link href="~/css/sumoselect.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+    @*<script src="~/Select2/js/select2.min.js"></script>*@
+    <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+    <script src="~/js/jquery.sumoselect.js"></script>
+
+    <script type="text/javascript">
 
 
         var Alphabet_Only = /^[A-Z a-z ]+$/;
 
         $(document).ready(function () {
+            $('.select2').select2();
 
             BindCities();
 
@@ -295,6 +336,7 @@
 
 
 
-</script>
+    </script>
+}
 
 
