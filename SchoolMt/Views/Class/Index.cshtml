@@ -49,7 +49,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div id="GridDiv">
-                                @{Html.RenderAction("getClassList"); }
+                                @*@{Html.RenderAction("getClassList"); }*@
                             </div>
                         </div>
                     </div>
@@ -65,6 +65,13 @@
             </div>
         </footer>*@
 </div>
+@*@*******START Loader******@
+<div class="modalBgLoader" style="display: none"></div>
+<div class="modalLoaderCenter" style="display: none">
+    <img alt="Loading..." src="~/App_Images/loader.gif" />
+    <span>Loading...</span>
+</div>
+@*@*******END Loader******@
 
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -74,7 +81,8 @@
         $('#msgDiv').hide();
     }
 
-    $(function () {
+        $(function () {
+            paging(1);
         $('#SearchCreteria').change(function () {
             $('#SearchValue').val('');
             if ($('#SearchCreteria').val() == '') {
@@ -95,6 +103,12 @@
             type: 'GET',
             cache: false,
             data: { 'CurrentPage': parseInt(currentpage), 'SearchBy': $("#SearchCreteria").val(), 'SearchValue': $("#SearchValue").val() },
+            beforeSend: function () {
+                $(".modalBgLoader, .modalLoaderCenter").show();
+            },
+            complete: function () {
+                $(".modalBgLoader, .modalLoaderCenter").hide();
+            },
             success: function (data) {
                 $('#GridDiv').html(data);
                 $('.disabled').prop('disabled', true);
@@ -103,6 +117,6 @@
         return false;
     }
     </script>
-    }
+}
 
 

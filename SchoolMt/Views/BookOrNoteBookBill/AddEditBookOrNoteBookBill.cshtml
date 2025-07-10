@@ -1,9 +1,8 @@
-﻿
-@*@{
-    ViewBag.Title = "AddEditBookOrNoteBookBill";
-}
+﻿@*@{
+        ViewBag.Title = "AddEditBookOrNoteBookBill";
+    }
 
-<h2>AddEditBookOrNoteBookBill</h2>*@
+    <h2>AddEditBookOrNoteBookBill</h2>*@
 
 @using Newtonsoft.Json
 @model MDL.BookOrNoteBookBillMDL
@@ -37,7 +36,7 @@
                                 <label class="bold">Class Name<span class="text-danger">*</span></label>
                             </div>
                             <div class="col-md-7 form-group">
-                                @Html.DropDownListFor(E => E.FK_ClassId, new SelectList((System.Collections.IEnumerable)ViewData["ClassList"], "ID", "Value"), "--Select--", new { @class = "form-select select2" })
+                                @Html.DropDownListFor(E => E.FK_ClassId, new SelectList((System.Collections.IEnumerable)ViewData["ClassList"], "ID", "Value"), "--Select--", new { @class = "form-control select2" })
                                 @*@Html.ValidationMessageFor(E => E.ClassName, "", new { @class = "redText", @style = "color:red" })*@
                             </div>
 
@@ -169,7 +168,7 @@
                                     new SelectListItem { Value = "Cash", Text = "Cash" },
                                     //new SelectListItem { Value = "Credit Card", Text = "Credit Card" },
                                     new SelectListItem { Value = "UPI", Text = "UPI" }
-                                }, "-- Select Payment Mode --", new { @class = "form-select" })
+                                }, "-- Select Payment Mode --", new { @class = "form-control select2" })
                             </div>
                             <input type="hidden" id="tempMessage" value='@JsonConvert.SerializeObject(TempData["Message"])' />
                             <input type="hidden" id="StudentID" value='@Model.FK_StudentId' />
@@ -190,6 +189,9 @@
     @Scripts.Render("~/bundles/jqueryval")
     <link href="~/assets/css/jquery-ui.css" rel="stylesheet" />
     <link href="~/assets/css/daterangepicker.css" rel="stylesheet" />
+    <link href="~/app-assets/vendors/css/forms/selects/select2.min.css" rel="stylesheet" />
+    <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+
     <script src="~/assets/js/moment.min.js"></script>
     <script src="~/assets/js/daterangepicker.min.js"></script>
     <script src="~/assets/js/jquery-ui.js"></script>
@@ -198,7 +200,7 @@
         //window.onload = function () {
         //    window.location.reload();
         //};
-        // $("#ClassName").select2();
+        //$('.select2').select2();
 
         $('#PaymentDate').daterangepicker({
             singleDatePicker: true,

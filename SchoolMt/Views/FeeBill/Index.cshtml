@@ -48,7 +48,7 @@
                                                 <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
                                                         <label for="inputClass" class="control-label col-md-4">
-                                                            Class <span style="color: red;">*</span>
+                                                            Class @*<span style="color: red;">*</span>*@
                                                         </label>
                                                         <div class="col-md-8">
                                                             @Html.DropDownListFor(E => E.ClassName, new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Value", "Value"), "--SELECT--", new { @class = "form-control" })
@@ -59,7 +59,7 @@
                                                 <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
                                                         <label for="inputSection" class="control-label col-md-4">
-                                                            Section <span style="color: red;">*</span>
+                                                            Section @*<span style="color: red;">*</span>*@
                                                         </label>
                                                         <div class="col-md-8">
                                                             @Html.DropDownListFor(E => E.ClassCode, new SelectList((System.Collections.IEnumerable)ViewData["ClassCodelist"], "Value", "Value"), "--SELECT--", new { @class = "form-control" })
@@ -123,7 +123,13 @@
         </div>
     </div>
 </div>
-
+@*@*******START Loader******@
+<div class="modalBgLoader" style="display: none"></div>
+<div class="modalLoaderCenter" style="display: none">
+    <img alt="Loading..." src="~/App_Images/loader.gif" />
+    <span>Loading...</span>
+</div>
+@*@*******END Loader******@
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <link rel="stylesheet" type="text/css" href="~/assets/lib/datatables/css/dataTables.bootstrap.min.css" />
@@ -132,7 +138,7 @@
     <script src="~/assets/lib/lightbox/js/lightbox.js"></script>
     <script type="text/javascript">
     $(document).ready(function () {
-
+        paging(1);
         $('#SearchCreteria').change(function () {
             $('#SearchValue').val('');
             if ($('#SearchCreteria').val() == '') {
@@ -183,6 +189,12 @@
                 'CurrentPage': parseInt(currentpage), 'SearchBy': $("#SearchCreteria").val(), 'SearchValue': $("#SearchValue").val(),
                 'ClassName': $("#ClassName").val(), 'Section': $("#ClassCode").val()
             },
+            beforeSend: function () {
+                $(".modalBgLoader, .modalLoaderCenter").show();
+            },
+            complete: function () {
+                $(".modalBgLoader, .modalLoaderCenter").hide();
+            },
             success: function (data) {
                 $('#GridDiv').html(data);
                 $('.disabled').prop('disabled', true);
@@ -191,7 +203,7 @@
         return false;
     }
     </script>
-    }
+}
 
 
 

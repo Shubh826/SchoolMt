@@ -83,7 +83,7 @@
                             </div>*@
                         <div class="col-md-12">
                             <div id="GridDiv">
-                                @{Html.RenderAction("GetStudentData"); }
+                                @*@{Html.RenderAction("GetStudentData"); }*@
                             </div>
                         </div>
                     </div>
@@ -151,6 +151,7 @@
         });
 
         $(function () {
+          
             paging(1);
             $('#SearchCreteria').change(function () {
                 $('#SearchValue').val('');

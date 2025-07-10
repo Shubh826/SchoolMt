@@ -70,7 +70,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div id="GridDiv">
-                                @{Html.RenderAction("getHolidayDetails"); }
+                                @*@{Html.RenderAction("getHolidayDetails"); }*@
                             </div>
                         </div>
                     </div>
@@ -86,12 +86,28 @@
             </div>
         </footer>*@
 </div>
+
+@*@*******START Loader******@
+<div class="modalBgLoader" style="display: none"></div>
+<div class="modalLoaderCenter" style="display: none">
+    <img alt="Loading..." src="~/App_Images/loader.gif" />
+    <span>Loading...</span>
+</div>
+@*@*******END Loader******@
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
 
     $(document).ready(function () {
 
+        paging(1);
+        $('#SearchCreteria').change(function () {
+            $('#SearchValue').val('');
+            if ($('#SearchCreteria').val() == '') {
+                paging(1);
+            }
+
+        });
         //var MyRows = $('#data').find('tbody').find('tr');
         //for (var i = 0; i < MyRows.length; i++) {
 
@@ -107,15 +123,9 @@
 
         //}
 
-        $(function () {
-            $('#SearchCreteria').change(function () {
-                $('#SearchValue').val('');
-                if ($('#SearchCreteria').val() == '') {
-                    paging(1);
-                }
-
-            })
-        });
+        //$(function () {
+           
+        //});
 
     });
 
@@ -132,8 +142,14 @@
             type: 'GET',
             cache: false,
             data: { 'CurrentPage': parseInt(currentpage), 'SearchBy': $("#SearchCreteria").val(), 'SearchValue': $("#SearchValue").val() },
+            beforeSend: function () {
+                $(".modalBgLoader, .modalLoaderCenter").show();
+            },
+            complete: function () {
+                $(".modalBgLoader, .modalLoaderCenter").hide();
+            },
             success: function (data) {
-                debugger
+               // debugger
                 $('#GridDiv').html(data);
                 $('.disabled').prop('disabled', true);
             },
@@ -145,4 +161,4 @@
 
 
     </script>
-    }
+}

@@ -96,6 +96,14 @@
             </div>
         </footer>*@
 </div>
+@*@*******START Loader******@
+<div class="modalBgLoader" style="display: none"></div>
+<div class="modalLoaderCenter" style="display: none">
+    <img alt="Loading..." src="~/App_Images/loader.gif" />
+    <span>Loading...</span>
+</div>
+@*@*******END Loader******@
+    
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
@@ -125,6 +133,12 @@
             type: 'GET',
             cache: false,
             data: { 'CurrentPage': parseInt(currentpage), 'SearchBy': $("#SearchCreteria").val(), 'SearchValue': $("#SearchValue").val() },
+            beforeSend: function () {
+                $(".modalBgLoader, .modalLoaderCenter").show();
+            },
+            complete: function () {
+                $(".modalBgLoader, .modalLoaderCenter").hide();
+            },
             success: function (data) {
                 $('#GridDiv').html(data);
                 $('.disabled').prop('disabled', true);
@@ -133,5 +147,5 @@
         return false;
     }
     </script>
-    }
+}
 

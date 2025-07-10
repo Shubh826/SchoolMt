@@ -13,7 +13,7 @@
                 </div>
                 <div class="col-12 col-md-6 order-md-2 order-first">
 
-                    <a class="btn btn-purple" href="@Url.Action("AddEditExpense")" style="float: right;"><i class="fa fa-plus"></i> Add New</a>
+                    <a class="btn btn-purple" href="@Url.Action(" AddEditExpense")" style="float: right;"><i class="fa fa-plus"></i> Add New</a>
                     @*}*@
                 </div>
             </div>
@@ -58,6 +58,14 @@
         </section>
     </div>
 </div>
+
+@*@*******START Loader******@
+<div class="modalBgLoader" style="display: none"></div>
+<div class="modalLoaderCenter" style="display: none">
+    <img alt="Loading..." src="~/App_Images/loader.gif" />
+    <span>Loading...</span>
+</div>
+@*@*******END Loader******@     
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
@@ -91,6 +99,12 @@
             type: 'GET',
             cache: false,
             data: { 'CurrentPage': parseInt(currentpage), 'SearchBy': $("#SearchCreteria").val(), 'SearchValue': $("#SearchValue").val() },
+            beforeSend: function () {
+                $(".modalBgLoader, .modalLoaderCenter").show();
+            },
+            complete: function () {
+                $(".modalBgLoader, .modalLoaderCenter").hide();
+            },
             success: function (data) {
                 $('#GridDiv').html(data);
                 $('.disabled').prop('disabled', true);
@@ -99,4 +113,4 @@
         return false;
     }
     </script>
-    }
+}
