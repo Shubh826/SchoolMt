@@ -1,0 +1,321 @@
+﻿@model MDL.LoginMDL
+@{ Layout = null; }
+<style>
+    #la-eye {
+        position: absolute;
+        right: 16px;
+        top: 8px;
+    }
+
+        #la-eye.la-eye:before {
+            background-image: url("../../app-assets/images/icons/hide-icon.png");
+            background-size: contain;
+            width: 20px;
+            height: 20px;
+            display: block;
+            content: '';
+        }
+
+        #la-eye.la-eye-slash:before {
+            background-image: url("../../app-assets/images/icons/show-Icon.png");
+            width: 20px;
+            height: 20px;
+            display: block;
+            content: '';
+        }
+</style>
+
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<head>
+    <script>
+        window.onresize = function (event) {
+            var wt = (window.innerWidth)
+            if (wt < 1000) {
+                $('.login-main-container .card-content').css('padding-top', '8vh')
+            } else if (wt > 1000 && wt < 1400) {
+                $('.login-main-container .card-content').css('padding-top', '13vh')
+            } else if (wt > 1400) {
+                $('.login-main-container .card-content').css('padding-top', '25vh')
+            }
+            $('.login-main-container .card-content').show();
+        }
+        window.onload = function (event) {
+            var wt = (window.innerWidth)
+            if (wt < 1000) {
+                $('.login-main-container .card-content').css('padding-top', '8vh')
+            } else if (wt > 1000 && wt < 1400) {
+                $('.login-main-container .card-content').css('padding-top', '13vh')
+            } else if (wt > 1400) {
+                $('.login-main-container .card-content').css('padding-top', '25vh')
+            }
+            $('.login-main-container .card-content').show();
+        }
+    </script>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Fleetrobo">
+    <title>True Sunshine Academy</title>
+    <link rel="apple-touch-icon" href="~/app-assets/images/ico/apple-icon-120.png">
+    @*<link rel="shortcut icon" type="image/x-icon" href="~/app-assets/images/ico/favicon.ico">*@
+    <link rel="shortcut icon" href="~/assets/images/favicon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+    <!-- BEGIN VENDOR CSS-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/vendors.css">
+    <!-- END VENDOR CSS-->
+    <!-- BEGIN MODERN CSS-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/app.css">
+    <!-- END MODERN CSS-->
+    <!-- BEGIN Page Level CSS-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/menu/menu-types/vertical-menu.css">
+    @*<link rel="stylesheet" type="text/css" href="~/app-assets/css/core/colors/palette-gradient.css">
+        <link rel="stylesheet" type="text/css" href="~/app-assets/css/pages/login-register.css">*@
+    <!-- END Page Level CSS-->
+    <!-- BEGIN Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css">
+    <!-- END Custom CSS-->
+</head>
+<body class="vertical-layout vertical-menu 1-column   menu-expanded blank-page blank-page" data-open="click" data-menu="vertical-menu" data-col="1-column">
+    <div class="loginPageWithImg">
+        <div class="logoText">
+            <img src="~/app-assets/images/logo/logo-light-lg.png" alt="branding logo" height="80"><br>
+            <h1 class="pt-3 text-white">IOT Anti Theft GPS Tracking &amp; Virtual Alarm System</h1>
+
+        </div>
+    </div>
+    <div class="login-main-container">
+        @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="card shadow-none bg-transparent m-0">
+                <div class="card-content pt-5 px-4">
+                    <div class="card-body">
+                        <h2 class="text-center mb-1">Login</h2>
+                        <p class="font-small-3 text-center mb-3">True Sunshine Academy Portal</p>
+
+                        <fieldset class="form-group position-relative has-icon-left">
+                            @Html.TextBoxFor(E => E.UserName, new
+                            {
+                                @class = "form-control input-md",
+                                @placeholder = "User Name",
+                                @maxlength = "30",
+                                @onkeypress = "ResetUsername()",
+                                @onkeydown = "ResetUsername()",
+                                @onkeyup = "nospaces(this)"
+                            })
+                            @Html.ValidationMessageFor(E => E.UserName, "", new { @class = "text-danger small" })
+                            <div class="form-control-position" style="top:10px">
+                                <i class="la la-user"></i>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="form-group position-relative has-icon-left">
+                            @Html.PasswordFor(E => E.Password, new
+                            {
+                                @class = "form-control input-md",
+                                @placeholder = "Password",
+                                value = Model != null ? Model.Password : "",
+                                @onkeypress = "Reset()",
+                                @onkeydown = "nospaces(this);Reset();"
+                            })
+                            <i class="la la-eye" id="la-eye" onclick="showpassword()" style="position:absolute; top:10px; right:15px; cursor:pointer;"></i>
+                            @Html.ValidationMessageFor(E => E.Password, "", new { @class = "text-danger small" })
+                            <div class="form-control-position" style="top:10px">
+                                <i class="la la-key"></i>
+                            </div>
+                        </fieldset>
+
+                        <div class="form-group row align-items-center">
+                            <div class="col-md-6 col-12">
+                                <div class="form-check d-flex align-items-center">
+                                    @Html.CheckBoxFor(u => u.RememberMe, new { @class = "form-check-input", id = "RememberMe" })
+                                    <label class="form-check-label ml-2" for="RememberMe">Remember Me</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-12 text-md-right text-center mt-2 mt-md-0">
+                                <a href="#" class="card-link" data-toggle="modal" data-target="#ModalRemarks">Forgot Password?</a>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-dark btn-min-width round px-4" id="btnlogin">Login</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 text-center mt-3">
+                <div class="login-copy small text-muted">
+                    Powered By True Sunshine Academy Portal <sup>&reg;</sup>
+                </div>
+            </div>
+        }
+    </div>
+
+    @*******START::Model To send Password For Forget Password******@
+    <div id="ModalRemarks" class="modal fade colored-header">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"> Forgot Password</h4>
+                    <a class="close" href="@Url.Action("Login")"><img src="~/images/close.png" /></a>
+                </div>
+                <div class="modal-body" style="padding-top:15px;">
+
+                    <div class="row">
+                        <label class="control-label col-md-3 text-nowrap" for="inputEmail">User Name<span class="red">*</span></label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(E => E.ForgetPwdUserName, new { @class = "form-control", @placeholder = "User Name", @maxlength = "30" })
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" id="btnforgetpwd" value="Send" class="btn btn-primary btn-sm">
+                </div>
+            </div>
+        </div>
+    </div>
+    @*******END::Model To send Password For Forget Password******@
+
+    <div class="modal fade text-left" id="ServerMaintenanceId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel8" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header2">
+                    @*<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="false">&times;</span> </button>*@
+                </div>
+                <div style="text-align:center;margin-top:10px;"><img class="img" style="width:25px;" src="~/app-assets/images/ico/favicon.ico" /></div>
+                <div id="MaintenanceStatusId">
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade text-left" id="ServerMaintenanceAnnouncement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel8" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 5px; color: black;"> <span aria-hidden="false">&times;</span> </button>
+                </div>
+                <div style="text-align:center"><img class="img" style="width:25px;" src="~/app-assets/images/ico/favicon.ico" /></div>
+                <div id="MaintenanceAnnouncementId"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- BEGIN VENDOR JS-->
+    <script src="~/app-assets/vendors/js/vendors.min.js"></script>
+    <!-- BEGIN VENDOR JS-->
+    <!-- BEGIN PAGE VENDOR JS-->
+    <!-- END PAGE VENDOR JS-->
+    <!-- BEGIN MODERN JS-->
+    <script src="~/app-assets/js/core/app-menu.js"></script>
+    <script src="~/app-assets/js/core/app.js"></script>
+    <script src="~/assets/js/scripts.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+           // debugger;
+           // Login();
+
+            // UserName
+            if (LoginMsg != '') {
+                $('#Password').css('border', '1px solid red');
+                $('#Password').val('');
+                //$(a).focus();
+                $('#Password').parent().find('span[data-valmsg-for="Password"]').text(LoginMsg).css('color', 'red');
+
+            }
+
+            $("#btnlogin").click(function () {
+               // debugger
+                if ($("#UserName").val() == null || $("#UserName").val() == '') {
+                    $('#UserName').css('border', '1px solid red');
+                    $('#UserName').val('');
+                    $('#UserName').parent().find('span[data-valmsg-for="UserName"]').text('Please Enter User Name').css('color', 'red');
+                    return false;
+                }
+
+                if ($("#Password").val() == null || $("#Password").val() == '') {
+                    $('#Password').css('border', '1px solid red');
+                    $('#Password').val('');
+                    $('#Password').parent().find('span[data-valmsg-for="Password"]').text('Please Enter User Password').css('color', 'red');
+                    return false;
+                }
+
+            });
+
+
+            // alert(LoginMsg);
+            $("#btnforgetpwd").click(function () {
+                if ($("#ForgetPwdUserName").val().trim().length > 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("SendMail", "Account")",
+                        //  url: "../Account/SendMail",
+                        beforeSend: function () {
+                            $(".modalBgLoader, .modalLoaderCenter").show();
+                        },
+                        complete: function () {
+                            $(".modalBgLoader, .modalLoaderCenter").hide();
+                        },
+                        data: { 'UserName': $("#ForgetPwdUserName").val() },
+                        traditional: true,
+                        success: function (Msg) {
+                            $("#ModalRemarks").modal('hide');
+                            $(".modalBgLoader, .modalLoaderCenter").hide();
+                            alert(Msg);
+                        }
+                    });
+                }
+                else {
+                    alert('Please Enter User Name');
+                }
+            });
+        });
+
+
+        function ResetUsername() {
+            $('#Password').removeAttr('style');
+            $('#Password').parent().find('span[data-valmsg-for="Password"]').text('');
+            $('#UserName').removeAttr('style');
+            $('#UserName').parent().find('span[data-valmsg-for="UserName"]').text('');
+
+        }
+
+        function Reset() {
+            $('#Password').removeAttr('style');
+            $('#Password').parent().find('span[data-valmsg-for="Password"]').text('');
+
+        }
+        function nospaces(t) {
+            if (t.value.match(/\s/g)) {
+                t.value = t.value.replace(/\s/g, '');
+            }
+        }
+        function showpassword() {
+            var x = document.getElementById("Password");
+            var element = document.getElementById("la-eye");
+
+
+            if (x.type === "password") {
+                x.type = "text";
+                element.classList.add("la-eye-slash");
+            } else {
+                x.type = "password";
+                element.classList.remove("la-eye-slash");
+            }
+        }
+
+    </script>
+
+</body>
+</html>
