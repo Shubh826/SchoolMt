@@ -62,27 +62,54 @@
                     </div>
 
                     <!-- Message Box -->
-                    <div class="row mt-3">
-                        <div id="msgDiv">
-                            @if (ViewBag.msg != null)
+                    <div class="row" style="margin-top:20px;">
+                        <div id="msgDiv" class="col-12">
+                            @if (ViewBag.msg != null && (ViewBag.msg).Message_Id == 1)
                             {
-                                if (ViewBag.msg.Message_Id == 1)
+                                <div id="myAlert" class="alert alert-success">
+                                    <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close" onclick="DivHide()">&times;</a>
+                                    <strong>@ViewBag.msg.Message</strong>
+                                </div>
+                            }
+                            else
+                            {
+                                if (ViewBag.msg != null)
                                 {
-                                    <div class="alert alert-success">
-                                        <a href="javascript:void(0)" class="close" onclick="DivHide()">&times;</a>
-                                        <strong>@ViewBag.msg.Message</strong>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="alert alert-danger">
-                                        <a href="javascript:void(0)" class="close" onclick="DivHide()">&times;</a>
-                                        <strong>@ViewBag.msg.Message</strong>
+                                    <div id="myAlert" class="alert alert-danger">
+                                        <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close" onclick="DivHide()">&times;</a>
+                                        <strong> @ViewBag.msg.Message</strong>
                                     </div>
                                 }
                             }
+                            <script>
+                                setTimeout(function () {
+                                    document.getElementById("msgDiv").style.display = "none";
+                                }, 5000);
+                            </script>
                         </div>
                     </div>
+
+                    @*<div class="row mt-3">
+            <div id="msgDiv">
+                @if (ViewBag.msg != null)
+                {
+                    if (ViewBag.msg.Message_Id == 1)
+                    {
+                        <div class="alert alert-success">
+                            <a href="javascript:void(0)" class="close" onclick="DivHide()">&times;</a>
+                            <strong>@ViewBag.msg.Message</strong>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <a href="javascript:void(0)" class="close" onclick="DivHide()">&times;</a>
+                            <strong>@ViewBag.msg.Message</strong>
+                        </div>
+                    }
+                }
+            </div>
+        </div>*@
                 </div>
             </div>
         </section>

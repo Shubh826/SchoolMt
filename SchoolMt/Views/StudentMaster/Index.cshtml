@@ -52,7 +52,7 @@
                     </div>
 
                     <div class="row" style="margin-top:20px;">
-                        <div id="msgDiv">
+                        <div id="msgDiv" class="col-12">
                             @if (ViewBag.msg != null && (ViewBag.msg).Message_Id == 1)
                             {
                                 <div id="myAlert" class="alert alert-success">
@@ -70,17 +70,22 @@
                                     </div>
                                 }
                             }
+                            <script>
+                                setTimeout(function () {
+                                    document.getElementById("msgDiv").style.display = "none";
+                                }, 5000);
+                            </script>
                         </div>
                     </div>
 
                     <div class="row">
                         @*<div class="col-md-12 excelPdfIcon" id="Export">
-                                @using (Html.BeginForm("ExportToExcel", "StudentMaster"))
-                                {
-                                    <input type="image" class="iconSet" title="Download Excel" src="~/App_Images/excel.jpg" style="float:right;" alt="Submit" id="Excel">
-                                }
-                                <input type="image" class="iconSet" title="Download PDF" src="~/App_Images/pdf.jpg" alt="Submit" id="PDF">
-                            </div>*@
+                @using (Html.BeginForm("ExportToExcel", "StudentMaster"))
+                {
+                    <input type="image" class="iconSet" title="Download Excel" src="~/App_Images/excel.jpg" style="float:right;" alt="Submit" id="Excel">
+                }
+                <input type="image" class="iconSet" title="Download PDF" src="~/App_Images/pdf.jpg" alt="Submit" id="PDF">
+            </div>*@
                         <div class="col-md-12">
                             <div id="GridDiv">
                                 @*@{Html.RenderAction("GetStudentData"); }*@

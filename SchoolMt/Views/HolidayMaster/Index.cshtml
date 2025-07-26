@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="row" style="margin-top:20px;">
-                        <div id="msgDiv">
+                        <div id="msgDiv" class="col-12">
                             @if (ViewBag.msg != null && (ViewBag.msg).Message_Id == 1)
                             {
                                 <div id="myAlert" class="alert alert-success">
@@ -63,6 +63,11 @@
                                     </div>
                                 }
                             }
+                            <script>
+                                setTimeout(function () {
+                                    document.getElementById("msgDiv").style.display = "none";
+                                }, 5000);
+                            </script>
                         </div>
                     </div>
 
