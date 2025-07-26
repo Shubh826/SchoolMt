@@ -24,5 +24,14 @@ namespace BAL
         {
             return objStudentApisDAL.GetStudents(FK_ClassId,out _StudentDataList);
         }
+
+        public Messages PostStudentImage(PostStudentImageMDL objStudentData)
+        {
+            return objStudentApisDAL.PostStudentImage(objStudentData);
+        }
+        public ServiceResult<DropDownMDL> GetSection(out List<DropDownMDL> _SectionDataList)
+        {
+            return objStudentApisDAL.GetSection(out _SectionDataList);
+        }
     }
 }

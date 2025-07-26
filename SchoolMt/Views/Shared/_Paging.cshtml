@@ -1,71 +1,59 @@
-﻿@model MDL.Common.BasicPagingMDL
+﻿<style>
+    .dataTables_info, .pagination .page-link {
+        font-family: 'Nunito', sans-serif;
+        font-size: 14px;
+    }
+</style>
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
 
-<div class="row">
-    <div class="col-sm-12 col-md-5">
-        <div class="dataTables_info" role="status" aria-live="polite">
-            Page @Model.CurrentPage of @Model.TotalPage (@Model.TotalItem Records)
-        </div>
-    </div>
-    <div class="col-sm-12 col-md-7">
-        <div class="dataTables_paginate paging_simple_numbers">
-            <ul class="pagination pagination-flat">
-                @{
-                    int currentPage = Model.CurrentPage;
-                    int totalPages = Model.TotalPage;
-                    int maxShowPage = 5;
+            <!-- Left Side: Page Info -->
+            <div class="dataTables_info m-0" role="status" aria-live="polite">
+                Page @Model.CurrentPage of @Model.TotalPage (@Model.TotalItem Records)
+            </div>
 
-                    int startPage = ((currentPage - 1) / maxShowPage) * maxShowPage + 1;
-                    int endPage = Math.Min(startPage + maxShowPage - 1, totalPages);
+            <!-- Right Side: Pagination -->
+            <nav aria-label="Page navigation" style="margin-top: -8px;">
+                <!-- Slightly raised -->
+                <ul class="pagination pagination-sm mb-0 align-middle">
 
-                    int previousPage = currentPage - 1;
-                    int nextPage = currentPage + 1;
-                }
+                    @{
+                        int currentPage = Model.CurrentPage;
+                        int totalPages = Model.TotalPage;
+                        int maxShowPage = 5;
 
-                <!-- Previous Button -->
-                @if (previousPage >= 1)
-                {
-                    <li class="paginate_button page-item previous">
-                        <a href="javascript:void(0);" onclick="paging(@previousPage)" class="page-link">Previous</a>
+                        int startPage = ((currentPage - 1) / maxShowPage) * maxShowPage + 1;
+                        int endPage = Math.Min(startPage + maxShowPage - 1, totalPages);
+
+                        int previousPage = currentPage - 1;
+                        int nextPage = currentPage + 1;
+                    }
+
+                    <!-- Previous -->
+                    <li class="page-item @(previousPage < 1 ? "disabled" : "")">
+                        <a class="page-link bg-light border" href="javascript:void(0);" onclick="paging(@previousPage)">
+                            <strong>&laquo; Prev</strong>
+                        </a>
                     </li>
-                }
-                else
-                {
-                    <li class="paginate_button page-item previous disabled">
-                        <a href="javascript:void(0);" class="page-link">Previous</a>
-                    </li>
-                }
 
-                <!-- Page Numbers -->
-                @for (int i = startPage; i <= endPage; i++)
-                {
-                    if (i == currentPage)
+                    <!-- Page Numbers -->
+                    @for (int i = startPage; i <= endPage; i++)
                     {
-                        <li class="paginate_button page-item active">
-                            <a href="javascript:void(0);" class="page-link">@i</a>
+                        <li class="page-item @(i == currentPage ? "active" : "")">
+                            <a class="page-link" href="javascript:void(0);" onclick="paging(@i)">@i</a>
                         </li>
                     }
-                    else
-                    {
-                        <li class="paginate_button page-item">
-                            <a href="javascript:void(0);" onclick="paging(@i)" class="page-link">@i</a>
-                        </li>
-                    }
-                }
 
-                <!-- Next Button -->
-                @if (nextPage <= totalPages)
-                {
-                    <li class="paginate_button page-item next">
-                        <a href="javascript:void(0);" onclick="paging(@nextPage)" class="page-link">Next</a>
+                    <!-- Next -->
+                    <li class="page-item @(nextPage > totalPages ? "disabled" : "")">
+                        <a class="page-link bg-light border" href="javascript:void(0);" onclick="paging(@nextPage)">
+                            <strong>Next &raquo;</strong>
+                        </a>
                     </li>
-                }
-                else
-                {
-                    <li class="paginate_button page-item next disabled">
-                        <a href="javascript:void(0);" class="page-link">Next</a>
-                    </li>
-                }
-            </ul>
+                </ul>
+            </nav>
+
         </div>
     </div>
 </div>

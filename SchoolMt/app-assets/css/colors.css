@@ -8964,25 +8964,31 @@ input:focus ~ .bg-purple
     background-color: #9c27b0 !important;
 }
 
-.btn-purple
+/*.btn-purple
 {
     color: #fff; 
     border-color: #7b1fa2 !important;
-    background-color: #9c27b0 !important;
+    background-color: red !important;
+}*/
+.btn-purple {
+    border-top: 1px solid #ddd;
+    color: white !important;
+    padding: 10px !important;
+    display: block !important;
+    background-color: black !important;
+    font-weight: 700;
 }
-.btn-purple:hover
+    /*.btn-purple:hover
 {
     color: #fff !important; 
     border-color: #8e24aa !important;
     background-color: #ab47bc !important;
-}
-.btn-purple:focus,
-.btn-purple:active
-{
-    color: #fff !important; 
+}*/
+    /*.btn-purple:focus, .btn-purple:active {
+    color: #fff !important;
     border-color: #7b1fa2 !important;
     background-color: #6a1b9a !important;
-}
+}*/
 .btn-purple.btn-glow
 {
     -webkit-box-shadow: 0 1px 20px 1px rgba(156, 39, 176, .6);

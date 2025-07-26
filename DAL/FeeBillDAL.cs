@@ -199,6 +199,7 @@ namespace DAL
                     _PaymentDetails.TransFee = WrapDbNull.WrapDbNullValue<int>(objDataSet.Tables[1].Rows[0].Field<int?>("TransFee"));
                     _PaymentDetails.ExamFee = WrapDbNull.WrapDbNullValue<int>(objDataSet.Tables[1].Rows[0].Field<int?>("ExamFee"));
                     _PaymentDetails.DueAmount = WrapDbNull.WrapDbNullValue<int>(objDataSet.Tables[1].Rows[0].Field<int?>("DueAmount"));
+                    _PaymentDetails.Discount = WrapDbNull.WrapDbNullValue<int>(objDataSet.Tables[1].Rows[0].Field<int?>("Discount"));
                     _PaymentDetails.TotalFee = WrapDbNull.WrapDbNullValue<int>(objDataSet.Tables[1].Rows[0].Field<int?>("TotalFee"));
 
                 }

@@ -108,6 +108,10 @@ namespace SchoolMt.Controllers
         [HttpPost]
         public JsonResult AddEditFeeBill(FeeBillMDL objFeeBillMDL)
         {
+            if(objFeeBillMDL.predueamounchecked != 0)
+            {
+                objFeeBillMDL.PreDueAmount = 0;
+            }
             objFeeBillMDL.CreatedBy = SessionInfo.User.userid;
             objFeeBillMDL.FK_CompanyId = SessionInfo.User.fk_companyid;
             List<FeeBillMDL> _StudentFeeBillMDL = new List<FeeBillMDL>();
@@ -159,6 +163,7 @@ namespace SchoolMt.Controllers
                 html.AppendLine("        .fee-details th, .fee-details td { border: 1px solid black; padding: 8px; text-align: left; }");
                 html.AppendLine("        .fee-details th { text-align: center; background-color: #bf1e2e; color: white; }");
                 html.AppendLine("        .total-amount { color: red; font-weight: bold; text-align: right; }");
+                html.AppendLine("        .Payable-Amount { color: red; font-weight: bold; text-align: right; }");
                 html.AppendLine("        .signature, .date { margin-top: 20px; margin-right: 20px; text-align: left; }");
                 html.AppendLine("        .bill-container { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white; }");
                 html.AppendLine("        .bill-header { text-align: center; font-weight: bold; }");
@@ -204,13 +209,19 @@ namespace SchoolMt.Controllers
                 html.AppendLine($"                    <tr><td>Months Fee</td><td>{data.MonthFee:0.00}</td></tr>");
                 html.AppendLine($"                    <tr><td>Months Transport Fee</td><td>{data.TransFee:0.00}</td></tr>");
                 html.AppendLine($"                    <tr><td>Exam Fee</td><td>{data.ExamFee:0.00}</td></tr>");
-                html.AppendLine($"                    <tr><td>Due Amount</td><td>{data.DueAmount:0.00}</td></tr>");
-                html.AppendLine($"                    <tr><td>Previous Due Amount</td><td>{predueamounchecked:0.00}</td></tr>");
+                html.AppendLine($"                    <tr><td>Previous Due Amount</td><td>{data.PreviousDueAmount:0.00}</td></tr>");
+                html.AppendLine($"                    <tr><td>Amount Paid for Previous Balance</td><td>{predueamounchecked:0.00}</td></tr>");
                 html.AppendLine("                </tbody>");
                 html.AppendLine("                <tfoot>");
                 html.AppendLine("                    <tr>");
                 html.AppendLine("                        <td class='total-amount'>Total Amount</td>");
                 html.AppendLine($"                        <td class='total-amount'>{data.TotalFee:0.00}</td>");
+                html.AppendLine("                    </tr>");
+                html.AppendLine($"                    <tr><td>Current Due Amount</td><td>{data.DueAmount:0.00}</td></tr>");
+                html.AppendLine($"                    <tr><td>Discount</td><td>{data.Discount:0.00}</td></tr>");
+                html.AppendLine("                    <tr>");
+                html.AppendLine("                        <td class='Payable-Amount'>Payable Amount</td>");
+                html.AppendLine($"                        <td class='Payable-Amount'>{data.TotalFee - data.DueAmount - data.Discount:0.00}</td>");
                 html.AppendLine("                    </tr>");
                 html.AppendLine("                </tfoot>");
                 html.AppendLine("            </table>");

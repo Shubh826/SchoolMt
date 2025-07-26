@@ -97,7 +97,8 @@ namespace DAL.WebAPI
             }
 
         }
-        public ServiceResult<DropDownMDL> GetStudents(int FK_ClassId,out List<DropDownMDL> _StudentDataList)
+
+        public ServiceResult<DropDownMDL> GetStudents(int FK_ClassId, out List<DropDownMDL> _StudentDataList)
         {
             ServiceResult<DropDownMDL> objResult = new ServiceResult<DropDownMDL>();
 
@@ -174,6 +175,96 @@ namespace DAL.WebAPI
             }
 
         }
+        public Messages PostStudentImage(PostStudentImageMDL objStudentData)
+        {
+            bool result = false;
+            Messages msg = new Messages();
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>()
+                {
+                     new SqlParameter("@cUrl",objStudentData.StudentImageURL),
+                     new SqlParameter("@iStudentId",objStudentData.StudentId),
+                     new SqlParameter("@iClassId",objStudentData.ClassId),
+                     new SqlParameter("@cSection",objStudentData.SectionName)
+                };
+                _commandText = "USP_APIUpdateStudentImage";
 
+                objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet, parms);
+                if (objDataSet.Tables[0].Rows.Count > 0)
+                {
+
+                    if (objDataSet.Tables[0].Rows.Count > 0)
+                    {
+                        msg.Message_Id = objDataSet.Tables[0].Rows[0].Field<int>("Message_Id");
+                        msg.Message = objDataSet.Tables[0].Rows[0].Field<string>("Message");
+                    }
+                    else
+                    {
+                        msg.Message_Id = 0;
+                        msg.Message = "Process Failed";
+                    }
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                result = false;
+            }
+            return msg;
+        }
+        public ServiceResult<DropDownMDL> GetSection(out List<DropDownMDL> _SectionDataList)
+        {
+            ServiceResult<DropDownMDL> objResult = new ServiceResult<DropDownMDL>();
+
+            _SectionDataList = new List<DropDownMDL>();
+            bool reslt = false;
+            try
+            {
+                _commandText = "USP_GetAllClassCode";
+
+                DataSet objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet);
+
+                if (objDataSet.Tables != null && objDataSet.Tables.Count > 0)
+                {
+                    if (objDataSet.Tables[0] != null && objDataSet.Tables[0].Rows.Count > 0)
+                    {
+                        _SectionDataList = objDataSet.Tables[0].AsEnumerable().Select(dr => new DropDownMDL()
+                        {
+                            ID = dr.Field<int>("Id"),
+                            Value = dr.Field<string>("Value"),
+                        }).ToList();
+                        reslt = true;
+                    }
+                    else
+                    {
+                        objResult.Data = null;
+                        objResult.Result = false;
+                        objResult.Message = "No Data Found.";
+                    }
+                }
+
+                else
+                {
+                    objResult.Data = null;
+                    objResult.Result = false;
+                    objResult.Message = "No Data Found.";
+                    reslt = false;
+
+                }
+
+                return objResult;
+            }
+            catch (Exception Ex)
+            {
+                var objBase = System.Reflection.MethodBase.GetCurrentMethod();
+                objResult.Data = null;
+                objResult.Result = false;
+                objResult.Message = "Error Occured.";
+                return objResult;
+            }
+
+        }
     }
 }

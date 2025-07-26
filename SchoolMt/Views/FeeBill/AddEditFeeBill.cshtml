@@ -94,7 +94,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-
+                                                                    <hr>
                                                                     <div class="form-group row">
                                                                         <div class="col-md-2 ">
 
@@ -122,7 +122,7 @@
                                                                             <label class="control-label">
                                                                                 Trans Fees <span style="color:red">*</span>
                                                                             </label>
-                                                                        </div>  
+                                                                        </div>
                                                                         <div class="col-md-4 form-group">
                                                                             @Html.TextBoxFor(E => E.AprilTrnsFee, new { @class = "form-control", maxlength = "15", @placeholder = "April Trns Fee", @readonly = "readonly" })
                                                                             @Html.ValidationMessageFor(E => E.AprilTrnsFee)
@@ -373,12 +373,12 @@
                                                                             <label class="control-label">
                                                                                 Trans Fees <span style="color:red">*</span>
                                                                             </label>
-                                                                        </div>  
+                                                                        </div>
                                                                         <div class="col-md-4">
                                                                             @Html.TextBoxFor(E => E.NovemberTrnsFee, new { @class = "form-control", maxlength = "50", @placeholder = "November Trns Fee", @readonly = "readonly" })
                                                                             @Html.ValidationMessageFor(E => E.NovemberTrnsFee)
                                                                         </div>
-                                                                                
+
                                                                     </div>
 
                                                                     <div class="form-group row">
@@ -654,6 +654,7 @@
         let online = 0;
         let feemonth = "";
         let DueAmount = 0;
+        let predueamount = 0;
     $(document).ready(function (e) {
       //  $('.select2').select2();
         $('#FeeBillForm').on('submit', function (e) {
@@ -662,7 +663,7 @@
 
             var form = $('#FeeBillForm')[0];
             var formData = new FormData(form); // support for file upload
-
+            $('#PreDueAmount').val(predueamount);
             $.ajax({
                 url: '@Url.Action("AddEditFeeBill", "FeeBill")',
                 type: 'POST',
@@ -937,7 +938,8 @@
 
                     $('#Totalfee').val(a);
                     parseInt($('#predueamounchecked').val(parseInt($('#PreDueAmount').val())));
-                    parseInt($('#PreDueAmount').val(0));
+                    predueamount = 0;
+                    //parseInt($('#PreDueAmount').val(0));
                     //feemonth += ",MarchFee";
 
 
@@ -947,6 +949,7 @@
 
                     $('#Totalfee').val(a);
                     parseInt($('#PreDueAmount').val(parseInt($('#PreDueAmountId').val())));
+                    predueamount = a;
                 }
 
             });

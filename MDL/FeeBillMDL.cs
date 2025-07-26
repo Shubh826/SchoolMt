@@ -81,7 +81,8 @@ namespace MDL
         public string PdfContent { get; set; }
         public int DueAmount { get; set; }
         public int PreviousDueAmount { get; set; }
-        
+        public int Discount { get; set; }
+
     }
 
 }
