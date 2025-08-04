@@ -57,7 +57,15 @@
                                                         </label>
                                                         <div class="col-md-8">
                                                             @Html.DropDownListFor(E => E.ClassName, new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Value", "Value"), "--SELECT--", new { @class = "form-control" })
+
+                                                            @Html.ValidationMessageFor(
+                                                                model => model.ClassName,
+                                                                "", new { @class = "redText", style = "color:red" }
+                                                            )
+
                                                             @Html.ValidationMessageFor(E => E.ClassName, "", new { @class = "redText", @style = "color:red" })
+
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -104,11 +112,15 @@
                                     </div>
 
                                     <div class="form-group btnShowDIv text-right">
-                                        <div class="col-md-12">
-                                            <a href="javascript:void(0)" id="btnsearch" class="btn btn-primary" onclick="paging(1)">Search</a>
-                                            <a href="javascript:void(0)" id="btnReset" class="btn btn-primary">Reset</a>
+                                            <div class="col-md-12">
+                                                <a href="javascript:void(0)" id="btnsearch" class="btn btn-primary" onclick="paging(1)">Search</a>
+                                                <a href="javascript:void(0)" id="btnReset" class="btn btn-primary">Reset</a>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @*<div class="col-sm-9 d-flex justify-content-end">
+                                        <a href="javascript:void(0)" id="btnsearch" class="btn btn-primary box-shadow-1 round btn-min-width mr-1 mb-1" onclick="paging(1)">Search</a>
+                                        <a href="javascript:void(0)" id="btnReset" class="btn btn-primary box-shadow-1 round btn-min-width mr-1 mb-1">Reset</a>
+                                    </div>*@
 
                                 </div>
 
@@ -151,6 +163,8 @@
             }
         })
         $('#btnReset').click(function (e) {
+            $('#ClassName').val('').change();
+            $('#ClassCode').val('').change();
             $('.ResetField').val("");
             $('#InValidUpload').hide();
             $('#InValidDelete').hide();
@@ -163,6 +177,8 @@
 
 
         $('#btnReset').click(function (e) {
+            $('#ClassName').val('').change();
+            $('#ClassCode').val('').change();
             $('#SearchCreteria').val('');
             $('#SearchValue').val('');
             $("#FromToDate").val('');
@@ -182,7 +198,7 @@
         if (currentpage == NaN || currentpage <= 0) {
             return false;
         }
-        debugger
+       // debugger
 
         var input = { CurrentPage: parseInt(currentpage), SearchBy: $("#SearchCreteria").val(), SearchValue: $("#SearchValue").val() };
         $.ajax({

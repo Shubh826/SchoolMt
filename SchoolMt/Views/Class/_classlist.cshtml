@@ -41,12 +41,13 @@
                         {
                             <td align="center">InActive</td>
                         }
-                        <td class="text-center">
-                            @*@if (ViewBag.CanEdit)
-                                {*@
-                            <a data-original-title="Edit" data-placement="bottom" data-toggle="tooltip" href=@Url.Action("AddEditClass", new { id = item.ClassId }) class="btn btn-primary btn-sm">Edit</a>
-                            @*}*@
-                        </td>
+                    <td class="text-center">
+
+                        <a data-original-title="Edit" data-placement="bottom" data-toggle="tooltip" href=@Url.Action("AddEditClass", new { id = item.ClassId }) class="btn btn-primary btn-sm">Edit</a>
+
+                        @*@if (ViewBag.CanEdit)
+        {*@@*}*@
+                    </td>
                     </tr>
                     SerialNo++;
                 }

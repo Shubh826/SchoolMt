@@ -109,11 +109,15 @@
                                     <a href='@Url.Action("Index")' class="btn btn-light-secondary">Cancel</a>
                                 </div>
                             </div>*@
-                        <div class="row">
-                            <div class="col-12 text-center mt-3">
-                                <button type="submit" class="btn btn-primary me-2" id="btnsubmit">Submit</button>
-                                <a href='@Url.Action("Index")' class="btn btn-danger">Cancel</a>
-                            </div>
+                        @*<div class="row">
+                                <div class="col-12 text-center mt-3">
+                                    <button type="submit" class="btn btn-primary me-2" id="btnsubmit">Submit</button>
+                                    <a href='@Url.Action("Index")' class="btn btn-danger">Cancel</a>
+                                </div>
+                            </div>*@
+                        <div class="col-sm-9 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1">Submit</button>
+                            <a href='@Url.Action("Index")' class="btn btn-dark box-shadow-1 btn-min-width mr-1 mb-1">Cancel</a>
                         </div>
 
                     </div>

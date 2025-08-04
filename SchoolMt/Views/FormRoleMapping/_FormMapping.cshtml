@@ -77,13 +77,13 @@
         <div class="col-sm-7 d-flex justify-content-end center">
             @if (ViewBag.CanAdd != null && ViewBag.CanAdd == true)
             {
-                <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                <button type="submit" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1">Submit</button>
             }
             else
             {
-                <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                <button type="submit" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1">Submit</button>
             }
-            <a href='@Url.Action("Index")' class="btn btn-danger me-1 mb-1">Cancel</a>
+            <a href='@Url.Action("Index")' class="btn btn-dark box-shadow-1 btn-min-width mr-1 mb-1">Cancel</a>
 
             @*<button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>*@
         </div>

@@ -96,7 +96,7 @@ namespace SchoolMt.Controllers
                 TempData["Message"] = msg;
                 return RedirectToAction("Index");
             }
-            return View("AddEdit", ObjClassMDL);
+            return View("AddEditClass", ObjClassMDL);
         }
     }
 }

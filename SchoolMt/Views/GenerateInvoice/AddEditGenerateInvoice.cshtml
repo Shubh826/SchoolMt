@@ -78,7 +78,7 @@
                             <div class="col-md-7 form-group">
                                 @*@Html.DropDownListFor(E => E.Month, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Value"), new { @class = "form-control", @multiple = "multiple", placeholder = "--Select--", style = "width:100%" })*@
 
-                                @Html.DropDownListFor(E => E.Month, new SelectList((System.Collections.IEnumerable)ViewData["MonthList"], "Value", "Value"), "--Select--", new { @class = "form-control"})
+                                @Html.DropDownListFor(E => E.Month, new SelectList((System.Collections.IEnumerable)ViewData["MonthList"], "Value", "Value"), "--Select--", new { @class = "form-control" })
                                 @Html.ValidationMessageFor(E => E.Month, "", new { @class = "redText", @style = "color:red" })
                             </div>
                             <div class="row">
@@ -113,14 +113,14 @@
                                 <label class="setForm  bold">In Cash</label>
                             </div>
                             <div class="col-md-7 form-group">
-                                @Html.TextBoxFor(E => E.InCash, new { @class = "form-control val1", @maxlength = "100", @placeholder = "In Cash"})
+                                @Html.TextBoxFor(E => E.InCash, new { @class = "form-control val1", @maxlength = "100", @placeholder = "In Cash" })
                                 @Html.ValidationMessageFor(E => E.InCash, "", new { @class = "redText", @style = "color:red" })
                             </div>
                             <div class="col-md-3">
                                 <label class="setForm  bold">In Account</label>
                             </div>
                             <div class="col-md-7 form-group">
-                                @Html.TextBoxFor(E => E.InAccount, new { @class = "form-control val1", @maxlength = "100", @placeholder = "In Account"})
+                                @Html.TextBoxFor(E => E.InAccount, new { @class = "form-control val1", @maxlength = "100", @placeholder = "In Account" })
                                 @Html.ValidationMessageFor(E => E.InAccount, "", new { @class = "redText", @style = "color:red" })
                             </div>
                             <div class="col-md-3">
@@ -131,11 +131,15 @@
                                 @Html.ValidationMessageFor(E => E.DueAmount, "", new { @class = "redText", @style = "color:red" })
                             </div>
                             <input type="hidden" value="@Model.FK_StudentId" id="hdnStudentId" />
-
-                            <div class="col-sm-9 d-flex justify-content-end center">
-                                <button type="submit" class="btn btn-primary me-1 mb-1" onclick="InvoiceDetails()">Submit</button>
-                                <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                            <div class="col-sm-9 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1">Submit</button>
+                                <a href='@Url.Action("Index")' class="btn btn-dark box-shadow-1 btn-min-width mr-1 mb-1">Cancel</a>
                             </div>
+
+                            @*<div class="col-sm-9 d-flex justify-content-end center">
+                                    <button type="submit" class="btn btn-primary me-1 mb-1" onclick="InvoiceDetails()">Submit</button>
+                                    <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                </div>*@
                         </div>
                     </div>
                     @*</form>*@

@@ -104,7 +104,7 @@
         }
         var input = { CurrentPage: parseInt(currentpage), SearchBy: $("#SearchCreteria").val(), SearchValue: $("#SearchValue").val() };
         $.ajax({
-            url:"@Url.Action("GetUsers", "UserMst")",
+            url:"@Url.Action("getClassList", "Class")",
             type: 'GET',
             cache: false,
             data: { 'CurrentPage': parseInt(currentpage), 'SearchBy': $("#SearchCreteria").val(), 'SearchValue': $("#SearchValue").val() },

@@ -49,11 +49,15 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-4">
-                                <div class="col-md-12 text-center">
-                                    <button type="submit" id="btnsubmitBulk" class="btn btn-primary me-2">Submit</button>
-                                    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancel</a>
-                                </div>
+                            @*<div class="row mt-4">
+                                    <div class="col-md-12 text-center">
+                                        <button type="submit" id="btnsubmitBulk" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1">Submit</button>
+                                        <a href="@Url.Action("Index")" class="btn btn-dark box-shadow-1 btn-min-width mr-1 mb-1">Cancel</a>
+                                    </div>
+                                </div>*@
+                            <div class="col-sm-9 d-flex justify-content-end">
+                                <button type="submit" id="btnsubmitBulk" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1">Submit</button>
+                                <a href='@Url.Action("Index")' class="btn btn-dark box-shadow-1 btn-min-width mr-1 mb-1">Cancel</a>
                             </div>
 
                         </div>
@@ -68,7 +72,7 @@
 
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
-   
+
     <script type="text/javascript">
 
         $(document).ready(function (e) {

@@ -71,9 +71,13 @@
                                                                                           }, new { @class = "form-control select2" })
                                 </div>
 
-                                <div class="col-sm-9 d-flex justify-content-end center">
-                                    <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-                                    <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                @*<div class="col-sm-9 d-flex justify-content-end center">
+                                        <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                        <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                    </div>*@
+                                <div class="col-sm-9 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1">Submit</button>
+                                    <a href='@Url.Action("Index")' class="btn btn-dark box-shadow-1 btn-min-width mr-1 mb-1">Cancel</a>
                                 </div>
                             </div>
                         </div>
