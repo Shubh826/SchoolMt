@@ -102,10 +102,17 @@
                                     @Html.CheckBoxFor(E => E.IsActive, new { @checked = true })
                                 </div>
 
-                                <div class="col-sm-9 d-flex justify-content-end center">
-                                    <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-                                    <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                <div class="col-sm-9 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary box-shadow-1 round btn-min-width mr-1 mb-1">Submit</button>
+                                    <a href='@Url.Action("Index")' class="btn btn-dark box-shadow-1 round btn-min-width mr-1 mb-1">Cancel</a>
                                 </div>
+
+
+
+                                @*<div class="col-sm-9 d-flex justify-content-end center">
+                                        <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                        <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                    </div>*@
                             </div>
                         </div>
                         @*</form>*@
@@ -118,7 +125,7 @@
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @*<script src="~/Scripts/jquery.validate.js"></script>
-    <script src="~/Scripts/jquery.validate.min.js"></script>*@
+        <script src="~/Scripts/jquery.validate.min.js"></script>*@
     <link href="~/Select2/css/select2.css" rel="stylesheet" />
     <script src="~/Select2/js/select2.js"></script>
     <script type="text/javascript">
@@ -130,4 +137,4 @@
 
         });
     </script>
-    }
+}
