@@ -111,7 +111,7 @@
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
         $(function () {
             paging(1);
@@ -148,7 +148,59 @@
             },
         });
         return false;
-    }
-    </script>
+        }
+
+
+
+    function ExportToExcel() {
+       // debugger;
+        var CurrentPage = 1;
+        var rowperPage = 10;
+        var SearchByData = "";
+        var SearchDataValue = "";
+
+        var CurrentPage = 1;
+        var rowperPage = parseInt($('#totalItemsHidden').val()) || 10;
+        var SearchByData = $("#SearchCreteria").val();
+        var SearchDataValue = $("#SearchValue").val();
+
+       
+
+
+
+
+
+
+
+
+
+
+
+         $.ajax({
+             url: "@Url.Action("GetDataForExport", "FormMaster")",
+             cache: false,
+             contentType: "application/json; charset=utf-8",
+             cache: false,
+             data: { 'CurrentPage': CurrentPage,'rowperPage': rowperPage,'SearchBy': SearchByData, 'SearchValue': SearchDataValue },
+             success: function (data) {
+                 if (data == 1) {
+                     window.location = '@Url.Action("ExportToExcel", "FormMaster")';
+                     SearchByData = '';
+                     SearchDataValue = '';
+                 }
+                 else {
+                     alert("Data Not Found!");
+                 }
+             },
+             error: function (xhr) {
+                 handleSessionExpiration(xhr);
+             },
+             failure: function (res) { },
+         });
+    
+ }
+
+
+</script>
 }
 

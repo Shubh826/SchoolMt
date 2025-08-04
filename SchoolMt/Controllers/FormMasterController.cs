@@ -1,4 +1,5 @@
 ﻿using BAL;
+using FRGMBSystem.Common;
 using FRGMBSystem.Controllers;
 using MDL;
 using MDL.Common;
@@ -6,6 +7,7 @@ using SchoolMt.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -47,7 +49,6 @@ namespace SchoolMt.Controllers
             FormMasterMDL objFormMasterMDL = new FormMasterMDL();
 
             objFormMasterBal.getFormsDetails(out _FormMasterlist, out objBasicPagingMDL, 0, Convert.ToInt32(20), CurrentPage, SearchBy, SearchValue);
-
             ViewBag.paging = objBasicPagingMDL;
             return PartialView("_getFormDetailGrid", _FormMasterlist);
         }
@@ -127,6 +128,31 @@ namespace SchoolMt.Controllers
             }
         }
 
+        public JsonResult GetDataForExport(int CurrentPage=1,int rowperPage =10, string SearchBy = "", string SearchValue = "")
+        {
+            try
+            {
+                objFormMasterBal.getFormsDetails(out _FormMasterlist, out objBasicPagingMDL, 0, Convert.ToInt32(rowperPage), CurrentPage, SearchBy, SearchValue);
+                TempData["FormMasterlist"] = _FormMasterlist;
+                return Json(1, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+
+                return Json(0, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        public FileResult ExportToExcel()
+        {
+            TempData.Keep();
+            List<FormMasterMDL> _listForExcel = (List<FormMasterMDL>)TempData["FormMasterlist"];
+            string[] columns = { "Form Name", "Controller Name", "Action Name", "Parent Form", "Class Name", "Area Name", "Web/Mobile"};
+            string MDLAttr = "FormName,ControllerName,ActionName,ParentForm,ClassName,AreaName,FormFor";
+            ExcelExportHelper objExcelExportHelper = new ExcelExportHelper();
+            return objExcelExportHelper.ExportExcel(_listForExcel, "Form Master", ".xls", MDLAttr, columns);
+        }
 
     }
 }

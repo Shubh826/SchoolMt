@@ -4,9 +4,22 @@
     int SerialNo = (objPagingmdl.CurrentPage - 1) * objPagingmdl.RowParPage + 1;
 
 }
+<input type="hidden" id="totalItemsHidden" value="@objPagingmdl.TotalItem" />
+
+@if (Model != null && Model.Any())
+{
+    <div class="text-right mb-2">
+        <button type="button" class="btn btn-success btn-sm" onclick="ExportToExcel()">
+            <i class="fa fa-file-excel-o"></i> Export to Excel
+        </button>
+    </div>
+}
+
 <div class="col-md-12">
     <div class="table-responsive">
         <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover" id="">
+
+
             <thead>
                 <tr>
                     <th class="text-center">Sr. No.</th>
