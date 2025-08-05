@@ -57,8 +57,55 @@
     <!-- END Page Level CSS-->
     <!-- BEGIN Custom CSS-->
     <style>
+        /*START:: FOR Menu Search*/
+        /* Normal sidebar search */
+        .sidebar-search-wrapper {
+            padding: 10px 12px;
+        }
 
-      /*  .btn-purple {
+        .sidebar-search {
+            position: relative;
+        }
+
+            .sidebar-search input.form-control {
+                height: 40px;
+                padding-left: 2.5rem;
+                border-radius: 999px;
+                background-color: #f1f3f5;
+                font-size: 14px;
+                border: none;
+                width: 100%;
+                transition: all 0.3s ease;
+            }
+
+            .sidebar-search .search-icon {
+                position: absolute;
+                top: 50%;
+                left: 16px;
+                transform: translateY(-50%);
+                font-size: 1.1rem;
+                color: #6c757d;
+            }
+
+        /* Collapsed: hide input completely */
+        .sidebar.collapsed .sidebar-search input.form-control {
+            display: none;
+        }
+
+        /* Collapsed: icon shown standalone */
+        .sidebar.collapsed .sidebar-search .search-icon {
+            position: static;
+            display: block;
+            font-size: 1.5rem;
+            margin: 0 auto;
+            text-align: center;
+            padding: 8px;
+            background-color: #f1f3f5;
+            border-radius: 50%;
+            cursor: default;
+        }
+        /*END:: FOR Menu Search*/
+        /*  .btn-purple {
             border-top: 1px solid #ddd;
             color: #2b335e !important;
             padding: 10px !important;
@@ -95,7 +142,7 @@
                     <div class="collapse navbar-collapse" id="navbar-mobile">
 
                         <div class="navbar-header-mobile">
-                            <a href="#" class="nav-left-sidebar" onclick="myFunction2()">
+                            <a href="#" class="nav-left-sidebar">
                                 <span class="icon-bar"><span></span><span></span><span></span></span>
                             </a>
 
@@ -265,7 +312,7 @@
                     </span>
                 </div>
                 <div class="mobile_close_arrow">
-                    <span class="logo_arrow_icon" onclick="myFunction1()">
+                    <span class="logo_arrow_icon">
                         <i class='bx bx-chevron-left '></i>
                     </span>
                 </div>
@@ -275,6 +322,17 @@
         </div>
 
         <div>
+
+            <!-- Search Box for Sidebar -->
+            <div class="sidebar-search-wrapper">
+                <div class="sidebar-search">
+                    @*<i class="bi bi-search search-icon"></i>*@
+                    <input type="text" id="menuSearchInput" class="form-control" placeholder="Search..." />
+                    <i class="bx bx-search search-icon" style="position: absolute;left: 8px;top: 50%;transform: translateY(-50%);color: #999;"></i>
+                </div>
+            </div>
+
+
             <div class="main-menu-content">
                 <ul class="nav-links" id="main-menu-navigation" data-menu="menu-navigation">
 
@@ -532,180 +590,231 @@
     <div class="app-content content fr-vts-content">
         <div class="content-wrapper">
             @RenderBody()
-            </div>
         </div>
+    </div>
 
-        <div class="modal fade text-left" id="maintenanceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel8" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header2">
-                    </div>
-                    <div style="text-align:center;margin-top:8px;"><img class="img" style="width:20px;" src="~/app-assets/images/ico/favicon.ico" /></div>
-                    <div id="MaintenanceStatusId">
+    <div class="modal fade text-left" id="maintenanceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel8" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header2">
+                </div>
+                <div style="text-align:center;margin-top:8px;"><img class="img" style="width:20px;" src="~/app-assets/images/ico/favicon.ico" /></div>
+                <div id="MaintenanceStatusId">
 
 
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="modal fade text-left" id="ServerMaintenanceAnnouncement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel8" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header2">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 5px; color: black;"> <span aria-hidden="false">&times;</span> </button>
-                    </div>
-                    <div style="text-align:center"><img class="img" style="width:25px;" src="~/app-assets/images/ico/favicon.ico" /></div>
-                    <div id="MaintenanceAnnouncementId"></div>
+    <div class="modal fade text-left" id="ServerMaintenanceAnnouncement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel8" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header2">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 5px; color: black;"> <span aria-hidden="false">&times;</span> </button>
                 </div>
+                <div style="text-align:center"><img class="img" style="width:25px;" src="~/app-assets/images/ico/favicon.ico" /></div>
+                <div id="MaintenanceAnnouncementId"></div>
             </div>
         </div>
-        <!-- ////////////////////////////////////////////////////////////////////////////-->
-        @*<footer class="footer footer-static footer-light navbar-border navbar-shadow">
+    </div>
+    <!-- ////////////////////////////////////////////////////////////////////////////-->
+    @*<footer class="footer footer-static footer-light navbar-border navbar-shadow">
             <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">Copyright  &copy; 2019 <a class="text-bold-800 grey darken-2" href="" target="_blank">vFleet </a>, All rights reserved. </span><span class="float-md-right d-block d-md-inline-blockd-none d-lg-block">Designed and Developed by <a class="text-bold-800 grey darken-2" href="https://www.fleetrobo.com/" target="_blank">Fleetrobo<sup>TM</sup></a> </span></p>
         </footer>*@
-        <!-- END PAGE LEVEL JS-->
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
+    <!-- END PAGE LEVEL JS-->
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
 
-        @*<script src="~/assets/js/Common.js"></script>*@
-        @*<script src="~/assets/js/Common.min.js"></script>*@
+    @*<script src="~/assets/js/Common.js"></script>*@
+    @*<script src="~/assets/js/Common.min.js"></script>*@
 
-        <script>
+    <script>
 
-        function handleSessionExpiration(xhr) {
-            if (xhr.status === 500) {
-                // Handle 401 status code (Unauthorized) for AJAX calls
-                // Redirect to the login page
-                // showLogoutPopup();
-            }
-        }
-        //  var logoutTimer;
-        // Function to reset the timer
-        function resetLogoutTimer() {
-            //alert('before  clear logoutTimer value' + logoutTimer);
-            clearTimeout(logoutTimer);
-            // alert('after  clear logoutTimer value' + logoutTimer);
-            logoutTimer = setTimeout(function () {
-                //   alert('Before Logout logoutTimer value' + logoutTimer);
-                // Redirect or trigger logout here
-                window.location.href = '/Account/Login'; // Change this URL to your logout action
-            }, 20 * 60 * 1000); // 15 minute
-            // }, 30 * 60 * 1000); // 30 minutes
-        }
-        function showLogoutPopup() {
-            if (confirm("Your session has expired. Do you want to logout?")) {
-                // Redirect to the Logout action
-                window.location.href = '@Url.Action("Login", "Account")';
-            }
-        }
+        $(document).ready(function () {
 
-        //By Vinish 06022020
-        //For Active Page Menu highlighted
-        $(function () {
-            //debugger;
-            $('#CloseBtnIdForMenu').click(function () {
-                $('#searchByMenu').val('');
-                searchMenu(this);
-            });
-            // Attach event handlers to capture user activity
-            @*$(document).on('mousemove click keydown', function () {
-                // resetLogoutTimer();
+            // Submenu toggle arrow click
+            $(document).on('click', '.iocn-link > a', function (e) {
+                e.preventDefault();
 
-            });*@
+                var parentLi = $(this).closest('li');
+                var subMenu = parentLi.find('.sub-menu');
 
-            // Initialize the timer
-            // resetLogoutTimer();
-
-            var landingPageUrl = @Html.Raw(Json.Encode(SchoolMt.Common.SessionInfo.User.LandingPageURL))
-            $("ol[class='breadcrumb'] > li").each(function () {
-                if ($.trim($(this).find('a').text().toLowerCase()) == "Home".toLowerCase()) {
-                    $(this).find('a').attr('href', "" + window.location.protocol + "//" + window.location.host + "/" + landingPageUrl + "");
-                    $("#logoIconeHref").attr('href', "" + window.location.protocol + "//" + window.location.host + "/" + landingPageUrl + "");
-                }
+                // Toggle submenu visibility
+                subMenu.slideToggle(200);
+                parentLi.toggleClass('open');
             });
 
-            $("ul[id='main-menu-navigation'] > li").each(function () {
-                //debugger;
-                $(this).find("a[class='menu-item']").removeAttr('style');
-            });
+            // Search functionality
+            $('#menuSearchInput').on('keyup', function () {
+                var searchText = $(this).val().toLowerCase().trim();
 
-            var bool = false;
-            var pathname = window.location.pathname;
-            var bool = false;
-            $("ul[id='main-menu-navigation'] > li").each(function (i, obj) {
-               // debugger;
-                $(this).find("ul > li").each(function () {
-                  //  debugger;
-                    var href = $(this).find("a[class='menu-item']").attr('href');
+                $('.nav-links > li').each(function () {
+                    var parentLi = $(this);
+                    var hasMatch = false;
 
-                    if (href) {
-                        if ((pathname.toLowerCase().indexOf(href.toLowerCase())) >= 0) {
-                            $(this).find("a[href*='" + href + "']").css({ 'color': '#28bed0', 'font-weight': '600' });
-                            bool = true;
+                    // Loop through sub-menu items
+                    parentLi.find('.sub-menu li').each(function () {
+                        var menuItem = $(this);
+                        var text = menuItem.text().toLowerCase().trim();
+
+                        if (text.indexOf(searchText) !== -1) {
+                            menuItem.show();
+                            hasMatch = true;
+                        } else {
+                            menuItem.hide();
+                        }
+                    });
+
+                    // Only hide parent if no sub-item matched
+                    if (searchText === '') {
+                        parentLi.show();
+                        parentLi.find('.sub-menu li').show();
+                    } else {
+                        if (hasMatch) {
+                            parentLi.show();
+                        } else {
+                            parentLi.hide();
                         }
                     }
                 });
             });
-            if (!bool) {
-                pathname = "/" + window.location.pathname.split('/')[1] + "/";
-                $("ul[id='main-menu-navigation'] > li").each(function (i, obj) {
-                    $(this).find("ul > li").each(function () {
-
-                        var href = $(this).find("a[class='menu-item']").attr('href');
-
-                        if (href) {
-                            if ((href.toLowerCase().indexOf(pathname.toLowerCase())) >= 0) {
-                                $(this).find("a[href*='" + href + "']").css({ 'color': '#28bed0', 'font-weight': '600' });
-                            }
-                        }
-                    });
-                });
-
-            }
-
-
-            $('div[class="dropdown-menu"]').find("a[class='dropdown-item'][onclick*='paging']").click(function () {
-                $("#SearchValue").attr("placeholder", $(this).text());
-            });
-            $('div[class="dropdown-menu"] > a[class="dropdown-item"][onclick*="paging"]').eq('0').trigger('click');
-
 
         });
 
+ function handleSessionExpiration(xhr) {
+    if (xhr.status === 500) {
+    // Handle 401 status code (Unauthorized) for AJAX calls
+    // Redirect to the login page
+    // showLogoutPopup();
+    }
+    }
+    //  var logoutTimer;
+    // Function to reset the timer
+    function resetLogoutTimer() {
+    //alert('before  clear logoutTimer value' + logoutTimer);
+    clearTimeout(logoutTimer);
+    // alert('after  clear logoutTimer value' + logoutTimer);
+    logoutTimer = setTimeout(function () {
+    //   alert('Before Logout logoutTimer value' + logoutTimer);
+    // Redirect or trigger logout here
+    window.location.href = '/Account/Login'; // Change this URL to your logout action
+    }, 20 * 60 * 1000); // 15 minute
+    // }, 30 * 60 * 1000); // 30 minutes
+    }
+    function showLogoutPopup() {
+    if (confirm("Your session has expired. Do you want to logout?")) {
+    // Redirect to the Logout action
+    window.location.href = '@Url.Action("Login", "Account")';
+    }
+    }
 
-        function createCookie(name, value, days) {
-            var expires;
+    //By Vinish 06022020
+    //For Active Page Menu highlighted
+        $(function () {
+    //debugger;
+    $('#CloseBtnIdForMenu').click(function () {
+    $('#searchByMenu').val('');
+    searchMenu(this);
+    });
+    // Attach event handlers to capture user activity
+    @*$(document).on('mousemove click keydown', function () {
+            // resetLogoutTimer();
 
-            if (days) {
-                var date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                expires = "; expires=" + date.toGMTString();
-            } else {
-                expires = "";
-            }
-            document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
-        }
+        });*@
 
-        function readCookie(name) {
-            var nameEQ = encodeURIComponent(name) + "=";
-            var ca = document.cookie.split(';');
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) === ' ')
-                    c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) === 0)
-                    return decodeURIComponent(c.substring(nameEQ.length, c.length));
-            }
-            return null;
-        }
+    // Initialize the timer
+    // resetLogoutTimer();
 
-        function eraseCookie(name) {
-            createCookie(name, "", -1);
-        }
+    var landingPageUrl = @Html.Raw(Json.Encode(SchoolMt.Common.SessionInfo.User.LandingPageURL))
+    $("ol[class='breadcrumb'] > li").each(function () {
+    if ($.trim($(this).find('a').text().toLowerCase()) == "Home".toLowerCase()) {
+    $(this).find('a').attr('href', "" + window.location.protocol + "//" + window.location.host + "/" + landingPageUrl + "");
+    $("#logoIconeHref").attr('href', "" + window.location.protocol + "//" + window.location.host + "/" + landingPageUrl + "");
+    }
+    });
+
+    $("ul[id='main-menu-navigation'] > li").each(function () {
+    //debugger;
+    $(this).find("a[class='menu-item']").removeAttr('style');
+    });
+
+    var bool = false;
+    var pathname = window.location.pathname;
+    var bool = false;
+    $("ul[id='main-menu-navigation'] > li").each(function (i, obj) {
+    // debugger;
+    $(this).find("ul > li").each(function () {
+    //  debugger;
+    var href = $(this).find("a[class='menu-item']").attr('href');
+
+    if (href) {
+    if ((pathname.toLowerCase().indexOf(href.toLowerCase())) >= 0) {
+    $(this).find("a[href*='" + href + "']").css({ 'color': '#28bed0', 'font-weight': '600' });
+    bool = true;
+    }
+    }
+    });
+    });
+    if (!bool) {
+    pathname = "/" + window.location.pathname.split('/')[1] + "/";
+    $("ul[id='main-menu-navigation'] > li").each(function (i, obj) {
+    $(this).find("ul > li").each(function () {
+
+    var href = $(this).find("a[class='menu-item']").attr('href');
+
+    if (href) {
+    if ((href.toLowerCase().indexOf(pathname.toLowerCase())) >= 0) {
+    $(this).find("a[href*='" + href + "']").css({ 'color': '#28bed0', 'font-weight': '600' });
+    }
+    }
+    });
+    });
+
+    }
 
 
-        </script>
+    $('div[class="dropdown-menu"]').find("a[class='dropdown-item'][onclick*='paging']").click(function () {
+    $("#SearchValue").attr("placeholder", $(this).text());
+    });
+    $('div[class="dropdown-menu"] > a[class="dropdown-item"][onclick*="paging"]').eq('0').trigger('click');
+
+
+    });
+
+
+    function createCookie(name, value, days) {
+    var expires;
+
+    if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + date.toGMTString();
+    } else {
+    expires = "";
+    }
+    document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+    var nameEQ = encodeURIComponent(name) + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) === ' ')
+    c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0)
+    return decodeURIComponent(c.substring(nameEQ.length, c.length));
+    }
+    return null;
+    }
+
+    function eraseCookie(name) {
+    createCookie(name, "", -1);
+    }
+
+
+    </script>
 </body>
 
 </html>
