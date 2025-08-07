@@ -43,18 +43,6 @@ namespace SchoolMt.Controllers
         public PartialViewResult GetStudentData(int CurrentPage = 1, string SearchBy = "", string SearchValue = "")
         {
             objStudentMasterBal.GetStudentData(out _Studentlist, out objBasicPagingMDL, 0, SessionInfo.User.fk_companyid, Convert.ToInt32(20), CurrentPage, SearchBy, SearchValue);
-            foreach (var r in _Studentlist)
-            {
-                if (r.ImageName != null && r.ImageName != "" && r.ImageName != "NA" && r.ImageName != "N/A")
-                {
-                    r.profileImage = Server.MapPath("/App_Images/SBTMSStudentImages/StudentImage/") + r.ImageName;
-                }
-                else
-                {
-                    r.profileImage = "";
-                }
-            }
-
             ViewBag.paging = objBasicPagingMDL;
             TempData["studentlist"] = _Studentlist;
             return PartialView("_StudentMasterGrid", _Studentlist);

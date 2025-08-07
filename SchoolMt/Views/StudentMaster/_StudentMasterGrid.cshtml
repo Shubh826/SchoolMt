@@ -86,19 +86,16 @@
                                 </td>
                             <td class="text-center">
 
-                                @if (@item.ImageName == "")
+                                @if ((@item.StudentImageUrl == "") || (@item.StudentImageUrl == null))
                                 {
 
                                     <img src="/App_Images/man.png" height="25" width="25">
                                 }
                                 else
                                 {
-                                    var imageurl = "/App_Images/SBTMSStudentImages/StudentImage/" + @item.ImageName;
-                                    <a class="example-image-link" href="@imageurl" data-lightbox="example-1">
-                                        <img src="@imageurl" height="60" width="60" />
+                                    <a class="example-image-link" href="@item.StudentImageUrl" data-lightbox="example-1">
+                                        <img src="@item.StudentImageUrl" height="60" width="60" />
                                     </a>
-                                    @*var imageurl = "/App_Images/SBTMSStudentImages/StudentImage/" + @item.ImageName;
-                                        <img src="@imageurl" height="60" width="60" onclick="showimage('@imageurl');" />*@
                                 }
 
 

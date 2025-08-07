@@ -17,6 +17,9 @@ namespace MDL
         public string ClassCode { get; set; }
         public string StudentName { get; set; }
         public string MobileNumber { get; set; }
+        public string PaymentDate { get; set; }
+        public int AdmissionFee { get; set; }
+        public string HdnPaymentDate { get; set; }
         public string FatherName { get; set; }
         public string Address { get; set; }
         public int AprilFee { get; set; }
@@ -68,6 +71,7 @@ namespace MDL
         public int PK_BillId { get; set; }
         public string StudentName { get; set; }
         public string PaymentDate { get; set; }
+        public int Addfee { get; set; }
         public string FatherName { get; set; }
         public string ClassName { get; set; }
         public string BillNo { get; set; }

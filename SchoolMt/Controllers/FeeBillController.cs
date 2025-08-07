@@ -116,9 +116,11 @@ namespace SchoolMt.Controllers
             objFeeBillMDL.FK_CompanyId = SessionInfo.User.fk_companyid;
             List<FeeBillMDL> _StudentFeeBillMDL = new List<FeeBillMDL>();
             PaymentDetails _PaymentDetails = new PaymentDetails();
+            TempData["PK_DetailsId"] = objFeeBillMDL.PK_StudentFeeDetId;
             Messages msg = objFeeBillBal.AddEditFeeBill(objFeeBillMDL, out _PaymentDetails);
             TempData["predueamounchecked"] = objFeeBillMDL.predueamounchecked;
             TempData["PaymentDetails"] = _PaymentDetails;
+
             TempData["Message"] = msg;
             return Json(msg, JsonRequestBehavior.AllowGet);
             //return GeneratePaymentReceiptAfterPayment(_PaymentDetails);
@@ -136,13 +138,18 @@ namespace SchoolMt.Controllers
                 TempData.Keep();
                 int predueamounchecked = 0;
                 PaymentDetails data = TempData["PaymentDetails"] as PaymentDetails;
+                var PK_DetailsId = (int)TempData["PK_DetailsId"];
                 if (TempData["predueamounchecked"] != null)
                 {
-                     predueamounchecked = (int)TempData["predueamounchecked"];
+                    predueamounchecked = (int)TempData["predueamounchecked"];
                 }
                 else
                 {
-                     predueamounchecked = 0;
+                    predueamounchecked = 0;
+                } 
+                if(PK_DetailsId != 0)
+                {
+                    data.Addfee = 0;
                 }
                 if (data == null)
                     throw new Exception("Payment details not found.");
@@ -205,6 +212,7 @@ namespace SchoolMt.Controllers
                 html.AppendLine("                    </tr>");
                 html.AppendLine("                </thead>");
                 html.AppendLine("                <tbody>");
+                html.AppendLine($"                    <tr><td>Admission Fee / Academic Fee</td><td>{data.Addfee}</td></tr>");
                 html.AppendLine($"                    <tr><td>Months</td><td>{data.Months}</td></tr>");
                 html.AppendLine($"                    <tr><td>Months Fee</td><td>{data.MonthFee:0.00}</td></tr>");
                 html.AppendLine($"                    <tr><td>Months Transport Fee</td><td>{data.TransFee:0.00}</td></tr>");

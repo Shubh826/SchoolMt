@@ -84,7 +84,9 @@ namespace DAL
                             ApplicableTrnsFee = dr.Field<int>("ApplicableTrnsFee"),
                             YearlyExamFee = dr.Field<int>("YearlyExamFee"),
                             HalfYearlyExamFee = dr.Field<int>("HalfYearlyExamFee"),
-                            PreDueAmount = dr.Field<int>("DueAmount")
+                            PreDueAmount = dr.Field<int>("DueAmount"),
+                            PaymentDate = dr.Field<string>("PaymentDate"),
+                            AdmissionFee = dr.Field<int>("AdmissionFee")
                         }).ToList();
 
                         objBasicPagingMDL = new BasicPagingMDL()
@@ -122,7 +124,7 @@ namespace DAL
             _commandText = "[usp_InsertUpdateFeeBill]";
             List<SqlParameter> parms = new List<SqlParameter>
             {
-                //new SqlParameter("@PK_StudentId", objFeeBillMDL.PK_StudentId), // Assuming this is the unique identifier
+                new SqlParameter("@PK_StudentFeeDetId", objFeeBillMDL.PK_StudentFeeDetId), // Assuming this is the unique identifier
                 new SqlParameter("@PK_BillId", objFeeBillMDL.PK_BillId), // Assuming this is the unique identifier
                 new SqlParameter("@Fk_CompanyId", objFeeBillMDL.FK_CompanyId),
                 new SqlParameter("@StudentName", objFeeBillMDL.StudentName),
@@ -167,7 +169,10 @@ namespace DAL
                 new SqlParameter("@Months", objFeeBillMDL.Months),
                 new SqlParameter("@DueAmount", objFeeBillMDL.DueAmount),
                 new SqlParameter("@PreDueAmount", objFeeBillMDL.PreDueAmount),
-                new SqlParameter("@predueamounchecked",objFeeBillMDL.predueamounchecked)
+                new SqlParameter("@predueamounchecked",objFeeBillMDL.predueamounchecked),
+                new SqlParameter("@PaymentDate",objFeeBillMDL.PaymentDate),
+                new SqlParameter("@AdmissionFee",objFeeBillMDL.AdmissionFee)
+
             };
 
             try
@@ -201,6 +206,9 @@ namespace DAL
                     _PaymentDetails.DueAmount = WrapDbNull.WrapDbNullValue<int>(objDataSet.Tables[1].Rows[0].Field<int?>("DueAmount"));
                     _PaymentDetails.Discount = WrapDbNull.WrapDbNullValue<int>(objDataSet.Tables[1].Rows[0].Field<int?>("Discount"));
                     _PaymentDetails.TotalFee = WrapDbNull.WrapDbNullValue<int>(objDataSet.Tables[1].Rows[0].Field<int?>("TotalFee"));
+                    _PaymentDetails.PaymentDate = objDataSet.Tables[1].Rows[0].Field<string>("PaymentDate");
+                    _PaymentDetails.Addfee = WrapDbNull.WrapDbNullValue<int>(objDataSet.Tables[1].Rows[0].Field<int?>("AdmissionFee"));
+
 
                 }
             }
