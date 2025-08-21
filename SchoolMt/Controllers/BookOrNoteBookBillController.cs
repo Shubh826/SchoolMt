@@ -190,7 +190,11 @@ namespace SchoolMt.Controllers
 
                 strHtml.AppendLine("                </tbody>");
                 strHtml.AppendLine("                <tfoot>");
+                strHtml.AppendLine($"                    <tr><td colspan='5'>Other</td><td>{(data.Other != 0 ? data.Other.ToString("0.00") : "0.00")}</td></tr>");
                 strHtml.AppendLine($"                    <tr><td colspan='5' class='total-amount'>Total Amount</td><td class='total-amount'>{(data.TotalFee != 0 ? data.TotalFee.ToString("0.00") : "0.00")}</td></tr>");
+
+                //strHtml.AppendLine($"                    <tr><td colspan='5' class='total-amount'>Cash</td><td class='total-amount'>{(data.Cash != 0 ? data.Cash.ToString("0.00") : "0.00")}</td></tr>");
+                //strHtml.AppendLine($"                    <tr><td colspan='5' class='total-amount'>Online</td><td class='total-amount'>{(data.Online != 0 ? data.Online.ToString("0.00") : "0.00")}</td></tr>");
                 strHtml.AppendLine($"                    <tr><td colspan='5' class='total-amount'>Discount</td><td class='total-amount'>{(data.Discount != 0 ? data.Discount.ToString("0.00") : "0.00")}</td></tr>");
                 strHtml.AppendLine($"                    <tr><td colspan='5' class='total-amount'>Due Amount</td><td class='total-amount'>{(data.DueAmount != 0 ? data.DueAmount.ToString("0.00") : "0.00")}</td></tr>");
                 strHtml.AppendLine($"                    <tr><td colspan='5' class='total-amount'>Paid Amount</td><td class='total-amount'>{(data.PaidAmount != 0 ? data.PaidAmount.ToString("0.00") : "0.00")}</td></tr>");
@@ -347,8 +351,6 @@ namespace SchoolMt.Controllers
             //return Json(CommonBAL.GetStudent(term), JsonRequestBehavior.AllowGet);
 
         }
-
-
 
         public JsonResult GetStudentNames(string term = "")
         {

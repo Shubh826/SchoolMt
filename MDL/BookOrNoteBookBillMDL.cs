@@ -40,6 +40,9 @@ namespace MDL
         public decimal GrandTotal { get; set; }
         public int DueAmount { get; set; }
         public string PaymentDate { get; set; }
+        public int Cash { get; set; }
+        public int Other { get; set; }
+        public int Online { get; set; }
 
         public string HdnPaymentDate { get; set; }
 
@@ -80,7 +83,9 @@ namespace MDL
         public string BillNo { get; set; }
         public string PaymentDate { get; set; }
         public decimal TotalFee { get; set; }
-        public string PaymentMode { get; set; }
+        public int Cash { get; set; }
+        public int Online { get; set; }
+        public int Other { get; set; }
         public int DueAmount { get; set; }
         public int Discount { get; set; }
         public int PaidAmount { get; set; }

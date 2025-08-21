@@ -140,12 +140,14 @@ namespace DAL
                 new SqlParameter("@CompanyId", obj.CompanyId),
                 new SqlParameter("@SelectedBookIds", obj.SelectedBookIds),
                 new SqlParameter("@SelectedNotebookIds", obj.SelectedNotebookIds),
-                new SqlParameter("@PaymentMode",obj.PaymentMode),
+                new SqlParameter("@Cash",obj.Cash),
+                new SqlParameter("@Online",obj.Online),
                 new SqlParameter("@DueAmount",obj.DueAmount),
                 new SqlParameter("@Discount",obj.Discount),
                 new SqlParameter("@PaymentDate",obj.PaymentDate),
                 new SqlParameter("@FK_StudentId",obj.FK_StudentId),
-                new SqlParameter("@FK_ClassId",obj.FK_ClassId)
+                new SqlParameter("@FK_ClassId",obj.FK_ClassId),
+                new SqlParameter("@Other",obj.Other)
 
             };
 
@@ -170,7 +172,9 @@ namespace DAL
                         _BookPaymentDetails.ClassName = objDataSet.Tables[1].Rows[0].Field<string>("ClassName");
                         _BookPaymentDetails.PaymentDate = objDataSet.Tables[1].Rows[0].Field<string>("BillDate");
                         _BookPaymentDetails.TotalFee = WrapDbNull.WrapDbNullValue<decimal>(objDataSet.Tables[1].Rows[0].Field<decimal?>("Subtotal"));
-                        _BookPaymentDetails.PaymentMode = objDataSet.Tables[1].Rows[0].Field<string>("PaymentMode");
+                        _BookPaymentDetails.Cash = objDataSet.Tables[1].Rows[0].Field<int>("Cash");
+                        _BookPaymentDetails.Online = objDataSet.Tables[1].Rows[0].Field<int>("Online");
+                        _BookPaymentDetails.Other = objDataSet.Tables[1].Rows[0].Field<int>("Other");
                         _BookPaymentDetails.DueAmount = objDataSet.Tables[1].Rows[0].Field<int>("DueAmount");
                         _BookPaymentDetails.Discount = objDataSet.Tables[1].Rows[0].Field<int>("Discount");
                         _BookPaymentDetails.PaidAmount = objDataSet.Tables[1].Rows[0].Field<int>("PaidAmount");

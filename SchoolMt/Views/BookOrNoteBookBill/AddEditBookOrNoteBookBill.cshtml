@@ -22,165 +22,204 @@
     @Html.HiddenFor(model => model.HdnPaymentDate)
     @Html.HiddenFor(model => model.ClassName)
     @Html.HiddenFor(model => model.FK_StudentId)
-    <div class="container mt-4">
-        <h3 class="text-center mb-3">Add/Edit Book or Notebook Bill</h3>
-        <div class="card">
+
+    <div class="page-heading mb-0">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Add Edit Book or Notebook Bill</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-8 offset-md-2">
-                        <div class="row">
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="form-horizontal">
+                                    <div class="row">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                            <!-- Class Name -->
-                            <div class="col-md-3">
-                                <label class="bold">Class Name<span class="text-danger">*</span></label>
-                            </div>
-                            <div class="col-md-7 form-group">
-                                @Html.DropDownListFor(E => E.FK_ClassId, new SelectList((System.Collections.IEnumerable)ViewData["ClassList"], "ID", "Value"), "--Select--", new { @class = "form-control select2" })
-                                @*@Html.ValidationMessageFor(E => E.ClassName, "", new { @class = "redText", @style = "color:red" })*@
-                            </div>
-
-
-
-                            <!-- Student Name -->
-                            <div class="col-md-3">
-                                <label class="bold">Student Name<span class="text-danger">*</span></label>
-                            </div>
-                            <div class="col-md-7 form-group">
-                                @Html.TextBoxFor(model => model.StudentName, new { @class = "form-control", @placeholder = "Enter Student Name", autocomplete = "off", @id = "StudentName" })
-                                @*@Html.ValidationMessageFor(model => model.StudentName, "", new { @class = "text-danger" })*@
-                            </div>
+                                        <!-- Class Name -->
+                                        <div class="col-md-3">
+                                            <label class="bold">Class Name<span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-md-7 form-group">
+                                            @Html.DropDownListFor(E => E.FK_ClassId, new SelectList((System.Collections.IEnumerable)ViewData["ClassList"], "ID", "Value"), "--Select--", new { @class = "form-control select2" })
+                                            @*@Html.ValidationMessageFor(E => E.ClassName, "", new { @class = "redText", @style = "color:red" })*@
+                                        </div>
 
 
 
-                            <!-- Type Selection -->
-                            <div class="col-md-3">
-                                <label class="bold">Type:</label>
-                            </div>
-                            <div class="col-md-7 form-group">
-                                <div class="form-check form-check-inline">
-                                    @Html.CheckBoxFor(model => model.IsBook, new { @class = "form-check-input", @id = "bookCheck" })
-                                    <label class="form-check-label" for="bookCheck">Book</label>
+                                        <!-- Student Name -->
+                                        <div class="col-md-3">
+                                            <label class="bold">Student Name<span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-md-7 form-group">
+                                            @Html.TextBoxFor(model => model.StudentName, new { @class = "form-control", @placeholder = "Enter Student Name", autocomplete = "off", @id = "StudentName" })
+                                            @*@Html.ValidationMessageFor(model => model.StudentName, "", new { @class = "text-danger" })*@
+                                        </div>
+
+
+
+                                        <!-- Type Selection -->
+                                        <div class="col-md-3">
+                                            <label class="bold">Type:</label>
+                                        </div>
+                                        <div class="col-md-7 form-group">
+                                            <div class="form-check form-check-inline">
+                                                @Html.CheckBoxFor(model => model.IsBook, new { @class = "form-check-input", @id = "bookCheck" })
+                                                <label class="form-check-label" for="bookCheck">Book</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                @Html.CheckBoxFor(model => model.IsNotebook, new { @class = "form-check-input", @id = "notebookCheck" })
+                                                <label class="form-check-label" for="notebookCheck">Notebook</label>
+                                            </div>
+                                        </div>
+
+                                        <!-- Book List -->
+                                        <div class="col-md-12 ">
+                                            <div id="bookListSection" style="display: none;">
+                                                <h5>Book List</h5>
+                                                <table class="table table-bordered" id="bookList">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                <input type="checkbox" id="selectAllBooks" class="form-check-input" />
+                                                                Select
+                                                            </th>
+                                                            @*<th>Select</th>*@
+                                                            <th>Book Name</th>
+                                                            <th>Price</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <!-- Books will be appended here dynamically via jQuery -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- Notebook List -->
+                                        <div class="col-md-12 ">
+                                            <div id="notebookListSection" style="display: none;">
+                                                <h5>Notebook List</h5>
+                                                <table class="table table-bordered" id="notebookList">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Select</th>
+                                                            <th>Notebook Page</th>
+                                                            <th>Price</th>
+                                                            <th>Quantity</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <!-- Notebooks will be appended here dynamically via jQuery -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <label class="setForm bold">Other</label>
+                                        </div>
+                                        <div class="col-md-7 form-group">
+
+                                            @Html.TextBoxFor(E => E.Other, new { @class = "form-control", maxlength = "15", @placeholder = "Other" })
+                                            @*@Html.ValidationMessageFor(E => E.Other)*@
+                                        </div>
+                                        <!-- Subtotal -->
+                                        @*<div class="col-md-3">
+                                                <label class="bold">Subtotal<span class="text-danger">*</span></label>
+                                            </div>
+                                            <div class="col-md-7 form-group">
+                                                @Html.TextBoxFor(model => model.Subtotal, new { @class = "form-control", @readonly = "readonly", @id = "subtotal" })
+                                            </div>*@
+                                        <!--Discount-->
+                                        <div class="col-md-3">
+                                            <label class="bold">Discount<span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-md-7 form-group">
+                                            @Html.TextBoxFor(model => model.Discount, new { @class = "form-control", @type = "number", @id = "Discount" })
+                                        </div>
+                                        <!-- GST -->
+                                        <!-- Grand Total -->
+
+                                        <div class="col-md-3">
+                                            <label class="bold">Grand Total<span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-md-7 form-group">
+                                            @Html.TextBoxFor(model => model.GrandTotal, new { @class = "form-control", @readonly = "readonly", @id = "grandTotal" })
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="bold">Payment Date<span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-md-7 form-group">
+                                            @*@Html.TextBoxFor(model => model.PaymentDate, new
+                                                {
+                                                    @class = "form-control",
+                                                    @type = "date",
+                                                    @id = "PaymentDate",
+                                                    @Value = Model.PaymentDate != null
+                                                  ? Model.PaymentDate
+                                                  : DateTime.Now.ToString("dd-MM-yyyy")
+                                                })*@
+                                            @Html.TextBoxFor(E => E.PaymentDate, new { @class = "form-control", maxlength = "200", @placeholder = "PaymentDate" })
+
+                                        </div>
+                                        <!-- Payment Mode -->
+                                        @*<div class="col-md-3">
+                                                <label class="bold">Payment Mode<span class="text-danger">*</span></label>
+                                            </div>
+                                            <div class="col-md-7 form-group">
+                                                @Html.DropDownListFor(model => model.PaymentMode, new List<SelectListItem>
+                                                {
+                                                    new SelectListItem { Value = "Cash", Text = "Cash" },
+                                                    //new SelectListItem { Value = "Credit Card", Text = "Credit Card" },
+                                                    new SelectListItem { Value = "UPI", Text = "UPI" }
+                                                }, "-- Select Payment Mode --", new { @class = "form-control select2" })
+                                            </div>*@
+                                        <div class="col-md-3 ">
+                                            <label class="setForm bold">Cash<span style="color:red">*</span></label>
+                                        </div>
+                                        <div class="col-md-7 form-group">
+
+                                            @Html.TextBoxFor(E => E.Cash, new { @class = "form-control", maxlength = "15", @placeholder = "Cash" })
+                                            @Html.ValidationMessageFor(E => E.Cash)
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label">
+                                                Online <span style="color:red">*</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-7 form-group">
+                                            @Html.TextBoxFor(E => E.Online, new { @class = "form-control", maxlength = "50", @placeholder = "Online" })
+                                            @Html.ValidationMessageFor(E => E.Online)
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="bold">Due Amount</label>
+                                        </div>
+                                        <div class="col-md-7 form-group">
+                                            @Html.TextBoxFor(model => model.DueAmount, new { @class = "form-control", type = "number", id = "DueAmount" })
+                                        </div>
+                                        <input type="hidden" id="tempMessage" value='@JsonConvert.SerializeObject(TempData["Message"])' />
+                                        <input type="hidden" id="StudentID" value='@Model.FK_StudentId' />
+                                        <input type="hidden" id="ClassNameId" value='@Model.ClassName' />
+                                        <!-- Submit & Reset Buttons -->
+                                        @*<div class="col-md-9 d-flex justify-content-end">
+                                                <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                                <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                            </div>*@
+                                        <div class="col-sm-9 d-flex justify-content-end">
+                                            <button type="submit" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1">Submit</button>
+                                            <a href='@Url.Action("Index")' class="btn btn-dark box-shadow-1 btn-min-width mr-1 mb-1">Cancel</a>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    @Html.CheckBoxFor(model => model.IsNotebook, new { @class = "form-check-input", @id = "notebookCheck" })
-                                    <label class="form-check-label" for="notebookCheck">Notebook</label>
-                                </div>
-                            </div>
-
-                            <!-- Book List -->
-                            <div id="bookListSection" style="display: none;">
-                                <h5>Book List</h5>
-                                <table class="table table-bordered" id="bookList">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                <input type="checkbox" id="selectAllBooks" class="form-check-input" />
-                                                Select
-                                            </th>
-                                            @*<th>Select</th>*@
-                                            <th>Book Name</th>
-                                            <th>Price</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Books will be appended here dynamically via jQuery -->
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Notebook List -->
-                            <div id="notebookListSection" style="display: none;">
-                                <h5>Notebook List</h5>
-                                <table class="table table-bordered" id="notebookList">
-                                    <thead>
-                                        <tr>
-                                            <th>Select</th>
-                                            <th>Notebook Page</th>
-                                            <th>Price</th>
-                                            <th>Quantity</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Notebooks will be appended here dynamically via jQuery -->
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Subtotal -->
-                            <div class="col-md-3">
-                                <label class="bold">Subtotal<span class="text-danger">*</span></label>
-                            </div>
-                            <div class="col-md-7 form-group">
-                                @Html.TextBoxFor(model => model.Subtotal, new { @class = "form-control", @readonly = "readonly", @id = "subtotal" })
-                            </div>
-                            <!--Discount-->
-                            <div class="col-md-3">
-                                <label class="bold">Discount<span class="text-danger">*</span></label>
-                            </div>
-                            <div class="col-md-7 form-group">
-                                @Html.TextBoxFor(model => model.Discount, new { @class = "form-control", @type = "number", @id = "Discount" })
-                            </div>
-                            <!-- GST -->
-                            @*<div class="col-md-3">
-                                    <label class="bold">GST (%)<span class="text-danger">*</span></label>
-                                </div>
-                                <div class="col-md-7 form-group">
-                                    @Html.TextBoxFor(model => model.GST, new { @class = "form-control", @type = "number", @step = "0.01", @id = "gst" })
-                                </div>*@
-
-                            <!-- Grand Total -->
-                            <div class="col-md-3">
-                                <label class="bold">Grand Total<span class="text-danger">*</span></label>
-                            </div>
-                            <div class="col-md-7 form-group">
-                                @Html.TextBoxFor(model => model.GrandTotal, new { @class = "form-control", @readonly = "readonly", @id = "grandTotal" })
-                            </div>
-                            <div class="col-md-3">
-                                <label class="bold">Due Amount<span class="text-danger">*</span></label>
-                            </div>
-                            <div class="col-md-7 form-group">
-                                @Html.TextBoxFor(model => model.DueAmount, new { @class = "form-control", @type = "number", @id = "Discount" })
-                            </div>
-                            <div class="col-md-3">
-                                <label class="bold">Payment Date<span class="text-danger">*</span></label>
-                            </div>
-                            <div class="col-md-7 form-group">
-                                @*@Html.TextBoxFor(model => model.PaymentDate, new
-                                    {
-                                        @class = "form-control",
-                                        @type = "date",
-                                        @id = "PaymentDate",
-                                        @Value = Model.PaymentDate != null
-                                      ? Model.PaymentDate
-                                      : DateTime.Now.ToString("dd-MM-yyyy")
-                                    })*@
-                                @Html.TextBoxFor(E => E.PaymentDate, new { @class = "form-control", maxlength = "200", @placeholder = "PaymentDate" })
-
-                            </div>
-                            <!-- Payment Mode -->
-                            <div class="col-md-3">
-                                <label class="bold">Payment Mode<span class="text-danger">*</span></label>
-                            </div>
-                            <div class="col-md-7 form-group">
-                                @Html.DropDownListFor(model => model.PaymentMode, new List<SelectListItem>
-                                {
-                                    new SelectListItem { Value = "Cash", Text = "Cash" },
-                                    //new SelectListItem { Value = "Credit Card", Text = "Credit Card" },
-                                    new SelectListItem { Value = "UPI", Text = "UPI" }
-                                }, "-- Select Payment Mode --", new { @class = "form-control select2" })
-                            </div>
-                            <input type="hidden" id="tempMessage" value='@JsonConvert.SerializeObject(TempData["Message"])' />
-                            <input type="hidden" id="StudentID" value='@Model.FK_StudentId' />
-                            <input type="hidden" id="ClassNameId" value='@Model.ClassName' />
-                            <!-- Submit & Reset Buttons -->
-                            @*<div class="col-md-9 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-                                    <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
-                                </div>*@
-                            <div class="col-sm-9 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1">Submit</button>
-                                <a href='@Url.Action("Index")' class="btn btn-dark box-shadow-1 btn-min-width mr-1 mb-1">Cancel</a>
                             </div>
                         </div>
                     </div>
@@ -188,6 +227,7 @@
             </div>
         </div>
     </div>
+
 }
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -275,12 +315,12 @@
            }
        }
        // 5️⃣ **Subtotal Validation**
-       let subtotal = parseFloat($("#subtotal").val()) || 0;
-       if (subtotal <= 0) {
-           alert("Subtotal must be greater than 0.");
-           e.preventDefault();
-           return false;
-       }
+       //let subtotal = parseFloat($("#subtotal").val()) || 0;
+       //if (subtotal <= 0) {
+       //    alert("Subtotal must be greater than 0.");
+       //    e.preventDefault();
+       //    return false;
+       //}
 
        // 6️⃣ **GST Validation**
        //let gst = parseFloat($("#gst").val()) || 0;
@@ -371,7 +411,7 @@
                     }
                 });
             },
-            minLength: 2,
+            minLength: 1,
             select: function (event, ui) {
                 $("#StudentName").val(ui.item.value);
                 $("#FK_StudentId").val(ui.item.id);
@@ -439,67 +479,44 @@
             }
         });
 
+        $("#notebookCheck").change(function () {
+            if ($(this).is(":checked")) {
+                if ($('#FK_ClassId').val() != '') {
+                    $("#notebookListSection").show();
+                    fetchNotebooks(); // Fetch notebook list
+                }
+                else {
+                    alert('Please Select Class Name!')
+                }
+            } else {
+                $("#notebookListSection").hide();
+                $("#notebookList tbody").empty();
+            }
+            calculateTotal(); // Update total
+        });
 
 
-
-
-
-
-
-        //$("#bookCheck").change(function () {
-        //    debugger;
-        //      if ($(this).is(":checked")) {
-        //          if ($('#ClassName').val() != '') {
-        //              $("#bookListSection").show();
-        //              fetchBooksonchange(); // Fetch book list
-        //              $('#selectAllBooks').prop('checked', true);
-        //              $('.book-checkbox').prop('checked', true);
-
-
-        //              //bindCheckboxEvents();
-        //          }
-        //          else {
-        //              alert('Please Select Class Name!')
-        //          }
-        //      } else {
-        //          $("#bookListSection").hide();
-        //          $("#bookList tbody").empty();
-        //      }
-        //      calculateTotal(); // Update total
-
-        //  });
-
-          $("#notebookCheck").change(function () {
-              if ($(this).is(":checked")) {
-                  if ($('#FK_ClassId').val() != '') {
-                  $("#notebookListSection").show();
-                      fetchNotebooks(); // Fetch notebook list
-                  }
-                  else {
-                      alert('Please Select Class Name!')
-                  }
-              } else {
-                  $("#notebookListSection").hide();
-                  $("#notebookList tbody").empty();
-              }
-              calculateTotal(); // Update total
-          });
-
-          // Event listener for dynamically added checkboxes
-          $(document).on("change", ".book-checkbox", function () {
-              calculateTotal();
-              SetBookID();
-          });
-          $(document).on("change", ".notebook-checkbox", function () {
-              calculateTotal();
-              SetNoteBookID();
-          });
+        // Event listener for dynamically added checkboxes
+        $(document).on("change", ".book-checkbox", function () {
+            calculateTotal();
+            SetBookID();
+        });
+        $(document).on("change", ".notebook-checkbox", function () {
+            calculateTotal();
+            SetNoteBookID();
+        });
 
           // GST input change event
           //$("#gst").on("input", function () {
           //    calculateTotal();
         //});
           $("#Discount").on("input", function () {
+              calculateTotal();
+          });
+          //$("#DueAmount").on("input", function () {
+          //    calculateTotal();
+          //});
+          $("#Other").on("input", function () {
               calculateTotal();
           });
 
@@ -565,27 +582,33 @@
     }
 
     // Function to calculate subtotal and grand total
-    function calculateTotal() {
-        let subtotal = 0;
+        function calculateTotal() {
+            debugger
+            let subtotal = 0;
+            let other = parseFloat($("#Other").val()) || 0;
+            /*let dueamount = parseFloat($("#DueAmount").val()) || 0;*/
+            let discount = parseFloat($("#Discount").val()) || 0;
 
-        // Loop through checked books
-        $(".book-checkbox:checked").each(function () {
-            subtotal += parseFloat($(this).data("price")) || 0;
-        });
+            // Loop through checked books
+            $(".book-checkbox:checked").each(function () {
+                subtotal += parseFloat($(this).data("price")) || 0;
+            });
 
-        // Loop through checked notebooks
-        $(".notebook-checkbox:checked").each(function () {
-            subtotal += parseFloat($(this).data("price")) * parseInt($(this).closest("tr").find(".quantity-input").val()) || 0;
-        });
+            // Loop through checked notebooks
+            $(".notebook-checkbox:checked").each(function () {
+                let price = parseFloat($(this).data("price")) || 0;
+                let qty = parseInt($(this).closest("tr").find(".quantity-input").val()) || 0;
+                subtotal += price * qty;
+            });
 
-        // Set subtotal value
-        $("#subtotal").val(subtotal.toFixed(2));
+            subtotal += other;
 
-        // Calculate GST and grand total
-        let gst = parseFloat($("#gst").val()) || 0;
-        let grandTotal = subtotal - $("#Discount").val();
-        $("#grandTotal").val(grandTotal.toFixed(2));
-    }
+            let totalminusAmount = discount;
+            let grandTotal = subtotal - totalminusAmount;
+
+            $("#grandTotal").val(grandTotal.toFixed(2));
+        }
+
     function fetchBooksonchange() {
     $.ajax({
         url: '@Url.Action("GetBooksOrNoteBooks", "BookOrNoteBookBill")',

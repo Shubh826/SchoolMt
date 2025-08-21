@@ -217,7 +217,7 @@ namespace SchoolMt.Controllers
                 html.AppendLine($"                    <tr><td>Months Fee</td><td>{data.MonthFee:0.00}</td></tr>");
                 html.AppendLine($"                    <tr><td>Months Transport Fee</td><td>{data.TransFee:0.00}</td></tr>");
                 html.AppendLine($"                    <tr><td>Exam Fee</td><td>{data.ExamFee:0.00}</td></tr>");
-                html.AppendLine($"                    <tr><td>Previous Due Amount</td><td>{data.PreviousDueAmount:0.00}</td></tr>");
+                //html.AppendLine($"                    <tr><td>Previous Due Amount</td><td>{data.PreviousDueAmount:0.00}</td></tr>");
                 html.AppendLine($"                    <tr><td>Amount Paid for Previous Balance</td><td>{predueamounchecked:0.00}</td></tr>");
                 html.AppendLine("                </tbody>");
                 html.AppendLine("                <tfoot>");
