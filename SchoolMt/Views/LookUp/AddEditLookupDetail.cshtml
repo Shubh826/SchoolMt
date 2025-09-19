@@ -1,0 +1,257 @@
+﻿@model MDL.LookUpDetailMDL
+
+@{
+    ViewBag.Title = "AddEditLookupDetail";
+}
+
+
+@using (Html.BeginForm("AddEditLookupDetail", "LookUp"))
+{
+    @Html.HiddenFor(E => E.PkId)
+    <div class="page-heading mb-0">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Add Edit Look Up</h3>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first text-end">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header">
+                        <ol class="breadcrumb justify-content-end mb-0">
+                            <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Add Edit Look Up</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-1">
+                        @*<form class="form form-horizontal">*@
+                        <div class="form-body">
+                            <div class="row">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="col-md-3 ClientDiv">
+                                    <label class="setForm bold">Look Up<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group ClientDiv" onclick="AddNewFuncOnSelect2UI(this)">
+                                    @*@if (@Model.PkId > 0)
+                                    {
+                                        @Html.DropDownListFor(E => E.Fk_LookUpId, new SelectList(Enumerable.Empty<SelectListItem>(), "PkId", "LookupName"), "--Select--", new { @class = "form-control select2", @disabled = "disabled" })
+                                        @Html.HiddenFor(E => E.Fk_LookUpId);
+                                    }
+                                    else
+                                    {*@
+                                        @Html.DropDownListFor(E => E.Fk_LookUpId, new SelectList(Enumerable.Empty<SelectListItem>(), "PkId", "LookupName"), "--Select--", new { @class = "form-control select2" })
+                                    @*}*@
+
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Look Up Detail Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.TextBoxFor(E => E.LookupDetailName, new { @class = "form-control", @maxlength = "100", @placeholder = "Lookup Detail Name" })
+                                    @Html.ValidationMessageFor(E => E.LookupDetailName, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Status<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.DropDownListFor(E => E.Status, new List<SelectListItem>()
+                                                                                          {
+                                                                                            new SelectListItem() { Value = "Active", Text ="Active",Selected=true },
+                                                                                            new SelectListItem() { Value="InActive", Text="InActive"},
+
+                                                                                          }, new { @class = "form-control select2" })
+                                </div>
+
+                                @*<div class="col-sm-9 d-flex justify-content-end center">
+                                        <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                        <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                    </div>*@
+                                <div class="col-sm-9 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1">Submit</button>
+                                    <a href='@Url.Action("Index")' class="btn btn-dark box-shadow-1 btn-min-width mr-1 mb-1">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                        @*</form>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="hdnFk_LookUpId" value="@Model.Fk_LookUpId"/>
+}
+
+
+@*START CODE::MODAL TO SHOW New Add*@
+<div id="NewAddModal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="height:150%">
+            <div class="modal-header">
+                <h4 class="modal-title">Look Up</h4>
+                <a class="close" href="javascript:void(0)" onclick="HidePopup();"><img src="~/images/close.png" /></a>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="form form-horizontal">
+                            <div class="form-body">
+                                <div class="form-group row">
+                                    <label class="col-md-4 label-control" for="">Look Up Name<span class="red">*</span></label>
+                                    <div class="col-md-7">
+                                        @Html.TextBoxFor(E => E.LookupName, new { @class = "form-control", @placeholder = "Look Up Name", @Maxlength = 50 })
+                                    </div>
+                                </div>
+
+
+                                <center id="btntype">
+                                    <div class="form-actions center">
+                                        <button type="button" class="btn btn-primary box-shadow-1 round btn-min-width mr-1 mb-1" id="btnNewAdd">Submit</button>
+                                        <a href='@Url.Action("AddEditLookupDetail")' class="btn btn-dark box-shadow-1 round btn-min-width mr-1 mb-1">Cancel</a>
+                                    </div>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                @*END CODE::MODAL TO SHOW New Add*@
+
+                @section scripts {
+                    @Scripts.Render("~/bundles/jqueryval")
+                    <link href="~/app-assets/vendors/css/forms/selects/select2.min.css" rel="stylesheet" />
+                    <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+
+
+                    <script type="text/javascript">
+        var reg = /^[a-zA-Z0-9-_. \s]*$/;
+        $(document).ready(function (e) {
+            $('.select2').select2();
+            GetLookUpData();
+            $("#btnNewAdd").click(function (e) {
+                SaveData(e);
+            });
+        });
+
+
+          function SaveData(e) {
+            //debugger;
+              if ($('#LookupName').val() == null || $('#LookupName').val() == '') {
+                  alert('Please Enter Look Up');
+                  e.preventDefault();
+                  return false;
+              }
+
+              if (!$('#LookupName').val() == null || !$('#LookupName').val() == '') {
+                  if (!$('#LookupName').val().match(reg)) {
+                    alert('Please Enter Valid Look Up');
+                    e.preventDefault();
+                    return false;
+                }
+
+            }
+              var data = new FormData();
+              data.append("LookupName", $("#LookupName").val());
+                $.ajax({
+                url: "@Url.Action("AddEditLookUp", "LookUp")",
+                type: 'POST',
+                cache: false,
+                async: false,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                dataType: "JSON",
+                data: data,
+                success: function (Msg) {
+                    alert(Msg.Message);
+                    HidePopup();
+                    GetLookUpData();
+                }
+
+            });
+        }
+        function NewAdd() {
+            $("#NewAddModal").modal('show');
+        }
+
+        function HidePopup() {
+            $("#LookupDetailName").val('');
+            $("#NewAddModal").modal('hide');
+
+        }
+
+        function AddNewFuncOnSelect2UI(a) {
+            var attempt = 0
+            var myinterval = setInterval(function () {
+                attempt++;
+                $(".select2-container.select2-container--default.select2-container--open").each(function (i) {
+                    var element = $(this).find('span[dir="ltr"]');
+                    if (element && element.length == 1) {
+                        element.find('span[class="add-new-element-parent"]').remove();
+                        element.append('<span class="add-new-element-parent"><a href="" class="add-new-element" data-toggle="modal" data-target="#NewAddModal" onclick=\'$("body").trigger("mousedown");\'> + New </a></span>');
+
+                        clearInterval(myinterval);
+                    }
+                });
+
+                if (attempt == 10) {
+                    clearInterval(myinterval);
+                }
+            }
+                , 100);
+        }
+
+   function GetLookUpData(){
+       $("#Fk_LookUpId").html("");// clear before appending new list
+       $("#Fk_LookUpId").append(
+            $('<option></option>').val("0").html("--Select--"));
+            var id = "00";
+            //  var text = "+Add Vehicle";
+
+       $.ajax({
+                  url: "@Url.Action("GetLookUpList", "LookUp")",
+                type: "GET",
+                dataType: "JSON",
+                //data: { FK_CustomerId: CustomerId },
+                success: function (data) {
+                    //debugger;
+                    if (data != '[]' && data.length > 0) {
+                        if(data[0].Value!='' && data[0].ID==0){
+                            alert(data[0].Value);
+                        }else{
+                            $.each(data, function (i, Item) {
+                                $("#Fk_LookUpId").append(
+                                    $('<option></option>').val(Item.PkId).html(Item.LookupName));
+                            });
+                        }
+                    }
+                    //debugger;
+                    if ($('#PkId').val()!=0)
+                    {
+                        $('#Fk_LookUpId').val('@Model.Fk_LookUpId');
+                    }else
+                        if ($('#PkId').val()==0)
+                        {
+                            if ($('#hdnFk_LookUpId').val() != '' || $('#hdnFk_LookUpId').val()!=null)
+                            {
+                                $('#Fk_LookUpId').val($('#hdnFk_LookUpId').val());
+                            }
+
+                        }
+
+                }
+            });
+        }
+
+                    </script>
+                }
