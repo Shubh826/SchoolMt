@@ -37,6 +37,7 @@ namespace SchoolMt.Controllers
         {
             objStudentFeeDetailsBAL = new StudentFeeDetailsBAL();
             objStudentFeeDetailsMDL = new StudentFeeDetailsMDL();
+
         }
         public ActionResult Index()
         {
