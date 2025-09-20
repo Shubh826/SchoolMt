@@ -1,0 +1,132 @@
+﻿@model IEnumerable<MDL.StudentMasterMDL>
+@{
+    var objPagingmdl = (MDL.Common.BasicPagingMDL)ViewBag.paging;
+    int SerialNo = (objPagingmdl.CurrentPage - 1) * objPagingmdl.RowParPage + 1;
+
+}
+<style>
+    #tbl {
+        margin-top: -3px;
+    }
+</style>
+
+@*<div class="col-md-12">*@
+<div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+    <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover" id="tbl">
+        <thead>
+            <tr>
+                <th class="text-center">Sr. No.</th>
+                <th class="text-center">Student Name</th>
+                <th class="text-center">Class Name</th>
+                <th class="text-center">Class Code</th>
+                <th class="text-center">Father Name</th>
+                <th class="text-center">Mother Name</th>
+                <th class="text-center">Gender</th>
+                <th class="text-center">Student Address</th>
+                <th class="text-center">Guardian Mobile No.</th>
+                <th class="text-center">Emergency ContactNo.</th>
+                <th class="text-center">Student Image</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model == null || !Model.Any())
+            {
+                <tr>
+                    <td colspan="14">
+                        <div class="text-danger">No Record Found </div>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">@SerialNo</td>
+
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.StudentName)
+                        </td>
+
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.ClassName)
+                        </td>
+
+
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.ClassCode)
+                        </td>
+
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.FatherName)
+                        </td>
+
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.MotherName)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.Gender)
+                        </td>
+                        @*<td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Shift_Name)
+                            </td>*@
+
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.GuardianContactNo)
+                        </td>
+
+
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.Emergency_Contact_No)
+                        </td>
+                        <td class="text-center">
+
+                            @if ((@item.StudentImageUrl == "") || (@item.StudentImageUrl == null))
+                            {
+
+                                <img src="/App_Images/man.png" height="25" width="25">
+                            }
+                            else
+                            {
+                                <a class="example-image-link" href="@item.StudentImageUrl" data-lightbox="example-1">
+                                    <img src="@item.StudentImageUrl" height="60" width="60" />
+                                </a>
+                            }
+
+
+                        </td>
+
+                        @if (item.IsActive == true)
+                        {
+                            <td class="text-center">
+                                Active
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="text-center">
+                                InActive
+                            </td>
+                        }
+                        <td class="text-center">
+                            @*@if (ViewBag.CanEdit)
+                                {*@
+                            <a class="btn btn-primary" href="@Url.Action("StudentReportCardDetails", new { id=item.PK_SudentId })">View Report Card</a><br />
+                            @*}*@
+                        </td>
+                    </tr>
+                    SerialNo++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+@*</div>*@
+
+@Html.Partial("_Paging", (MDL.Common.BasicPagingMDL)ViewBag.paging)
+

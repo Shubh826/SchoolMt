@@ -1,0 +1,252 @@
+﻿@model MDL.ReportCardViewMDL
+@{
+    ViewBag.Title = "StudentReportCardDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Report Card - @Model.StudentName</title>
+    <style>
+        .report-card {
+            max-width: 900px;
+            margin: 16px auto;
+            border: 1px solid #ddd;
+            padding: 18px;
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .school-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .school-logo {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+        }
+
+        .school-details {
+            flex: 1;
+        }
+
+        .meta-table td {
+            padding: 4px 8px;
+        }
+
+        .subjects-table th, .subjects-table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .subjects-table th {
+            background: #f8f9fa;
+        }
+
+        .totals {
+            font-weight: 700;
+        }
+
+        @@media print {
+            body {
+                -webkit-print-color-adjust: exact;
+            }
+
+            .report-card {
+                border: none;
+                box-shadow: none;
+                max-width: 100%;
+                margin: 0;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <div class="report-card shadow-sm">
+        <input type="hidden" id="hdnstudentId" value="@Model.StudentId" />
+        <div class="school-header">
+            <img src="@Model.SchoolLogoUrl" alt="Logo" class="school-logo" />
+            <div class="school-details">
+                <h4 class="mb-0">@Model.SchoolName</h4>
+                <small class="text-muted">@Model.SchoolAddress</small>
+                <div><strong>Academic Year:</strong> @Model.AcademicYear</div>
+            </div>
+            <div class="text-end">
+                <h5 class="mb-0">Progress Report</h5>
+                <small class="text-muted">CBSE</small>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <table class="meta-table">
+                    <tr>
+                        <td><strong>Student Name</strong></td>
+                        <td>@(Model.StudentName != null ? Model.StudentName : "-")</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Admission No.</strong></td>
+                        <td>@(Model.AdmissionNo != null ? Model.AdmissionNo : "-")</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Class</strong></td>
+                        <td>@(Model.Class != null ? Model.Class : "-")</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Section</strong></td>
+                        <td>@(Model.Section != null ? Model.Section : "-")</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Roll No.</strong></td>
+                        <td>@(Model.RollNo != null ? Model.RollNo : "-")</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-4 text-end">
+                <div><strong>DOB:</strong> @(Model.DOB != null ? Model.DOB : "-")</div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered subjects-table">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Periodic Test<br />(20)</th>
+                        <th>Notebook<br />(5)</th>
+                        <th>Subject Enrichment<br />(5)</th>
+                        <th>Annual Exam<br />(70)</th>
+                        <th>Total<br />(100)</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in Model.SubjectGrades)
+                    {
+                        <tr>
+                            <td class="text-start">@s.SubjectName</td>
+                            <td>@(s.PeriodicTest.HasValue ? s.PeriodicTest.Value.ToString() : "-")</td>
+                            <td>@(s.Notebook.HasValue ? s.Notebook.Value.ToString() : "-")</td>
+                            <td>@(s.SubjectEnrichment.HasValue ? s.SubjectEnrichment.Value.ToString() : "-")</td>
+                            <td>@(s.AnnualExam.HasValue ? s.AnnualExam.Value.ToString() : "-")</td>
+                            <td>@s.Total</td>
+                            <td>@(s.Grade != null ? s.Grade : "-")</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr class="totals">
+                        <td class="text-end" colspan="5">Grand Total</td>
+                        <td>@Model.TotalMarks / @Model.MaxMarks</td>
+                        <td>@String.Format("{0:0.00}%", Model.Percentage)</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-8">
+                <p><strong>Remark:</strong> @(Model.ResultRemark != null ? Model.ResultRemark : "-")</p>
+                <p><small>Note: This is a computer-generated report card based on recorded marks.</small></p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div style="height:60px">&nbsp;</div>
+                <div><strong>@(Model.ClassTeacherName != null ? Model.ClassTeacherName : "-")</strong><br /><small>Class Teacher</small></div>
+                <div class="mt-3"><strong>@(Model.PrincipalName != null ? Model.PrincipalName : "-")</strong><br /><small>Principal</small></div>
+            </div>
+        </div>
+
+        <div class="mt-3 text-end no-print">
+            <button type="submit" class="btn btn-primary" id="printReportCard">Print</button>
+            @*<button class="btn btn-primary" onclick="window.print()">Print</button>*@
+            @*<a class="btn btn-primary" id="downloadReportCard">Download</a>*@
+            <a class="btn btn-primary" href="@Url.Action("DownloadReportCard", "GeneratedReportcard", new { id = Model.StudentId })">
+                Download 
+            </a>
+            <a class="btn btn-dark" href='@Url.Action("Index")' id="downloadReportCard">Cancel</a>
+        </div>
+    </div>
+
+</body>
+</html>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        $('#printReportCard').click(function (e) {
+            PrintReportcard(e);
+        });
+        $('#downloadReportCard').click(function (e) {
+            DownLoadReportcard(e);
+        });
+    });
+  
+    function PrintReportcard(e) {
+        debugger;
+        e.preventDefault(); // prevent full form submission
+        var studentId = $('#hdnstudentId').val();
+        if (!studentId) {
+            alert('Student ID not found.');
+            return;
+        }
+
+    $.ajax({
+         url: '@Url.Action("PrintReportcard", "GeneratedReportcard")',
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        data: { 'id': studentId },
+
+        success: function (data) {
+            debugger;
+            var htmlContent = data;
+
+            var printFrame = document.createElement('iframe');
+            printFrame.style.display = 'none';
+
+            document.body.appendChild(printFrame);
+            var printDocument = printFrame.contentDocument;
+
+            printDocument.write(htmlContent);
+            printDocument.close();
+
+            printFrame.onload = function () {
+                printFrame.contentWindow.focus();
+                printFrame.contentWindow.print();
+
+                // ✅ Fallback: wait for print to complete, then redirect
+               // setTimeout(function () {
+                  //  window.location.href = '@Url.Action("StudentReportCardDetails", "GeneratedReportcard")';
+               // }, 1000); // 1 second delay — you can increase if needed
+            };
+        },
+        error: function (xhr) {
+            alert("Error generating receipt.");
+        },
+        failure: function (res) {
+            alert("Failed to generate receipt.");
+        },
+    });
+}
+
+function DownLoadReportcard() {
+    var studentId = $('#hdnstudentId').val();
+    // Directly open the controller action that returns PDF
+    window.location.href = '/GeneratedReportcard/DownloadReportCard?id=' + studentId;
+}
+
+</script>
+}
