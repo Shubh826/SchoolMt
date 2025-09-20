@@ -17,9 +17,9 @@ namespace BAL
             objBookOrNoteBookBillDAL = new BookOrNoteBookBillDAL();
         }
 
-        public List<BookOrNotebookDetail> GetBooksOrNoteBooks(string Type, string ClassName)
+        public List<BookOrNotebookDetail> GetBooksOrNoteBooks(string Type, string ClassName, int BillId)
         {
-            return objBookOrNoteBookBillDAL.GetBooksOrNoteBooks(Type, ClassName);
+            return objBookOrNoteBookBillDAL.GetBooksOrNoteBooks(Type, ClassName, BillId);
 
         }
 
@@ -35,6 +35,14 @@ namespace BAL
             return objBookOrNoteBookBillDAL.GetBookOrNoteBookBillData(out billList, out objBasicPagingMDL, id, fk_companyid, rowPerPage, currentPage, SearchBy, SearchValue, fromDate, toDate);
 
         }
+        public bool GetBookOrNoteBookBillForEdit(out BookOrNoteBookBillMDL billData, out List<BookOrNoteBookBillDetailMDL> detailList, int billId)
+        {
+            billData = new BookOrNoteBookBillMDL();
+            detailList = new List<BookOrNoteBookBillDetailMDL>();
+
+            return objBookOrNoteBookBillDAL.GetBookOrNoteBookBillForEdit(out billData, out detailList, billId);
+        }
+
 
     }
 }

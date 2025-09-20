@@ -51,6 +51,7 @@ namespace MDL
         public string PaymentMode { get; set; }
 
         public DateTime BillDate { get; set; } = DateTime.Now;
+        public string BillingDate { get; set; }
 
         [Required]
         public int CreatedBy { get; set; }
@@ -73,6 +74,7 @@ namespace MDL
         public string BookName { get; set; }
         public int NotebookPage { get; set; } // Example: "180 Page"
         public decimal Price { get; set; }
+        public bool Ischeck { get; set; }
     }
     public class BookPaymentDetails
     {
@@ -102,4 +104,17 @@ namespace MDL
         public decimal Price { get; set; }
         public decimal TotalAmount { get; set; }
     }
+    public class BookOrNoteBookBillDetailMDL
+    {
+        public int PK_BorNBillDetID { get; set; }
+        public int FK_BorNBillID { get; set; }
+        public string BILLNo { get; set; }
+        public string ItemName { get; set; }
+        public string ItemType { get; set; }
+        public int PageCount { get; set; }
+        public int Quantity { get; set; }
+        public decimal Price { get; set; }
+        public decimal Total { get; set; }
+    }
+
 }

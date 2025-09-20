@@ -61,13 +61,44 @@ namespace SchoolMt.Controllers
             return PartialView("_GridBookOrNoteBookBill", billList);
         }
         [HttpGet]
-        public ActionResult AddEditBookOrNoteBookBill()
+        public ActionResult AddEditBookOrNoteBookBill(int? id = null)
         {
+            // Class List bind
             ViewData["ClassList"] = CommonBAL.FillClass();
-            List<DropDownMDL> _StudentList = new List<DropDownMDL>();
-            TempData["StudentList"] = _StudentList = CommonBAL.GetStudentByClassName(0);
-            objBookOrNoteBookBillMDL.PaymentDate = "";
-            objBookOrNoteBookBillMDL.HdnPaymentDate = "";
+
+            // Student List default (empty / based on class=0)
+            TempData["StudentList"] = CommonBAL.GetStudentByClassName(0);
+
+            BookOrNoteBookBillMDL objBookOrNoteBookBillMDL = new BookOrNoteBookBillMDL();
+            List<BookOrNoteBookBillDetailMDL> detailList = new List<BookOrNoteBookBillDetailMDL>();
+
+            if (id.HasValue && id.Value > 0) // Edit Mode
+            {
+                bool result = objBookOrNoteBookBillBAL.GetBookOrNoteBookBillForEdit(
+                    out objBookOrNoteBookBillMDL,
+                    out detailList,
+                    id.Value
+                );
+
+                if (result && objBookOrNoteBookBillMDL != null)
+                {
+                    // Agar class id already hai to uske students reload karo
+                    TempData["StudentList"] = CommonBAL.GetStudentByClassName(objBookOrNoteBookBillMDL.FK_ClassId);
+
+                    // Payment date preserve
+                    objBookOrNoteBookBillMDL.HdnPaymentDate = objBookOrNoteBookBillMDL.PaymentDate;
+                }
+            }
+            else // Add Mode
+            {
+                objBookOrNoteBookBillMDL.PaymentDate = "";
+                objBookOrNoteBookBillMDL.HdnPaymentDate = "";
+            }
+
+            // Bill detail list bind karne ke liye ViewBag
+            ViewBag.DetailList = detailList;
+
+            // Ye action default "AddEditBookOrNoteBookBill.cshtml" view return karega
             return View(objBookOrNoteBookBillMDL);
         }
 
@@ -379,12 +410,12 @@ namespace SchoolMt.Controllers
 
         //}
         [HttpGet]
-        public JsonResult GetBooksOrNoteBooks(string Type, string ClassName)
+        public JsonResult GetBooksOrNoteBooks(string Type, string ClassName, int BillId)
         {
             try
             {
                 List<BookOrNotebookDetail> _BookOrNoteBookData = new List<BookOrNotebookDetail>();
-                _BookOrNoteBookData = objBookOrNoteBookBillBAL.GetBooksOrNoteBooks(Type, ClassName);
+                _BookOrNoteBookData = objBookOrNoteBookBillBAL.GetBooksOrNoteBooks(Type, ClassName, BillId);
                 return Json(_BookOrNoteBookData, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

@@ -24,12 +24,14 @@ namespace DAL
             objDataFunctions = new DataFunctions();
             objMessages = new Messages();
         }
-        public List<BookOrNotebookDetail> GetBooksOrNoteBooks(string Type,string ClassName)
+        public List<BookOrNotebookDetail> GetBooksOrNoteBooks(string Type, string ClassName,int BillId)
         {
+            
             _commandText = "SMS.USP_GetBookOrNoteBookBillDetails";
-            var para = new SqlParameter[2];
+            var para = new SqlParameter[3];
             para[0] = new SqlParameter("@Type", SqlDbType.VarChar) { Value = Type };
             para[1] = new SqlParameter("@ClassName", SqlDbType.VarChar) { Value = ClassName };
+            para[2] = new SqlParameter("@iBillId", SqlDbType.Int) { Value = BillId };
             DataSet ds = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet, para.ToList());
 
             List<BookOrNotebookDetail> _BookOrNoteBookData = new List<BookOrNotebookDetail>();
@@ -38,7 +40,8 @@ namespace DAL
                 PK_BookId = dr.Field<int>("PK_BookId"),
                 BookName = dr.Field<string>("BookName"),
                 NotebookPage = dr.Field<int>("NoteBookPageCount"),
-                Price = dr.Field<decimal>("Price")
+                Price = dr.Field<decimal>("Price"),
+                Ischeck = dr.Field<bool>("Ischeck")
             }).ToList();
             return _BookOrNoteBookData;
         }
@@ -87,6 +90,7 @@ namespace DAL
                             CompanyId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("CompanyId")),
                             DueAmount = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("DueAmount")),
                             Discount = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("Discount"))
+                          
                         }).ToList();
 
                         objBasicPagingMDL = new BasicPagingMDL()
@@ -122,7 +126,7 @@ namespace DAL
             return result;
         }
 
-        public Messages PostBookOrNoteBookBill(BookOrNoteBookBillMDL obj,out BookPaymentDetails _BookPaymentDetails)
+        public Messages PostBookOrNoteBookBill(BookOrNoteBookBillMDL obj, out BookPaymentDetails _BookPaymentDetails)
         {
             Messages objMessages = new Messages();
             _BookPaymentDetails = new BookPaymentDetails();
@@ -162,9 +166,9 @@ namespace DAL
                     objMessages.Message = objDataSet.Tables[0].Rows[0].Field<string>("Message"); // ✅ Fixed column name
                 }
 
-                if(objMessages.Message_Id==1)
+                if (objMessages.Message_Id == 1)
                 {
-                    if (objDataSet.Tables.Count>1 && objDataSet.Tables[1].Rows.Count > 0)
+                    if (objDataSet.Tables.Count > 1 && objDataSet.Tables[1].Rows.Count > 0)
                     {
                         _BookPaymentDetails.PK_BillId = objDataSet.Tables[1].Rows[0].Field<int>("PK_BorNBillID");
                         _BookPaymentDetails.StudentName = objDataSet.Tables[1].Rows[0].Field<string>("StudentName");
@@ -209,5 +213,84 @@ namespace DAL
             return objMessages;
 
         }
+
+        public bool GetBookOrNoteBookBillForEdit(out BookOrNoteBookBillMDL billData, out List<BookOrNoteBookBillDetailMDL> detailList, int billId)
+        {
+            billData = new BookOrNoteBookBillMDL();
+            detailList = new List<BookOrNoteBookBillDetailMDL>();
+            bool result = false;
+            _commandText = "SMS.USP_GetBookOrNoteBookBillForEdit";  // proc name
+
+            List<SqlParameter> parms = new List<SqlParameter>
+    {
+        new SqlParameter("@PK_BorNBillID", billId)
+    };
+
+            try
+            {
+                CheckParameters.ConvertNullToDBNull(parms);
+                objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet, parms);
+
+                // Master Record (Table[0])
+                if (objDataSet.Tables[0].Rows.Count > 0)
+                {
+                    DataRow dr = objDataSet.Tables[0].Rows[0];
+                    billData = new BookOrNoteBookBillMDL()
+                    {
+                        PK_BorNBillID = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("PK_BorNBillID")),
+                        StudentName = dr.Field<string>("StudentName"),
+                        FatherName = dr.Field<string>("FatherName"),
+                        ClassName = dr.Field<string>("ClassName"),
+                        BILLNo = dr.Field<string>("BillNo"),
+                        BillingDate = dr.Field<string>("BillDate"),
+                        Subtotal = WrapDbNull.WrapDbNullValue<decimal>(dr.Field<decimal?>("Subtotal")),
+                        GST = WrapDbNull.WrapDbNullValue<decimal>(dr.Field<decimal?>("GST")),
+                        GrandTotal = WrapDbNull.WrapDbNullValue<decimal>(dr.Field<decimal?>("GrandTotal")),
+                        Cash = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("Cash")),
+                        Online = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("Online")),
+                        Other = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("Other")),
+                        DueAmount = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("DueAmount")),
+                        Discount = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("Discount")),
+                        PaymentDate = dr.Field<string>("PaymentDate"),
+                        FK_StudentId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_StudentId")),
+                        FK_ClassId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_ClassId")),
+                        CompanyId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("CompanyId")),
+                        IsNotebook= dr.Field<bool>("IsNotebookCheck"),
+                        IsBook = dr.Field<bool>("IsbookCheck")
+                    };
+                }
+
+                // Detail Records (Table[1])
+                if (objDataSet.Tables.Count > 1 && objDataSet.Tables[1].Rows.Count > 0)
+                {
+                    detailList = objDataSet.Tables[1].AsEnumerable().Select(dr => new BookOrNoteBookBillDetailMDL()
+                    {
+                        PK_BorNBillDetID = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("PK_BorNBillDetID")),
+                        FK_BorNBillID = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_BorNBillID")),
+                        BILLNo = dr.Field<string>("BILLNo"),
+                        ItemName = dr.Field<string>("ItemName"),
+                        ItemType = dr.Field<string>("ItemType"),
+                        PageCount = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("PageCount")),
+                        Quantity = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("Quantity")),
+                        Price = WrapDbNull.WrapDbNullValue<decimal>(dr.Field<decimal?>("Price")),
+                        Total = WrapDbNull.WrapDbNullValue<decimal>(dr.Field<decimal?>("Total"))
+                    }).ToList();
+                }
+
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                // TODO: log ex
+            }
+            finally
+            {
+                objDataSet?.Dispose();
+            }
+
+            return result;
+        }
+
     }
 }

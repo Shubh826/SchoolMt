@@ -18,7 +18,7 @@
                     <th class="text-center text-nowrap">Grand Total</th>
                     <th class="text-center text-nowrap">Payment Mode</th>
                     <th class="text-center text-nowrap">Payment Date</th>
-                    @*<th class="text-center text-nowrap">Action</th>*@
+                    <th class="text-center text-nowrap">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,9 +45,9 @@
                             <td class="text-center">@item.GrandTotal.ToString("0.00")</td>
                             <td class="text-center">@item.PaymentMode</td>
                             <td class="text-center">@String.Format("{0:dd-MM-yyyy}", item.PaymentDate)</td>
-                            @*<td class="text-center">
-                                <a class="btn btn-sm btn-primary" href="@Url.Action("PrintBill", new { id = item.PK_BorNBillID })">Print</a>
-                            </td>*@
+                            <td class="text-center">
+                                <a class="btn btn-sm btn-primary" href="@Url.Action("AddEditBookOrNoteBookBill", new { id = item.PK_BorNBillID })">Edit</a>
+                            </td>
                         </tr>
                         SerialNo++;
                     }
