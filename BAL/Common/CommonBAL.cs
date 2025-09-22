@@ -94,9 +94,9 @@ namespace BAL.Common
         {
             return CommonDAL.BindShift(companyID);
         }
-        public static List<DropDownMDL> FillClass()
+        public static List<DropDownMDL> FillClass(int companyID=0)
         {
-            return CommonDAL.FillClass();
+            return CommonDAL.FillClass(companyID);
         }
         public static List<DropDownMDL> FillClassCode()
         {
@@ -141,6 +141,10 @@ namespace BAL.Common
         public static List<DropDownMDL> FillExpenseHead(int CompanyId)
         {
             return CommonDAL.FillExpenseHead(CompanyId);
+        }
+        public static List<LookUpDropDownMDL> GetLookUpList(int companyid, int lookupId,string actionfrom)
+        {
+            return CommonDAL.GetLookUpList(companyid, lookupId, actionfrom);
         }
     }
 }

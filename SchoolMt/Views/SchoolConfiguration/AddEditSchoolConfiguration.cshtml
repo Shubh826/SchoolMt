@@ -1,0 +1,407 @@
+﻿@model MDL.SchoolConfigurationMDL
+
+@{
+    ViewBag.Title = "Add/Edit School Configuration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("AddEditSchoolConfiguration", "SchoolConfiguration", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(E=>E.JsonData)
+    <div class="page-heading mb-0">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Add/Edit School Configuration</h3>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first text-end">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header">
+                        <ol class="breadcrumb justify-content-end mb-0">
+                            <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Add/Edit School Configuration</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-11 offset-lg-1">
+                        <div class="form-body">
+
+                            <!-- School Dropdown -->
+                            <div class="row mb-2">
+                                <div class="col-md-2">
+                                    <label class="setForm bold">School Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.DropDownListFor(E => E.FK_CompanyId,
+                                        new SelectList((System.Collections.IEnumerable)ViewData["companylist"], "ID", "Value"),
+                                        "--SELECT--",
+                                        new { @class = "form-control", style = "width:100%", id = "FK_CompanyId" })
+
+                                </div>
+                            </div>
+                            <!-- Category Dropdown -->
+                            <div class="row mb-2">
+                                <div class="col-md-2">
+                                    <label class="setForm bold">Category<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.DropDownListFor(E => E.FK_LookUpId,
+                                        new SelectList((System.Collections.IEnumerable)ViewData["LookUplist"], "Id", "Value"),
+                                        "--SELECT--",
+                                        new { @class = "form-control", style = "width:100%", id = "FK_LookUpId" })
+
+                                </div>
+                            </div>
+                            <!-- Class Dropdown (only for Subject) -->
+                            <div class="row mb-2" id="ClassSection" style="display:none;">
+                                <div class="col-md-2">
+                                    <label class="setForm bold">Class Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.DropDownListFor(E => E.FK_ClassId,
+                                        new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Id", "Value"),
+                                        "--SELECT--",
+                                        new { @class = "form-control", style = "width:100%", id = "FK_ClassId" })
+
+                                </div>
+                            </div>
+
+                            <!-- SubJect Dropdown (only for Subject) -->
+                            <div class="row mb-2 FK_LookUpDetailIdDiv" id="SubjectSection" style="display:none;">
+                                <div class="col-md-2">
+                                    <label class="setForm bold">Subject<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-4 form-group">
+
+                                    @Html.DropDownListFor(E => E.FK_LookUpDetailId, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "Value"), new { @class = "form-control", style = "width:100%", @multiple = "multiple", @placeholder = "--SELECT--" })
+
+                                </div>
+                            </div>
+
+
+
+                            <!-- Category List (Checkboxes for Exam Type) -->
+                            <div class="row mb-2" id="CategoryListSection" style="display:none;">
+                                <div class="col-md-8 offset-md-2">
+                                    <table class="table table-bordered" id="tblExamTypes">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="width:50px;">
+                                                    <input type="checkbox" id="selectAllExamTypes" />
+                                                </th>
+                                                <th>Exam Type</th>
+                                                <th>Total Marks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Rows will be dynamically appended here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Submit Buttons -->
+                            @*<div class="row mt-3">
+            <div class="col-md-6 offset-md-2 d-flex">
+                <button type="submit" class="btn btn-primary me-2" id="schoolConfigForm">Submit</button>
+                <a href="@Url.Action("Index")" class="btn btn-dark">Cancel</a>
+            </div>
+        </div>*@
+                            <div class="col-sm-6 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1"  id="schoolConfigForm">Submit</button>
+                                <a href='@Url.Action("Index")' class="btn btn-dark box-shadow-1 btn-min-width mr-1 mb-1">Cancel</a>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden fields for Edit -->
+    <input type="hidden" value="@Model.FK_CompanyId" id="hdnCompanyId" />
+    <input type="hidden" id="hdnMachineID" value="@Model.FK_LookUpDetailIds" />
+
+           @*<input type="hidden" value="@Model.FK_LookUpId" id="hdnLookUpId" />*@
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <link href="~/app-assets/vendors/css/forms/selects/select2.min.css" rel="stylesheet" />
+    <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+    <link href="~/assets/css/sumoselect.css" rel="stylesheet" />
+    <script src="~/assets/js/CustomSumoselectForVMS.js"></script>
+
+    @*<script src="~/assets/js/jquery.sumoselect.js"></script>
+        <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>*@
+
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+
+
+            $('#FK_LookUpDetailId').html('');
+            $('#FK_LookUpDetailId').SumoSelect({ okCancelInMulti: true, selectAll: true, csvDispCount: 1, floatWidth: 400, Sumofor: 'Customer' });
+            $('#FK_LookUpDetailId')[0].sumo.unload();
+            $('#FK_LookUpDetailId').SumoSelect({ okCancelInMulti: true, selectAll: true, csvDispCount: 1, floatWidth: 400, Sumofor: 'Customer' });
+
+     
+  
+            var actionfrom = "Add";
+            if ($("#hdnCompanyId").val() > 0) {
+                actionfrom = "Edit";
+            }
+            $('#FK_ClassId').select2();
+            $('#FK_CompanyId').select2();
+            $('#FK_LookUpId').select2();
+
+            $(document).on('change', '#selectAllExamTypes', function () {
+                var checked = $(this).is(':checked');
+                $('.examTypeCheckbox').prop('checked', checked);
+            });
+
+
+            // When any child checkbox changes
+            $(document).on('change', '.examTypeCheckbox', function () {
+                var allChecked = $('.examTypeCheckbox').length === $('.examTypeCheckbox:checked').length;
+                $('#selectAllExamTypes').prop('checked', allChecked);
+            });
+
+
+            @*var existingLookUpId = $("#hdnLookUpId").val();
+            if (existingLookUpId) {
+                $("#FK_LookUpId").val(existingLookUpId).trigger('change');
+
+                // If Exam Type, bind existing ExamTypes
+                if ($("#FK_LookUpId option:selected").text().toLowerCase() === "exam type") {
+                   // Using built-in Json.Encode
+                    BindCategoryCheckboxes($("#hdnCompanyId").val(), existingLookUpId, actionfrom, @Html.Raw(Json.Encode(Model.LookUpDetailName)));
+                }
+            }*@
+
+            $("#FK_LookUpId").change(function (e) {
+                var selected = $("#FK_LookUpId option:selected").text().toLowerCase();
+
+                if (selected === "subject") {
+                    $("#ClassSection").show();
+                    $("#SubjectSection").show();
+                    $("#CategoryListSection").hide();
+                    BindSubJect($("#hdnCompanyId").val(), $(this).val(), actionfrom);
+                } else if (selected === "exam type") {
+                    $("#ClassSection").hide();
+                    $("#SubjectSection").hide();
+                    $("#CategoryListSection").show();
+                    BindCategoryCheckboxes($("#hdnCompanyId").val(), $(this).val(), actionfrom);
+                } else {
+                    $("#ClassSection").hide();
+                    $("#SubjectSection").hide();
+                    $("#CategoryListSection").hide();
+                }
+            });
+
+
+            $('#schoolConfigForm').click(function (e) {
+              // prevent default submission
+
+                var CompanyId = $("#FK_CompanyId").val();
+                var Category = $("#FK_LookUpId option:selected").text().toLowerCase();
+                var ClassId = $("#FK_ClassId").val();
+
+                if (!CompanyId) { alert("Please select School"); return false; }
+                if (!$("#FK_LookUpId").val()) { alert("Please select Category"); e.preventDefault(); return false; }
+
+                var jsonData = [];
+
+                if (Category === "exam type") {
+                    // Loop through each row in exam type table
+                    $("#tblExamTypes tbody tr").each(function () {
+                        var isSelected = $(this).find('.examTypeCheckbox').is(':checked');
+                        if (isSelected) {
+                            var lookUpDetailId = $(this).find('input[type=hidden]').val();
+                            var totalMark = $(this).find('.totalMarks').val() || "0";
+
+                            jsonData.push({
+                                Type: "Exam",
+                                LookUpDetailId: parseInt(lookUpDetailId),
+                                TotalMark: totalMark
+                            });
+                        }
+                    });
+
+                    if (jsonData.length === 0) { alert("Please select at least one Exam Type."); e.preventDefault(); return false; }
+                }
+                else if (Category === "subject") {
+                    // Loop through selected subjects
+                    var selectedSubjects = $('#FK_LookUpDetailId').val(); // array of selected IDs
+                    if (!selectedSubjects || selectedSubjects.length === 0) {
+                        alert("Please select at least one Subject.");
+                        e.preventDefault();
+                        return false;
+                    }
+
+                    for (var i = 0; i < selectedSubjects.length; i++) {
+                        jsonData.push({
+                            Type: "Subject",
+                            LookUpDetailId: parseInt(selectedSubjects[i]),
+                            TotalMark: "0" // optionally you can add a default mark or allow input for each subject
+                        });
+                    }
+                }
+
+                // Convert JSON array to string
+                var jsonString = JSON.stringify(jsonData);
+
+                $('#JsonData').val(jsonString);
+
+           
+            });
+
+
+
+        });
+
+ function BindCategoryCheckboxes(companyid, lookUpId, actionfrom, existing = null) {
+    var $tbody = $("#tblExamTypes tbody");
+    $tbody.empty(); // clear previous rows
+
+    $.ajax({
+        url: "@Url.Action("GetLookUpDetailList", "SchoolConfiguration")",
+        type: "GET",
+        data: { companyid: companyid, lookUpId: lookUpId, actionfrom: actionfrom },
+        success: function (data) {
+            if (data.length > 0) {
+                $.each(data, function (i, item) {
+                    var isChecked = false;
+                    var totalMark = "";
+
+                    if (existing) {
+                        var match = existing.find(e => e.FK_LookUpDetailId === item.ID);
+                        if (match) {
+                            isChecked = match.IsSelected;
+                            totalMark = match.TotalMark;
+                        }
+                    }
+
+                    var row = `
+<tr>
+    <td class="text-center">
+        <input type="checkbox" class="examTypeCheckbox" name="ExamTypes[${i}].IsSelected" value="true" ${isChecked ? 'checked' : ''}/>
+        <input type="hidden" name="ExamTypes[${i}].FK_LookUpDetailId" value="${item.ID}" />
+    </td>
+    <td>${item.Value}</td>
+    <td>
+        <input type="number" class="form-control totalMarks"
+               name="ExamTypes[${i}].TotalMark"
+               value="${totalMark || 10}"
+               min="0" step="1"
+               placeholder="Enter Total Marks" />
+    </td>
+</tr>`;
+
+                    $tbody.append(row);
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log("Error fetching data:", error);
+        }
+    });
+}
+
+
+        function BindSubJect(companyid, lookUpId, actionfrom, existing = null) {
+       // debugger;
+       //var $tbody = $("#tblExamTypes tbody");
+       //$tbody.empty(); // clear previous rows
+
+       $('#FK_LookUpDetailId').html('');
+       //  if (AccountId == "0" || AccountId == "0" || AccountId == "") {
+       $('#FK_LookUpDetailId').append('<option value="0"> ' + "--select" + '</option>');
+       $('#FK_LookUpDetailId').html('');
+       $('#FK_LookUpDetailId')[0].sumo.reload();
+       // return false;
+       // }
+       if (lookUpId == "0" || lookUpId == "0" || lookUpId == "") {
+           return false;
+       }
+       if (companyid == "0" || companyid == "0" || companyid == "") {
+           return false;
+       }
+
+    $.ajax({
+        url: "@Url.Action("GetLookUpDetailList", "SchoolConfiguration")",
+        type: "GET",
+        data: { companyid: companyid, lookUpId: lookUpId, actionfrom: actionfrom },
+        success: function (data) {
+            ////  debugger
+            if (data.length > 0) {
+                $.each(data, function (i, data) {
+                    // debugger
+                    var AlreadyExist = data.IsSelected == true ? "YES" : "NO";
+                    $('#FK_LookUpDetailId')[0].sumo.add(data.ID, data.Value, AlreadyExist);
+                    $('#FK_LookUpDetailId').SumoSelect({ okCancelInMulti: true, selectAll: true, floatWidth: 400, csvDispCount: 1 });
+
+                });
+                // Set height immediately after
+                $('#FK_LookUpDetailId')[0].sumo.reload();
+
+
+                //START::Existing Item Select In Dropdown
+                if (actionfrom = "Edit") {
+
+                    //if ($('#VehicleSpecific').val() == "False") {
+                    //    $("#FK_LookUpDetailId > option").attr("selected", "selected");
+                    //    $("#optWrapperCustomer > ul > li.opt").addClass("selected");
+                    //    $("#pCustomer").addClass("selected");
+                    //    $("#CustomerCaptionCont > span").text("All");
+                    //}
+                    //else {
+                    var ExistingValues = "";
+                    if (ExistingValues != '' && ExistingValues != null) {
+
+                            var selectvar = "YES"
+                            var AccountOptionlength = $("#FK_LookUpDetailId option[data-id='" + selectvar + "']").length;
+                            var allAccountOptionlength = $("#FK_LookUpDetailId option").length;
+                            if (AccountOptionlength > 0) {
+                                //alert('AccountOptionlength:' + AccountOptionlength + ',allAccountOptionlength:' + allAccountOptionlength);
+                                if (allAccountOptionlength == AccountOptionlength) {
+                                    $("#FK_LookUpDetailId > option").attr("selected", "selected");
+                                    $("#optWrapperCustomer > ul > li.opt").addClass("selected");
+                                    $("#pCustomer").addClass("selected");
+                                    $("#CustomerCaptionCont > span").text("All");
+                                }
+                                else {
+                                    // $("#FK_LookUpDetailId option[data-id='" + selectvar + "']").prop("selected", true);
+                                    $("#FK_LookUpDetailId option[data-id='" + selectvar + "']").attr("selected", "selected");
+                                    $("#optWrapperCustomer > ul > li.YES").addClass("selected");
+                                    $("#CustomerCaptionCont > span").text(AccountOptionlength + ' Selected');
+
+                                }
+                                // alert($("#FK_LookUpDetailId").val());
+                            }
+
+                        }
+                   // }
+                }
+                //END::Existing Item Select In Dropdown
+                $('.SumoSelect > .optWrapper > .options').css("max-height", "70px");
+            }
+
+        },
+        error: function (xhr, status, error) {
+            console.log("Error fetching data:", error);
+        }
+    });
+        }
+
+    </script>
+}

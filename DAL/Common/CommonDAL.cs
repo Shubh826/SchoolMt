@@ -3,6 +3,7 @@ using MDL;
 using MDL.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -302,10 +303,12 @@ namespace DAL
             }).ToList();
             return _dropdownlist;
         }
-        public static List<DropDownMDL> FillClass()
+        public static List<DropDownMDL> FillClass(int companyID)
         {
             CommandText = "USP_GetAllClass";
-            DataSet Client = (DataSet)objDataFunctions.getQueryResult(CommandText, DataReturnType.DataSet);
+            var para = new SqlParameter[1];
+            para[0] = new SqlParameter("@iCompanyId", SqlDbType.Int) { Value = Convert.ToInt32(companyID) };
+            DataSet Client = (DataSet)objDataFunctions.getQueryResult(CommandText, DataReturnType.DataSet, para.ToList());
             List<DropDownMDL> ClassList = new List<DropDownMDL>();
             ClassList = Client.Tables[0].AsEnumerable().Select(dr => new DropDownMDL()
             {
@@ -464,5 +467,25 @@ namespace DAL
             }).ToList();
             return CompanyList;
         }
+
+        public static List<LookUpDropDownMDL> GetLookUpList(int companyid,int lookupId,string actionfrom)
+        {
+            CommandText = "USP_Get_LookUpList";
+            var para = new SqlParameter[3];
+            para[0] = new SqlParameter("@iCompanyId", SqlDbType.Int) { Value = Convert.ToInt32(companyid) };
+            para[1] = new SqlParameter("@iLookUpId", SqlDbType.Int) { Value = Convert.ToInt32(lookupId) };
+            para[2] = new SqlParameter("@cActionFrom", SqlDbType.VarChar) { Value = actionfrom };
+            DataSet ds = (DataSet)objDataFunctions.getQueryResult(CommandText, DataReturnType.DataSet, para.ToList());
+            List<LookUpDropDownMDL> List = new List<LookUpDropDownMDL>();
+           List = ds.Tables[0].AsEnumerable().Select(dr => new LookUpDropDownMDL()
+            {
+                ID = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("Id")),
+                Value = dr.Field<string>("Value"),
+                IsSelected = dr.Field<bool>("IsSelected"),
+                TotalMark= dr.Field<string>("TotalMark")
+           }).ToList();
+            return List;
+        }
+
     }
 }

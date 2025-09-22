@@ -1,0 +1,160 @@
+﻿@model IEnumerable<MDL.SchoolConfigurationMDL>
+@{
+    var objPagingmdl = (MDL.Common.BasicPagingMDL)ViewBag.paging;
+    int SerialNo = (objPagingmdl.CurrentPage - 1) * objPagingmdl.RowParPage + 1;
+
+}
+<style>
+    #tbl {
+        margin-top: -3px;
+    }
+</style>
+
+@*<div class="col-md-12">*@
+<div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+
+    @*<button id="btnDeleteSelected" class="btn btn-danger" style="display:none;">Delete Selected</button>*@
+
+    <div class="table-actions mb-2">
+        <button id="btnDeleteSelected" class="btn btn-danger btn-sm" style="display:none;">
+            <i class="fa fa-trash"></i> Delete Selected
+        </button>
+    </div>
+
+    <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover" id="tbl">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="selectAll" /></th>
+                <th class="text-center">Sr. No.</th>
+                <th class="text-center">School Name</th>
+                <th class="text-center">Class Name</th>
+                <th class="text-center">Category</th>
+                <th class="text-center">Detail</th>
+                <th class="text-center">Total Mark</th>
+                <th class="text-center">Created By</th>
+                <th class="text-center">Created Date</th>
+                @*<th class="text-center">Action</th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model == null || !Model.Any())
+            {
+                <tr>
+                    <td colspan="14">
+                        <div class="text-danger">No Record Found </div>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+        <tr>
+            <td>
+                <input type="checkbox" class="configCheckbox" value="@item.PK_SchoolConfigurationId" />
+            </td>
+            <td class="text-center">@SerialNo</td>
+
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.CompanyName)
+            </td>
+
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.ClassName)
+            </td>
+
+
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.LookUpName)
+            </td>
+
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.LookUpDetailName)
+            </td>
+
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.TotalMark)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            @*<td class="text-center">*@
+            @*@if (ViewBag.CanEdit)
+        {*@
+            @*<a class="btn btn-primary" href="@Url.Action("AddEditStudent", new { id=item.FK_CompanyId })">Edit</a><br />*@
+            @*}*@
+            @*</td>*@
+        </tr>
+                    SerialNo++;
+                }
+            }
+        </tbody>
+    </table>
+
+
+</div>
+@*</div>*@
+
+@Html.Partial("_Paging", (MDL.Common.BasicPagingMDL)ViewBag.paging)
+<script type="text/javascript">
+    $(document).ready(function (e) {
+       // Select All checkbox
+        function toggleDeleteButton() {
+            var anyChecked = $('.configCheckbox:checked').length > 0;
+            $('#btnDeleteSelected').toggle(anyChecked);
+        }
+
+        // Initial check
+        toggleDeleteButton();
+
+        // When a row checkbox changes
+        $(document).on('change', '.configCheckbox', function () {
+            toggleDeleteButton();
+        });
+
+        // Select/Deselect All checkbox
+        $('#selectAll').change(function () {
+            $('.configCheckbox').prop('checked', $(this).is(':checked'));
+            toggleDeleteButton();
+        });
+
+$('#btnDeleteSelected').click(function () {
+    var selectedIds = [];
+    $('.configCheckbox:checked').each(function () {
+        selectedIds.push(parseInt($(this).val()));
+    });
+
+    if (selectedIds.length === 0) {
+        alert("Please select at least one record to delete.");
+        return;
+    }
+
+    if (!confirm("Are you sure you want to delete selected records?")) return;
+
+    // Convert to JSON
+    var pkIds = selectedIds.join(',');
+
+    $.ajax({
+         url: '@Url.Action("DeleteSchoolConfigurationData", "SchoolConfiguration")',
+    type: 'POST',
+        data: { pkIds: pkIds },
+        success: function (data) {
+            if (data.Message_Id==1) {
+                alert("Deleted successfully!");
+                location.reload(); // or remove rows dynamically
+            } else {
+                alert("Error deleting records.");
+            }
+        },
+        error: function (xhr) {
+            alert("Error: " + xhr.responseText);
+        }
+    });
+});
+
+
+    });
+</script>

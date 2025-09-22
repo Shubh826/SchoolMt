@@ -11,4 +11,13 @@ namespace MDL.Common
         public Int64 ID { get; set; }
         public string Value { get; set; }
     }
+
+    public class LookUpDropDownMDL
+    {
+        public Int64 ID { get; set; }
+        public string Value { get; set; }
+        public bool? IsSelected { get; set; }
+        public string TotalMark { get; set; }
+
+    }
 }
