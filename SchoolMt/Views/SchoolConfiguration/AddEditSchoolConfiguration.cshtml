@@ -164,6 +164,7 @@
             $('#FK_CompanyId').select2();
             $('#FK_LookUpId').select2();
 
+       
             $(document).on('change', '#selectAllExamTypes', function () {
                 var checked = $(this).is(':checked');
                 $('.examTypeCheckbox').prop('checked', checked);
@@ -188,19 +189,51 @@
                 }
             }*@
 
+            
+
+
+            $("#FK_CompanyId").change(function (e) {
+                var companyId = $(this).val();
+
+                // Reset Category
+                $('#FK_LookUpId').val('').trigger('change.select2');
+
+                // Reset Class
+                $('#FK_ClassId').val('').trigger('change.select2');
+                $("#ClassSection").hide();
+
+                // Reset Subject dropdown
+                $('#FK_LookUpDetailId').html('');
+                $('#FK_LookUpDetailId')[0].sumo.reload();
+                $("#SubjectSection").hide();
+
+                // Reset Exam Types
+                $("#tblExamTypes tbody").empty();
+                $("#selectAllExamTypes").prop('checked', false);
+                $("#CategoryListSection").hide();
+
+                // If you want to load new data after reset
+                // BindSubJect(companyId, "", "Add");
+                // BindCategoryCheckboxes(companyId, "", "Add");
+            });
+
+
+
+
             $("#FK_LookUpId").change(function (e) {
+               
                 var selected = $("#FK_LookUpId option:selected").text().toLowerCase();
 
                 if (selected === "subject") {
                     $("#ClassSection").show();
                     $("#SubjectSection").show();
                     $("#CategoryListSection").hide();
-                    BindSubJect($("#hdnCompanyId").val(), $(this).val(), actionfrom);
+                    BindSubJect($("#FK_CompanyId").val(), $(this).val(), actionfrom);
                 } else if (selected === "exam type") {
                     $("#ClassSection").hide();
                     $("#SubjectSection").hide();
                     $("#CategoryListSection").show();
-                    BindCategoryCheckboxes($("#hdnCompanyId").val(), $(this).val(), actionfrom);
+                    BindCategoryCheckboxes($("#FK_CompanyId").val(), $(this).val(), actionfrom);
                 } else {
                     $("#ClassSection").hide();
                     $("#SubjectSection").hide();
@@ -271,7 +304,8 @@
 
  function BindCategoryCheckboxes(companyid, lookUpId, actionfrom, existing = null) {
     var $tbody = $("#tblExamTypes tbody");
-    $tbody.empty(); // clear previous rows
+     $tbody.empty(); // clear previous rows
+     $('#selectAllExamTypes').prop('checked', false );
 
     $.ajax({
         url: "@Url.Action("GetLookUpDetailList", "SchoolConfiguration")",
