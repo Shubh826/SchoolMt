@@ -142,9 +142,13 @@ namespace BAL.Common
         {
             return CommonDAL.FillExpenseHead(CompanyId);
         }
-        public static List<LookUpDropDownMDL> GetLookUpList(int companyid, int lookupId,string actionfrom)
+        public static List<LookUpDropDownMDL> GetLookUpList(int companyid, int lookupId,string actionfrom,string lookUpTypeName="")
         {
-            return CommonDAL.GetLookUpList(companyid, lookupId, actionfrom);
+            return CommonDAL.GetLookUpList(companyid, lookupId, actionfrom, lookUpTypeName);
+        }
+        public static List<LookUpDropDownMDL> GetSubjectWiseMarksList(int companyid, int examtypeId)
+        {
+            return CommonDAL.GetSubjectWiseMarksList(companyid, examtypeId);
         }
     }
 }

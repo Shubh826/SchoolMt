@@ -468,13 +468,16 @@ namespace DAL
             return CompanyList;
         }
 
-        public static List<LookUpDropDownMDL> GetLookUpList(int companyid,int lookupId,string actionfrom)
+        public static List<LookUpDropDownMDL> GetLookUpList(int companyid,int lookupId,string actionfrom,string lookUpTypeName="")
         {
             CommandText = "USP_Get_LookUpList";
-            var para = new SqlParameter[3];
+            var para = new SqlParameter[4];
             para[0] = new SqlParameter("@iCompanyId", SqlDbType.Int) { Value = Convert.ToInt32(companyid) };
             para[1] = new SqlParameter("@iLookUpId", SqlDbType.Int) { Value = Convert.ToInt32(lookupId) };
             para[2] = new SqlParameter("@cActionFrom", SqlDbType.VarChar) { Value = actionfrom };
+            para[3] = new SqlParameter("@clookUpTypeName", SqlDbType.VarChar) { Value = lookUpTypeName };
+
+            
             DataSet ds = (DataSet)objDataFunctions.getQueryResult(CommandText, DataReturnType.DataSet, para.ToList());
             List<LookUpDropDownMDL> List = new List<LookUpDropDownMDL>();
            List = ds.Tables[0].AsEnumerable().Select(dr => new LookUpDropDownMDL()
@@ -484,6 +487,27 @@ namespace DAL
                 IsSelected = dr.Field<bool>("IsSelected"),
                 TotalMark= dr.Field<string>("TotalMark")
            }).ToList();
+            return List;
+        }
+
+
+        public static List<LookUpDropDownMDL> GetSubjectWiseMarksList(int companyid, int examtypeId)
+        {
+            CommandText = "[dbo].[USP_GetSubjectWiseMarks]";
+            var para = new SqlParameter[2];
+            para[0] = new SqlParameter("@iCompanyId", SqlDbType.Int) { Value = Convert.ToInt32(companyid) };
+            para[1] = new SqlParameter("@cExamTypeId", SqlDbType.Int) { Value = Convert.ToInt32(examtypeId) };
+         
+
+            DataSet ds = (DataSet)objDataFunctions.getQueryResult(CommandText, DataReturnType.DataSet, para.ToList());
+            List<LookUpDropDownMDL> List = new List<LookUpDropDownMDL>();
+            List = ds.Tables[0].AsEnumerable().Select(dr => new LookUpDropDownMDL()
+            {
+                ID = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("Id")),
+                Value = dr.Field<string>("Value"),
+                IsSelected = dr.Field<bool>("IsSelected"),
+                TotalMark = dr.Field<string>("TotalMark")
+            }).ToList();
             return List;
         }
 

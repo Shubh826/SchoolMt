@@ -1,0 +1,340 @@
+﻿@model MDL.SubjectMarkMappingMDL
+
+@{
+    ViewBag.Title = "AddEditSubjectMarkMappingData";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("AddEditSubjectMarkMappingData", "SubjectMarkMapping", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(E => E.JsonData)
+
+    <div class="page-heading mb-0">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Add Subject Wise Marks</h3>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first text-end">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header">
+                        <ol class="breadcrumb justify-content-end mb-0">
+                            <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Add Subject Wise Marks</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-11 offset-lg-1">
+                        <div class="form-body">
+
+                            <!-- School Dropdown -->
+                            <div class="row mb-2">
+                                <div class="col-md-2">
+                                    <label class="setForm bold">School Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.DropDownListFor(E => E.FK_CompanyId,
+                                        new SelectList((System.Collections.IEnumerable)ViewData["companylist"], "ID", "Value"),
+                                        "--SELECT--",
+                                        new { @class = "form-control select2", style = "width:100%", id = "FK_CompanyId" })
+                                </div>
+                            </div>
+                            <!-- Class Dropdown (only for Subject) -->
+                            <div class="row mb-2" id="ClassSection">
+                                <div class="col-md-2">
+                                    <label class="setForm bold">Class Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.DropDownListFor(E => E.FK_ClassId,
+                                        new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Id", "Value"),
+                                        "--SELECT--",
+                                        new { @class = "form-control select2", style = "width:100%", id = "FK_ClassId" })
+
+                                </div>
+                            </div>
+
+                            <!-- Student Dropdown (only for Subject) -->
+                            @*<div class="row mb-2" id="ClassSection">
+                                <div class="col-md-2">
+                                    <label class="setForm bold">Student Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.DropDownListFor(E => E.FK_StudentId, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "Value"), "--SELECT--", new { @class = "form-control Select2" })
+
+                                    @Html.DropDownListFor(E => E.FK_StudentId,
+                                        new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Id", "Value"),
+                                        "--SELECT--",
+                                        new { @class = "form-control select2", style = "width:100%", id = "FK_ClassId" })
+
+                                </div>
+                            </div>*@
+
+
+                            <!-- Subject Dropdown -->
+                            <div class="row mb-2" id="examptypediv">
+                                <div class="col-md-2">
+                                    <label class="setForm bold">Exam Type<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-4 form-group">
+
+                                    @Html.DropDownListFor(E => E.LookUpDetailId, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "Value"), "--Select--", new { @class = "form-control select2" })
+
+                                </div>
+                            </div>
+
+                            <!-- Category List Table -->
+                            <div class="row mb-2" id="CategoryListSection" style="display:none;">
+                                <div class="col-md-8 offset-md-2">
+                                    <table class="table table-bordered" id="tblExamTypes">
+                                        <thead>
+                                            <tr>
+                                                <th>Exam Type</th>
+                                                <th>Total Marks</th>
+                                                <th>Obtain Marks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Submit Buttons -->
+                            <div class="col-sm-6 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1" id="btnsubmit">Submit</button>
+                                <a href='@Url.Action("Index")' class="btn btn-dark box-shadow-1 btn-min-width mr-1 mb-1">Cancel</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden fields for Edit -->
+    <input type="hidden" value="@Model.FK_CompanyId" id="hdnCompanyId" />
+    <input type="hidden" id="hdnLookUpId" value="@Model.LookUpDetailId" />
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="~/app-assets/vendors/css/forms/selects/select2.min.css" rel="stylesheet" />
+    <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            // Initialize Select2
+            $('#FK_CompanyId').select2();
+            $('#LookUpDetailId').select2();
+            $('#FK_ClassId').select2();
+
+
+            // Load Exam Types
+            var companyId = $('#FK_CompanyId').val();
+            if (companyId) {
+                GetExamType(companyId, 'Exam Type');
+            }
+
+            // Company change
+            $("#FK_CompanyId").change(function () {
+                var companyId = $(this).val();
+                GetExamType(companyId, 'Exam Type');
+                $("#tblExamTypes tbody").empty();
+                $("#selectAllExamTypes").prop('checked', false);
+                $("#CategoryListSection").hide();
+            });
+
+            // Exam Type change
+            $("#LookUpDetailId").change(function () {
+                var selectedText = $("#LookUpDetailId option:selected").text().toLowerCase();
+                BindSubjectWiseMarksList($('#FK_CompanyId').val(), $('#LookUpDetailId').val());
+                $("#CategoryListSection").show();
+            });
+
+            // Select/Deselect all exam type checkboxes
+            $(document).on('change', '#selectAllExamTypes', function () {
+                var checked = $(this).is(':checked');
+                $('.examTypeCheckbox').prop('checked', checked);
+            });
+
+            $(document).on('change', '.examTypeCheckbox', function () {
+                var allChecked = $('.examTypeCheckbox').length === $('.examTypeCheckbox:checked').length;
+                $('#selectAllExamTypes').prop('checked', allChecked);
+            });
+
+            // Submit button validation
+            $('#btnsubmit').click(function (e) {
+                var companyId = $("#FK_CompanyId").val();
+                if (!companyId) {
+                    alert("Please select School");
+                    e.preventDefault();
+                    return false;
+                }
+
+                var selectedExamIds = $('#LookUpDetailId').val();
+                if (!selectedExamIds || selectedExamIds.length === 0) {
+                    alert("Please select Exam Type");
+                    e.preventDefault();
+                    return false;
+                }
+
+                // Validate Obtain Marks
+                var isValid = true;
+                $('#tblExamTypes tbody tr').each(function () {
+                    var total = parseInt($(this).find('.totalMarks').val()) || 0;
+                    var obtain = parseInt($(this).find('.obtainMarks').val()) || 0;
+
+                    if (obtain < 0) {
+                        alert("Obtain Marks cannot be negative.");
+                        isValid = false;
+                        return false; // break loop
+                    }
+
+                    if (obtain > total) {
+                        alert("Obtain Marks cannot be greater than Total Marks.");
+                        isValid = false;
+                        return false; // break loop
+                    }
+                });
+
+                if (!isValid) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                // Build JSON with Obtain Marks
+                var jsonData = [];
+                $('#tblExamTypes tbody tr').each(function (i) {
+                    var lookupId = $(this).find('input[type="hidden"]').val();
+                    var total = parseInt($(this).find('.totalMarks').val()) || 0;
+                    var obtain = parseInt($(this).find('.obtainMarks').val()) || 0;
+
+                    jsonData.push({
+                        Type: "Subject",
+                        LookUpDetailId: parseInt(lookupId),
+                        TotalMark: total,
+                        ObtainMark: obtain
+                    });
+                });
+
+                $('#JsonData').val(JSON.stringify(jsonData));
+            });
+
+
+        });
+
+        function GetExamType(companyid, lookUpTypeName) {
+            $("#LookUpDetailId").html("").append($('<option></option>').val("0").html("--Select--"));
+
+            if (!companyid || companyid === "0") return;
+
+            $.ajax({
+                url: "@Url.Action("GetLookUpDetailList", "SubjectMarkMapping")",
+                type: "GET",
+                dataType: "JSON",
+                data: { companyid: companyid, lookUpTypeName: lookUpTypeName },
+                success: function (data) {
+                    if (data && data.length > 0) {
+                        $.each(data, function (i, item) {
+                            $("#LookUpDetailId").append($('<option></option>').val(item.ID).html(item.Value));
+                        });
+                    }
+
+                    // Set selected for edit
+                    var savedId = $('#hdnLookUpId').val();
+                    if (savedId && savedId !== "0") {
+                        $('#LookUpDetailId').val(savedId).trigger('change');
+                    }
+                }
+            });
+        }
+
+   function BindSubjectWiseMarksList(companyid, examtypeId, existing = null) {
+    var $tbody = $("#tblExamTypes tbody");
+    $tbody.empty();
+
+    $.ajax({
+        url: "@Url.Action("GetSubjectWiseMarksList", "SubjectMarkMapping")",
+        type: "GET",
+        data: { companyid: companyid, examtypeId: examtypeId },
+        success: function (data) {
+            if (data.length > 0) {
+                $.each(data, function (i, item) {
+                    // Existing values if editing
+                    var totalMark = item.TotalMark ?? 10;
+                    var obtainMark =0;
+
+                    var row = `<tr>
+                        <td>${item.Value}</td>
+                        <td>
+                            <input type="number" class="form-control totalMarks"
+                                   name="ExamTypes[${i}].TotalMark"
+                                   value="${totalMark}"
+                                   min="0" step="1"
+                                   placeholder="Total Marks" readonly />
+                        </td>
+                        <td>
+                            <input type="number" class="form-control obtainMarks"
+                                   name="ExamTypes[${i}].ObtainMark"
+                                   value="${obtainMark}"
+                                   min="0" step="1"
+                                   placeholder="Enter Obtain Marks" />
+                            <input type="hidden" name="ExamTypes[${i}].FK_LookUpDetailId" value="${item.ID}" />
+                        </td>
+                    </tr>`;
+
+                    $tbody.append(row);
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log("Error fetching data:", error);
+        }
+    });
+}
+
+
+        function BindStudent(ClassName) {
+
+            $("FK_StudentId").html("");
+            $("FK_StudentId").append(
+            $('<option></option>').val("0").html("--Select--")
+        )
+        if (ClassName == "0" || ClassName == "" || ClassName == null) {
+            return false;
+        }
+
+        $.ajax({
+            url: "@Url.Action("BindStudent", "SubjectMarkMapping")",
+    type: "GET",
+    cache: false,
+            data: { 'ClassName': ClassName },
+    success: function (data) {
+        debugger
+        if (data.length > 0) {
+            $.each(data, function (i, data) {
+
+                $("#FK_StudentId").append(
+                    $('<option></option>').val(data.ID).html(data.Value));
+            });
+        }
+        else {
+
+        }
+        if ($('#hdnStudentId').val() != '0') {
+            $("#FK_StudentId").val($("#hdnStudentId").val());
+        }
+    },
+});
+}
+    </script>
+}

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace DAL
 {
     public class RoleMstDAL
@@ -155,72 +156,97 @@ namespace DAL
             }
             return objDataSet;
         }
-
-        public DataSet SaveRoleMapping(List<RoleMapping> roleMappings, int currentUser, string MappingFor)
+        public DataSet SaveRoleMapping(string jsonData, int currentUser, string MappingFor)
         {
             _commandText = "[dbo].[usp_FormRoleAddEdit]";
-            DataTable Dt = DataTransformer.ConvertTo(roleMappings);
+
+            // Step 1: Convert to JSON
 
             List<SqlParameter> parms = new List<SqlParameter>
-                    {
-                        new SqlParameter("@iCreatedBy",currentUser),
-                        new SqlParameter("@FormRole", Dt ),
-                        new SqlParameter("@cMappingFor",MappingFor)
-                    };
+            {
+                new SqlParameter("@iCreatedBy", currentUser),
+                new SqlParameter("@JsonFormRole", jsonData),
+                new SqlParameter("@cMappingFor", MappingFor)
+            };
 
             try
             {
                 CheckParameters.ConvertNullToDBNull(parms);
                 objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet, parms);
-
             }
             catch (Exception ex)
             {
-
+                // Handle exception (log or throw)
             }
 
             return objDataSet;
         }
 
-        public DataSet getSubMenu(string MappingFor, int roleId, int formId)
-        {
-            _commandText = "[dbo].[usp_GetSubMenu]";
-            List<SqlParameter> parms = new List<SqlParameter>
+        //public DataSet SaveRoleMapping(List<RoleMapping> roleMappings, int currentUser, string MappingFor)
+        //{
+        //    _commandText = "[dbo].[usp_FormRoleAddEdit]";
+        //    DataTable Dt = DataTransformer.ConvertTo(roleMappings);
+
+        //    List<SqlParameter> parms = new List<SqlParameter>
+        //            {
+        //                new SqlParameter("@iCreatedBy",currentUser),
+        //                new SqlParameter("@FormRole", Dt ),
+        //                new SqlParameter("@cMappingFor",MappingFor)
+        //            };
+
+        //    try
+        //    {
+        //        CheckParameters.ConvertNullToDBNull(parms);
+        //        objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet, parms);
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+
+        //    return objDataSet;
+        //}
+
+    public DataSet getSubMenu(string MappingFor, int roleId, int formId)
+    {
+        _commandText = "[dbo].[usp_GetSubMenu]";
+        List<SqlParameter> parms = new List<SqlParameter>
                 {
                     new SqlParameter("@cMappingFor", SqlDbType.VarChar){Value = MappingFor},
                     new SqlParameter("@iRoleId", SqlDbType.Int,roleId){Value = roleId},
                     new SqlParameter("@iFormId", SqlDbType.Int,formId){Value = formId}
                 };
 
-            try
-            {
-                CheckParameters.ConvertNullToDBNull(parms);
-                objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet, parms);
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return objDataSet;
-        }
-        public DataSet getAllRoles()
+        try
         {
-            _commandText = "usp_GetRole";
-            try
-            {
-                objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet);
-            }
-            catch (Exception)
-            {
-            }
-            return objDataSet;
-        }
-        public DataSet GetSubMenuForMapping(string MappingFor, int roleId, int formId, int CompId)
-        {
-            _commandText = "[dbo].[usp_GetSubMenuForMapping]";
+            CheckParameters.ConvertNullToDBNull(parms);
+            objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet, parms);
 
-            List<SqlParameter> parms = new List<SqlParameter>
+        }
+        catch (Exception ex)
+        {
+
+        }
+        return objDataSet;
+    }
+    public DataSet getAllRoles()
+    {
+        _commandText = "usp_GetRole";
+        try
+        {
+            objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet);
+        }
+        catch (Exception)
+        {
+        }
+        return objDataSet;
+    }
+    public DataSet GetSubMenuForMapping(string MappingFor, int roleId, int formId, int CompId)
+    {
+        _commandText = "[dbo].[usp_GetSubMenuForMapping]";
+
+        List<SqlParameter> parms = new List<SqlParameter>
                 {
                     new SqlParameter("@cMappingFor", SqlDbType.VarChar){Value = MappingFor},
                     new SqlParameter("@iRoleId", SqlDbType.Int,roleId){Value = roleId},
@@ -228,18 +254,18 @@ namespace DAL
                     new SqlParameter("@iCompanyId", SqlDbType.Int,CompId){Value = CompId},
                 };
 
-            try
-            {
-                CheckParameters.ConvertNullToDBNull(parms);
-                objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet, parms);
+        try
+        {
+            CheckParameters.ConvertNullToDBNull(parms);
+            objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet, parms);
 
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return objDataSet;
         }
+        catch (Exception ex)
+        {
 
+        }
+        return objDataSet;
     }
+
+}
 }

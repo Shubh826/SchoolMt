@@ -20,4 +20,6 @@ namespace MDL.Common
         public string TotalMark { get; set; }
 
     }
+
+  
 }
