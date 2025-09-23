@@ -12,11 +12,14 @@ namespace MDL
         public int Fk_CompanyId { get; set; }
         public int Fk_LookUpId { get; set; }
         public string LookupDetailName { get; set; }
-        public string LookupName { get; set; } 
+        public string LookupName { get; set; }
+        public string CompanyName { get; set; }
         public bool IsActive { get; set; }
         public int UserId { get; set; }
         public string CreatedBy { get; set; }
         public string CreatedDate { get; set; }
         public string Status { get; set; }
+        public int? MinValue { get; set; }
+        public int? MaxValue { get; set; }
     }
 }

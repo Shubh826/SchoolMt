@@ -10,9 +10,12 @@
             <thead>
                 <tr>
                     <th class="text-center">S.No</th>
+                    <th class="text-center">School Name</th>
                     <th class="text-center">Look Up</th>
                     <th class="text-center">Look Up Detail Name</th>
-                    <th class="text-center">Status</th> 
+                    <th class="text-center">Min Value</th>
+                    <th class="text-center">Max Value</th>
+                    <th class="text-center">Status</th>
                     <th class="text-center">Action</th>
                 </tr>
             </thead>
@@ -33,6 +36,9 @@
                     {
             <tr>
                 <td align="center">@SerialNo</td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.CompanyName)
+                </td>
 
                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.LookupName)
@@ -41,11 +47,16 @@
                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.LookupDetailName)
                 </td>
-
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.MinValue)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.MaxValue)
+                </td>
                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>
-              
+
 
                 <td class="text-center">
                     @*@if (ViewBag.CanEdit)

@@ -32,22 +32,25 @@
                     <div class="col-lg-8 offset-lg-1">
                         @*<form class="form form-horizontal">*@
                         <div class="form-body">
+                           
                             <div class="row">
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                                <div class="col-md-3">
+                                    <label class="setForm bold">School Name<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+
+                                    @Html.DropDownListFor(E => E.Fk_CompanyId, new SelectList((System.Collections.IEnumerable)ViewData["companylist"], "ID", "Value"), "--SELECT--", new { @class = "form-control select2", style = "width:100%", id = "Fk_CompanyId" })
+                                </div>
 
                                 <div class="col-md-3 ClientDiv">
                                     <label class="setForm bold">Look Up<span style="color:red">*</span></label>
                                 </div>
                                 <div class="col-md-7 form-group ClientDiv" onclick="AddNewFuncOnSelect2UI(this)">
-                                    @*@if (@Model.PkId > 0)
-                                    {
-                                        @Html.DropDownListFor(E => E.Fk_LookUpId, new SelectList(Enumerable.Empty<SelectListItem>(), "PkId", "LookupName"), "--Select--", new { @class = "form-control select2", @disabled = "disabled" })
-                                        @Html.HiddenFor(E => E.Fk_LookUpId);
-                                    }
-                                    else
-                                    {*@
-                                        @Html.DropDownListFor(E => E.Fk_LookUpId, new SelectList(Enumerable.Empty<SelectListItem>(), "PkId", "LookupName"), "--Select--", new { @class = "form-control select2" })
-                                    @*}*@
+
+                                    @Html.DropDownListFor(E => E.Fk_LookUpId, new SelectList(Enumerable.Empty<SelectListItem>(), "PkId", "LookupName"), "--Select--", new { @class = "form-control select2" })
 
                                 </div>
                                 <div class="col-md-3">
@@ -57,6 +60,41 @@
                                     @Html.TextBoxFor(E => E.LookupDetailName, new { @class = "form-control", @maxlength = "100", @placeholder = "Lookup Detail Name" })
                                     @Html.ValidationMessageFor(E => E.LookupDetailName, "", new { @class = "redText", @style = "color:red" })
                                 </div>
+
+                                <div class="col-md-3 MinMaxRow" style="display:none;">
+                                    <label class="setForm bold">Min Value<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group MinMaxRow" style="display:none;">
+                                    @Html.TextBoxFor(E => E.MinValue, new
+                                    {
+                                        type = "number",
+                                        @class = "form-control",
+                                        min = "0",
+                                        placeholder = "Min Value",
+                                        value = Model.MinValue.HasValue ? Model.MinValue.ToString() : "0"  // ✅ default 0
+                                    })
+                                    @Html.ValidationMessageFor(E => E.MinValue, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="col-md-3 MinMaxRow" style="display:none;">
+                                    <label class="setForm bold">Max Value<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group MinMaxRow" style="display:none;">
+                                    @Html.TextBoxFor(E => E.MaxValue, new
+                                    {
+                                        type = "number",
+                                        @class = "form-control",
+                                        min = "0",
+                                        placeholder = "Max Value",
+                                        value = Model.MaxValue.HasValue ? Model.MaxValue.ToString() : "0"  // ✅ default 0
+                                    })
+                                    @Html.ValidationMessageFor(E => E.MaxValue, "", new { @class = "text-danger" })
+                                </div>
+
+
+
+
+
 
                                 <div class="col-md-3">
                                     <label class="setForm  bold">Status<span style="color:red">*</span></label>
@@ -71,11 +109,11 @@
                                 </div>
 
                                 @*<div class="col-sm-9 d-flex justify-content-end center">
-                                        <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-                                        <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
-                                    </div>*@
+            <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+            <button type="reset" href='@Url.Action("Index")' class="btn btn-light-secondary me-1 mb-1">Reset</button>
+        </div>*@
                                 <div class="col-sm-9 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1">Submit</button>
+                                    <button type="submit" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1" id="btnsubmitlookupdetail">Submit</button>
                                     <a href='@Url.Action("Index")' class="btn btn-dark box-shadow-1 btn-min-width mr-1 mb-1">Cancel</a>
                                 </div>
                             </div>
@@ -86,7 +124,7 @@
             </div>
         </div>
     </div>
-    <input type="hidden" id="hdnFk_LookUpId" value="@Model.Fk_LookUpId"/>
+    <input type="hidden" id="hdnFk_LookUpId" value="@Model.Fk_LookUpId" />
 }
 
 
@@ -121,31 +159,82 @@
                         </div>
                     </div>
                 </div>
-                </div>
             </div>
         </div>
     </div>
-                @*END CODE::MODAL TO SHOW New Add*@
+</div>
+@*END CODE::MODAL TO SHOW New Add*@
 
-                @section scripts {
-                    @Scripts.Render("~/bundles/jqueryval")
-                    <link href="~/app-assets/vendors/css/forms/selects/select2.min.css" rel="stylesheet" />
-                    <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="~/app-assets/vendors/css/forms/selects/select2.min.css" rel="stylesheet" />
+    <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
 
 
-                    <script type="text/javascript">
+    <script type="text/javascript">
         var reg = /^[a-zA-Z0-9-_. \s]*$/;
         $(document).ready(function (e) {
-            $('.select2').select2();
+           
+           
             GetLookUpData();
+
+          
             $("#btnNewAdd").click(function (e) {
                 SaveData(e);
             });
+            $("#btnsubmitlookupdetail").click(function (e) {
+               // debugger;
+  
+                if ($("#Fk_CompanyId").val() == "0" || $("#Fk_CompanyId").val() == "" || $("#Fk_CompanyId").val() == null || $("#Fk_CompanyId").val() == 0) {
+                    alert("Please select School");
+                    e.preventDefault(); return false;
+                }
+                if ($("#Fk_LookUpId").val() == "0" || $("#Fk_LookUpId").val() == "" || $("#Fk_LookUpId").val() == null || $("#Fk_LookUpId").val() ==0)
+                {
+                    alert("Please select Look Up");
+                    e.preventDefault(); return false;
+                }
+
+
+                if ($('#LookupDetailName').val() == null || $('#LookupDetailName').val() == '') {
+                    alert('Please Enter Look Up Detail');
+                    e.preventDefault();
+                    return false;
+                }
+
+                if (parseInt($('#MinValue').val()) > parseInt($('#MaxValue').val())) {
+                    alert('Min Value cannot be greater than Max Value');
+                    e.preventDefault();
+                    return false;
+                }
+
+            });
+            
+           
+
+            // Bind change event for LookUp dropdown
+            $('#Fk_LookUpId').on('change', function () {
+              selectedText = $("#Fk_LookUpId option:selected").text();
+
+                if (selectedText.toLowerCase() === "grade") {
+                    $(".MinMaxRow").show();
+                } else {
+                    $(".MinMaxRow").hide();
+                    $("#MinValue").val('');
+                    $("#MaxValue").val('');
+                }
+            });
+
+            //// Allow only numbers in Min/Max
+            //$(document).on("input", ".only-number", function () {
+            //    this.value = this.value.replace(/[^0-9]/g, '');
+            //});
+            $('.select2').select2();
         });
 
 
           function SaveData(e) {
-            //debugger;
+          //  debugger;
               if ($('#LookupName').val() == null || $('#LookupName').val() == '') {
                   alert('Please Enter Look Up');
                   e.preventDefault();
@@ -159,7 +248,10 @@
                     return false;
                 }
 
-            }
+              }
+             
+
+
               var data = new FormData();
               data.append("LookupName", $("#LookupName").val());
                 $.ajax({
@@ -235,23 +327,23 @@
                             });
                         }
                     }
-                    //debugger;
-                    if ($('#PkId').val()!=0)
-                    {
-                        $('#Fk_LookUpId').val('@Model.Fk_LookUpId');
-                    }else
-                        if ($('#PkId').val()==0)
-                        {
-                            if ($('#hdnFk_LookUpId').val() != '' || $('#hdnFk_LookUpId').val()!=null)
-                            {
-                                $('#Fk_LookUpId').val($('#hdnFk_LookUpId').val());
-                            }
+                    if ($('#hdnFk_LookUpId').val() != '0') {
 
-                        }
+                        $('#Fk_LookUpId').val($('#hdnFk_LookUpId').val()).attr("selected", "selected");
+                    }
+                  
+                    var selectedText = $("#Fk_LookUpId option:selected").text();
+                    if (selectedText.toLowerCase() === "grade") {
+                        $(".MinMaxRow").show();
+                    } else {
+                        $(".MinMaxRow").hide();
+                        $("#MinValue").val(0);
+                        $("#MaxValue").val(0);
+                    }
 
                 }
             });
         }
 
-                    </script>
-                }
+    </script>
+}

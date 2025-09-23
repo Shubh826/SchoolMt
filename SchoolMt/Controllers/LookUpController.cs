@@ -57,6 +57,7 @@ namespace SchoolMt.Controllers
         [HttpGet]
         public ActionResult AddEditLookupDetail(int id = 0)
         {
+            ViewData["companylist"] = CommonBAL.FillCompany(SessionInfo.User.fk_companyid);
             LookUpDetailMDL obj=new LookUpDetailMDL();
             if (id != 0)
             {
@@ -75,9 +76,10 @@ namespace SchoolMt.Controllers
         [HttpPost]
         public ActionResult AddEditLookupDetail(LookUpDetailMDL Obj)
         {
+           
             Messages msg = new Messages();
             Obj.UserId = SessionInfo.User.userid;
-            Obj.Fk_CompanyId = SessionInfo.User.fk_companyid;
+           // Obj.Fk_CompanyId = SessionInfo.User.fk_companyid;
 
             if (Obj.Status == "Active")
             {

@@ -86,6 +86,7 @@ namespace DAL
                         _List = objDataSet.Tables[1].AsEnumerable().Select(dr => new LookUpMDL()
                         {
                             PkId = dr.Field<int>("PK_LookUpId"),
+
                             LookupName = dr.Field<string>("LookUpName"),
                             IsActive = dr.Field<bool>("IsActive"),
                             CreatedBy = dr.Field<string>("CreatedBy"),
@@ -120,6 +121,8 @@ namespace DAL
                     new SqlParameter("@cLookUpDetailName", Obj.LookupDetailName),
                     new SqlParameter("@bIsActive", Obj.IsActive),
                     new SqlParameter("@iUserId", Obj.UserId),
+                     new SqlParameter("@iMinValue", Obj.MinValue),
+                      new SqlParameter("@iMaxValue", Obj.MaxValue),
 
 
                 };
@@ -175,12 +178,16 @@ namespace DAL
                         {
                             PkId = dr.Field<int>("PK_LookUpDetailId"),
                             Fk_LookUpId = dr.Field<int>("FK_LookUpId"),
+                            Fk_CompanyId= dr.Field<int>("Fk_CompanyId"),
                             LookupDetailName = dr.Field<string>("LookUpDetailName"),
                             LookupName = dr.Field<string>("LookUpName"),
                             IsActive = dr.Field<bool>("IsActive"),
                             CreatedBy = dr.Field<string>("CreatedBy"),
                             CreatedDate = dr.Field<string>("CreatedDate"),
-                            Status= dr.Field<string>("Status")
+                            Status= dr.Field<string>("Status"),
+                            CompanyName= dr.Field<string>("CompanyName"),
+                            MinValue= dr.Field<int?>("MinValue"),
+                            MaxValue= dr.Field<int?>("MaxValue")
                         }).ToList();
                         objBasicPagingMDL = new BasicPagingMDL()
                         {

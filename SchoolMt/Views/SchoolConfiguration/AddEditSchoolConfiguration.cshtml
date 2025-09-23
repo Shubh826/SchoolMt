@@ -73,10 +73,10 @@
                                 </div>
                             </div>
 
-                            <!-- SubJect Dropdown (only for Subject) -->
-                            <div class="row mb-2 FK_LookUpDetailIdDiv" id="SubjectSection" style="display:none;">
+                            <!-- SubJect Dropdown (only for Subject & Grid) -->
+                            <div class="row mb-2 FK_LookUpDetailIdDiv" id="SubjectOrGridSection" style="display:none;">
                                 <div class="col-md-2">
-                                    <label class="setForm bold">Subject<span style="color:red">*</span></label>
+                                    <label class="setForm bold">Category List<span style="color:red">*</span></label>
                                 </div>
                                 <div class="col-md-4 form-group">
 
@@ -145,7 +145,7 @@
     @*<script src="~/assets/js/jquery.sumoselect.js"></script>
         <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>*@
 
-    <script type="text/javascript">
+<script type="text/javascript">
         $(document).ready(function (e) {
 
 
@@ -154,8 +154,8 @@
             $('#FK_LookUpDetailId')[0].sumo.unload();
             $('#FK_LookUpDetailId').SumoSelect({ okCancelInMulti: true, selectAll: true, csvDispCount: 1, floatWidth: 400, Sumofor: 'Customer' });
 
-     
-  
+
+
             var actionfrom = "Add";
             if ($("#hdnCompanyId").val() > 0) {
                 actionfrom = "Edit";
@@ -164,7 +164,7 @@
             $('#FK_CompanyId').select2();
             $('#FK_LookUpId').select2();
 
-       
+
             $(document).on('change', '#selectAllExamTypes', function () {
                 var checked = $(this).is(':checked');
                 $('.examTypeCheckbox').prop('checked', checked);
@@ -189,7 +189,7 @@
                 }
             }*@
 
-            
+
 
 
             $("#FK_CompanyId").change(function (e) {
@@ -205,7 +205,7 @@
                 // Reset Subject dropdown
                 $('#FK_LookUpDetailId').html('');
                 $('#FK_LookUpDetailId')[0].sumo.reload();
-                $("#SubjectSection").hide();
+                $("#SubjectOrGridSection").hide();
 
                 // Reset Exam Types
                 $("#tblExamTypes tbody").empty();
@@ -213,7 +213,7 @@
                 $("#CategoryListSection").hide();
 
                 // If you want to load new data after reset
-                // BindSubJect(companyId, "", "Add");
+                // BindSubJectOrGrade(companyId, "", "Add");
                 // BindCategoryCheckboxes(companyId, "", "Add");
             });
 
@@ -221,23 +221,31 @@
 
 
             $("#FK_LookUpId").change(function (e) {
-               
+
                 var selected = $("#FK_LookUpId option:selected").text().toLowerCase();
 
                 if (selected === "subject") {
                     $("#ClassSection").show();
-                    $("#SubjectSection").show();
+                    $("#SubjectOrGridSection").show();
                     $("#CategoryListSection").hide();
-                    BindSubJect($("#FK_CompanyId").val(), $(this).val(), actionfrom);
+                    BindSubJectOrGrade($("#FK_CompanyId").val(), $(this).val(), actionfrom);
                 } else if (selected === "exam type") {
                     $("#ClassSection").hide();
-                    $("#SubjectSection").hide();
+                    $("#SubjectOrGridSection").hide();
                     $("#CategoryListSection").show();
                     BindCategoryCheckboxes($("#FK_CompanyId").val(), $(this).val(), actionfrom);
-                } else {
+                }
+                else if (selected === "grade") {
                     $("#ClassSection").hide();
-                    $("#SubjectSection").hide();
+                    $("#SubjectOrGridSection").show();
                     $("#CategoryListSection").hide();
+                    BindSubJectOrGrade($("#FK_CompanyId").val(), $(this).val(), actionfrom);
+                }
+                else {
+                    $("#ClassSection").hide();
+                    $("#SubjectOrGridSection").show();
+                    $("#CategoryListSection").hide();
+                    BindSubJectOrGrade($("#FK_CompanyId").val(), $(this).val(), actionfrom);
                 }
             });
 
@@ -276,7 +284,7 @@
                     // Loop through selected subjects
                     var selectedSubjects = $('#FK_LookUpDetailId').val(); // array of selected IDs
                     if (!selectedSubjects || selectedSubjects.length === 0) {
-                        alert("Please select at least one Subject.");
+                        alert("Please select at least one Item.");
                         e.preventDefault();
                         return false;
                     }
@@ -289,13 +297,30 @@
                         });
                     }
                 }
+                else if (Category === "grade") {
+                    // Loop through selected subjects
+                    var selected = $('#FK_LookUpDetailId').val(); // array of selected IDs
+                    if (!selected || selected.length === 0) {
+                        alert("Please select at least one Item.");
+                        e.preventDefault();
+                        return false;
+                    }
+
+                    for (var i = 0; i < selected.length; i++) {
+                        jsonData.push({
+                            Type: "Grade",
+                            LookUpDetailId: parseInt(selected[i]),
+                            TotalMark: "0" // optionally you can add a default mark or allow input for each subject
+                        });
+                    }
+                }
 
                 // Convert JSON array to string
                 var jsonString = JSON.stringify(jsonData);
 
                 $('#JsonData').val(jsonString);
 
-           
+
             });
 
 
@@ -352,7 +377,7 @@
 }
 
 
-        function BindSubJect(companyid, lookUpId, actionfrom, existing = null) {
+ function BindSubJectOrGrade(companyid, lookUpId, actionfrom, existing = null) {
        // debugger;
        //var $tbody = $("#tblExamTypes tbody");
        //$tbody.empty(); // clear previous rows
@@ -437,5 +462,7 @@
     });
         }
 
-    </script>
+
+  
+</script>
 }
