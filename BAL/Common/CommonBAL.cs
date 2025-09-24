@@ -146,9 +146,9 @@ namespace BAL.Common
         {
             return CommonDAL.GetLookUpList(companyid, lookupId, actionfrom, lookUpTypeName);
         }
-        public static List<LookUpDropDownMDL> GetSubjectWiseMarksList(int companyid, int examtypeId)
+        public static List<LookUpDropDownMDL> GetSubjectWiseMarksList(int companyid, int examtypeId,int pkId)
         {
-            return CommonDAL.GetSubjectWiseMarksList(companyid, examtypeId);
+            return CommonDAL.GetSubjectWiseMarksList(companyid, examtypeId,pkId);
         }
         public static List<DropDownMDL> GetStudentBySchoolWise(int classId, int companyId)
         {
