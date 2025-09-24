@@ -80,9 +80,10 @@ namespace SchoolMt.Controllers
             return Json(CommonBAL.GetSubjectWiseMarksList(companyid, examtypeId), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult BindStudent(string ClassName)
+        [HttpPost]
+        public JsonResult BindStudent(int classId=0, int companyId = 0)
         {
-            return Json(CommonBAL.BindStudent(ClassName), JsonRequestBehavior.AllowGet);
+            return Json(CommonBAL.GetStudentBySchoolWise(classId, companyId), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

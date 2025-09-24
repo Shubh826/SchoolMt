@@ -150,5 +150,9 @@ namespace BAL.Common
         {
             return CommonDAL.GetSubjectWiseMarksList(companyid, examtypeId);
         }
-    }
+        public static List<DropDownMDL> GetStudentBySchoolWise(int classId, int companyId)
+        {
+            return CommonDAL.GetStudentBySchoolWise(classId, companyId);
+        }
+        }
 }

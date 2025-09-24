@@ -52,6 +52,9 @@
                                     <label class="setForm bold">Class Name<span style="color:red">*</span></label>
                                 </div>
                                 <div class="col-md-4 form-group">
+
+
+
                                     @Html.DropDownListFor(E => E.FK_ClassId,
                                         new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Id", "Value"),
                                         "--SELECT--",
@@ -60,21 +63,16 @@
                                 </div>
                             </div>
 
-                            <!-- Student Dropdown (only for Subject) -->
-                            @*<div class="row mb-2" id="ClassSection">
+
+                            <div class="row mb-2" id="StudentSection">
                                 <div class="col-md-2">
                                     <label class="setForm bold">Student Name<span style="color:red">*</span></label>
                                 </div>
                                 <div class="col-md-4 form-group">
                                     @Html.DropDownListFor(E => E.FK_StudentId, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "Value"), "--SELECT--", new { @class = "form-control Select2" })
-
-                                    @Html.DropDownListFor(E => E.FK_StudentId,
-                                        new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Id", "Value"),
-                                        "--SELECT--",
-                                        new { @class = "form-control select2", style = "width:100%", id = "FK_ClassId" })
-
                                 </div>
-                            </div>*@
+                            </div>
+
 
 
                             <!-- Subject Dropdown -->
@@ -130,12 +128,12 @@
     <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
 
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function (e) {
 
             // Initialize Select2
-            $('#FK_CompanyId').select2();
-            $('#LookUpDetailId').select2();
-            $('#FK_ClassId').select2();
+
+
+
 
 
             // Load Exam Types
@@ -145,13 +143,27 @@
             }
 
             // Company change
-            $("#FK_CompanyId").change(function () {
-                var companyId = $(this).val();
-                GetExamType(companyId, 'Exam Type');
+            $("#FK_CompanyId").change(function (e) {
+               
+                BindStudent($("#FK_CompanyId").val(), $('#FK_ClassId').val());
+                GetExamType($("#FK_CompanyId").val(), 'Exam Type');
+                $("#FK_ClassId").val("").trigger('change');
                 $("#tblExamTypes tbody").empty();
                 $("#selectAllExamTypes").prop('checked', false);
                 $("#CategoryListSection").hide();
             });
+
+            // Company change
+            $("#FK_ClassId").change(function () {
+               
+                BindStudent($("#FK_CompanyId").val(), $('#FK_ClassId').val());
+                GetExamType($("#FK_CompanyId").val(), 'Exam Type');
+                $("#tblExamTypes tbody").empty();
+                $("#selectAllExamTypes").prop('checked', false);
+                $("#CategoryListSection").hide();
+
+            });
+
 
             // Exam Type change
             $("#LookUpDetailId").change(function () {
@@ -159,6 +171,11 @@
                 BindSubjectWiseMarksList($('#FK_CompanyId').val(), $('#LookUpDetailId').val());
                 $("#CategoryListSection").show();
             });
+
+            $('#FK_CompanyId').select2();
+            $('#LookUpDetailId').select2();
+            $('#FK_ClassId').select2();
+            $('#FK_StudentId').select2();
 
             // Select/Deselect all exam type checkboxes
             $(document).on('change', '#selectAllExamTypes', function () {
@@ -303,38 +320,39 @@
 }
 
 
-        function BindStudent(ClassName) {
+     function BindStudent(companyId, classId) {
+    $("#FK_StudentId").html("");  
+    $("#FK_StudentId").append(
+        $('<option></option>').val("0").html("--SELECT--")
+    );
 
-            $("FK_StudentId").html("");
-            $("FK_StudentId").append(
-            $('<option></option>').val("0").html("--Select--")
-        )
-        if (ClassName == "0" || ClassName == "" || ClassName == null) {
-            return false;
-        }
+    if (!classId || classId == "0" || !companyId || companyId == "0") {
+        return;
+    }
 
-        $.ajax({
-            url: "@Url.Action("BindStudent", "SubjectMarkMapping")",
-    type: "GET",
-    cache: false,
-            data: { 'ClassName': ClassName },
-    success: function (data) {
-        debugger
-        if (data.length > 0) {
-            $.each(data, function (i, data) {
+    $.ajax({
+        url: "@Url.Action("BindStudent", "SubjectMarkMapping")",
+        type: "POST",
+        cache: false,
+        data: { classId: classId, companyId: companyId },
+        success: function (data) {
+            if (data && data.length > 0) {
+                $.each(data, function (i, item) {
+                    $("#FK_StudentId").append(
+                        $('<option></option>').val(item.ID).html(item.Value)
+                    );
+                });
+            }
 
-                $("#FK_StudentId").append(
-                    $('<option></option>').val(data.ID).html(data.Value));
-            });
+            // Restore selected student if editing
+            if ($('#hdnStudentId').val() && $('#hdnStudentId').val() !== '0') {
+                $("#FK_StudentId").val($("#hdnStudentId").val()).trigger('change');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log("Error loading students:", error);
         }
-        else {
-
-        }
-        if ($('#hdnStudentId').val() != '0') {
-            $("#FK_StudentId").val($("#hdnStudentId").val());
-        }
-    },
-});
+    });
 }
     </script>
 }

@@ -510,6 +510,21 @@ namespace DAL
             }).ToList();
             return List;
         }
+        public static List<DropDownMDL> GetStudentBySchoolWise(int classId,int companyId)
+        {
+            CommandText = "USP_GetAllStudentBySchoolWise";
+            var para = new SqlParameter[2];
+            para[0] = new SqlParameter("@icompanyId", SqlDbType.Int) { Value = companyId };
+            para[1] = new SqlParameter("@iclassId", SqlDbType.Int) { Value = classId };
+            DataSet ds = (DataSet)objDataFunctions.getQueryResult(CommandText, DataReturnType.DataSet, para.ToList());
 
+            List<DropDownMDL> _dropdownlist = new List<DropDownMDL>();
+            _dropdownlist = ds.Tables[0].AsEnumerable().Select(dr => new DropDownMDL()
+            {
+                ID = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("ID")),
+                Value = dr.Field<string>("VALUE"),
+            }).ToList();
+            return _dropdownlist;
+        }
     }
 }
