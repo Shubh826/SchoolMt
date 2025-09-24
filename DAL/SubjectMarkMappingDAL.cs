@@ -27,7 +27,7 @@ namespace DAL
             objBasicPagingMDL = new BasicPagingMDL();
             bool result = false;
             Messages objMessages = new Messages();
-            _commandText = "[dbo].[usp_GetSchoolConfigurationData]";
+            _commandText = "[dbo].[usp_GetSubjectMarkMappingData]";
             List<SqlParameter> parms = new List<SqlParameter>
                {
                     new SqlParameter("@iRowperPage",rowPerpage),
@@ -47,18 +47,15 @@ namespace DAL
                     {
                         List = objDataSet.Tables[1].AsEnumerable().Select(dr => new SubjectMarkMappingMDL()
                         {
-                            PK_SchoolConfigurationId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("PK_SchoolConfigurationId")),
-                            FK_CompanyId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_CompanyId")),
+                            PKId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("PK_ExamMarksMasterId")),
+                            FK_CompanyId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_SchoolId")),
                             FK_ClassId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_ClassId")),
-                            LookUpDetailId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_LookUpDetailId")),
-                            TotalMark = dr.Field<string>("TotalMark"),
-
+                            FK_StudentId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_StudentId")),
+                            FK_LookUpId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_ExamTypeId")),
+                            LookUpDetailId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_ExamTypeId")),
                             ClassName = dr.Field<string>("ClassName"),
                             CompanyName = dr.Field<string>("CompanyName"),
-                            LookUpDetailName = dr.Field<string>("LookUpDetailName"),
-                            LookUpName = dr.Field<string>("LookUpName"),
-
-                            // Since your query is returning '' (empty string), these are safe as string
+                            StudentName = dr.Field<string>("StudentName"),
                             CreatedBy = dr.Field<string>("CreatedBy"),
                             CreatedDate = dr.Field<string>("CreatedDate")
 
@@ -97,12 +94,16 @@ namespace DAL
         public Messages InsertSubjectMarkMappingData(SubjectMarkMappingMDL obj)
         {
             Messages objMessages = new Messages();
-            _commandText = "[dbo].[USP_InsertOrUpdateSchoolConfiguration]";
+            _commandText = "[dbo].[USP_InsertOrUpdateSubjectmark]";
             List<SqlParameter> parms = new List<SqlParameter>
                {
+
+                    new SqlParameter("@PKId", obj.PKId == null? 0:obj.PKId),
                     new SqlParameter("@CompanyId",obj.FK_CompanyId),
                     new SqlParameter("@ClassId" ,obj.FK_ClassId),
-                    new SqlParameter("@JsonData", obj.JsonData),
+                    new SqlParameter("@StudentId" ,obj.FK_StudentId),
+                    new SqlParameter("@ExamTypeId" ,obj.LookUpDetailId),
+                    new SqlParameter("@MarksData", obj.JsonData),
                     new SqlParameter("@CreatedBy" ,obj.userId)
               };
             try
@@ -128,13 +129,13 @@ namespace DAL
             return objMessages;
         }
 
-        public Messages DeleteSchoolConfigurationData(string pkIds)
+        public Messages DeleteSchoolConfigurationData(int pkId)
         {
             Messages objMessages = new Messages();
-            _commandText = "[dbo].[usp_DeleteSchoolConfigurationData]";
+            _commandText = "[dbo].[usp_DeleteSubjectMarkMappingData]";
             List<SqlParameter> parms = new List<SqlParameter>
                {
-                    new SqlParameter("@cPkIds",pkIds)
+                    new SqlParameter("@iPkId",pkId)
               };
             try
             {

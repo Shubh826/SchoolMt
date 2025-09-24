@@ -9,7 +9,7 @@ namespace MDL
 
     public class SubjectMarkMappingMDL
     {
-        public int PK_SchoolConfigurationId { get; set; }
+        public int ? PKId { get; set; }
         public int FK_CompanyId { get; set; }
         
         public int FK_ClassId { get; set; }
@@ -22,8 +22,7 @@ namespace MDL
         // Joined / Extra Fields
         public string ClassName { get; set; }
         public string CompanyName { get; set; }
-        public string LookUpDetailName { get; set; }
-        public string LookUpName { get; set; }
+        public string StudentName { get; set; }
 
         public int userId { get; set; }
         public bool IsActive { get; set; }

@@ -75,9 +75,10 @@ namespace SchoolMt.Controllers
             return Json(CommonBAL.GetLookUpList(companyid, lookUpId, actionfrom, lookUpTypeName), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetSubjectWiseMarksList(int companyid, int examtypeId)
+        [HttpPost]
+        public JsonResult GetSubjectWiseMarksList(int companyid, int examtypeId,int PkId)
         {
-            return Json(CommonBAL.GetSubjectWiseMarksList(companyid, examtypeId), JsonRequestBehavior.AllowGet);
+            return Json(CommonBAL.GetSubjectWiseMarksList(companyid, examtypeId, PkId), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -87,10 +88,9 @@ namespace SchoolMt.Controllers
         }
 
         [HttpPost]
-        public JsonResult DeleteSchoolConfigurationData(string pkIds)
+        public JsonResult DeleteSchoolConfigurationData(int pkId)
         {
-
-            Messages msg = objBal.DeleteSchoolConfigurationData(pkIds);
+            Messages msg = objBal.DeleteSchoolConfigurationData(pkId);
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
 

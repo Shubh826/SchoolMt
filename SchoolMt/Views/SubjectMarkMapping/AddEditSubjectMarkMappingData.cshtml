@@ -8,7 +8,8 @@
 @using (Html.BeginForm("AddEditSubjectMarkMappingData", "SubjectMarkMapping", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(E => E.JsonData)
-
+    @Html.HiddenFor(E => E.PKId)
+ 
     <div class="page-heading mb-0">
         <div class="page-title">
             <div class="row">
@@ -118,9 +119,17 @@
     </div>
 
     <!-- Hidden fields for Edit -->
-    <input type="hidden" value="@Model.FK_CompanyId" id="hdnCompanyId" />
+    <input type="hidden" id="hdnCompanyId" value="@Model.FK_CompanyId" />
     <input type="hidden" id="hdnLookUpId" value="@Model.LookUpDetailId" />
-}
+    <input type="hidden" id="hdnStudentId" value="@Model.FK_StudentId" />
+
+}@*@*******START Loader******@
+<div class="modalBgLoader" style="display: none"></div>
+<div class="modalLoaderCenter" style="display: none">
+    <img alt="Loading..." src="~/App_Images/loader.gif" />
+    <span>Loading...</span>
+</div>
+@*@*******END Loader******@
 
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -130,21 +139,19 @@
     <script type="text/javascript">
         $(document).ready(function (e) {
 
-            // Initialize Select2
 
 
-
-
-
-            // Load Exam Types
-            var companyId = $('#FK_CompanyId').val();
-            if (companyId) {
-                GetExamType(companyId, 'Exam Type');
+            if ($('#PKId').val() > 0) {
+                GetExamType($('#FK_CompanyId').val(), 'Exam Type')
+                BindSubjectWiseMarksList($('#FK_CompanyId').val(), $('#hdnLookUpId').val(), $('#PKId').val());
+                BindStudent($('#FK_CompanyId').val(), $("#FK_ClassId").val());
+                $("#CategoryListSection").show();
             }
+
 
             // Company change
             $("#FK_CompanyId").change(function (e) {
-               
+
                 BindStudent($("#FK_CompanyId").val(), $('#FK_ClassId').val());
                 GetExamType($("#FK_CompanyId").val(), 'Exam Type');
                 $("#FK_ClassId").val("").trigger('change');
@@ -155,7 +162,7 @@
 
             // Company change
             $("#FK_ClassId").change(function () {
-               
+
                 BindStudent($("#FK_CompanyId").val(), $('#FK_ClassId').val());
                 GetExamType($("#FK_CompanyId").val(), 'Exam Type');
                 $("#tblExamTypes tbody").empty();
@@ -166,16 +173,16 @@
 
 
             // Exam Type change
-            $("#LookUpDetailId").change(function () {
-                var selectedText = $("#LookUpDetailId option:selected").text().toLowerCase();
-                BindSubjectWiseMarksList($('#FK_CompanyId').val(), $('#LookUpDetailId').val());
+            $("#LookUpDetailId").change(function (e) {
+               // debugger;
+                BindSubjectWiseMarksList($('#FK_CompanyId').val(), $('#LookUpDetailId').val(),0);
                 $("#CategoryListSection").show();
             });
 
-            $('#FK_CompanyId').select2();
-            $('#LookUpDetailId').select2();
-            $('#FK_ClassId').select2();
-            $('#FK_StudentId').select2();
+            //$('#FK_CompanyId').select2();
+            //$('#LookUpDetailId').select2();
+            //$('#FK_ClassId').select2();
+            //$('#FK_StudentId').select2();
 
             // Select/Deselect all exam type checkboxes
             $(document).on('change', '#selectAllExamTypes', function () {
@@ -188,6 +195,11 @@
                 $('#selectAllExamTypes').prop('checked', allChecked);
             });
 
+            // Initialize Select2
+            $('#FK_CompanyId').select2();
+            $('#LookUpDetailId').select2();
+            $('#FK_ClassId').select2();
+            $('#FK_StudentId').select2();
             // Submit button validation
             $('#btnsubmit').click(function (e) {
                 var companyId = $("#FK_CompanyId").val();
@@ -244,13 +256,24 @@
                 });
 
                 $('#JsonData').val(JSON.stringify(jsonData));
+
+                if ($('#JsonData').val() == "[]") {
+                    alert("All Feilds Are Manadatory");
+                    e.preventDefault();
+                    return false;
+                }
             });
 
 
         });
 
         function GetExamType(companyid, lookUpTypeName) {
-            $("#LookUpDetailId").html("").append($('<option></option>').val("0").html("--Select--"));
+            //debugger;
+            $("#LookUpDetailId").html("");
+            $("#LookUpDetailId").append(
+                $('<option></option>').val("0").html("--SELECT--")
+            );
+          //  alert($('#hdnLookUpId').val());
 
             if (!companyid || companyid === "0") return;
 
@@ -267,28 +290,34 @@
                     }
 
                     // Set selected for edit
-                    var savedId = $('#hdnLookUpId').val();
-                    if (savedId && savedId !== "0") {
-                        $('#LookUpDetailId').val(savedId).trigger('change');
+
+                    if ($('#hdnLookUpId').val() && $('#hdnLookUpId').val() !== '0') {
+                        $('#LookUpDetailId').val($('#hdnLookUpId').val()).attr("selected", "selected");
                     }
                 }
             });
         }
 
-   function BindSubjectWiseMarksList(companyid, examtypeId, existing = null) {
+        function BindSubjectWiseMarksList(companyid, examtypeId, PkId) {
     var $tbody = $("#tblExamTypes tbody");
     $tbody.empty();
 
     $.ajax({
         url: "@Url.Action("GetSubjectWiseMarksList", "SubjectMarkMapping")",
-        type: "GET",
-        data: { companyid: companyid, examtypeId: examtypeId },
+        type: "POST",
+        data: { companyid: companyid, examtypeId: examtypeId, PkId: PkId },
+        beforeSend: function () {
+            $(".modalBgLoader, .modalLoaderCenter").show();
+        },
+        complete: function () {
+            $(".modalBgLoader, .modalLoaderCenter").hide();
+        },
         success: function (data) {
             if (data.length > 0) {
                 $.each(data, function (i, item) {
                     // Existing values if editing
                     var totalMark = item.TotalMark ?? 10;
-                    var obtainMark =0;
+                    var obtainMark = item.ObtainMark ??0;
 
                     var row = `<tr>
                         <td>${item.Value}</td>
@@ -317,11 +346,12 @@
             console.log("Error fetching data:", error);
         }
     });
+            return false;
 }
 
 
      function BindStudent(companyId, classId) {
-    $("#FK_StudentId").html("");  
+    $("#FK_StudentId").html("");
     $("#FK_StudentId").append(
         $('<option></option>').val("0").html("--SELECT--")
     );
@@ -346,7 +376,7 @@
 
             // Restore selected student if editing
             if ($('#hdnStudentId').val() && $('#hdnStudentId').val() !== '0') {
-                $("#FK_StudentId").val($("#hdnStudentId").val()).trigger('change');
+                $('#FK_StudentId').val($('#hdnStudentId').val()).attr("selected", "selected");
             }
         },
         error: function (xhr, status, error) {

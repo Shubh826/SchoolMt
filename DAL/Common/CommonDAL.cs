@@ -491,13 +491,14 @@ namespace DAL
         }
 
 
-        public static List<LookUpDropDownMDL> GetSubjectWiseMarksList(int companyid, int examtypeId)
+        public static List<LookUpDropDownMDL> GetSubjectWiseMarksList(int companyid, int examtypeId,int pkId)
         {
             CommandText = "[dbo].[USP_GetSubjectWiseMarks]";
-            var para = new SqlParameter[2];
+            var para = new SqlParameter[3];
             para[0] = new SqlParameter("@iCompanyId", SqlDbType.Int) { Value = Convert.ToInt32(companyid) };
             para[1] = new SqlParameter("@cExamTypeId", SqlDbType.Int) { Value = Convert.ToInt32(examtypeId) };
-         
+            para[2] = new SqlParameter("@ipkId", SqlDbType.Int) { Value = Convert.ToInt32(pkId) };
+
 
             DataSet ds = (DataSet)objDataFunctions.getQueryResult(CommandText, DataReturnType.DataSet, para.ToList());
             List<LookUpDropDownMDL> List = new List<LookUpDropDownMDL>();
@@ -506,7 +507,8 @@ namespace DAL
                 ID = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("Id")),
                 Value = dr.Field<string>("Value"),
                 IsSelected = dr.Field<bool>("IsSelected"),
-                TotalMark = dr.Field<string>("TotalMark")
+                TotalMark = dr.Field<string>("TotalMark"),
+                ObtainMark= dr.Field<string>("ObtainMark")
             }).ToList();
             return List;
         }

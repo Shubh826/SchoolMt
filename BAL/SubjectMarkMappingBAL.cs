@@ -25,9 +25,9 @@ namespace BAL
             return objDal.InsertSubjectMarkMappingData(obj);
         }
 
-        public Messages DeleteSchoolConfigurationData(string pkIds)
+        public Messages DeleteSchoolConfigurationData(int pkId)
         {
-            return objDal.DeleteSchoolConfigurationData(pkIds);
+            return objDal.DeleteSchoolConfigurationData(pkId);
         }
     }
 }

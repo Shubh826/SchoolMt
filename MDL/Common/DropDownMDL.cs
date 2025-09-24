@@ -18,6 +18,8 @@ namespace MDL.Common
         public string Value { get; set; }
         public bool? IsSelected { get; set; }
         public string TotalMark { get; set; }
+        public string ObtainMark { get; set; }
+
 
     }
 
