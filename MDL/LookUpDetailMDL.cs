@@ -14,6 +14,8 @@ namespace MDL
         public string LookupDetailName { get; set; }
         public string LookupName { get; set; }
         public string CompanyName { get; set; }
+        public string AbbrValue { get; set; }
+        public int SortId { get; set; }
         public bool IsActive { get; set; }
         public int UserId { get; set; }
         public string CreatedBy { get; set; }

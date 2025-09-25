@@ -123,6 +123,8 @@ namespace DAL
                     new SqlParameter("@iUserId", Obj.UserId),
                      new SqlParameter("@iMinValue", Obj.MinValue),
                       new SqlParameter("@iMaxValue", Obj.MaxValue),
+                      new SqlParameter("@iSortid", Obj.SortId),
+                      new SqlParameter("@cAbbr", Obj.AbbrValue),
 
 
                 };
@@ -186,7 +188,9 @@ namespace DAL
                             CreatedDate = dr.Field<string>("CreatedDate"),
                             Status= dr.Field<string>("Status"),
                             CompanyName= dr.Field<string>("CompanyName"),
-                            MinValue= dr.Field<int?>("MinValue"),
+                            AbbrValue = dr.Field<string>("AbbrValue"),
+                            SortId = dr.Field<int>("SortId"),
+                            MinValue = dr.Field<int?>("MinValue"),
                             MaxValue= dr.Field<int?>("MaxValue")
                         }).ToList();
                         objBasicPagingMDL = new BasicPagingMDL()

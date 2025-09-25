@@ -60,6 +60,27 @@
                                     @Html.TextBoxFor(E => E.LookupDetailName, new { @class = "form-control", @maxlength = "100", @placeholder = "Lookup Detail Name" })
                                     @Html.ValidationMessageFor(E => E.LookupDetailName, "", new { @class = "redText", @style = "color:red" })
                                 </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Abbreviation<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.TextBoxFor(E => E.AbbrValue, new { @class = "form-control", @maxlength = "100", @placeholder = "Abbreviation" })
+                                    @Html.ValidationMessageFor(E => E.AbbrValue, "", new { @class = "redText", @style = "color:red" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="setForm  bold">Sort Id<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    @Html.TextBoxFor(E => E.SortId, new
+                                   {
+                                       type = "number",
+                                       @class = "form-control",
+                                       min = "1",
+                                       placeholder = "Sort Id",
+                                       value = Model.SortId  
+                                   })
+                                    @Html.ValidationMessageFor(E => E.MinValue, "", new { @class = "text-danger" })
+                                </div>
 
                                 <div class="col-md-3 MinMaxRow" style="display:none;">
                                     <label class="setForm bold">Min Value<span style="color:red">*</span></label>
