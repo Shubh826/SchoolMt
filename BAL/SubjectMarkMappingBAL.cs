@@ -29,5 +29,9 @@ namespace BAL
         {
             return objDal.DeleteSchoolConfigurationData(pkId);
         }
+        public ViewStudentResultMDL StudentReportCardDetails(int id)
+        {
+            return objDal.StudentReportCardDetails(id);
+        }
     }
 }

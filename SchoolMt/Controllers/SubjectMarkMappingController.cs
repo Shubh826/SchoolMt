@@ -8,6 +8,11 @@ using System.Web;
 using System.Web.Mvc;
 using BAL.Common;
 using SchoolMt.Common;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
+using System.IO;
+using System.Text;
+using iTextSharp.text;
 
 namespace SchoolMt.Controllers
 {
@@ -39,8 +44,11 @@ namespace SchoolMt.Controllers
         [HttpGet]
         public ActionResult AddEditSubjectMarkMappingData(int id = 0)
         {
+            int lookUpId = 0; string actionfrom = "";
             ViewData["companylist"] = CommonBAL.FillCompany(SessionInfo.User.fk_companyid);
             ViewData["Classlist"] = CommonBAL.FillClass(SessionInfo.User.fk_companyid);
+            ViewData["ExamCategorylist"] = CommonBAL.GetLookUpList(0, lookUpId, actionfrom, "Exam Category");
+            
            // ViewData["LookUplist"] = CommonBAL.GetLookUpList(SessionInfo.User.fk_companyid, 0, "Add");
             if (id > 0)
             {
@@ -92,6 +100,117 @@ namespace SchoolMt.Controllers
         {
             Messages msg = objBal.DeleteSchoolConfigurationData(pkId);
             return Json(msg, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult StudentReportCardDetails(int id)
+        {
+            ViewStudentResultMDL obj = new ViewStudentResultMDL();
+            obj = objBal.StudentReportCardDetails(id);
+
+            // 1. Create an instance of your model
+            var studentData = new ViewStudentResultNewMDL();
+
+            // 2. Populate the model with dummy or database data
+            studentData.StudentName = "AYUSHI MISHRA";
+            studentData.FatherName = "SATYA PRAKASH MISHRA";
+            studentData.MotherName = "VANDANA MISHRA";
+            studentData.DateOfBirth = new DateTime(2012, 06, 27);
+            studentData.Class = "VI";
+            studentData.Section = "B";
+            studentData.RollNumber = "09";
+            // Make sure this path is correct relative to your project's content folder
+            studentData.StudentPhotoUrl = Url.Content("~/Content/Images/ayushi-mishra.jpg");
+
+            // Populate the subjects and marks (You would get this from a database)
+            studentData.Subjects = new List<SubjectResult>
+        {
+            new SubjectResult
+            {
+                SubjectName = "ENGLISH",
+                Term1 = new TermMarks { PT = 7, NB = 5, SEA = 5, HY = 26, Total = 43, Grade = "C2" },
+                Term2 = new TermMarks { PT = 6, NB = 5, SEA = 5, YE = 34, Total = 49, Grade = "C2" },
+                GrandTotal = 46.0,
+                OverallGrade = "C2"
+            },
+            // ... Add all other subjects from the report card
+        };
+
+            // Populate co-scholastic areas
+            studentData.CoScholasticAreas = new List<CoScholasticArea>
+        {
+            new CoScholasticArea { AreaName = "Work Education", Term1Grade = "A", Term2Grade = "A" },
+            // ... Add all other co-scholastic areas
+        };
+
+            studentData.OverallMarks = 404;
+            studentData.OverallMaxMarks = 800;
+            studentData.OverallPercentage = 50.50;
+            studentData.OverallGrade = "C2";
+            studentData.Attendance = 54;
+            studentData.Remarks = "Need Improvement";
+            studentData.PromotedToClass = "VII";
+            studentData.Date = DateTime.Now;
+
+            // 3. Return the View with the populated model
+         
+            return View(studentData);
+        }
+
+        [HttpGet]
+        public string PrintReportcard(int id)
+        {
+            string htmlForPdf = "";
+            try
+            {
+                ViewStudentResultMDL obj = new ViewStudentResultMDL();
+                obj = objBal.StudentReportCardDetails(id);
+                htmlForPdf = GenerateHtml(obj);
+            }
+            catch (Exception ex)
+            {
+                htmlForPdf = "<div style='color:red'>Error: " + ex.Message + "</div>";
+            }
+
+            return htmlForPdf;
+        }
+
+        [HttpGet]
+        public ActionResult DownloadReportCard(int id)
+        {
+            ViewStudentResultMDL obj = objBal.StudentReportCardDetails(id);
+            if (obj == null)
+                return Content("Report card not found");
+
+            string htmlContent = GenerateHtml(obj);
+
+            // Convert relative image URLs to absolute
+            string baseUrl = $"{Request.Url.Scheme}://{Request.Url.Authority}";
+            htmlContent = htmlContent.Replace("/assets/", baseUrl + "/assets/");
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                Document pdfDoc = new Document(PageSize.A4, 20f, 20f, 20f, 20f);
+                PdfWriter writer = PdfWriter.GetInstance(pdfDoc, ms);
+                pdfDoc.Open();
+
+                using (var srHtml = new StringReader(htmlContent))
+                {
+                    // Correct ParseXHtml usage
+                    XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, srHtml);
+                }
+
+                pdfDoc.Close();
+                byte[] pdfBytes = ms.ToArray();
+
+                return File(pdfBytes, "application/pdf", $"ReportCard_{obj.ExamMarksDetails[0].StudentId}.pdf");
+            }
+        }
+
+        [NonAction]
+        public static string GenerateHtml(ViewStudentResultMDL model)
+        {
+            var sb = new StringBuilder();
+            return sb.ToString();
         }
 
     }

@@ -53,11 +53,14 @@ namespace DAL
                             FK_StudentId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_StudentId")),
                             FK_LookUpId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_ExamTypeId")),
                             LookUpDetailId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_ExamTypeId")),
+                            FK_ExamCategoryId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_ExamCategoryId")),
                             ClassName = dr.Field<string>("ClassName"),
                             CompanyName = dr.Field<string>("CompanyName"),
                             StudentName = dr.Field<string>("StudentName"),
                             CreatedBy = dr.Field<string>("CreatedBy"),
-                            CreatedDate = dr.Field<string>("CreatedDate")
+                            CreatedDate = dr.Field<string>("CreatedDate"),
+                            ExamType = dr.Field<string>("ExamType"),
+                            ExamCategory = dr.Field<string>("ExamCategory")
 
                         }).ToList();
 
@@ -103,6 +106,7 @@ namespace DAL
                     new SqlParameter("@ClassId" ,obj.FK_ClassId),
                     new SqlParameter("@StudentId" ,obj.FK_StudentId),
                     new SqlParameter("@ExamTypeId" ,obj.LookUpDetailId),
+                    new SqlParameter("@ExamcategoryId" ,obj.FK_ExamCategoryId),
                     new SqlParameter("@MarksData", obj.JsonData),
                     new SqlParameter("@CreatedBy" ,obj.userId)
               };
@@ -159,5 +163,71 @@ namespace DAL
             }
             return objMessages;
         }
+
+        public ViewStudentResultMDL StudentReportCardDetails(int id)
+        {
+            ViewStudentResultMDL studentResult = new ViewStudentResultMDL();
+            Messages objMessages = new Messages();
+            _commandText = "[dbo].[usp_GetStudentResultData]";
+            List<SqlParameter> parms = new List<SqlParameter>
+    {
+        new SqlParameter("@iStudentId", id)
+    };
+
+            try
+            {
+                CheckParameters.ConvertNullToDBNull(parms);
+                objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet, parms);
+
+                if (objDataSet.Tables.Count > 0 && objDataSet.Tables[0].Rows.Count > 0)
+                {
+                    if (objDataSet.Tables[0].Rows[0].Field<int>("Message_Id") == 1)
+                    {
+                        // --- Table[1]: Subjects ---
+                        studentResult.Subjects = objDataSet.Tables[1].AsEnumerable().Select(dr => new ViewSubjectMDL
+                        {
+                            Id = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("Id")),
+                            SubjectName = dr.Field<string>("Value")
+                        }).ToList();
+
+                        // --- Table[2]: Exam Types ---
+                        studentResult.ExamTypes = objDataSet.Tables[2].AsEnumerable().Select(dr => new ViewExamTypeMDL
+                        {
+                            Id = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("Id")),
+                            ExamType = dr.Field<string>("Value"),
+                            TotalMark = dr.Field<string>("TotalMark")
+                        }).ToList();
+
+                        // --- Table[3]: Exam Marks Detail ---
+                        studentResult.ExamMarksDetails = objDataSet.Tables[3].AsEnumerable().Select(dr => new ExamMarksDetailMDL
+                        {
+                            SchoolId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_SchoolId")),
+                            ClassId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_ClassId")),
+                            StudentId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_StudentId")),
+                            ExamCategoryId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_ExamCategoryId")),
+                            ExamTypeId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_ExamTypeId")),
+                            SubjectId = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("FK_SubjectId")),
+                            TotalMarks = dr.Field<int>("TotalMarks"),
+                            ObtainMarks = dr.Field<int>("ObtainMarks"),
+                            CompanyName = dr.Field<string>("CompanyName"),
+                            StudentName = dr.Field<string>("StudentName"),
+                            ClassName = dr.Field<string>("ClassName"),
+                            ExamType = dr.Field<string>("ExamType"),
+                            ExamCategory = dr.Field<string>("ExamCategory"),
+                            Subject = dr.Field<string>("Subject")
+                        }).ToList();
+                    }
+                }
+
+                objDataSet.Dispose();
+            }
+            catch (Exception ex)
+            {
+                // Handle exception or log it
+            }
+
+            return studentResult;
+        }
+
     }
 }

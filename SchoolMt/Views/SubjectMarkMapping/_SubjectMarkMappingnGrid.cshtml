@@ -19,6 +19,8 @@
                 <th class="text-center">School Name</th>
                 <th class="text-center">Class Name</th>
                 <th class="text-center">Student Name</th>
+                <th class="text-center">Exam Category</th>
+                <th class="text-center">Exam Type</th>
                 <th class="text-center">Created By</th>
                 <th class="text-center">Created Date</th>
                 <th class="text-center">Action</th>
@@ -35,18 +37,21 @@
             {
                 foreach (var item in Model)
                 {
-                    <tr>
-                        <td class="text-center">@SerialNo</td>
-                        <td class="text-center">@Html.DisplayFor(modelItem => item.CompanyName)</td>
-                        <td class="text-center">@Html.DisplayFor(modelItem => item.ClassName)</td>
-                        <td class="text-center">@Html.DisplayFor(modelItem => item.StudentName)</td>
-                        <td class="text-center">@Html.DisplayFor(modelItem => item.CreatedBy)</td>
-                        <td class="text-center">@Html.DisplayFor(modelItem => item.CreatedDate)</td>
-                        <td class="text-center">
-                            <a class="btn btn-primary" href="@Url.Action("AddEditSubjectMarkMappingData", "SubjectMarkMapping", new { id = item.PKId })">Edit</a>
-                            <a class="btn btn-danger marb10" href="javascript:void(0)" onclick="DeleteData(@item.PKId); return false;">Delete</a>
-                        </td>
-                    </tr>
+        <tr>
+            <td class="text-center">@SerialNo</td>
+            <td class="text-center">@Html.DisplayFor(modelItem => item.CompanyName)</td>
+            <td class="text-center">@Html.DisplayFor(modelItem => item.ClassName)</td>
+            <td class="text-center">@Html.DisplayFor(modelItem => item.StudentName)</td>
+            <td class="text-center">@Html.DisplayFor(modelItem => item.ExamCategory)</td>
+            <td class="text-center">@Html.DisplayFor(modelItem => item.ExamType)</td>
+            <td class="text-center">@Html.DisplayFor(modelItem => item.CreatedBy)</td>
+            <td class="text-center">@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+            <td class="text-center">
+                <a class="btn btn-primary" href="@Url.Action("AddEditSubjectMarkMappingData", "SubjectMarkMapping", new { id = item.PKId })">Edit</a>
+                <a class="btn btn-danger marb10" href="javascript:void(0)" onclick="DeleteData(@item.PKId); return false;">Delete</a>
+                <a class="btn btn-primary" href="@Url.Action("StudentReportCardDetails", new { id=item.FK_StudentId })">View Report Card</a><br />
+            </td>
+        </tr>
                     SerialNo++;
                 }
             }

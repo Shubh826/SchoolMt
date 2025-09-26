@@ -15,6 +15,7 @@ namespace MDL
         public int FK_ClassId { get; set; }
         public int FK_StudentId { get; set; }
         public int LookUpDetailId { get; set; }
+        public int FK_ExamCategoryId { get; set; }
         public string FK_LookUpDetailIds { get; set; }
         public int FK_LookUpId { get; set; }
         public string TotalMark { get; set; }
@@ -31,5 +32,7 @@ namespace MDL
         public string CreatedDate { get; set; }
 
         public string JsonData { get; set; }
+        public string ExamType { get; set; }
+        public string ExamCategory { get; set; }
     }
 }

@@ -9,7 +9,7 @@
 {
     @Html.HiddenFor(E => E.JsonData)
     @Html.HiddenFor(E => E.PKId)
- 
+
     <div class="page-heading mb-0">
         <div class="page-title">
             <div class="row">
@@ -74,9 +74,21 @@
                                 </div>
                             </div>
 
+                            <!-- Exam category -->
+                            <div class="row mb-2" id="examptypediv">
+                                <div class="col-md-2">
+                                    <label class="setForm bold">Exam Category<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.DropDownListFor(E => E.FK_ExamCategoryId,
+                                     new SelectList((System.Collections.IEnumerable)ViewData["ExamCategorylist"], "Id", "Value"),
+                                     "--SELECT--",
+                                     new { @class = "form-control select2", style = "width:100%", id = "FK_ExamCategoryId" })
 
+                                </div>
+                            </div>
 
-                            <!-- Subject Dropdown -->
+                            <!-- Exam Type -->
                             <div class="row mb-2" id="examptypediv">
                                 <div class="col-md-2">
                                     <label class="setForm bold">Exam Type<span style="color:red">*</span></label>
@@ -200,6 +212,8 @@
             $('#LookUpDetailId').select2();
             $('#FK_ClassId').select2();
             $('#FK_StudentId').select2();
+            $('#FK_ExamCategoryId').select2();
+            
             // Submit button validation
             $('#btnsubmit').click(function (e) {
                 var companyId = $("#FK_CompanyId").val();
