@@ -1,4 +1,4 @@
-﻿@model MDL.ViewStudentResultNewMDL
+﻿@model MDL.MarksTableViewModel
 @{
     ViewBag.Title = "StudentReportCardDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -193,256 +193,195 @@
 
     <table class="header-info">
         <tr>
-            <td style="width: 30%;">Affiliation No. 2132691</td>
+            <td style="width: 30%;">Affiliation No.  @Model.Student.AffiliationNo</td>
             <td style="width: 40%; text-align: center; font-size: 12px;">From Darkness to Light</td>
-            <td style="width: 30%; text-align: right;">School Code: 71138</td>
+            <td style="width: 30%; text-align: right;">School Code: @Model.Student.SchoolCode</td>
         </tr>
     </table>
 
     <div class="school-header">
-        <img src="path/to/school_logo.jpg" alt="School Logo" class="logo-left">
-        <img src="path/to/school_insignia.jpg" alt="School Insignia" class="logo-right">
-        <h1>ST. XAVIER'S SCHOOL</h1>
-        <h2>PATTI - PRATAPGARH - U.P. - PIN - 230135</h2>
+        <img src="@Model.Student.SchoolLogoUrl" alt="School Logo" class="logo-left">
+        <img src="@Model.Student.SchoolLogoUrl" alt="School Insignia" class="logo-right">
+        <h1>@Model.Student.SchoolName</h1>
+        <h2>@Model.Student.SchoolAddress - @Model.Student.SchoolPin</h2>
+        @*<h2>PATTI - PRATAPGARH - U.P. - PIN - 230135</h2>*@
         <p>Affiliated to C.B.S.E., New Delhi</p>
-        <p>Web: www.stxavierspatti.com, E-mail: stxavierspatti686@gmail.com, Phone: 05343-250105, Mob.: 9679128111, 9839599011</p>
+        <p>Web: @Model.Student.SchoolWebSiteUrl, E-mail: @Model.Student.SchoolEmailId, Phone: @Model.Student.SchoolPhone, Mob.:@Model.Student.SchoolMobileNo</p>
     </div>
 
     <hr>
 
     <div class="title-bar">
-        REPORT CARD 2023-24
+        REPORT CARD @Model.Student.AcademicYear
     </div>
 
     <table class="student-details-table">
         <tr>
             <td>Student's Name:</td>
-            <td><strong>AYUSHI MISHRA</strong></td>
+            <td><strong>@Model.Student.StudentName</strong></td>
             <td rowspan="5" class="photo-cell">
-                <img src="path/to/student_photo.jpg" alt="Student Photo" class="student-photo">
+                <img src="@Model.Student.StudentImgUrl" alt="Student Photo" class="student-photo">
             </td>
         </tr>
         <tr>
             <td>Father's Name:</td>
-            <td>SATYA PRAKASH MISHRA</td>
+            <td>@(Model.Student.FatherName != null ? Model.Student.FatherName : "-")</td>
         </tr>
         <tr>
             <td>Mother's Name:</td>
-            <td>VANDANA MISHRA</td>
+            <td>@(Model.Student.MotherName != null ? Model.Student.MotherName : "-")</td>
         </tr>
         <tr>
             <td>Date Of Birth:</td>
-            <td>27-06-2012</td>
+            <td>@(Model.Student.DOB != null ? Model.Student.DOB : "-")</td>
         </tr>
         <tr class="class-row">
             <td>Class:</td>
             <td colspan="2">
                 <span class="class-info-cell">
-                    VI
-                    <span>Sec:</span> B
-                    <span>Roll No:</span> 09
+                    @(Model.Student.Class != null ? Model.Student.Class : "-")
+                    <span>Sec:</span>    @(Model.Student.Section != null ? Model.Student.Section : "-")
+                    <span>Roll No:</span> @(Model.Student.RollNo != null ? Model.Student.RollNo : "-")
                 </span>
             </td>
         </tr>
     </table>
 
     <h3 style="margin-top: 20px; margin-bottom: 5px; font-size: 14px;">Scholastic Areas:</h3>
+
+
     <table class="marks-table">
         <thead>
             <tr>
                 <th rowspan="2" style="width: 15%;">Subject Name</th>
-                <th colspan="6">Term-1 (100 marks)</th>
-                <th colspan="6">Term-2 (100 marks)</th>
+                @foreach (var cat in Model.ExamCategories)
+                {
+                    <th colspan="@(Model.ExamTypes.Count + 2)">@cat.ExamCategoryType (100 Marks)</th>
+                }
                 <th colspan="2">OVERALL</th>
             </tr>
             <tr class="sub-header">
-                <th>PT (in 10)</th>
-                <th>NB (in 5)</th>
-                <th>SEA (in 5)</th>
-                <th>YE (in 80)</th>
-                <th>HY TOTAL (in 100)</th>
-                <th>Grade</th>
-
-                <th>PT (in 10)</th>
-                <th>NB (in 5)</th>
-                <th>SEA (in 5)</th>
-                <th>YE (in 80)</th>
-                <th>HY TOTAL (in 100)</th>
-                <th>Grade</th>
-
-                <th>GRAND TOTAL T1(50)+T2(50)</th>
+                @foreach (var cat in Model.ExamCategories)
+                {
+                    foreach (var examType in Model.ExamTypes)
+                    {
+                        <th>@examType.ExamType (in @examType.TotalMark)</th>
+                    }
+                    <th>Total</th>
+                    <th>Grade</th>
+                }
+                <th>GRAND TOTAL</th>
                 <th>Grade</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td><strong>ENGLISH</strong></td>
-                <td>7</td>
-                <td>5</td>
-                <td>5</td>
-                <td>26</td>
-                <td>43</td>
-                <td>C2</td>
-                <td>6</td>
-                <td>5</td>
-                <td>5</td>
-                <td>34</td>
-                <td>49</td>
-                <td>C2</td>
-                <td>46.0</td>
-                <td>C2</td>
-            </tr>
-            <tr>
-                <td><strong>HINDI</strong></td>
-                <td>7</td>
-                <td>5</td>
-                <td>5</td>
-                <td>26</td>
-                <td>43</td>
-                <td>C2</td>
-                <td>6</td>
-                <td>5</td>
-                <td>5</td>
-                <td>34</td>
-                <td>50</td>
-                <td>C2</td>
-                <td>46.5</td>
-                <td>C2</td>
-            </tr>
-            <tr>
-                <td><strong>SANSKRIT</strong></td>
-                <td>7</td>
-                <td>5</td>
-                <td>5</td>
-                <td>27</td>
-                <td>44</td>
-                <td>C2</td>
-                <td>7</td>
-                <td>5</td>
-                <td>5</td>
-                <td>34</td>
-                <td>51</td>
-                <td>C1</td>
-                <td>47.5</td>
-                <td>C2</td>
-            </tr>
-            <tr>
-                <td><strong>MATHS</strong></td>
-                <td>6</td>
-                <td>5</td>
-                <td>5</td>
-                <td>17</td>
-                <td>33</td>
-                <td>D</td>
-                <td>6</td>
-                <td>5</td>
-                <td>5</td>
-                <td>34</td>
-                <td>50</td>
-                <td>C2</td>
-                <td>41.5</td>
-                <td>C2</td>
-            </tr>
-            <tr>
-                <td><strong>SCIENCE</strong></td>
-                <td>4</td>
-                <td>5</td>
-                <td>5</td>
-                <td>22</td>
-                <td>36</td>
-                <td>D</td>
-                <td>5</td>
-                <td>5</td>
-                <td>5</td>
-                <td>34</td>
-                <td>49</td>
-                <td>C2</td>
-                <td>42.5</td>
-                <td>C2</td>
-            </tr>
-            <tr>
-                <td><strong>SOCIAL SCIENCE</strong></td>
-                <td>6</td>
-                <td>5</td>
-                <td>5</td>
-                <td>26</td>
-                <td>42</td>
-                <td>C2</td>
-                <td>6</td>
-                <td>5</td>
-                <td>5</td>
-                <td>34</td>
-                <td>50</td>
-                <td>C2</td>
-                <td>46.0</td>
-                <td>C2</td>
-            </tr>
-            <tr>
-                <td><strong>G.K.</strong></td>
-                <td>6</td>
-                <td>5</td>
-                <td>5</td>
-                <td>28</td>
-                <td>44</td>
-                <td>C2</td>
-                <td>6</td>
-                <td>5</td>
-                <td>5</td>
-                <td>34</td>
-                <td>50</td>
-                <td>C2</td>
-                <td>47.0</td>
-                <td>C2</td>
-            </tr>
-            <tr>
-                <td><strong>COMPUTER</strong></td>
-                <td>7</td>
-                <td>5</td>
-                <td>5</td>
-                <td>75</td>
-                <td>92</td>
-                <td>A1</td>
-                <td>8</td>
-                <td>5</td>
-                <td>5</td>
-                <td>64</td>
-                <td>82</td>
-                <td>A2</td>
-                <td>87.0</td>
-                <td>A2</td>
-            </tr>
+            @foreach (var subject in Model.Subjects)
+            {
+                <tr>
+                    <td><strong>@subject.SubjectName</strong></td>
+
+                    @foreach (var cat in Model.ExamCategories)
+                    {
+                        int termTotal = 0;
+
+                        foreach (var examType in Model.ExamTypes)
+                        {
+                            var mark = Model.Marks.FirstOrDefault(m =>
+                                m.SubjectId == subject.Id &&
+                                m.ExamCategoryId == cat.Id &&
+                                m.ExamTypeId == examType.Id);
+
+                            if (mark != null)
+                            {
+                                <td>@mark.ObtainMarks</td>
+                                termTotal += mark.ObtainMarks;
+                            }
+                            else
+                            {
+                                <td>-</td>
+                            }
+                        }
+
+                        <td>@termTotal</td>
+
+                        var grade = Model.Grades.FirstOrDefault(g => termTotal >= g.Min && termTotal <= g.Max);
+
+                        <td>@(grade != null ? grade.GradeName : "-")</td>
+                    }
+
+                    @* Overall Total for Subject *@
+                    @{
+                        int overall = Model.ExamCategories.Sum(cat =>
+                            Model.Marks
+                                .Where(m => m.SubjectId == subject.Id && m.ExamCategoryId == cat.Id)
+                                .Sum(m => m.ObtainMarks)
+                        );
+                        var overallGrade = Model.Grades.FirstOrDefault(g => overall >= g.Min && overall <= g.Max);
+                    }
+                    <td>@overall</td>
+                    <td>@(overallGrade != null ? overallGrade.GradeName : "-")</td>
+                </tr>
+            }
         </tbody>
     </table>
 
+
+
+
     <h3 style="margin-top: 20px; margin-bottom: 5px; font-size: 14px;">8 Point Grading Scale:</h3>
+    @*<table class="grade-scale">
+            <tr>
+                <td>A1 (91% - 100%),</td>
+                <td>A2 (81% - 90%),</td>
+                <td>B1 (71% - 80%),</td>
+                <td>B2 (61% - 70%),</td>
+                <td>C1 (51% - 60%),</td>
+            </tr>
+
+            <tr><td>C2 (41% - 50%),</td>
+                <td>D (33% - 40%),</td>
+                <td colspan="3">E (32% and below)</td>
+            </tr>
+        </table>*@
     <table class="grade-scale">
+        @{
+            var grades = Model.Grades;
+            int firstRowCount = 5; // first row shows 5 grades, rest in next row
+        }
         <tr>
-            <td>A1 (91% - 100%),</td>
-            <td>A2 (81% - 90%),</td>
-            <td>B1 (71% - 80%),</td>
-            <td>B2 (61% - 70%),</td>
-            <td>C1 (51% - 60%),</td>
+            @foreach (var grade in grades.Take(firstRowCount))
+            {
+                <td>@grade.GradeName (@grade.Min% - @grade.Max%)</td>
+            }
         </tr>
         <tr>
-            <td>C2 (41% - 50%),</td>
-            <td>D (33% - 40%),</td>
-            <td colspan="3">E (32% and below)</td>
+            @foreach (var grade in grades.Skip(firstRowCount))
+            {
+                <td colspan="@(grade.GradeName == "E" ? 3 : 1)">
+                    @grade.GradeName (@grade.Min% - @grade.Max%)
+                </td>
+            }
         </tr>
     </table>
+
 
     <table class="header-info" style="margin-top: 10px;">
         <tr>
             <td style="width: 15%;">Abbreviations:</td>
-            <td colspan="3" style="font-size: 12px; border-bottom: 1px dashed #333;">PT=Periodic Test, NB=Note Book, SE=Subject Enrichment, HY=Half Yearly, YE=Yearly</td>
+            <td colspan="3" style="font-size: 12px; border-bottom: 1px dashed #333;">@Model.Student.AbbreviationText</td>
+
+            @*<td colspan="3" style="font-size: 12px; border-bottom: 1px dashed #333;">PT=Periodic Test, NB=Note Book, SE=Subject Enrichment, HY=Half Yearly, YE=Yearly</td>*@
         </tr>
     </table>
 
     <table class="header-info overall-summary" style="border: 1px solid #333;">
         <tr>
+
+
             <td style="width: 10%; background-color: #f0f0f0;"><strong>Overall:</strong></td>
-            <td style="width: 25%;">Marks: 404/800</td>
-            <td style="width: 30%;"><strong>Percentage: 50.50</strong></td>
-            <td style="width: 35%;"><strong>Grade: C2</strong></td>
+            <td style="width: 25%;">Marks: @Model.Student.ObtainMarks/@Model.Student.TotalMarks</td>
+            <td style="width: 30%;"><strong>Percentage: @Model.Student.Percentages</strong></td>
+            <td style="width: 35%;"><strong>Grade: @Model.Student.Grade</strong></td>
         </tr>
     </table>
 
@@ -457,50 +396,60 @@
             </tr>
         </thead>
         <tbody>
+            @*@foreach (var item in Model.CoScholasticList)
+            {
+                <tr>
+                    <td style="text-align:left;">@item.Area</td>
+                    <td>@item.GradeTerm1</td>
+                    <td style="text-align:left;">@item.Area</td>
+                    <td>@item.GradeTerm2</td>
+                </tr>
+            }*@
             <tr>
-                <td style="text-align: left;">Work Education (or Pre-vocational Education)</td>
-                <td>A</td>
-                <td style="text-align: left;">Work Education (or Pre-vocational Education)</td>
-                <td>A</td>
-            </tr>
-            <tr>
-                <td style="text-align: left;">Art Education</td>
-                <td>A</td>
-                <td style="text-align: left;">Art Education</td>
-                <td>A</td>
-            </tr>
-            <tr>
-                <td style="text-align: left;">Health & Physical Education</td>
-                <td>A</td>
-                <td style="text-align: left;">Health & Physical Education</td>
-                <td>A</td>
-            </tr>
-            <tr>
-                <td style="text-align: left;">Discipline: Term-1</td>
-                <td>Grade</td>
-                <td style="text-align: left;">Discipline: Term-2</td>
-                <td>Grade</td>
-            </tr>
-            <tr>
-                <td style="text-align: left;">[on a 3-point (A-C) grading scale]</td>
-                <td>A</td>
-                <td style="text-align: left;">[on a 3-point (A-C) grading scale]</td>
-                <td>A</td>
-            </tr>
+            <td style="text-align: left;">Work Education (or Pre-vocational Education)</td>
+            <td>A</td>
+            <td style="text-align: left;">Work Education (or Pre-vocational Education)</td>
+            <td>A</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Art Education</td>
+            <td>A</td>
+            <td style="text-align: left;">Art Education</td>
+            <td>A</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Health & Physical Education</td>
+            <td>A</td>
+            <td style="text-align: left;">Health & Physical Education</td>
+            <td>A</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">Discipline: Term-1</td>
+            <td>Grade</td>
+            <td style="text-align: left;">Discipline: Term-2</td>
+            <td>Grade</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">[on a 3-point (A-C) grading scale]</td>
+            <td>A</td>
+            <td style="text-align: left;">[on a 3-point (A-C) grading scale]</td>
+            <td>A</td>
+        </tr>
         </tbody>
     </table>
 
     <table class="header-info" style="margin-top: 15px; font-size: 12px;">
         <tr>
-            <td style="width: 20%;">Attendance: 54</td>
-            <td style="width: 50%;">Remarks/Status: Need Improvement</td>
-            <td style="width: 30%; text-align: right;"><strong>Promoted to Class: VII</strong></td>
+            @*<td style="width: 20%;">Attendance: 54</td>*@
+            @*<td style="width: 50%;">Remarks/Status: Need Improvement</td>*@
+            <td style="width: 50%;">Remarks/Status: @Model.Student.ResultRemark</td>
+            @*<td style="width: 30%; text-align: right;"><strong>Promoted to Class: VII</strong></td>*@
         </tr>
     </table>
 
     <table class="header-info signature-row" style="margin-top: 40px;">
         <tr>
-            <td style="width: 30%; text-align: left;">Date: 30/03/2024</td>
+            <td style="width: 30%; text-align: left;">Date:@DateTime.Now.ToString("dd-MM-yyyy")</td>
             <td style="width: 35%; text-align: center;">Signature of Class Teacher</td>
             <td style="width: 35%; text-align: right;">Principal's Signature</td>
         </tr>

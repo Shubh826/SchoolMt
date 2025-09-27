@@ -33,5 +33,9 @@ namespace BAL
         {
             return objDal.StudentReportCardDetails(id);
         }
+        public  MarksTableViewModel StudentReportCardDetails_New(int id)
+        {
+            return objDal.StudentReportCardDetails_New(id);
+        }
     }
 }
