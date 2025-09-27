@@ -250,80 +250,101 @@
     @*<h3 style="margin-top: 20px; margin-bottom: 5px; font-size: 14px;">Scholastic Areas:</h3>*@
 
 
-    <table class="marks-table">
-        <thead>
-            <tr>
-                <th rowspan="2" style="width: 15%; border: 1px solid black; background-color: #f2f2f2;">Scholastic Areas:</th>
-                @foreach (var cat in Model.ExamCategories)
+<table class="marks-table">
+    <thead>
+        <tr>
+            <th rowspan="2" style="width: 15%; border: 1px solid black; background-color: #f2f2f2;">Scholastic Areas:</th>
+            @foreach (var cat in Model.ExamCategories)
+            {
+                <th colspan="@(Model.ExamTypes.Count + 2)" style="border: 1px solid black; background-color: #f2f2f2;">@cat.ExamCategoryType (100 marks)</th>
+            }
+            <th colspan="2" style="border: 1px solid black; background-color: #f2f2f2;">OVERALL</th>
+        </tr>
+        <tr class="sub-header" style="background-color: #f2f2f2;">
+            @foreach (var cat in Model.ExamCategories)
+            {
+                foreach (var examType in Model.ExamTypes)
                 {
-                    <th colspan="@(Model.ExamTypes.Count + 2)" style="border: 1px solid black; background-color: #f2f2f2;">@cat.ExamCategoryType (100 marks)</th>
+                    <th style="border: 1px solid black;">@examType.ExamType<br>(in @examType.TotalMark)</th>
                 }
-                <th colspan="2" style="border: 1px solid black; background-color: #f2f2f2;">OVERALL</th>
-            </tr>
-            <tr class="sub-header" style="background-color: #f2f2f2;">
+                <th style="border: 1px solid black;">TOTAL<br>(in 100)</th>
+                <th style="border: 1px solid black;">Grade</th>
+            }
+            <th style="border: 1px solid black;">GRAND TOTAL<br>T1(50)+T2(50)</th>
+            <th style="border: 1px solid black;">Grade</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var subject in Model.Subjects)
+        {
+            <tr>
+                <td><strong>@subject.SubjectName</strong></td>
+
+                @{
+                    double term1Total = 0;
+                    double term2Total = 0;
+                    double term1Percentage = 0;
+                    double term2Percentage = 0;
+                }
+
                 @foreach (var cat in Model.ExamCategories)
                 {
+                    int termTotal = 0;
+                    int termMax = 100; // Each term max is 100 marks
+
                     foreach (var examType in Model.ExamTypes)
                     {
-                        <th style="border: 1px solid black;">@examType.ExamType<br>(in @examType.TotalMark)</th>
-                    }
-                    <th style="border: 1px solid black;">TOTAL<br>(in 100)</th>
-                    <th style="border: 1px solid black;">Grade</th>
-                }
-                <th style="border: 1px solid black;">GRAND TOTAL<br>T1(50)+T2(50)</th>
-                <th style="border: 1px solid black;">Grade</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var subject in Model.Subjects)
-            {
-                <tr>
-                    <td><strong>@subject.SubjectName</strong></td>
+                        var mark = Model.Marks.FirstOrDefault(m =>
+                            m.SubjectId == subject.Id &&
+                            m.ExamCategoryId == cat.Id &&
+                            m.ExamTypeId == examType.Id);
 
-                    @foreach (var cat in Model.ExamCategories)
-                    {
-                        int termTotal = 0;
-
-                        foreach (var examType in Model.ExamTypes)
+                        if (mark != null)
                         {
-                            var mark = Model.Marks.FirstOrDefault(m =>
-                                m.SubjectId == subject.Id &&
-                                m.ExamCategoryId == cat.Id &&
-                                m.ExamTypeId == examType.Id);
-
-                            if (mark != null)
-                            {
-                                <td>@mark.ObtainMarks</td>
-                                termTotal += mark.ObtainMarks;
-                            }
-                            else
-                            {
-                                <td>-</td>
-                            }
+                            <td>@mark.ObtainMarks</td>
+                            termTotal += mark.ObtainMarks;
                         }
-
-                        <td>@termTotal</td>
-
-                        var grade = Model.Grades.FirstOrDefault(g => termTotal >= g.Min && termTotal <= g.Max);
-
-                        <td>@(grade != null ? grade.GradeName : "-")</td>
+                        else
+                        {
+                            <td>-</td>
+                        }
                     }
 
-                    @* Overall Total for Subject *@
-                    @{
-                        int overall = Model.ExamCategories.Sum(cat =>
-                            Model.Marks
-                                .Where(m => m.SubjectId == subject.Id && m.ExamCategoryId == cat.Id)
-                                .Sum(m => m.ObtainMarks)
-                        );
-                        var overallGrade = Model.Grades.FirstOrDefault(g => overall >= g.Min && overall <= g.Max);
+                    // Cap term total at maximum 100
+                    termTotal = termTotal > 100 ? 100 : termTotal;
+                    <td>@termTotal</td>
+
+                    @* Calculate grade based on term total percentage *@
+                    double termPercentage = (termTotal * 100.0) / termMax;
+                    var grade = Model.Grades.FirstOrDefault(g => termPercentage >= g.Min && termPercentage <= g.Max);
+
+                    <td>@(grade.GradeName==null? "-": grade.GradeName)</td>
+                    @* Store term totals for overall calculation *@
+                    if (cat.ExamCategoryType.Contains("Term 1") || cat.ExamCategoryType.Contains("1"))
+                    {
+                        term1Total = termTotal;
+                        term1Percentage = termPercentage;
                     }
-                    <td>@overall</td>
-                    <td>@(overallGrade != null ? overallGrade.GradeName : "-")</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    else if (cat.ExamCategoryType.Contains("Term 2") || cat.ExamCategoryType.Contains("2"))
+                    {
+                        term2Total = termTotal;
+                        term2Percentage = termPercentage;
+                    }
+                }
+
+                @* Overall Calculation: 50% of Term1 + 50% of Term2 *@
+                @{
+                    double overallTotal = (term1Total * 0.5) + (term2Total * 0.5);
+                    double overallPercentage = (overallTotal * 100.0) / 100; // Since max is 100 per subject overall
+                    var overallGrade = Model.Grades.FirstOrDefault(g => overallPercentage >= Convert.ToDouble(g.Min) && Convert.ToDouble(overallPercentage) <= g.Max);
+                }
+
+                <td>@overallTotal.ToString("F0")</td>
+                <td>@(overallGrade.GradeName==null? "-": overallGrade.GradeName)</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 
 
@@ -371,28 +392,17 @@
         </tr>
     </table>
 
-    <table class="header-info overall-summary" style="border: 1px solid #333;">
-        <tr>
-
-            <td style="width: 10%; background-color: #f0f0f0;"><strong>Overall:</strong></td>
-            <td style="width: 25%;">Marks: </td>
-            <td style="width: 30%;"><strong>Percentage: @Model.Student.Percentages</strong></td>
-            <td style="width: 35%;"><strong>Grade: @Model.Student.Grade</strong></td>
-        </tr>
-    </table>
-
     <!-- Overall Summary -->
     <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; margin-top: 10px;">
         <tr>
             <td style="border: 1px solid black; width: 15%; background-color: #f2f2f2; font-weight: bold;">Overall:</td>
-            <td style="border: 1px solid black; width: 28%;">@Model.Student.ObtainMarks/@Model.Student.TotalMarks</td>
+            <td style="border: 1px solid black; width: 28%;">Marks: @Model.Student.ObtainMarks/@Model.Student.TotalMarks</td>
             <td style="border: 1px solid black; width: 28%;">Percentage: @Model.Student.Percentages</td>
             <td style="border: 1px solid black; width: 29%;">Grade:  @Model.Student.Grade</td>
         </tr>
     </table>
 
-    <h3 style="margin-top: 20px; margin-bottom: 5px; font-size: 14px;">Co-Scholastic Areas: Term-1 [on a 3-point (A-C) grading scale]</h3>
-    <table class="marks-table coscholastic-table" style="font-size: 12px;">
+       <table class="marks-table coscholastic-table" style="font-size: 12px;">
         <thead>
             <tr>
                 <th style="width: 45%;">Co-Scholastic Areas: Term-1 [on a 3-point (A-C) grading scale]</th>

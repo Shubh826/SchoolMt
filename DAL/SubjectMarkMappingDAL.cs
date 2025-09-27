@@ -296,7 +296,9 @@ namespace DAL
                         ClassName = dr.Field<string>("ClassName"),
                         ExamType = dr.Field<string>("ExamType"),
                         ExamCategory = dr.Field<string>("ExamCategory"),
-                        Subject = dr.Field<string>("Subject")
+                        Subject = dr.Field<string>("Subject"),
+                        SubjectGrade= dr.Field<string>("SubjectGrade"),
+                        Percentagevalue = dr.Field<int>("Percentagevalue")
                     }).ToList();
 
                     // --- Table[6]: Student Detail ---
@@ -328,27 +330,13 @@ namespace DAL
                             SchoolPin = dr["SchoolPin"]?.ToString(),
                             SchoolPhone = dr["SchoolPhone"]?.ToString(),
                             AbbreviationText = dr["AbbreviationText"]?.ToString(),
-                            ResultRemark = dr["ResultRemark"]?.ToString()
+                            ResultRemark = dr["ResultRemark"]?.ToString(),
+                            ObtainMarks = dr["ObtainMarks"]?.ToString(),
+                            TotalMarks = dr["TotalMarks"]?.ToString(),
+                            Percentages = dr["Percentages"]?.ToString(),
+                            Grade = dr["Grade"]?.ToString()
                         };
 
-                        // --- Calculate Total Marks, Percentage, and Grade ---
-                        var marks = studentResult.Marks;
-                        var grades = studentResult.Grades;
-
-                        decimal totalObtainMarks = marks.Sum(m => m.ObtainMarks);
-                        decimal totalMaxMarks = marks.Sum(m =>
-                        {
-                            if (int.TryParse(m.TotalMarks.ToString(), out int t)) return t;
-                            return 0;
-                        });
-
-                        decimal percentage = totalMaxMarks > 0 ? (totalObtainMarks * 100) / totalMaxMarks : 0;
-                        string overallGrade = grades.FirstOrDefault(g => percentage >= g.Min && percentage <= g.Max)?.GradeName ?? "-";
-
-                        studentResult.Student.ObtainMarks = totalObtainMarks.ToString();
-                        studentResult.Student.TotalMarks = totalMaxMarks.ToString();
-                        studentResult.Student.Percentages = Math.Round(percentage, 2).ToString();
-                        studentResult.Student.Grade = overallGrade;
 
                         studentResult.CoScholasticArea = new List<ViewCoScholasticArea>
                         {
