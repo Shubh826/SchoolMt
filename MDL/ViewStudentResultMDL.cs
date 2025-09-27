@@ -27,12 +27,17 @@ namespace MDL
         public int TotalMarks { get; set; }
         public int ObtainMarks { get; set; }
 
+        public int Percentagevalue { get; set; }
+
+
         public string CompanyName { get; set; }
         public string ClassName { get; set; }
         public string StudentName { get; set; }
         public string ExamType { get; set; }
         public string ExamCategory { get; set; }
         public string Subject { get; set; }
+        public string SubjectGrade { get; set; }
+
     }
 
 

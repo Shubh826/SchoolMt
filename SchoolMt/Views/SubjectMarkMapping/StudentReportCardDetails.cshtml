@@ -247,31 +247,31 @@
         </tr>
     </table>
 
-    <h3 style="margin-top: 20px; margin-bottom: 5px; font-size: 14px;">Scholastic Areas:</h3>
+    @*<h3 style="margin-top: 20px; margin-bottom: 5px; font-size: 14px;">Scholastic Areas:</h3>*@
 
 
     <table class="marks-table">
         <thead>
             <tr>
-                <th rowspan="2" style="width: 15%;">Subject Name</th>
+                <th rowspan="2" style="width: 15%; border: 1px solid black; background-color: #f2f2f2;">Scholastic Areas:</th>
                 @foreach (var cat in Model.ExamCategories)
                 {
-                    <th colspan="@(Model.ExamTypes.Count + 2)">@cat.ExamCategoryType (100 Marks)</th>
+                    <th colspan="@(Model.ExamTypes.Count + 2)" style="border: 1px solid black; background-color: #f2f2f2;">@cat.ExamCategoryType (100 marks)</th>
                 }
-                <th colspan="2">OVERALL</th>
+                <th colspan="2" style="border: 1px solid black; background-color: #f2f2f2;">OVERALL</th>
             </tr>
-            <tr class="sub-header">
+            <tr class="sub-header" style="background-color: #f2f2f2;">
                 @foreach (var cat in Model.ExamCategories)
                 {
                     foreach (var examType in Model.ExamTypes)
                     {
-                        <th>@examType.ExamType (in @examType.TotalMark)</th>
+                        <th style="border: 1px solid black;">@examType.ExamType<br>(in @examType.TotalMark)</th>
                     }
-                    <th>Total</th>
-                    <th>Grade</th>
+                    <th style="border: 1px solid black;">TOTAL<br>(in 100)</th>
+                    <th style="border: 1px solid black;">Grade</th>
                 }
-                <th>GRAND TOTAL</th>
-                <th>Grade</th>
+                <th style="border: 1px solid black;">GRAND TOTAL<br>T1(50)+T2(50)</th>
+                <th style="border: 1px solid black;">Grade</th>
             </tr>
         </thead>
         <tbody>
@@ -328,7 +328,7 @@
 
 
 
-    <h3 style="margin-top: 20px; margin-bottom: 5px; font-size: 14px;">8 Point Grading Scale:</h3>
+    @*<h3 style="margin-top: 20px; margin-bottom: 5px; font-size: 14px;">8 Point Grading Scale:</h3>*@
     @*<table class="grade-scale">
             <tr>
                 <td>A1 (91% - 100%),</td>
@@ -343,45 +343,51 @@
                 <td colspan="3">E (32% and below)</td>
             </tr>
         </table>*@
-    <table class="grade-scale">
+    <!-- Grading Scale and Abbreviations -->
+    <table class="grade-scale" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; margin-top: 10px;">
         @{
-            var grades = Model.Grades;
-            int firstRowCount = 5; // first row shows 5 grades, rest in next row
+            var grades = Model.Grades.OrderByDescending(g => g.Min).ToList();
         }
         <tr>
-            @foreach (var grade in grades.Take(firstRowCount))
-            {
-                <td>@grade.GradeName (@grade.Min% - @grade.Max%)</td>
-            }
-        </tr>
-        <tr>
-            @foreach (var grade in grades.Skip(firstRowCount))
-            {
-                <td colspan="@(grade.GradeName == "E" ? 3 : 1)">
-                    @grade.GradeName (@grade.Min% - @grade.Max%)
-                </td>
-            }
+            <td style="border: 1px solid black; width: 23%; font-weight: bold; vertical-align:middle;">8 Point Grading Scale:</td>
+            <td style="border: 1px solid black; width: 77%; padding: 8px;">
+                @for (int i = 0; i < grades.Count; i++)
+                {
+                    var grade = grades[i];
+
+                    <text>@grade.GradeName (@grade.Min% - @grade.Max%)</text>
+                }
+            </td>
         </tr>
     </table>
 
 
-    <table class="header-info" style="margin-top: 10px;">
-        <tr>
-            <td style="width: 15%;">Abbreviations:</td>
-            <td colspan="3" style="font-size: 12px; border-bottom: 1px dashed #333;">@Model.Student.AbbreviationText</td>
 
-            @*<td colspan="3" style="font-size: 12px; border-bottom: 1px dashed #333;">PT=Periodic Test, NB=Note Book, SE=Subject Enrichment, HY=Half Yearly, YE=Yearly</td>*@
+    <!-- Abbreviations Table -->
+    <table class="header-info" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; margin-top: 10px;">
+        <tr>
+            <td style="border: 1px solid black; width: 15%; font-weight: bold;">Abbreviations:</td>
+            <td style="border: 1px solid black; width: 85%;"> @Model.Student.AbbreviationText</td>
         </tr>
     </table>
 
     <table class="header-info overall-summary" style="border: 1px solid #333;">
         <tr>
 
-
             <td style="width: 10%; background-color: #f0f0f0;"><strong>Overall:</strong></td>
-            <td style="width: 25%;">Marks: @Model.Student.ObtainMarks/@Model.Student.TotalMarks</td>
+            <td style="width: 25%;">Marks: </td>
             <td style="width: 30%;"><strong>Percentage: @Model.Student.Percentages</strong></td>
             <td style="width: 35%;"><strong>Grade: @Model.Student.Grade</strong></td>
+        </tr>
+    </table>
+
+    <!-- Overall Summary -->
+    <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; margin-top: 10px;">
+        <tr>
+            <td style="border: 1px solid black; width: 15%; background-color: #f2f2f2; font-weight: bold;">Overall:</td>
+            <td style="border: 1px solid black; width: 28%;">@Model.Student.ObtainMarks/@Model.Student.TotalMarks</td>
+            <td style="border: 1px solid black; width: 28%;">Percentage: @Model.Student.Percentages</td>
+            <td style="border: 1px solid black; width: 29%;">Grade:  @Model.Student.Grade</td>
         </tr>
     </table>
 
@@ -397,44 +403,44 @@
         </thead>
         <tbody>
             @*@foreach (var item in Model.CoScholasticList)
-            {
-                <tr>
-                    <td style="text-align:left;">@item.Area</td>
-                    <td>@item.GradeTerm1</td>
-                    <td style="text-align:left;">@item.Area</td>
-                    <td>@item.GradeTerm2</td>
-                </tr>
-            }*@
+                {
+                    <tr>
+                        <td style="text-align:left;">@item.Area</td>
+                        <td>@item.GradeTerm1</td>
+                        <td style="text-align:left;">@item.Area</td>
+                        <td>@item.GradeTerm2</td>
+                    </tr>
+                }*@
             <tr>
-            <td style="text-align: left;">Work Education (or Pre-vocational Education)</td>
-            <td>A</td>
-            <td style="text-align: left;">Work Education (or Pre-vocational Education)</td>
-            <td>A</td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">Art Education</td>
-            <td>A</td>
-            <td style="text-align: left;">Art Education</td>
-            <td>A</td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">Health & Physical Education</td>
-            <td>A</td>
-            <td style="text-align: left;">Health & Physical Education</td>
-            <td>A</td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">Discipline: Term-1</td>
-            <td>Grade</td>
-            <td style="text-align: left;">Discipline: Term-2</td>
-            <td>Grade</td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">[on a 3-point (A-C) grading scale]</td>
-            <td>A</td>
-            <td style="text-align: left;">[on a 3-point (A-C) grading scale]</td>
-            <td>A</td>
-        </tr>
+                <td style="text-align: left;">Work Education (or Pre-vocational Education)</td>
+                <td>A</td>
+                <td style="text-align: left;">Work Education (or Pre-vocational Education)</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">Art Education</td>
+                <td>A</td>
+                <td style="text-align: left;">Art Education</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">Health & Physical Education</td>
+                <td>A</td>
+                <td style="text-align: left;">Health & Physical Education</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">Discipline: Term-1</td>
+                <td>Grade</td>
+                <td style="text-align: left;">Discipline: Term-2</td>
+                <td>Grade</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">[on a 3-point (A-C) grading scale]</td>
+                <td>A</td>
+                <td style="text-align: left;">[on a 3-point (A-C) grading scale]</td>
+                <td>A</td>
+            </tr>
         </tbody>
     </table>
 
