@@ -28,7 +28,54 @@
     .borBottom {
         border-bottom: 1px solid #000000;
     }
+
+    /**Start:Print and download css*/
+    .action-buttons {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.btn-print, .btn-download {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 5px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    color: white;
+}
+
+.btn-print {
+    background-color: #28a745; /* green */
+}
+
+.btn-print:hover {
+    background-color: #218838;
+}
+
+.btn-download {
+    background-color: #007bff; /* blue */
+}
+
+.btn-download:hover {
+    background-color: #0056b3;
+}
+
+/* Hide both buttons while printing */
+@@media print {
+    .action-buttons {
+        display: none;
+    }
+}
+
+
+
 </style>
+<div class="action-buttons">
+    <button onclick="window.print()" class="btn-print">🖨️ Print Report Card</button>
+    @*<button onclick="downloadPDF()" class="btn-download">⬇️ Download Report Card (PDF)</button>*@
+</div>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
     <tbody>
@@ -342,77 +389,79 @@
             <td colspan="4" class="borTop borLeft borRight borBottom" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">&nbsp;</td>
         </tr>
     </tbody>
-    </table>
+</table>
 
 
-    @*@section scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-            <script type="text/javascript">
-                $(document).ready(function (e) {
-                    $('#printReportCard').click(function (e) {
-                        PrintReportcard(e);
-                    });
-                    $('#downloadReportCard').click(function (e) {
-                        DownLoadReportcard(e);
-                    });
-                });
-
-                function PrintReportcard(e) {
-                    debugger;
-                    e.preventDefault(); // prevent full form submission
-                    var studentId = $('#hdnstudentId').val();
-                    if (!studentId) {
-                        alert('Student ID not found.');
-                        return;
-                    }
-
-                    $.ajax({
-                        url: '@Url.Action("PrintReportcard", "SubjectMarkMapping")',
-                        cache: false,
-                        contentType: "application/json; charset=utf-8",
-                        data: { 'id': studentId },
-
-                        success: function (data) {
-                            debugger;
-                            var htmlContent = data;
-
-                            var printFrame = document.createElement('iframe');
-                            printFrame.style.display = 'none';
-
-                            document.body.appendChild(printFrame);
-                            var printDocument = printFrame.contentDocument;
-
-                            printDocument.write(htmlContent);
-                            printDocument.close();
-
-                            printFrame.onload = function () {
-                                printFrame.contentWindow.focus();
-                                printFrame.contentWindow.print();
-                            };
-                        },
-                        error: function (xhr) {
-                            alert("Error generating receipt.");
-                        },
-                        failure: function (res) {
-                            alert("Failed to generate receipt.");
-                        },
-                    });
-                }
-
-                function DownLoadReportcard() {
-                    var studentId = $('#hdnstudentId').val();
-                    // Directly open the controller action that returns PDF
-                    window.location.href = '/SubjectMarkMapping/DownloadReportCard?id=' + studentId;
-                }
-
-            </script>
-        }*@
-
-
-
-    @section scripts {
+@*@section scripts {
         @Scripts.Render("~/bundles/jqueryval")
         <script type="text/javascript">
+            $(document).ready(function (e) {
+                $('#printReportCard').click(function (e) {
+                    PrintReportcard(e);
+                });
+                $('#downloadReportCard').click(function (e) {
+                    DownLoadReportcard(e);
+                });
+            });
+
+            function PrintReportcard(e) {
+                debugger;
+                e.preventDefault(); // prevent full form submission
+                var studentId = $('#hdnstudentId').val();
+                if (!studentId) {
+                    alert('Student ID not found.');
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("PrintReportcard", "SubjectMarkMapping")',
+                    cache: false,
+                    contentType: "application/json; charset=utf-8",
+                    data: { 'id': studentId },
+
+                    success: function (data) {
+                        debugger;
+                        var htmlContent = data;
+
+                        var printFrame = document.createElement('iframe');
+                        printFrame.style.display = 'none';
+
+                        document.body.appendChild(printFrame);
+                        var printDocument = printFrame.contentDocument;
+
+                        printDocument.write(htmlContent);
+                        printDocument.close();
+
+                        printFrame.onload = function () {
+                            printFrame.contentWindow.focus();
+                            printFrame.contentWindow.print();
+                        };
+                    },
+                    error: function (xhr) {
+                        alert("Error generating receipt.");
+                    },
+                    failure: function (res) {
+                        alert("Failed to generate receipt.");
+                    },
+                });
+            }
+
+            function DownLoadReportcard() {
+                var studentId = $('#hdnstudentId').val();
+                // Directly open the controller action that returns PDF
+                window.location.href = '/SubjectMarkMapping/DownloadReportCard?id=' + studentId;
+            }
+
+        </script>
+    }*@
+
+
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script type="text/javascript">
     $(document).ready(function (e) {
         $('#printReportCard').click(function (e) {
             PrintReportcard(e);
@@ -421,7 +470,17 @@
             DownLoadReportcard(e);
         });
     });
-
+        function downloadPDF() {
+            const element = document.querySelector('.report-card'); // Select your report card div
+            const opt = {
+                margin: 0.5,
+                filename: 'ReportCard.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
     function PrintReportcard(e) {
         debugger;
         e.preventDefault(); // prevent full form submission
@@ -475,5 +534,5 @@ function DownLoadReportcard() {
     window.location.href = '/SubjectMarkMapping/DownloadReportCard?id=' + studentId;
 }
 
-        </script>
-    }
+    </script>
+}
