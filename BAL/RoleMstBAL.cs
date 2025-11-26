@@ -28,32 +28,32 @@ namespace BAL
         {
             return objRoleDal.AddEditRole(ObjRoleMstDAL);
         }
-        public Messages SaveRoleMapping(List<RoleMapping> roleMappings, int currentUser, string MappingFor)
-        {
-            _dataSet = objRoleDal.SaveRoleMapping(roleMappings, currentUser, MappingFor);
-            Messages msg = null;
-            if (_dataSet != null)
-            {
-                if (_dataSet.Tables[0] == null)
-                {
-                    msg = new Messages();
-                }
-                else
-                {
-                    DataRow dr = _dataSet.Tables[0].Rows[0];
-                    if (dr != null)
-                    {
-                        msg = new Messages()
-                        {
-                            Message = dr.Field<string>("Message"),
-                            Message_Id = dr.Field<int>("MessageId")
-                        };
-                    }
-                }
-                _dataSet.Dispose();
-            }
-            return msg;
-        }
+        //public Messages SaveRoleMapping(List<RoleMapping> roleMappings, int currentUser, string MappingFor)
+        //{
+        //    _dataSet = objRoleDal.SaveRoleMapping(roleMappings, currentUser, MappingFor);
+        //    Messages msg = null;
+        //    if (_dataSet != null)
+        //    {
+        //        if (_dataSet.Tables[0] == null)
+        //        {
+        //            msg = new Messages();
+        //        }
+        //        else
+        //        {
+        //            DataRow dr = _dataSet.Tables[0].Rows[0];
+        //            if (dr != null)
+        //            {
+        //                msg = new Messages()
+        //                {
+        //                    Message = dr.Field<string>("Message"),
+        //                    Message_Id = dr.Field<int>("MessageId")
+        //                };
+        //            }
+        //        }
+        //        _dataSet.Dispose();
+        //    }
+        //    return msg;
+        //}
         public List<RoleMstMDL> getAllRoles()
         {
             _dataSet = objRoleDal.getAllRoles();
