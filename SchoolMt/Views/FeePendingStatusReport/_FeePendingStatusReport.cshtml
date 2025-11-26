@@ -1,0 +1,92 @@
+﻿@model IEnumerable<MDL.FeePendingStatusReportMDL>
+@{
+    var objPagingmdl = (MDL.Common.BasicPagingMDL)ViewBag.paging;
+    //int SerialNo = (objPagingmdl.CurrentPage - 1) * objPagingmdl.RowParPage + 1;
+    int SerialNo = 1;
+
+}
+<style>
+    #tbl {
+        margin-top: -3px;
+    }
+</style>
+
+@if (Model != null && Model.Any())
+{
+    <div class="text-right mb-2">
+        <button type="button" class="btn btn-success btn-sm" onclick="ExportToExcel()">
+            <i class="fa fa-file-excel-o"></i> Export to Excel
+        </button>
+    </div>
+}
+
+
+<div class="col-md-12">
+    <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+        <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover" id="tbl">
+            <thead>
+                <tr>
+                    <th class="text-center">Sr. No.</th>
+                    <th class="text-center">Student Name</th>
+                    <th class="text-center">Class Name</th>
+                    <th class="text-center">Class Code</th>
+                    <th class="text-center">Father Name</th>
+                    <th class="text-center">Mother Name</th>
+                    <th class="text-center">Address</th>
+                    <th class="text-center">Due Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr>
+                        <td colspan="14">
+                            <div class="text-danger">No Record Found </div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@SerialNo</td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.StudentName)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.ClassName)
+                            </td>
+
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.ClassCode)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.FatherName)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.MotherName)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.DueAmount)
+                            </td>
+                        </tr>
+                        SerialNo++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@*</div>*@
+
+@*@Html.Partial("_Paging", (MDL.Common.BasicPagingMDL)ViewBag.paging)*@
+

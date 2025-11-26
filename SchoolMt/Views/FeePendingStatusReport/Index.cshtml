@@ -1,0 +1,172 @@
+﻿@model MDL.FeePendingStatusReportMDL
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="page-heading mb-0">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Fee Pending Status</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first text-end">
+                <nav aria-label="breadcrumb" class="breadcrumb-header">
+                    <ol class="breadcrumb justify-content-end mb-0">
+                        <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Fee Pending Status</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-content">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-1">
+                    <div class="form-body">
+                        <div class="row">
+                            
+                            <div class="col-md-3 ClientDiv">
+                                <label class="setForm bold">School Name<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group ClientDiv">
+                                @Html.DropDownListFor(E => E.FK_CompanyId, new SelectList((System.Collections.IEnumerable)ViewData["CompanyList"], "ID", "Value"), "--Select--", new { @class = "form-control select2" })
+                                @*@Html.ValidationMessageFor(E => E.FK_CompanyId, "", new { @class = "redText", @style = "color:red" })*@
+                            </div>
+                            <div class="col-md-3">
+                                <label class="setForm  bold">Class Name<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.DropDownListFor(E => E.ClassName, new SelectList((System.Collections.IEnumerable)ViewData["ClassList"], "Value", "Value"), "--Select--", new { @class = "form-control select2" })
+                            </div>
+                            <div class="col-md-3">
+                                <label class="setForm  bold">Top Student<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-md-7 form-group">
+                                @Html.DropDownListFor(E => E.NoOfStudents,
+                                new List<SelectListItem>()
+                                {
+                                    new SelectListItem() { Value = "10", Text = "10" },
+                                    new SelectListItem() { Value = "20", Text = "20" },
+                                    new SelectListItem() { Value = "50", Text = "50" },
+                                    new SelectListItem() { Value = "100", Text = "100" },
+                                    new SelectListItem() { Value = "200", Text = "200", Selected = true } // default selected
+                                },
+                                new { @class = "form-control select2" }
+                               )
+
+
+                            </div>
+                            <div class="col-sm-9 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1" id="btnsubmit">Submit</button>
+                                <a href='@Url.Action("Index")' class="btn btn-dark box-shadow-1 btn-min-width mr-1 mb-1">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="GridDiv">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*@*******START Loader******@
+<div class="modalBgLoader" style="display: none"></div>
+<div class="modalLoaderCenter" style="display: none">
+    <img alt="Loading..." src="~/App_Images/loader.gif" />
+    <span>Loading...</span>
+</div>
+@*@*******END Loader******@
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="~/app-assets/vendors/css/forms/selects/select2.min.css" rel="stylesheet" />
+    <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $('.select2').select2();
+            $('#btnsubmit').click(function (e) {
+                paging(1);
+            });
+            paging(1);
+        });
+
+        function paging(currentpage) {
+        if (currentpage == NaN || currentpage <= 0) {
+            return false;
+        }
+
+        $.ajax({
+            // url: "../FeePendingStatusReport/GetFeePendingStatusReport",
+            url: "@Url.Action("GetFeePendingStatusReport", "FeePendingStatusReport")",
+            type: 'GET',
+            cache: false,
+            data: { 'CurrentPage': parseInt(currentpage), 'SearchBy': $("#SearchCreteria").val(), 'SearchValue': $("#SearchValue").val(), 'FK_CompanyId': $("#FK_CompanyId").val(), 'ClassName': $("#ClassName").val() },
+            beforeSend: function () {
+                $(".modalBgLoader, .modalLoaderCenter").show();
+            },
+            complete: function () {
+                $(".modalBgLoader, .modalLoaderCenter").hide();
+            },
+
+            success: function (data) {
+                $('#GridDiv').html(data);
+                $('.disabled').prop('disabled', true);
+            },
+        });
+        return false;
+        }
+
+
+          function ExportToExcel() {
+       // debugger;
+        var currentpage = 1;
+        var rowperPage = 10;
+        var SearchByData = "";
+        var SearchDataValue = "";
+
+        var currentpage = 1;
+        var rowperPage = parseInt($('#totalItemsHidden').val()) || 10;
+        var SearchByData = $("#SearchCreteria").val();
+        var SearchDataValue = $("#SearchValue").val();
+
+
+
+         $.ajax({
+              url: "@Url.Action("GetDataForExport", "FeePendingStatusReport")",
+             cache: false,
+             contentType: "application/json; charset=utf-8",
+             cache: false,
+             data: { 'CurrentPage': parseInt(currentpage), 'SearchBy': $("#SearchCreteria").val(), 'SearchValue': $("#SearchValue").val(), 'FK_CompanyId': $("#FK_CompanyId").val(), 'ClassName': $("#ClassName").val() },
+             success: function (data) {
+                 if (data == 1) {
+                     window.location = '@Url.Action("ExportToExcel", "FeePendingStatusReport")';
+                     SearchByData = '';
+                     SearchDataValue = '';
+                 }
+                 else {
+                     alert("Data Not Found!");
+                 }
+             },
+             error: function (xhr) {
+                 handleSessionExpiration(xhr);
+             },
+             failure: function (res) { },
+         });
+
+ }
+    </script>
+}
+

@@ -52,8 +52,8 @@ namespace DAL
                     {
                         _List = objDataSet.Tables[1].AsEnumerable().Select(dr => new FeePendingStatusReportMDL()
                         {
-                            StudentId = dr.Field<int?>("FK_StudentId") ?? 0,
-                            FK_CompanyId = dr.Field<int?>("FK_CompanyId") ?? 0,
+                            StudentId = dr.Field<int>("FK_StudentId"),
+                            FK_CompanyId = dr.Field<int>("FK_CompanyId"),
                             StudentName = dr.Field<string>("StudentName") ??   string.Empty,
                             FatherName = dr.Field<string>("FatherName") ?? string.Empty,
                             MobileNo = dr.Field<string>("MobileNo") ?? string.Empty,
@@ -92,7 +92,7 @@ namespace DAL
                             //YearlyExamFee = dr.Field<int>("YearlyExamFee"),
                             //HalfYearlyExamFee = dr.Field<int>("HalfYearlyExamFee"),
                             //PreDueAmount = dr.Field<int>("DueAmount"),
-                            PaymentDate = dr.Field<string>("PaymentDate"),
+                            //PaymentDate = dr.Field<string>("PaymentDate"),
                             AdmissionFee = dr.Field<int>("AdmissionFee"),
                             ExaminationFee1= dr.Field<int>("ExaminationFee1"),
                             ExaminationFee2= dr.Field<int>("ExaminationFee2"),

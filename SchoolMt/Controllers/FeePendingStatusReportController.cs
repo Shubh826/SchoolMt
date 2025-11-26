@@ -44,6 +44,8 @@ namespace SchoolMt.Controllers
             string duemonthName = string.Empty;
             foreach (FeePendingStatusReportMDL stu in _List)
             {
+                if(!string.IsNullOrEmpty(stu.ApplicableMonth))
+                { 
                 // Reset values for each student
                 dueamount = 0;
                 examfee = 0;
@@ -213,8 +215,10 @@ namespace SchoolMt.Controllers
                 stu.DueTransportAmount = duetrnsamount;
                 stu.DueExamFee = examfee;
                 stu.DueMonths = duemonthName;
+                }
             }
             #endregion
+            _List = _List.OrderByDescending(x => x.DueAmount).ToList();
 
             return PartialView("_FeePendingStatusReport", _List);
         }
@@ -226,7 +230,6 @@ namespace SchoolMt.Controllers
                
                 List<FeePendingStatusReportMDL> _List = new List<FeePendingStatusReportMDL>();
                 _List = objBAL.GetFeePendingStatusReport(FK_CompanyId, ClassName, Convert.ToInt32(20), CurrentPage, SearchBy, SearchValue);
-
                 #region Calculate Due Amount
                 int startYear = DateTime.Now.Year;
                 int dueamount = 0;
@@ -235,178 +238,181 @@ namespace SchoolMt.Controllers
                 string duemonthName = string.Empty;
                 foreach (FeePendingStatusReportMDL stu in _List)
                 {
-                    // Reset values for each student
-                    dueamount = 0;
-                    examfee = 0;
-                    duetrnsamount = 0;
-                    duemonthName = string.Empty;
-
-                    // Convert start month (ApplicableMonth)
-                    int startMonth = DateTime.ParseExact(stu.ApplicableMonth, "MMMM", CultureInfo.InvariantCulture).Month;
-
-                    // Convert student's end month (must be defined in model or database)
-                    int EndMonth = DateTime.Now.Month;
-
-
-                    // Loop for max 12 months
-                    for (int m = 0; m < 12; m++)
+                    if (!string.IsNullOrEmpty(stu.ApplicableMonth))
                     {
-                        int currentMonth = (startMonth + m - 1) % 12 + 1;
+                        // Reset values for each student
+                        dueamount = 0;
+                        examfee = 0;
+                        duetrnsamount = 0;
+                        duemonthName = string.Empty;
 
-                        switch (currentMonth)
+                        // Convert start month (ApplicableMonth)
+                        int startMonth = DateTime.ParseExact(stu.ApplicableMonth, "MMMM", CultureInfo.InvariantCulture).Month;
+
+                        // Convert student's end month (must be defined in model or database)
+                        int EndMonth = DateTime.Now.Month;
+
+
+                        // Loop for max 12 months
+                        for (int m = 0; m < 12; m++)
                         {
-                            case 4:
-                                if (stu.AprilFee == 0 && stu.AprilTrnsFee == 0)
-                                {
-                                    duemonthName += ",April";
-                                    dueamount += stu.ApplicableMonthFee;
-                                    duetrnsamount += stu.ApplicableTrnsFee;
-                                }
-                                break;
+                            int currentMonth = (startMonth + m - 1) % 12 + 1;
 
-                            case 5:
-                                if (stu.MayFee == 0 && stu.MayTrnsFee == 0)
-                                {
-                                    duemonthName += ",May";
-                                    dueamount += stu.ApplicableMonthFee;
-                                    duetrnsamount += stu.ApplicableTrnsFee;
-                                }
-                                break;
+                            switch (currentMonth)
+                            {
+                                case 4:
+                                    if (stu.AprilFee == 0 && stu.AprilTrnsFee == 0)
+                                    {
+                                        duemonthName += ",April";
+                                        dueamount += stu.ApplicableMonthFee;
+                                        duetrnsamount += stu.ApplicableTrnsFee;
+                                    }
+                                    break;
 
-                            case 6:
-                                if (stu.JuneFee == 0)
-                                {
-                                    duemonthName += ",June";
-                                    dueamount += stu.ApplicableMonthFee;
-                                }
-                                break;
+                                case 5:
+                                    if (stu.MayFee == 0 && stu.MayTrnsFee == 0)
+                                    {
+                                        duemonthName += ",May";
+                                        dueamount += stu.ApplicableMonthFee;
+                                        duetrnsamount += stu.ApplicableTrnsFee;
+                                    }
+                                    break;
 
-                            case 7:
-                                if (stu.JulyFee == 0 && stu.JulyTrnsFee == 0)
-                                {
-                                    duemonthName += ",July";
-                                    dueamount += stu.ApplicableMonthFee;
-                                    duetrnsamount += stu.ApplicableTrnsFee;
-                                }
-                                break;
+                                case 6:
+                                    if (stu.JuneFee == 0)
+                                    {
+                                        duemonthName += ",June";
+                                        dueamount += stu.ApplicableMonthFee;
+                                    }
+                                    break;
 
-                            case 8:
-                                if (stu.AugustFee == 0 && stu.AugustTrnsFee == 0)
-                                {
-                                    duemonthName += ",August";
-                                    dueamount += stu.ApplicableMonthFee;
-                                    duetrnsamount += stu.ApplicableTrnsFee;
-                                }
-                                break;
+                                case 7:
+                                    if (stu.JulyFee == 0 && stu.JulyTrnsFee == 0)
+                                    {
+                                        duemonthName += ",July";
+                                        dueamount += stu.ApplicableMonthFee;
+                                        duetrnsamount += stu.ApplicableTrnsFee;
+                                    }
+                                    break;
 
-                            case 9:
-                                if (stu.SeptemberFee == 0 && stu.SeptemberTrnsFee == 0)
-                                {
-                                    duemonthName += ",September";
+                                case 8:
+                                    if (stu.AugustFee == 0 && stu.AugustTrnsFee == 0)
+                                    {
+                                        duemonthName += ",August";
+                                        dueamount += stu.ApplicableMonthFee;
+                                        duetrnsamount += stu.ApplicableTrnsFee;
+                                    }
+                                    break;
 
-                                    if (stu.ExaminationFee1 == 0)
-                                        examfee = 500;
+                                case 9:
+                                    if (stu.SeptemberFee == 0 && stu.SeptemberTrnsFee == 0)
+                                    {
+                                        duemonthName += ",September";
 
-                                    dueamount += stu.ApplicableMonthFee;
-                                    duetrnsamount += stu.ApplicableTrnsFee;
-                                }
-                                break;
+                                        if (stu.ExaminationFee1 == 0)
+                                            examfee = 500;
 
-                            case 10:
-                                if (stu.OctoberFee == 0 && stu.OctoberTrnsFee == 0)
-                                {
-                                    if (stu.ExaminationFee1 == 0 && examfee == 0)
-                                        examfee = 500;
+                                        dueamount += stu.ApplicableMonthFee;
+                                        duetrnsamount += stu.ApplicableTrnsFee;
+                                    }
+                                    break;
 
-                                    duemonthName += ",October";
-                                    dueamount += stu.ApplicableMonthFee;
-                                    duetrnsamount += stu.ApplicableTrnsFee;
-                                }
-                                break;
+                                case 10:
+                                    if (stu.OctoberFee == 0 && stu.OctoberTrnsFee == 0)
+                                    {
+                                        if (stu.ExaminationFee1 == 0 && examfee == 0)
+                                            examfee = 500;
 
-                            case 11:
-                                if (stu.NovemberFee == 0 && stu.NovemberTrnsFee == 0)
-                                {
-                                    if (stu.ExaminationFee1 == 0 && examfee == 0)
-                                        examfee = 500;
+                                        duemonthName += ",October";
+                                        dueamount += stu.ApplicableMonthFee;
+                                        duetrnsamount += stu.ApplicableTrnsFee;
+                                    }
+                                    break;
 
-                                    duemonthName += ",November";
-                                    dueamount += stu.ApplicableMonthFee;
-                                    duetrnsamount += stu.ApplicableTrnsFee;
-                                }
-                                break;
+                                case 11:
+                                    if (stu.NovemberFee == 0 && stu.NovemberTrnsFee == 0)
+                                    {
+                                        if (stu.ExaminationFee1 == 0 && examfee == 0)
+                                            examfee = 500;
 
-                            case 12:
-                                if (stu.DecemberFee == 0 && stu.DecemberTrnsFee == 0)
-                                {
-                                    if (stu.ExaminationFee1 == 0 && examfee == 0)
-                                        examfee = 500;
+                                        duemonthName += ",November";
+                                        dueamount += stu.ApplicableMonthFee;
+                                        duetrnsamount += stu.ApplicableTrnsFee;
+                                    }
+                                    break;
 
-                                    duemonthName += ",December";
-                                    dueamount += stu.ApplicableMonthFee;
-                                    duetrnsamount += stu.ApplicableTrnsFee;
-                                }
-                                break;
+                                case 12:
+                                    if (stu.DecemberFee == 0 && stu.DecemberTrnsFee == 0)
+                                    {
+                                        if (stu.ExaminationFee1 == 0 && examfee == 0)
+                                            examfee = 500;
 
-                            case 1:
-                                if (stu.JanuaryFee == 0 && stu.JanuaryTrnsFee == 0)
-                                {
-                                    if (stu.ExaminationFee1 == 0 && examfee == 0)
-                                        examfee = 500;
+                                        duemonthName += ",December";
+                                        dueamount += stu.ApplicableMonthFee;
+                                        duetrnsamount += stu.ApplicableTrnsFee;
+                                    }
+                                    break;
 
-                                    duemonthName += ",January";
-                                    dueamount += stu.ApplicableMonthFee;
-                                    duetrnsamount += stu.ApplicableTrnsFee;
-                                }
-                                break;
+                                case 1:
+                                    if (stu.JanuaryFee == 0 && stu.JanuaryTrnsFee == 0)
+                                    {
+                                        if (stu.ExaminationFee1 == 0 && examfee == 0)
+                                            examfee = 500;
 
-                            case 2:
-                                if (stu.FebruaryFee == 0 && stu.FebruaryTrnsFee == 0)
-                                {
-                                    if (stu.ExaminationFee1 == 0 && examfee == 0)
-                                        examfee = 500;
+                                        duemonthName += ",January";
+                                        dueamount += stu.ApplicableMonthFee;
+                                        duetrnsamount += stu.ApplicableTrnsFee;
+                                    }
+                                    break;
 
-                                    duemonthName += ",February";
-                                    dueamount += stu.ApplicableMonthFee;
+                                case 2:
+                                    if (stu.FebruaryFee == 0 && stu.FebruaryTrnsFee == 0)
+                                    {
+                                        if (stu.ExaminationFee1 == 0 && examfee == 0)
+                                            examfee = 500;
 
-                                    if (stu.ExaminationFee2 == 0)
-                                        examfee += 500;
+                                        duemonthName += ",February";
+                                        dueamount += stu.ApplicableMonthFee;
 
-                                    duetrnsamount += stu.ApplicableTrnsFee;
-                                }
-                                break;
+                                        if (stu.ExaminationFee2 == 0)
+                                            examfee += 500;
 
-                            case 3:
-                                if (stu.MarchFee == 0 && stu.MarchTrnsFee == 0)
-                                {
-                                    if (stu.ExaminationFee1 == 0 && examfee == 0)
-                                        examfee = 500;
+                                        duetrnsamount += stu.ApplicableTrnsFee;
+                                    }
+                                    break;
 
-                                    if (stu.ExaminationFee2 == 0 && examfee == 0)
-                                        examfee = 500;
+                                case 3:
+                                    if (stu.MarchFee == 0 && stu.MarchTrnsFee == 0)
+                                    {
+                                        if (stu.ExaminationFee1 == 0 && examfee == 0)
+                                            examfee = 500;
 
-                                    duemonthName += ",March";
-                                    dueamount += stu.ApplicableMonthFee;
-                                    duetrnsamount += stu.ApplicableTrnsFee;
-                                }
+                                        if (stu.ExaminationFee2 == 0 && examfee == 0)
+                                            examfee = 500;
+
+                                        duemonthName += ",March";
+                                        dueamount += stu.ApplicableMonthFee;
+                                        duetrnsamount += stu.ApplicableTrnsFee;
+                                    }
+                                    break;
+                            }
+
+                            if (currentMonth == EndMonth)
                                 break;
                         }
 
-                        if (currentMonth == EndMonth)
-                            break;
+                        if (duemonthName.StartsWith(","))
+                            duemonthName = duemonthName.Substring(1);
+
+                        // Assign back to model
+                        stu.DueAmount = dueamount;
+                        stu.DueTransportAmount = duetrnsamount;
+                        stu.DueExamFee = examfee;
+                        stu.DueMonths = duemonthName;
                     }
-
-                    if (duemonthName.StartsWith(","))
-                        duemonthName = duemonthName.Substring(1);
-
-                    // Assign back to model
-                    stu.DueAmount = dueamount;
-                    stu.DueTransportAmount = duetrnsamount;
-                    stu.DueExamFee = examfee;
-                    stu.DueMonths = duemonthName;
                 }
                 #endregion
-
+                _List = _List.OrderByDescending(x => x.DueAmount).ToList();
                 TempData["FeePendingStatuslist"] = _List;
                 return Json(1, JsonRequestBehavior.AllowGet);
             }
@@ -422,186 +428,6 @@ namespace SchoolMt.Controllers
         {
             TempData.Keep();
             List<FeePendingStatusReportMDL> _listForExcel = (List<FeePendingStatusReportMDL>)TempData["FeePendingStatuslist"];
-
-            #region Calculate Due Amount
-            int startYear = DateTime.Now.Year;
-            int dueamount = 0;
-            int examfee = 0;
-            int duetrnsamount = 0;
-            string duemonthName = string.Empty;
-            foreach (FeePendingStatusReportMDL stu in _listForExcel)
-            {
-                // Reset values for each student
-                dueamount = 0;
-                examfee = 0;
-                duetrnsamount = 0;
-                duemonthName = string.Empty;
-
-                // Convert start month (ApplicableMonth)
-                int startMonth = DateTime.ParseExact(stu.ApplicableMonth, "MMMM", CultureInfo.InvariantCulture).Month;
-
-                // Convert student's end month (must be defined in model or database)
-                int EndMonth = DateTime.Now.Month;
-
-
-                // Loop for max 12 months
-                for (int m = 0; m < 12; m++)
-                {
-                    int currentMonth = (startMonth + m - 1) % 12 + 1;
-
-                    switch (currentMonth)
-                    {
-                        case 4:
-                            if (stu.AprilFee == 0 && stu.AprilTrnsFee == 0)
-                            {
-                                duemonthName += ",April";
-                                dueamount += stu.ApplicableMonthFee;
-                                duetrnsamount += stu.ApplicableTrnsFee;
-                            }
-                            break;
-
-                        case 5:
-                            if (stu.MayFee == 0 && stu.MayTrnsFee == 0)
-                            {
-                                duemonthName += ",May";
-                                dueamount += stu.ApplicableMonthFee;
-                                duetrnsamount += stu.ApplicableTrnsFee;
-                            }
-                            break;
-
-                        case 6:
-                            if (stu.JuneFee == 0)
-                            {
-                                duemonthName += ",June";
-                                dueamount += stu.ApplicableMonthFee;
-                            }
-                            break;
-
-                        case 7:
-                            if (stu.JulyFee == 0 && stu.JulyTrnsFee == 0)
-                            {
-                                duemonthName += ",July";
-                                dueamount += stu.ApplicableMonthFee;
-                                duetrnsamount += stu.ApplicableTrnsFee;
-                            }
-                            break;
-
-                        case 8:
-                            if (stu.AugustFee == 0 && stu.AugustTrnsFee == 0)
-                            {
-                                duemonthName += ",August";
-                                dueamount += stu.ApplicableMonthFee;
-                                duetrnsamount += stu.ApplicableTrnsFee;
-                            }
-                            break;
-
-                        case 9:
-                            if (stu.SeptemberFee == 0 && stu.SeptemberTrnsFee == 0)
-                            {
-                                duemonthName += ",September";
-
-                                if (stu.ExaminationFee1 == 0)
-                                    examfee = 500;
-
-                                dueamount += stu.ApplicableMonthFee;
-                                duetrnsamount += stu.ApplicableTrnsFee;
-                            }
-                            break;
-
-                        case 10:
-                            if (stu.OctoberFee == 0 && stu.OctoberTrnsFee == 0)
-                            {
-                                if (stu.ExaminationFee1 == 0 && examfee == 0)
-                                    examfee = 500;
-
-                                duemonthName += ",October";
-                                dueamount += stu.ApplicableMonthFee;
-                                duetrnsamount += stu.ApplicableTrnsFee;
-                            }
-                            break;
-
-                        case 11:
-                            if (stu.NovemberFee == 0 && stu.NovemberTrnsFee == 0)
-                            {
-                                if (stu.ExaminationFee1 == 0 && examfee == 0)
-                                    examfee = 500;
-
-                                duemonthName += ",November";
-                                dueamount += stu.ApplicableMonthFee;
-                                duetrnsamount += stu.ApplicableTrnsFee;
-                            }
-                            break;
-
-                        case 12:
-                            if (stu.DecemberFee == 0 && stu.DecemberTrnsFee == 0)
-                            {
-                                if (stu.ExaminationFee1 == 0 && examfee == 0)
-                                    examfee = 500;
-
-                                duemonthName += ",December";
-                                dueamount += stu.ApplicableMonthFee;
-                                duetrnsamount += stu.ApplicableTrnsFee;
-                            }
-                            break;
-
-                        case 1:
-                            if (stu.JanuaryFee == 0 && stu.JanuaryTrnsFee == 0)
-                            {
-                                if (stu.ExaminationFee1 == 0 && examfee == 0)
-                                    examfee = 500;
-
-                                duemonthName += ",January";
-                                dueamount += stu.ApplicableMonthFee;
-                                duetrnsamount += stu.ApplicableTrnsFee;
-                            }
-                            break;
-
-                        case 2:
-                            if (stu.FebruaryFee == 0 && stu.FebruaryTrnsFee == 0)
-                            {
-                                if (stu.ExaminationFee1 == 0 && examfee == 0)
-                                    examfee = 500;
-
-                                duemonthName += ",February";
-                                dueamount += stu.ApplicableMonthFee;
-
-                                if (stu.ExaminationFee2 == 0)
-                                    examfee += 500;
-
-                                duetrnsamount += stu.ApplicableTrnsFee;
-                            }
-                            break;
-
-                        case 3:
-                            if (stu.MarchFee == 0 && stu.MarchTrnsFee == 0)
-                            {
-                                if (stu.ExaminationFee1 == 0 && examfee == 0)
-                                    examfee = 500;
-
-                                if (stu.ExaminationFee2 == 0 && examfee == 0)
-                                    examfee = 500;
-
-                                duemonthName += ",March";
-                                dueamount += stu.ApplicableMonthFee;
-                                duetrnsamount += stu.ApplicableTrnsFee;
-                            }
-                            break;
-                    }
-
-                    if (currentMonth == EndMonth)
-                        break;
-                }
-
-                if (duemonthName.StartsWith(","))
-                    duemonthName = duemonthName.Substring(1);
-
-                // Assign back to model
-                stu.DueAmount = dueamount;
-                stu.DueTransportAmount = duetrnsamount;
-                stu.DueExamFee = examfee;
-                stu.DueMonths = duemonthName;
-            }
-            #endregion
 
             string[] columns = { "Student Name", "Class Name", "Class Code", "Father Name", "Mother Name", "Address", "Due Amount" };
             string MDLAttr = "StudentName,ClassName,ClassCode,FatherName,MotherName,Address,DueAmount";
