@@ -51,20 +51,28 @@ namespace MDL
         public int Cash { get; set; }
         public int Online { get; set; }
         public int Discount { get; set; }
-        public int ApplicableMonthFee { get; set; }
         public int ApplicableTrnsFee { get; set; }
         public int PreDueAmount { get; set; }
         public int AdmissionFee { get; set; }
         public string PaymentDate { get; set; }
 
-        public int ExaminationFee1 { get; set; }
-
-        public int ExaminationFee2 { get; set; }
+  
         public string ApplicableMonth { get; set; }
 
         public string DueMonths { get; set; }            // Comma-separated pending months (April,May,…)
      public int DueTransportAmount { get; set; }      // Total pending transport fee
         public int DueExamFee { get; set; }              // Pending Exam fee (ExamFee1 + ExamFee2 logic)
 
+        /*START:new properties*/
+        public int PreviousDueAmount { get; set; }
+        public int ExaminationFee1 { get; set; }
+        public int ExaminationFee2 { get; set; }
+
+        public int ApplicableMonthFee { get; set; }
+        public int MonthdueFee { get; set; }
+        public int TransportdueFee { get; set; }
+
+        public int TotalDueAmount { get; set; }
+        /*END:new properties*/
     }
 }

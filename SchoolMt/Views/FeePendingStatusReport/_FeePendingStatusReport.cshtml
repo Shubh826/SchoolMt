@@ -33,7 +33,13 @@
                     <th class="text-center">Father Name</th>
                     <th class="text-center">Mother Name</th>
                     <th class="text-center">Address</th>
-                    <th class="text-center">Due Amount</th>
+                    <th class="text-center">Previous Due Amount</th>
+                    <th class="text-center">Examination Fee1</th>
+                    <th class="text-center">Examination Fee2</th>
+                    <th class="text-center">Applicable Month Fee</th>
+                    <th class="text-center">Month Due Fee</th>
+                    <th class="text-center">Transport Due Fee</th>
+                    <th class="text-center">Total Due Amount</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,36 +55,54 @@
                 {
                     foreach (var item in Model)
                     {
-                        <tr>
-                            <td class="text-center">@SerialNo</td>
+            <tr>
+                <td class="text-center">@SerialNo</td>
 
-                            <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.StudentName)
-                            </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.StudentName)
+                </td>
 
-                            <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.ClassName)
-                            </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.ClassName)
+                </td>
 
 
-                            <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.ClassCode)
-                            </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.ClassCode)
+                </td>
 
-                            <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.FatherName)
-                            </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.FatherName)
+                </td>
 
-                            <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.MotherName)
-                            </td>
-                            <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.Address)
-                            </td>
-                            <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.DueAmount)
-                            </td>
-                        </tr>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.MotherName)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.PreviousDueAmount)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.ExaminationFee1)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.ExaminationFee2)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.ApplicableMonthFee)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.MonthdueFee)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.TransportdueFee)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.TotalDueAmount)
+                </td>
+            </tr>
                         SerialNo++;
                     }
                 }
