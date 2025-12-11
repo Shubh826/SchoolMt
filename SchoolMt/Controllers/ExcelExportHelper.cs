@@ -24,7 +24,7 @@ namespace FRGMBSystem.Common
     /// Created Date:18-08-2017
     /// purpose:Import Data in Excel & Convert List To Table & Convert List To table with specific Coloumn
     /// </summary>
-    public class ExcelExportHelper: Controller
+    public class ExcelExportHelper : Controller
     {
         public static string ExcelContentType
         {
@@ -56,13 +56,13 @@ namespace FRGMBSystem.Common
         }
         // public static byte[] ExportExcel(DataTable dataTable, string heading = "", bool showSrNo = false, params string[] columnsToTake)  
         //{  
-  
+
         //    byte[] result = null;  
         //    using (ExcelPackage package = new ExcelPackage())  
         //    {  
         //        ExcelWorksheet workSheet = package.Workbook.Worksheets.Add(String.Format("{0} Data",heading));  
         //        int startRowFrom = String.IsNullOrEmpty(heading) ? 1 : 3;  
-  
+
         //        if (showSrNo)  
         //        {  
         //            DataColumn dataColumn = dataTable.Columns.Add("#", typeof(int));  
@@ -74,11 +74,11 @@ namespace FRGMBSystem.Common
         //                index++;  
         //            }  
         //        }  
-  
-  
+
+
         //        // add the content into the Excel file  
         //        workSheet.Cells["A" + startRowFrom].LoadFromDataTable(dataTable, true);  
-  
+
         //        // autofit width of cells with small content  
         //        int columnIndex = 1;  
         //        //foreach (DataColumn column in dataTable.Columns)  
@@ -89,11 +89,11 @@ namespace FRGMBSystem.Common
         //        //    {  
         //        //        workSheet.Column(columnIndex).AutoFit();  
         //        //    }  
-  
-  
+
+
         //        //    columnIndex++;  
         //        //}  
-  
+
         //        // format header - bold, yellow on black  
         //        using (ExcelRange r = workSheet.Cells[startRowFrom, 1, startRowFrom, dataTable.Columns.Count])  
         //        {  
@@ -102,7 +102,7 @@ namespace FRGMBSystem.Common
         //            r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;  
         //            r.Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#1fb5ad"));  
         //        }  
-  
+
         //        // format cells - add borders  
         //        using (ExcelRange r = workSheet.Cells[startRowFrom + 1, 1, startRowFrom + dataTable.Rows.Count, dataTable.Columns.Count])  
         //        {  
@@ -110,13 +110,13 @@ namespace FRGMBSystem.Common
         //            r.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;  
         //            r.Style.Border.Left.Style = ExcelBorderStyle.Thin;  
         //            r.Style.Border.Right.Style = ExcelBorderStyle.Thin;  
-  
+
         //            r.Style.Border.Top.Color.SetColor(System.Drawing.Color.Black);  
         //            r.Style.Border.Bottom.Color.SetColor(System.Drawing.Color.Black);  
         //            r.Style.Border.Left.Color.SetColor(System.Drawing.Color.Black);  
         //            r.Style.Border.Right.Color.SetColor(System.Drawing.Color.Black);  
         //        }  
-  
+
         //        // removed ignored columns  
         //        for (int i = dataTable.Columns.Count - 1; i >= 0; i--)  
         //        {  
@@ -129,27 +129,27 @@ namespace FRGMBSystem.Common
         //                workSheet.DeleteColumn(i + 1);  
         //            }  
         //        }  
-  
+
         //        if (!String.IsNullOrEmpty(heading))  
         //        {  
         //            workSheet.Cells["A1"].Value = heading;  
         //            workSheet.Cells["A1"].Style.Font.Size = 20;  
-  
+
         //            workSheet.InsertColumn(1, 1);  
         //            workSheet.InsertRow(1, 1);  
         //            workSheet.Column(1).Width = 5;  
         //        }  
-  
+
         //        result = package.GetAsByteArray();  
         //    }  
-  
+
         //    return result;  
         //}
 
-        public FileResult ExportExcel<T>(List<T> data, string FileName = "", string ExportFormat= ".xls", string MDLAttrName="", params string[] ColumnsToTake)
+        public FileResult ExportExcel<T>(List<T> data, string FileName = "", string ExportFormat = ".xls", string MDLAttrName = "", params string[] ColumnsToTake)
         {
             // return ExportExcel(ListToDataTable<T>(data), Heading, showSlno, ColumnsToTake);
-             DataTable dt=  ConvertListToDataTable(ListToDataTable<T>(data), MDLAttrName, ColumnsToTake);
+            DataTable dt = ConvertListToDataTable(ListToDataTable<T>(data), MDLAttrName, ColumnsToTake);
             return ExportToFormats(dt, FileName, ExportFormat);
 
         }
@@ -178,7 +178,7 @@ namespace FRGMBSystem.Common
                 //    rangeRow.Style.Font.FontColor = XLColor.FromTheme(XLThemeColor.Text1);
                 //}
                 table.Theme = XLTableTheme.None;
-                
+
                 using (MemoryStream stream = new MemoryStream())
                 {
                     wb.SaveAs(stream);
@@ -191,7 +191,8 @@ namespace FRGMBSystem.Common
                     {
                         return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{FileName}_{DateTime.Now.ToString("dd.MM.yyyy_HH.mm") }.xlsx");
                     }
-                    else {
+                    else
+                    {
                         return null;
                     }
                 }
@@ -203,7 +204,7 @@ namespace FRGMBSystem.Common
             DataGrid.AllowPaging = false;
             DataGrid.DataSource = tableToExport;
             DataGrid.DataBind();
-           
+
 
             StringWriter sw = new StringWriter();
             HtmlTextWriter hw = new HtmlTextWriter(sw);
@@ -320,13 +321,13 @@ namespace FRGMBSystem.Common
                 int i = 0;
                 foreach (string s in ColumnsToTake)
                 {
-                    dr[s] = lstdr[stringArray[i]!=null? stringArray[i].Trim() : ""].ToString();
+                    dr[s] = lstdr[stringArray[i] != null ? stringArray[i].Trim() : ""].ToString();
                     i = i + 1;
                 }
                 index = index + 1;
                 dt.Rows.Add(dr);
-          }
-                return dt;
+            }
+            return dt;
         }
 
 
@@ -400,16 +401,16 @@ namespace FRGMBSystem.Common
         public DataTable ConvertListToDataTableArea(DataTable datadt, string MDLAttrName = "", params string[] ColumnsToTake)
         {
             DataTable dt = new DataTable();
-           // dt.Columns.Add("Sr. No.", typeof(string));
+            // dt.Columns.Add("Sr. No.", typeof(string));
             foreach (string s in ColumnsToTake)
             {
                 dt.Columns.Add(s, typeof(string));
             }
-           // int index = 1;
+            // int index = 1;
             foreach (DataRow lstdr in datadt.Rows)
             {
                 DataRow dr = dt.NewRow();
-               // dr["Sr. No."] = index.ToString();
+                // dr["Sr. No."] = index.ToString();
                 var stringArray = MDLAttrName.Split(',');
                 int i = 0;
                 foreach (string s in ColumnsToTake)
@@ -417,7 +418,7 @@ namespace FRGMBSystem.Common
                     dr[s] = lstdr[stringArray[i]].ToString();
                     i = i + 1;
                 }
-               // index = index + 1;
+                // index = index + 1;
                 dt.Rows.Add(dr);
             }
             return dt;
@@ -455,7 +456,7 @@ namespace FRGMBSystem.Common
                 sb.Append(tableToExport.Columns[k].ColumnName.Replace(",", ";") + ',');
             }
 
-                sb.Append("\r\n");
+            sb.Append("\r\n");
             for (int i = 0; i < tableToExport.Rows.Count; i++)
             {
                 for (int k = 0; k < tableToExport.Columns.Count; k++)
@@ -463,7 +464,7 @@ namespace FRGMBSystem.Common
                     sb.Append(tableToExport.Rows[i][k].ToString().Replace(",", ";") + ',');
                 }
 
-              sb.Append("\r\n");
+                sb.Append("\r\n");
 
             }
 
@@ -533,5 +534,102 @@ namespace FRGMBSystem.Common
 
             return bytes;
         }
+
+        public FileResult ExportExcelByClosedXmlForPendingFeeStatusReport<T>(
+       List<T> data,
+       string FileName = "",
+       string ExportFormat = ".xls",
+       string MDLAttrName = "",
+       params string[] ColumnsToTake)
+        {
+            DataTable dt = ConvertListToDataTable(ListToDataTable<T>(data), MDLAttrName, ColumnsToTake);
+            dt.TableName = "Sheet1";
+
+            decimal totalDue = dt.AsEnumerable()
+                .Where(r => r["Due Amount"] != DBNull.Value)
+                .Sum(r => Convert.ToDecimal(r["Due Amount"]));
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                var ws = wb.Worksheets.Add(dt.TableName);
+
+                // Insert table
+                var xlTable = ws.FirstCell().InsertTable(dt);
+                xlTable.Theme = XLTableTheme.None;
+
+                int lastDataRow = dt.Rows.Count + 1;
+                int totalColumns = dt.Columns.Count;
+
+                // =============================
+                // HEADER STYLE
+                // =============================
+                var header = ws.Range(1, 1, 1, totalColumns);
+                header.Style.Font.Bold = true;
+                header.Style.Fill.BackgroundColor = XLColor.LightGray;
+                header.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                header.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                header.Style.Alignment.WrapText = true;
+                header.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                header.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+
+                // =============================
+                // EMPTY ROW BEFORE FOOTER
+                // =============================
+                int emptyRow = lastDataRow + 1;
+                ws.Row(emptyRow).InsertRowsBelow(1);
+
+                // =============================
+                // FOOTER ROW
+                // =============================
+                int footerRow = emptyRow + 1;
+
+                // Merge label area
+                ws.Range(footerRow, 1, footerRow, totalColumns - 1).Merge();
+
+                // Label cell (CENTER)
+                var footerLabelCell = ws.Cell(footerRow, 1);
+                footerLabelCell.Value = "TOTAL DUE AMOUNT";
+                footerLabelCell.Style.Font.Bold = true;
+                footerLabelCell.Style.Fill.BackgroundColor = XLColor.LightGray;
+                footerLabelCell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center; // CENTER
+                footerLabelCell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                footerLabelCell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                footerLabelCell.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+
+                // Amount cell (LEFT)
+                var footerAmountCell = ws.Cell(footerRow, totalColumns);
+                footerAmountCell.Value = totalDue;
+                footerAmountCell.Style.Font.Bold = true;
+                footerAmountCell.Style.Fill.BackgroundColor = XLColor.LightGray;
+                footerAmountCell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left; // LEFT
+                footerAmountCell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                footerAmountCell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                footerAmountCell.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+
+                ws.Columns().AdjustToContents();
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+
+                    if (ExportFormat == ".xls")
+                    {
+                        return File(stream.ToArray(),
+                            "application/vnd.ms-excel",
+                            $"{FileName}_{DateTime.Now:dd.MM.yyyy_HH.mm}.xls");
+                    }
+                    else
+                    {
+                        return File(stream.ToArray(),
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            $"{FileName}_{DateTime.Now:dd.MM.yyyy_HH.mm}.xlsx");
+                    }
+                }
+            }
+        }
+
+
+
+
     }
 }

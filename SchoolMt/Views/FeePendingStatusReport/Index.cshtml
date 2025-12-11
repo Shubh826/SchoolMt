@@ -38,15 +38,15 @@
                                 @*@Html.ValidationMessageFor(E => E.FK_CompanyId, "", new { @class = "redText", @style = "color:red" })*@
                             </div>
                             <div class="col-md-3">
-                                <label class="setForm  bold">Class Name<span style="color:red">*</span></label>
+                                <label class="setForm  bold">Class Name</label>
                             </div>
                             <div class="col-md-7 form-group">
                                 @Html.DropDownListFor(E => E.ClassName, new SelectList((System.Collections.IEnumerable)ViewData["ClassList"], "Value", "Value"), "--Select--", new { @class = "form-control select2" })
                             </div>
-                            <div class="col-md-3">
-                                <label class="setForm  bold">Top Student<span style="color:red">*</span></label>
-                            </div>
-                            <div class="col-md-7 form-group">
+                            @*<div class="col-md-3">
+                                <label class="setForm  bold">Top Student</label>
+                            </div>*@
+                            @*<div class="col-md-7 form-group">
                                 @Html.DropDownListFor(E => E.NoOfStudents,
                                 new List<SelectListItem>()
                                 {
@@ -54,13 +54,13 @@
                                     new SelectListItem() { Value = "20", Text = "20" },
                                     new SelectListItem() { Value = "50", Text = "50" },
                                     new SelectListItem() { Value = "100", Text = "100" },
-                                    new SelectListItem() { Value = "200", Text = "200", Selected = true } // default selected
+                                    new SelectListItem() { Value = "200", Text = "200", Selected = true }, // default selected
+                                    new SelectListItem() { Value = "100", Text = "500" },
+                                    new SelectListItem() { Value = "100", Text = "1000" },
                                 },
                                 new { @class = "form-control select2" }
                                )
-
-
-                            </div>
+                            </div>*@
                             <div class="col-sm-9 d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary box-shadow-1 btn-min-width mr-1 mb-1" id="btnsubmit">Submit</button>
                                 <a href='@Url.Action("Index")' class="btn btn-dark box-shadow-1 btn-min-width mr-1 mb-1">Cancel</a>

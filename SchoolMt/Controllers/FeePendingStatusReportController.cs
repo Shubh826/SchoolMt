@@ -429,10 +429,14 @@ namespace SchoolMt.Controllers
             TempData.Keep();
             List<FeePendingStatusReportMDL> _listForExcel = (List<FeePendingStatusReportMDL>)TempData["FeePendingStatuslist"];
 
-            string[] columns = { "Student Name", "Class Name", "Class Code", "Father Name", "Mother Name", "Address", "Previous Due Amount", "Examination Fee1", "Examination Fee2", "Applicable Month Fee", "Month Due Fee", "Transport Due Fee","Total Due Amount" };
-            string MDLAttr = "StudentName,ClassName,ClassCode,FatherName,MotherName,Address,PreviousDueAmount,ExaminationFee1,ExaminationFee2,ApplicableMonthFee,MonthdueFee,TransportdueFee,TotalDueAmount";
+            //string[] columns = { "Student Name", "Class Name", "Class Code", "Father Name", "Mother Name", "Address", "Previous Due Amount", "Examination Fee1", "Examination Fee2", "Applicable Month Fee", "Month Due Fee", "Transport Due Fee","Total Due Amount" };
+            //string MDLAttr = "StudentName,ClassName,ClassCode,FatherName,MotherName,Address,PreviousDueAmount,ExaminationFee1,ExaminationFee2,ApplicableMonthFee,MonthdueFee,TransportdueFee,TotalDueAmount";
+
+            string[] columns = { "Student Name", "Class Name", "Class Code", "Father Name", "Mother Name", "Address", 
+                "Due Amount" };
+            string MDLAttr = "StudentName,ClassName,ClassCode,FatherName,MotherName,Address,TotalDueAmount";
             ExcelExportHelper objExcelExportHelper = new ExcelExportHelper();
-            return objExcelExportHelper.ExportExcel(_listForExcel, "Fee Pending Status Report", ".xls", MDLAttr, columns);
+            return objExcelExportHelper.ExportExcelByClosedXmlForPendingFeeStatusReport(_listForExcel, "Fee Pending Status Report", ".xls", MDLAttr, columns);
         }
     }
 }
