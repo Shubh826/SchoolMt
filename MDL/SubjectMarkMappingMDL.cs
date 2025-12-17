@@ -34,5 +34,45 @@ namespace MDL
         public string JsonData { get; set; }
         public string ExamType { get; set; }
         public string ExamCategory { get; set; }
+        public string Attendancecount { get; set; }
+        public string Remarks { get; set; }
+        public string PromotedToClass { get; set; }
     }
+
+    public class SubjectMarkInsertMDL
+    {
+        public int CompanyId { get; set; }
+        public int ClassId { get; set; }
+        public int StudentId { get; set; }
+        public int ExamCategoryId { get; set; }
+        public int PKId { get; set; }
+
+        public List<SubjectMarkMDL> Marks { get; set; }
+
+        /* 🔹 NEW: Co-Scholastic Grades */
+        public List<CoScholasticGradesMDL> CoScholasticGrades { get; set; }
+
+        public int userId { get; set; }
+
+        /* 🔹 JSON FOR DB INSERT */
+        public string JsonData { get; set; }
+        public string CoScholasticJson { get; set; }
+        public string Attendancecount { get; set; }
+        public string Remarks { get; set; }
+        public string PromotedToClass { get; set; }
+    }
+
+    public class SubjectMarkMDL
+    {
+        public int SubjectId { get; set; }
+        public int ExamTypeId { get; set; }
+        public int TotalMark { get; set; }
+        public int ObtainMark { get; set; }
+    }
+    public class CoScholasticGradesMDL
+    {
+        public Int64 ID { get; set; }
+        public string Value { get; set; }
+    }
+
 }

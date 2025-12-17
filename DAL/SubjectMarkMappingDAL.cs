@@ -59,7 +59,7 @@ namespace DAL
                             StudentName = dr.Field<string>("StudentName"),
                             CreatedBy = dr.Field<string>("CreatedBy"),
                             CreatedDate = dr.Field<string>("CreatedDate"),
-                            ExamType = dr.Field<string>("ExamType"),
+                            //ExamType = dr.Field<string>("ExamType"),
                             ExamCategory = dr.Field<string>("ExamCategory")
 
                         }).ToList();
@@ -94,30 +94,41 @@ namespace DAL
             return result;
         }
 
-        public Messages InsertSubjectMarkMappingData(SubjectMarkMappingMDL obj)
+        public Messages InsertSubjectMarkMappingData(SubjectMarkInsertMDL obj)
         {
             Messages objMessages = new Messages();
             _commandText = "[dbo].[USP_InsertOrUpdateSubjectmark]";
-            List<SqlParameter> parms = new List<SqlParameter>
-               {
 
-                    new SqlParameter("@PKId", obj.PKId == null? 0:obj.PKId),
-                    new SqlParameter("@CompanyId",obj.FK_CompanyId),
-                    new SqlParameter("@ClassId" ,obj.FK_ClassId),
-                    new SqlParameter("@StudentId" ,obj.FK_StudentId),
-                    new SqlParameter("@ExamTypeId" ,obj.LookUpDetailId),
-                    new SqlParameter("@ExamcategoryId" ,obj.FK_ExamCategoryId),
-                    new SqlParameter("@MarksData", obj.JsonData),
-                    new SqlParameter("@CreatedBy" ,obj.userId)
-              };
+            List<SqlParameter> parms = new List<SqlParameter>
+            {
+                new SqlParameter("@PKId", obj.PKId),
+                new SqlParameter("@CompanyId", obj.CompanyId),
+                new SqlParameter("@ClassId", obj.ClassId),
+                new SqlParameter("@StudentId", obj.StudentId),
+                new SqlParameter("@ExamcategoryId", obj.ExamCategoryId),
+                new SqlParameter("@MarksData", obj.JsonData),
+                new SqlParameter("@CoScholasticJson", obj.CoScholasticJson),
+                new SqlParameter("@Attendancecount", obj.Attendancecount ?? ""),
+                new SqlParameter("@Remarks", obj.Remarks ?? ""),
+                new SqlParameter("@PromotedToClass", obj.PromotedToClass ?? ""),
+                new SqlParameter("@CreatedBy", obj.userId)
+            };
             try
             {
                 CheckParameters.ConvertNullToDBNull(parms);
-                objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet, parms);
-                if (objDataSet.Tables[0].Rows.Count > 0)
+
+                objDataSet = (DataSet)objDataFunctions.getQueryResult(
+                    _commandText,
+                    DataReturnType.DataSet,
+                    parms
+                );
+
+                if (objDataSet.Tables.Count > 0 && objDataSet.Tables[0].Rows.Count > 0)
                 {
-                    objMessages.Message_Id = objDataSet.Tables[0].Rows[0].Field<int>("Message_Id");
-                    objMessages.Message = objDataSet.Tables[0].Rows[0].Field<string>("Message");
+                    objMessages.Message_Id =
+                        Convert.ToInt32(objDataSet.Tables[0].Rows[0]["Message_Id"]);
+                    objMessages.Message =
+                        Convert.ToString(objDataSet.Tables[0].Rows[0]["Message"]);
                 }
                 else
                 {
@@ -130,6 +141,7 @@ namespace DAL
                 objMessages.Message_Id = 0;
                 objMessages.Message = "Failed";
             }
+
             return objMessages;
         }
 
@@ -334,18 +346,26 @@ namespace DAL
                             ObtainMarks = dr["ObtainMarks"]?.ToString(),
                             TotalMarks = dr["TotalMarks"]?.ToString(),
                             Percentages = dr["Percentages"]?.ToString(),
-                            Grade = dr["Grade"]?.ToString()
+                            Grade = dr["Grade"]?.ToString(),
+                            Attendancecount = dr["Attendancecount"]?.ToString(),
+                            PromotedToClass = dr["PromotedToClass"]?.ToString(),
+                            Remarks = dr["Remarks"]?.ToString()
                         };
 
+                        
+                      
+                    }
 
-                        studentResult.CoScholasticArea = new List<ViewCoScholasticArea>
+                    // --- Table[7]: CoScholasticArea Detail ---
+                    if (objDataSet.Tables.Count > 7 && objDataSet.Tables[7].Rows.Count > 0)
+                    {
+                        studentResult.CoScholasticArea = objDataSet.Tables[7].AsEnumerable().Select(dr => new ViewCoScholasticArea
                         {
-                             new ViewCoScholasticArea { AreaName = "Work Education (or Pre-vocational Education)", Term1Grade = "A", Term2Grade = "A" },
-                             new ViewCoScholasticArea { AreaName = "Art Education", Term1Grade = "A", Term2Grade = "A" },
-                             new ViewCoScholasticArea { AreaName = "Health & Physical Education", Term1Grade = "A", Term2Grade = "A" },
-                             new ViewCoScholasticArea { AreaName = "Discipline: Term-1/Term-2", Term1Grade = "Grade", Term2Grade = "Grade" },
-                             new ViewCoScholasticArea { AreaName = "[on a 3-point (A-C) grading scale]", Term1Grade = "A", Term2Grade = "A" }
-                        };
+                            AreaName = dr.Field<string>("AreaName"),
+                            TermGrade = dr.Field<string>("TermGrade"),
+                            TermName= dr.Field<string>("TermName")
+
+                        }).ToList();
                     }
                 }
 

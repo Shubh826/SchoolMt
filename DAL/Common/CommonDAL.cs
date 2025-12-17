@@ -512,6 +512,75 @@ namespace DAL
             }).ToList();
             return List;
         }
+
+
+        public static SubjectWiseMarksResponse GetSubjectWiseMarksWithHeaderList(
+     int companyid, int examtypeId, int pkId)
+        {
+            CommandText = "[dbo].[USP_GetSubjectWiseMarksWithHeader]";
+
+            var para = new SqlParameter[3];
+            para[0] = new SqlParameter("@iCompanyId", SqlDbType.Int) { Value = companyid };
+            para[1] = new SqlParameter("@iexamtypeId", SqlDbType.Int) { Value = examtypeId };
+            para[2] = new SqlParameter("@ipkId", SqlDbType.Int) { Value = pkId };
+
+            DataSet ds = (DataSet)objDataFunctions.getQueryResult(
+                CommandText, DataReturnType.DataSet, para.ToList());
+
+            var response = new SubjectWiseMarksResponse
+            {
+                HeaderList = new List<LookUpDropDownMDL>(),
+                DetailList = new List<LookUpDropDownMDL>(),
+                CoScholasticList = new List<LookUpDropDownMDL>()
+            };
+
+            /* ===============================
+               TABLE 0 : HEADER LIST
+            ===============================*/
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                response.HeaderList = ds.Tables[0].AsEnumerable()
+                    .Select(dr => new LookUpDropDownMDL
+                    {
+                        ID = dr.Field<int>("ExamTypeId"),
+                        TotalMark = dr.Field<string>("TotalMark"),
+                        ExamType = dr.Field<string>("ExamType")
+                    }).ToList();
+            }
+
+            /* ===============================
+               TABLE 1 : SUBJECT MARKS
+            ===============================*/
+            if (ds != null && ds.Tables.Count > 1 && ds.Tables[1].Rows.Count > 0)
+            {
+                response.DetailList = ds.Tables[1].AsEnumerable()
+                    .Select(dr => new LookUpDropDownMDL
+                    {
+                        ID = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("Id")),
+                        Value = dr.Field<string>("Value"),
+                        IsSelected = dr.Field<bool>("IsSelected"),
+                        ObtainMark = dr.Field<string>("ObtainMark")
+                    }).ToList();
+            }
+
+            /* ===============================
+               TABLE 2 : CO-SCHOLASTIC AREAS
+            ===============================*/
+            if (ds != null && ds.Tables.Count > 2 && ds.Tables[2].Rows.Count > 0)
+            {
+                response.CoScholasticList = ds.Tables[2].AsEnumerable()
+                    .Select(dr => new LookUpDropDownMDL
+                    {
+                        ID = dr.Field<int>("Id"),
+                        ExamType = dr.Field<string>("Value")
+                    }).ToList();
+            }
+
+            return response;
+        }
+
+
+
         public static List<DropDownMDL> GetStudentBySchoolWise(int classId,int companyId)
         {
             CommandText = "USP_GetAllStudentBySchoolWise";

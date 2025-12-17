@@ -19,9 +19,19 @@ namespace MDL.Common
         public bool? IsSelected { get; set; }
         public string TotalMark { get; set; }
         public string ObtainMark { get; set; }
+        public string ExamType { get; set; }
 
 
     }
 
-  
+
+    public class SubjectWiseMarksResponse
+    {
+        public List<LookUpDropDownMDL> HeaderList { get; set; }
+        public List<LookUpDropDownMDL> DetailList { get; set; }
+        public List<LookUpDropDownMDL> CoScholasticList { get; set; }
+    }
+
+
+
 }

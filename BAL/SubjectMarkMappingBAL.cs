@@ -20,7 +20,7 @@ namespace BAL
         {
             return objDal.GetSubjectMarkMappingData(out List, out objBasicPagingMDL, id, rowPerpage, currentPage, FK_CompanyId, SearchBy, SearchValue);
         }
-        public Messages InsertSubjectMarkMappingData(SubjectMarkMappingMDL obj)
+        public Messages InsertSubjectMarkMappingData(SubjectMarkInsertMDL obj)
         {
             return objDal.InsertSubjectMarkMappingData(obj);
         }

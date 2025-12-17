@@ -6,7 +6,7 @@
 
 <style>
     body {
-        font-family: Helvetica,Arial,sans-serif;
+        font-family: Helvetica, Arial, sans-serif;
         font-size: 8pt;
         line-height: 10pt;
         padding: 10pt;
@@ -29,49 +29,67 @@
         border-bottom: 1px solid #000000;
     }
 
-    /**Start:Print and download css*/
+    /* ===============================
+       Print & Download Buttons
+       =============================== */
+
     .action-buttons {
-    text-align: center;
-    margin: 15px 0;
-}
-
-.btn-print, .btn-download {
-    display: inline-block;
-    padding: 8px 16px;
-    margin: 5px;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    color: white;
-}
-
-.btn-print {
-    background-color: #28a745; /* green */
-}
-
-.btn-print:hover {
-    background-color: #218838;
-}
-
-.btn-download {
-    background-color: #007bff; /* blue */
-}
-
-.btn-download:hover {
-    background-color: #0056b3;
-}
-
-/* Hide both buttons while printing */
-@@media print {
-    .action-buttons {
-        display: none;
+        text-align: center;
+        margin: 15px 0;
     }
-}
 
+    .btn-print,
+    .btn-download {
+        display: inline-block;
+        padding: 8px 16px;
+        margin: 5px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        color: #fff;
+    }
 
+    .btn-print {
+        background-color: #28a745;
+    }
 
+    .btn-print:hover {
+        background-color: #218838;
+    }
+
+    .btn-download {
+        background-color: #007bff;
+    }
+
+    .btn-download:hover {
+        background-color: #0056b3;
+    }
+
+    /* ===============================
+       PRINT ONLY RULES
+       =============================== */
+
+    @@media print {
+
+        /* Hide buttons */
+        .action-buttons {
+            display: none !important;
+        }
+
+        body {
+            background: #ffffff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* Remove unnecessary shadows/backgrounds */
+        * {
+            box-shadow: none !important;
+        }
+    }
 </style>
+
 <div class="action-buttons">
     <button onclick="window.print()" class="btn-print">🖨️ Print Report Card</button>
     @*<button onclick="downloadPDF()" class="btn-download">⬇️ Download Report Card (PDF)</button>*@
@@ -304,6 +322,65 @@
             <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">&nbsp;</td>
         </tr>
         <tr>
+            <td colspan="4" class="borTop borLeft borRight"
+                style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
+
+                <table border="0" cellspacing="0" cellpadding="5" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="borBottom borRight" align="center">
+                                Co-Scholastic Areas: Term-1<br />
+                                [on a 3-point (A-C) grading scale]
+                            </th>
+                            <th class="borBottom borRight" align="center">Grade</th>
+                            <th class="borBottom borRight" align="center">
+                                Co-Scholastic Areas: Term-2<br />
+                                [on a 3-point (A-C) grading scale]
+                            </th>
+                            <th class="borBottom" align="center">Grade</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model.CoScholasticArea != null && Model.CoScholasticArea.Any())
+                        {
+                            var areas = Model.CoScholasticArea
+                                             .Select(x => x.AreaName)
+                                             .Distinct()
+                                             .ToList();
+
+                            foreach (var area in areas)
+                            {
+                                var term1 = Model.CoScholasticArea
+                                                 .FirstOrDefault(x => x.AreaName == area && x.TermName == "Term 1");
+
+                                var term2 = Model.CoScholasticArea
+                                                 .FirstOrDefault(x => x.AreaName == area && x.TermName == "Term 2");
+
+                                <tr>
+                                    <td class="borBottom borRight" align="center">
+                                        @area
+                                    </td>
+                                    <td class="borBottom borRight" align="center">
+                                        @(term1 != null ? term1.TermGrade : "-")
+                                    </td>
+
+                                    <td class="borBottom borRight" align="center">
+                                        @area
+                                    </td>
+                                    <td class="borBottom" align="center">
+                                        @(term2 != null ? term2.TermGrade : "-")
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+
+        @*<tr>
             <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
                 <table border="0" cellspacing="0" cellpadding="5" width="100%">
                     <thead>
@@ -348,7 +425,7 @@
                     </tbody>
                 </table>
             </td>
-        </tr>
+        </tr>*@
         <tr>
             <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">&nbsp;</td>
         </tr>

@@ -20,7 +20,6 @@
                 <th class="text-center">Class Name</th>
                 <th class="text-center">Student Name</th>
                 <th class="text-center">Exam Category</th>
-                <th class="text-center">Exam Type</th>
                 <th class="text-center">Created By</th>
                 <th class="text-center">Created Date</th>
                 <th class="text-center">Action</th>
@@ -30,7 +29,7 @@
             @if (Model == null || !Model.Any())
             {
                 <tr>
-                    <td colspan="7" class="text-center text-danger">No Record Found</td>
+                    <td colspan="14" class="text-center text-danger">No Record Found</td>
                 </tr>
             }
             else
@@ -43,7 +42,6 @@
             <td class="text-center">@Html.DisplayFor(modelItem => item.ClassName)</td>
             <td class="text-center">@Html.DisplayFor(modelItem => item.StudentName)</td>
             <td class="text-center">@Html.DisplayFor(modelItem => item.ExamCategory)</td>
-            <td class="text-center">@Html.DisplayFor(modelItem => item.ExamType)</td>
             <td class="text-center">@Html.DisplayFor(modelItem => item.CreatedBy)</td>
             <td class="text-center">@Html.DisplayFor(modelItem => item.CreatedDate)</td>
             <td class="text-center">

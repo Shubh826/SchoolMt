@@ -314,6 +314,25 @@
                         });
                     }
                 }
+                else {
+                    // Loop through selected subjects
+                    var selected = $('#FK_LookUpDetailId').val(); // array of selected IDs
+                    if (!selected || selected.length === 0)
+                    {
+                        alert("Please select at least one Item.");
+                        e.preventDefault();
+                        return false;
+                    }
+                    for (var i = 0; i < selected.length; i++) {
+                        jsonData.push({
+                            Type: Category,
+                            LookUpDetailId: parseInt(selected[i]),
+                            TotalMark: "0" // optionally you can add a default mark or allow input for each subject
+                        });
+                    }
+                }
+
+
 
                 // Convert JSON array to string
                 var jsonString = JSON.stringify(jsonData);

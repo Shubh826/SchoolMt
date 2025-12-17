@@ -113,8 +113,9 @@ namespace MDL
         public string TotalMarks { get; set; }
         public string ObtainMarks { get; set; }
         public string AbbreviationText { get; set; }
-
-
+        public string Attendancecount { get; set; }
+        public string PromotedToClass { get; set; }
+        public string Remarks { get; set; }
     }
 
     public class ViewGrdaeMDL
@@ -150,8 +151,8 @@ namespace MDL
     public class ViewCoScholasticArea
     {
         public string AreaName { get; set; }
-        public string Term1Grade { get; set; }
-        public string Term2Grade { get; set; }
+        public string TermGrade { get; set; }
+        public string TermName { get; set; }
     }
 
 

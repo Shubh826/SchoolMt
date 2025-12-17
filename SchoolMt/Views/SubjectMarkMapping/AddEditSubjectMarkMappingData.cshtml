@@ -70,7 +70,7 @@
                                     <label class="setForm bold">Student Name<span style="color:red">*</span></label>
                                 </div>
                                 <div class="col-md-4 form-group">
-                                    @Html.DropDownListFor(E => E.FK_StudentId, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "Value"), "--SELECT--", new { @class = "form-control Select2" })
+                                    @Html.DropDownListFor(E => E.FK_StudentId, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "Value"), "--SELECT--", new { @class = "form-control Select2", style = "width:100%", })
                                 </div>
                             </div>
 
@@ -89,33 +89,86 @@
                             </div>
 
                             <!-- Exam Type -->
-                            <div class="row mb-2" id="examptypediv">
+                            @*<div class="row mb-2" id="examptypediv">
+            <div class="col-md-2">
+                <label class="setForm bold">Exam Type<span style="color:red">*</span></label>
+            </div>
+            <div class="col-md-4 form-group">
+
+                @Html.DropDownListFor(E => E.LookUpDetailId, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "Value"), "--Select--", new { @class = "form-control select2" })
+
+            </div>
+        </div>*@
+
+                            <!-- Subject Wise Marks Table -->
+                            <div class="row mb-2" id="CategoryListSection" style="display:none;">
+                                <div class="col-md-12">
+                                    <div class="row">
+
+                                        <!-- LEFT : SUBJECT MARKS -->
+                                        <div class="col-md-8">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-striped" id="tblExamTypes">
+                                                    <thead></thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <!-- RIGHT : CO-SCHOLASTIC -->
+                                        <div class="col-md-4">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-striped" id="tblCoScholastic">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Co-Scholastic Area</th>
+                                                            <th>Grade</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2" id="AttendanceSection" style="display:none;">
                                 <div class="col-md-2">
-                                    <label class="setForm bold">Exam Type<span style="color:red">*</span></label>
+                                    <label class="setForm bold">
+                                        Attendance<span style="color:red">*</span>
+                                    </label>
                                 </div>
                                 <div class="col-md-4 form-group">
-
-                                    @Html.DropDownListFor(E => E.LookUpDetailId, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "Value"), "--Select--", new { @class = "form-control select2" })
-
+                                    @Html.TextBoxFor(m => m.Attendancecount,
+                                        new { @class = "form-control", placeholder = "Enter Attendance" })
                                 </div>
                             </div>
 
-                            <!-- Category List Table -->
-                            <div class="row mb-2" id="CategoryListSection" style="display:none;">
-                                <div class="col-md-8 offset-md-2">
-                                    <table class="table table-bordered" id="tblExamTypes">
-                                        <thead>
-                                            <tr>
-                                                <th>Exam Type</th>
-                                                <th>Total Marks</th>
-                                                <th>Obtain Marks</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
+                            <div class="row mb-2" id="remarksSection" style="display:none;">
+                                <div class="col-md-2">
+                                    <label class="setForm bold">
+                                        Remarks<span style="color:red">*</span>
+                                    </label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.TextBoxFor(m => m.Remarks,
+                                        new { @class = "form-control", placeholder = "Enter Remarks" })
                                 </div>
                             </div>
+
+                            <div class="row mb-2" id="promotedtoclassSection" style="display:none;">
+                                <div class="col-md-2">
+                                    <label class="setForm bold">
+                                        Promoted To Class<span style="color:red">*</span>
+                                    </label>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    @Html.TextBoxFor(m => m.PromotedToClass,
+                                        new { @class = "form-control", placeholder = "Promoted To Class" })
+                                </div>
+                            </div>
+
 
                             <!-- Submit Buttons -->
                             <div class="col-sm-6 d-flex justify-content-end">
@@ -134,6 +187,8 @@
     <input type="hidden" id="hdnCompanyId" value="@Model.FK_CompanyId" />
     <input type="hidden" id="hdnLookUpId" value="@Model.LookUpDetailId" />
     <input type="hidden" id="hdnStudentId" value="@Model.FK_StudentId" />
+    <input type="hidden" id="hdnExamCategoryId" value="@Model.FK_ExamCategoryId" />
+
 
 }@*@*******START Loader******@
 <div class="modalBgLoader" style="display: none"></div>
@@ -154,8 +209,8 @@
 
 
             if ($('#PKId').val() > 0) {
-                GetExamType($('#FK_CompanyId').val(), 'Exam Type')
-                BindSubjectWiseMarksList($('#FK_CompanyId').val(), $('#hdnLookUpId').val(), $('#PKId').val());
+               // GetExamType($('#FK_CompanyId').val(), 'Exam Type')
+                BindSubjectWiseMarksList($('#FK_CompanyId').val(), $('#hdnExamCategoryId').val(), $('#PKId').val());
                 BindStudent($('#FK_CompanyId').val(), $("#FK_ClassId").val());
                 $("#CategoryListSection").show();
             }
@@ -165,7 +220,7 @@
             $("#FK_CompanyId").change(function (e) {
 
                 BindStudent($("#FK_CompanyId").val(), $('#FK_ClassId').val());
-                GetExamType($("#FK_CompanyId").val(), 'Exam Type');
+                //GetExamType($("#FK_CompanyId").val(), 'Exam Type');
                 $("#FK_ClassId").val("").trigger('change');
                 $("#tblExamTypes tbody").empty();
                 $("#selectAllExamTypes").prop('checked', false);
@@ -176,7 +231,7 @@
             $("#FK_ClassId").change(function () {
 
                 BindStudent($("#FK_CompanyId").val(), $('#FK_ClassId').val());
-                GetExamType($("#FK_CompanyId").val(), 'Exam Type');
+                //GetExamType($("#FK_CompanyId").val(), 'Exam Type');
                 $("#tblExamTypes tbody").empty();
                 $("#selectAllExamTypes").prop('checked', false);
                 $("#CategoryListSection").hide();
@@ -185,9 +240,20 @@
 
 
             // Exam Type change
-            $("#LookUpDetailId").change(function (e) {
+            $("#FK_ExamCategoryId").change(function (e) {
+                var selectedText = $("#FK_ExamCategoryId option:selected").text().toLowerCase();
+
                // debugger;
-                BindSubjectWiseMarksList($('#FK_CompanyId').val(), $('#LookUpDetailId').val(),0);
+                if (selectedText.includes("term 2")) {
+                    $("#AttendanceSection").show();
+                    $("#remarksSection").show();
+                    $("#promotedtoclassSection").show();
+                } else {
+                    $("#AttendanceSection").hide();
+                    $("#remarksSection").hide();
+                    $("#promotedtoclassSection").hide();
+                }
+                BindSubjectWiseMarksList($('#FK_CompanyId').val(), $('#FK_ExamCategoryId').val(),0);
                 $("#CategoryListSection").show();
             });
 
@@ -213,70 +279,164 @@
             $('#FK_ClassId').select2();
             $('#FK_StudentId').select2();
             $('#FK_ExamCategoryId').select2();
-            
-            // Submit button validation
-            $('#btnsubmit').click(function (e) {
-                var companyId = $("#FK_CompanyId").val();
-                if (!companyId) {
-                    alert("Please select School");
-                    e.preventDefault();
-                    return false;
-                }
 
-                var selectedExamIds = $('#LookUpDetailId').val();
-                if (!selectedExamIds || selectedExamIds.length === 0) {
-                    alert("Please select Exam Type");
-                    e.preventDefault();
-                    return false;
-                }
+         // Submit button validation
+$('#btnsubmit').click(function (e) {
+    e.preventDefault();
 
-                // Validate Obtain Marks
-                var isValid = true;
-                $('#tblExamTypes tbody tr').each(function () {
-                    var total = parseInt($(this).find('.totalMarks').val()) || 0;
-                    var obtain = parseInt($(this).find('.obtainMarks').val()) || 0;
+    /* ---------------- BASIC VALIDATION ---------------- */
+    if (!$("#FK_CompanyId").val()) {
+        alert("Please select School");
+        return;
+    }
 
-                    if (obtain < 0) {
-                        alert("Obtain Marks cannot be negative.");
-                        isValid = false;
-                        return false; // break loop
-                    }
+    if (!$("#FK_ClassId").val()) {
+        alert("Please select Class");
+        return;
+    }
 
-                    if (obtain > total) {
-                        alert("Obtain Marks cannot be greater than Total Marks.");
-                        isValid = false;
-                        return false; // break loop
-                    }
-                });
+    if (!$("#FK_StudentId").val()) {
+        alert("Please select Student");
+        return;
+    }
 
-                if (!isValid) {
-                    e.preventDefault();
-                    return false;
-                }
+    if (!$("#FK_ExamCategoryId").val()) {
+        alert("Please select Exam Category");
+        return;
+    }
 
-                // Build JSON with Obtain Marks
-                var jsonData = [];
-                $('#tblExamTypes tbody tr').each(function (i) {
-                    var lookupId = $(this).find('input[type="hidden"]').val();
-                    var total = parseInt($(this).find('.totalMarks').val()) || 0;
-                    var obtain = parseInt($(this).find('.obtainMarks').val()) || 0;
+    var selectedText = $("#FK_ExamCategoryId option:selected").text().toLowerCase();
 
-                    jsonData.push({
-                        Type: "Subject",
-                        LookUpDetailId: parseInt(lookupId),
-                        TotalMark: total,
-                        ObtainMark: obtain
-                    });
-                });
+    if (selectedText.includes("term 2")) {
 
-                $('#JsonData').val(JSON.stringify(jsonData));
+        if (!$("#Attendancecount").val()) {
+            alert("Please enter Attendance");
+            return;
+        }
 
-                if ($('#JsonData').val() == "[]") {
-                    alert("All Feilds Are Manadatory");
-                    e.preventDefault();
-                    return false;
-                }
+        if (!$("#Remarks").val()) {
+            alert("Please enter Remarks");
+            return;
+        }
+
+        if (!$("#PromotedToClass").val()) {
+            alert("Please enter Promoted To Class");
+            return;
+        }
+    }
+
+
+
+
+    /* ---------------- BUILD MARKS JSON ---------------- */
+    var marks = [];
+    var isValid = true;
+
+    $("#tblExamTypes tbody tr").each(function () {
+
+        var subjectId = $(this).data("subjectid");
+
+
+        $(this).find(".obtain-marks").each(function () {
+
+            var obtain = parseInt($(this).val()) || 0;
+            var total = parseInt($(this).data("total"));
+            var examTypeId = $(this).data("examtypeid");
+
+            /* -------- MARKS VALIDATION -------- */
+            if (obtain > total) {
+                alert("Obtain marks cannot be greater than " + total);
+                isValid = false;
+                return false;
+            }
+
+            if (obtain < 0) {
+                alert("Marks cannot be negative");
+                isValid = false;
+                return false;
+            }
+
+            marks.push({
+                SubjectId: subjectId,
+                ExamTypeId: examTypeId,
+                TotalMark: total,
+                ObtainMark: obtain
             });
+        });
+
+        if (!isValid) return false;
+    });
+
+    if (!isValid) return;
+
+    if (marks.length === 0) {
+        alert("No marks entered");
+        return;
+    }
+
+    /* ---------------- CO-SCHOLASTIC JSON + VALIDATION ---------------- */
+    var coScholasticGrades = [];
+
+    $("#tblCoScholastic tbody tr").each(function () {
+
+        var grade = $(this).find(".co-grade").val();
+        var coId = $(this).data("coscholasticid");
+
+        if (!grade) {
+            alert("Please select grade for all Co-Scholastic Areas");
+            isValid = false;
+            return false;
+        }
+
+        coScholasticGrades.push({
+            Id: coId,
+            Value: grade
+        });
+    });
+
+    if (!isValid) return;
+
+    /* ---------------- FINAL PAYLOAD ---------------- */
+    var payload = {
+        CompanyId: $("#FK_CompanyId").val(),
+        ClassId: $("#FK_ClassId").val(),
+        StudentId: $("#FK_StudentId").val(),
+        ExamCategoryId: $("#FK_ExamCategoryId").val(),
+        PKId: $("#PKId").val(),
+        Attendancecount: $("#Attendancecount").val(),
+        Remarks: $("#Remarks").val(),
+        PromotedToClass: $("#PromotedToClass").val(),
+        Marks: marks,
+        CoScholasticGrades: coScholasticGrades
+    };
+
+    /* ---------------- AJAX INSERT ---------------- */
+    $.ajax({
+        url: "@Url.Action("InsertSubjectWiseMarks", "SubjectMarkMapping")",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(payload),
+        beforeSend: function () {
+            $(".modalBgLoader, .modalLoaderCenter").show();
+        },
+        success: function (res) {
+            if (res.Success) {
+                alert("Marks saved successfully");
+                window.location.href = "@Url.Action("Index")";
+            } else {
+                alert(res.Message);
+            }
+        },
+        complete: function () {
+            $(".modalBgLoader, .modalLoaderCenter").hide();
+        },
+        error: function () {
+            alert("Something went wrong");
+        }
+    });
+});
+
+
 
 
         });
@@ -312,56 +472,106 @@
             });
         }
 
-        function BindSubjectWiseMarksList(companyid, examtypeId, PkId) {
+   function BindSubjectWiseMarksList(companyid, examtypeId, PkId) {
+
+    var $thead = $("#tblExamTypes thead");
     var $tbody = $("#tblExamTypes tbody");
+    var $coBody = $("#tblCoScholastic tbody");
+
+    $thead.empty();
     $tbody.empty();
+    $coBody.empty();
 
     $.ajax({
-        url: "@Url.Action("GetSubjectWiseMarksList", "SubjectMarkMapping")",
+        url: "@Url.Action("GetSubjectWiseMarksWithHeaderList", "SubjectMarkMapping")",
         type: "POST",
         data: { companyid: companyid, examtypeId: examtypeId, PkId: PkId },
-        beforeSend: function () {
-            $(".modalBgLoader, .modalLoaderCenter").show();
-        },
-        complete: function () {
-            $(".modalBgLoader, .modalLoaderCenter").hide();
-        },
-        success: function (data) {
-            if (data.length > 0) {
-                $.each(data, function (i, item) {
-                    // Existing values if editing
-                    var totalMark = item.TotalMark ?? 10;
-                    var obtainMark = item.ObtainMark ??0;
+        success: function (res) {
 
-                    var row = `<tr>
-                        <td>${item.Value}</td>
-                        <td>
-                            <input type="number" class="form-control totalMarks"
-                                   name="ExamTypes[${i}].TotalMark"
-                                   value="${totalMark}"
-                                   min="0" step="1"
-                                   placeholder="Total Marks" readonly />
-                        </td>
-                        <td>
-                            <input type="number" class="form-control obtainMarks"
-                                   name="ExamTypes[${i}].ObtainMark"
-                                   value="${obtainMark}"
-                                   min="0" step="1"
-                                   placeholder="Enter Obtain Marks" />
-                            <input type="hidden" name="ExamTypes[${i}].FK_LookUpDetailId" value="${item.ID}" />
-                        </td>
-                    </tr>`;
+            if (!res) return;
 
+            /* ================= HEADER ================= */
+            if (res.HeaderList && res.HeaderList.length > 0) {
+
+                var headerRow = `<tr><th>Subject</th>`;
+
+                $.each(res.HeaderList, function (i, h) {
+                    headerRow += `
+                        <th data-examtypeid="${h.ID}" data-max="${h.TotalMark}">
+                            ${h.ExamType} (${h.TotalMark})
+                        </th>`;
+                });
+
+                headerRow += "</tr>";
+                $thead.append(headerRow);
+            }
+
+            /* ================= SUBJECT ROWS ================= */
+            if (res.DetailList && res.DetailList.length > 0) {
+
+                var subjects = {};
+
+                $.each(res.DetailList, function (i, item) {
+                    if (!subjects[item.Value]) {
+                        subjects[item.Value] = { SubjectId: item.ID, Marks: [] };
+                    }
+                    subjects[item.Value].Marks.push(item);
+                });
+
+                $.each(subjects, function (subjectName, subjectObj) {
+
+                    var row = `<tr data-subjectid="${subjectObj.SubjectId}">
+                                <td>${subjectName}</td>`;
+
+                    $.each(res.HeaderList, function (hIndex, header) {
+
+                        var match = subjectObj.Marks.find(m => m.ExamType === header.ExamType);
+                        var obtain = match ? match.ObtainMark : 0;
+
+                        row += `
+                            <td>
+                                <input type="number"
+                                       class="form-control obtain-marks text-center"
+                                       value="${obtain}"
+                                       min="0"
+                                       max="${header.TotalMark}"
+                                       data-examtypeid="${header.ID}"
+                                       data-total="${header.TotalMark}" />
+                            </td>`;
+                    });
+
+                    row += "</tr>";
                     $tbody.append(row);
                 });
             }
-        },
-        error: function (xhr, status, error) {
-            console.log("Error fetching data:", error);
+
+            /* ================= CO-SCHOLASTIC ================= */
+            if (res.CoScholasticList && res.CoScholasticList.length > 0) {
+
+                $.each(res.CoScholasticList, function (i, item) {
+
+                    var row = `
+                        <tr data-coscholasticid="${item.ID}">
+                            <td>${item.ExamType}</td>
+                            <td>
+                                <select class="form-control co-grade">
+                                    <option value="">--Select--</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                </select>
+                            </td>
+                        </tr>`;
+
+                    $coBody.append(row);
+                });
+            }
         }
     });
-            return false;
 }
+
 
 
      function BindStudent(companyId, classId) {

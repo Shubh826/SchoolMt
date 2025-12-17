@@ -13,6 +13,7 @@ using iTextSharp.tool.xml;
 using System.IO;
 using System.Text;
 using iTextSharp.text;
+using Newtonsoft.Json;
 
 namespace SchoolMt.Controllers
 {
@@ -65,17 +66,72 @@ namespace SchoolMt.Controllers
         }
 
 
+        //[HttpPost]
+        //public ActionResult AddEditSubjectMarkMappingData(SubjectMarkMappingMDL obj)
+        //{
+        //    ViewData["companylist"] = CommonBAL.FillCompany(SessionInfo.User.fk_companyid);
+        //    ViewData["Classlist"] = CommonBAL.FillClass(SessionInfo.User.fk_companyid);
+        //    //ViewData["LookUplist"] = CommonBAL.GetLookUpList(SessionInfo.User.fk_companyid, 0, "Add");
+        //    obj.userId = SessionInfo.User.userid;
+        //    Messages msg = objBal.InsertSubjectMarkMappingData(obj);
+        //    TempData["Message"] = msg;
+        //    return RedirectToAction("Index");
+        //}
+
+
         [HttpPost]
-        public ActionResult AddEditSubjectMarkMappingData(SubjectMarkMappingMDL obj)
+        public JsonResult InsertSubjectWiseMarks(SubjectMarkInsertMDL obj)
         {
-            ViewData["companylist"] = CommonBAL.FillCompany(SessionInfo.User.fk_companyid);
-            ViewData["Classlist"] = CommonBAL.FillClass(SessionInfo.User.fk_companyid);
-            //ViewData["LookUplist"] = CommonBAL.GetLookUpList(SessionInfo.User.fk_companyid, 0, "Add");
-            obj.userId = SessionInfo.User.userid;
-            Messages msg = objBal.InsertSubjectMarkMappingData(obj);
-            TempData["Message"] = msg;
-            return RedirectToAction("Index");
+            try
+            {
+                /* ---------------- BASIC VALIDATION ---------------- */
+                if (obj == null)
+                    return Json(new { Success = false, Message = "Invalid request" });
+
+                if (obj.Marks == null || obj.Marks.Count == 0)
+                    return Json(new { Success = false, Message = "No marks received" });
+
+                /* ---------------- MARKS VALIDATION ---------------- */
+                foreach (var item in obj.Marks)
+                {
+                    if (item.ObtainMark < 0 || item.ObtainMark > item.TotalMark)
+                    {
+                        return Json(new
+                        {
+                            Success = false,
+                            Message = "Obtain marks cannot be greater than total marks or less than 0"
+                        });
+                    }
+                }
+
+                /* ---------------- SERIALIZE JSON ONCE ---------------- */
+                obj.JsonData = JsonConvert.SerializeObject(obj.Marks);
+
+                /* ---------------- CO-SCHOLASTIC JSON ---------------- */
+                if (obj.CoScholasticGrades != null && obj.CoScholasticGrades.Count > 0)
+                {
+                    obj.CoScholasticJson = JsonConvert.SerializeObject(obj.CoScholasticGrades);
+                }
+
+                /* ---------------- INSERT INTO DB (ONE CALL) ---------------- */
+                Messages msg = objBal.InsertSubjectMarkMappingData(obj);
+
+                return Json(new
+                {
+                    Success = msg.Message_Id == 1,
+                    Message = msg.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    Success = false,
+                    Message = "Server error : " + ex.Message
+                });
+            }
         }
+
 
         public JsonResult GetLookUpDetailList(int companyid, string lookUpTypeName)
         {
@@ -84,9 +140,11 @@ namespace SchoolMt.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetSubjectWiseMarksList(int companyid, int examtypeId,int PkId)
+        public JsonResult GetSubjectWiseMarksWithHeaderList(int companyid,int PkId,int examtypeId)
         {
-            return Json(CommonBAL.GetSubjectWiseMarksList(companyid, examtypeId, PkId), JsonRequestBehavior.AllowGet);
+            //return Json(CommonBAL.GetSubjectWiseMarksList(companyid, examtypeId, PkId), JsonRequestBehavior.AllowGet);
+
+            return Json(CommonBAL.GetSubjectWiseMarksWithHeaderList(companyid, examtypeId,  PkId), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
