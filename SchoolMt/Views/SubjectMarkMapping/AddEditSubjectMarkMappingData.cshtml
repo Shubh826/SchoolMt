@@ -524,8 +524,8 @@ $('#btnsubmit').click(function (e) {
                                 <td>${subjectName}</td>`;
 
                     $.each(res.HeaderList, function (hIndex, header) {
-
-                        var match = subjectObj.Marks.find(m => m.ExamType === header.ExamType);
+                        debugger;
+                        var match = subjectObj.Marks.find(m => m.ExamType=== header.ExamType);
                         var obtain = match ? match.ObtainMark : 0;
 
                         row += `
@@ -544,29 +544,29 @@ $('#btnsubmit').click(function (e) {
                     $tbody.append(row);
                 });
             }
-
             /* ================= CO-SCHOLASTIC ================= */
             if (res.CoScholasticList && res.CoScholasticList.length > 0) {
 
                 $.each(res.CoScholasticList, function (i, item) {
 
                     var row = `
-                        <tr data-coscholasticid="${item.ID}">
-                            <td>${item.ExamType}</td>
-                            <td>
-                                <select class="form-control co-grade">
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="C">C</option>
-                                    <option value="D">D</option>
-                                    <option value="E">E</option>
-                                </select>
-                            </td>
-                        </tr>`;
+            <tr data-coscholasticid="${item.ID}">
+                <td>${item.ExamType}</td>
+                <td>
+                    <select class="form-control co-grade">
+                        <option value="A" ${item.ObtainMark === 'A' ? 'selected' : ''}>A</option>
+                        <option value="B" ${item.ObtainMark === 'B' ? 'selected' : ''}>B</option>
+                        <option value="C" ${item.ObtainMark === 'C' ? 'selected' : ''}>C</option>
+                        <option value="D" ${item.ObtainMark === 'D' ? 'selected' : ''}>D</option>
+                        <option value="E" ${item.ObtainMark === 'E' ? 'selected' : ''}>E</option>
+                    </select>
+                </td>
+            </tr>`;
 
                     $coBody.append(row);
                 });
             }
+
         }
     });
 }

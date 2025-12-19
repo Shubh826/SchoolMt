@@ -60,7 +60,10 @@ namespace DAL
                             CreatedBy = dr.Field<string>("CreatedBy"),
                             CreatedDate = dr.Field<string>("CreatedDate"),
                             //ExamType = dr.Field<string>("ExamType"),
-                            ExamCategory = dr.Field<string>("ExamCategory")
+                            ExamCategory = dr.Field<string>("ExamCategory"),
+                            Attendancecount= dr.Field<string>("Attendancecount"),
+                            Remarks = dr.Field<string>("Remarks"),
+                            PromotedToClass = dr.Field<string>("PromotedToClass"),
 
                         }).ToList();
 

@@ -559,7 +559,8 @@ namespace DAL
                         ID = WrapDbNull.WrapDbNullValue<int>(dr.Field<int?>("Id")),
                         Value = dr.Field<string>("Value"),
                         IsSelected = dr.Field<bool>("IsSelected"),
-                        ObtainMark = dr.Field<string>("ObtainMark")
+                        ObtainMark = dr.Field<string>("ObtainMark"),
+                        ExamType= dr.Field<string>("ExamType")
                     }).ToList();
             }
 
@@ -572,7 +573,8 @@ namespace DAL
                     .Select(dr => new LookUpDropDownMDL
                     {
                         ID = dr.Field<int>("Id"),
-                        ExamType = dr.Field<string>("Value")
+                        ExamType = dr.Field<string>("Value"),
+                        ObtainMark = dr.Field<string>("ObtainGradeName")
                     }).ToList();
             }
 
