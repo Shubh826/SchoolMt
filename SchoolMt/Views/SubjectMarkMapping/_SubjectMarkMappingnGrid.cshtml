@@ -45,7 +45,7 @@
             <td class="text-center">@Html.DisplayFor(modelItem => item.CreatedBy)</td>
             <td class="text-center">@Html.DisplayFor(modelItem => item.CreatedDate)</td>
             <td class="text-center">
-                <a class="btn btn-primary" href="@Url.Action("AddEditSubjectMarkMappingData", "SubjectMarkMapping", new { id = item.PKId })">Edit</a>
+                @*<a class="btn btn-primary" href="@Url.Action("AddEditSubjectMarkMappingData", "SubjectMarkMapping", new { id = item.PKId })">Edit</a>*@
                 <a class="btn btn-danger marb10" href="javascript:void(0)" onclick="DeleteData(@item.PKId); return false;">Delete</a>
                 <a class="btn btn-primary" href="@Url.Action("StudentReportCardDetails", new { id=item.FK_StudentId })">View Report Card</a><br />
             </td>

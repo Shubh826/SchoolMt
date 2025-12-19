@@ -36,5 +36,9 @@ namespace BAL
             return objDAL.AddEditLookUpDetail(Obj);
         }
 
+        public int GetMaxId(int Id)
+        {
+            return objDAL.GetMaxId(Id);
+        }
     }
 }

@@ -4,9 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <style>
     body {
-        font-family: Helvetica, Arial, sans-serif;
+        font-family: Helvetica,Arial,sans-serif;
         font-size: 8pt;
         line-height: 10pt;
         padding: 10pt;
@@ -29,17 +30,13 @@
         border-bottom: 1px solid #000000;
     }
 
-    /* ===============================
-       Print & Download Buttons
-       =============================== */
-
+    /**Start:Print and download css*/
     .action-buttons {
         text-align: center;
         margin: 15px 0;
     }
 
-    .btn-print,
-    .btn-download {
+    .btn-print, .btn-download {
         display: inline-block;
         padding: 8px 16px;
         margin: 5px;
@@ -47,52 +44,36 @@
         border-radius: 6px;
         font-size: 14px;
         cursor: pointer;
-        color: #fff;
+        color: white;
     }
 
     .btn-print {
-        background-color: #28a745;
+        background-color: #28a745; /* green */
     }
 
-    .btn-print:hover {
-        background-color: #218838;
-    }
+        .btn-print:hover {
+            background-color: #218838;
+        }
 
     .btn-download {
-        background-color: #007bff;
+        background-color: #007bff; /* blue */
     }
 
-    .btn-download:hover {
-        background-color: #0056b3;
-    }
+        .btn-download:hover {
+            background-color: #0056b3;
+        }
 
-    /* ===============================
-       PRINT ONLY RULES
-       =============================== */
-
+    /* Hide both buttons while printing */
     @@media print {
-
-        /* Hide buttons */
         .action-buttons {
-            display: none !important;
-        }
-
-        body {
-            background: #ffffff !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        /* Remove unnecessary shadows/backgrounds */
-        * {
-            box-shadow: none !important;
+            display: none;
         }
     }
 </style>
-
 <div class="action-buttons">
-    <button onclick="window.print()" class="btn-print">🖨️ Print Report Card</button>
-    @*<button onclick="downloadPDF()" class="btn-download">⬇️ Download Report Card (PDF)</button>*@
+    <a href="@Url.Action("Index", "SubjectMarkMapping")"
+       class="btn btn-danger marb10">Back
+    </a>    <button onclick="window.print()" class="btn-print">🖨️ Print Report Card</button>
 </div>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
@@ -152,6 +133,7 @@
             <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
                 <table width="100%" border="0" cellspacing="0" cellpadding="5">
                     <thead>
+
                         <tr>
                             <th class="borBottom borRight">Scholastic Areas:</th>
                             @foreach (var cat in Model.ExamCategories)
@@ -160,33 +142,73 @@
                             }
                             <th class="borBottom" colspan="2">OVERALL</th>
                         </tr>
+
                         <tr>
                             <th class="borBottom borRight" rowspan="2">Subject Name</th>
+
                             @foreach (var cat in Model.ExamCategories)
                             {
-                                foreach (var examType in Model.ExamTypes)
+
+                                var examTypes = Model.ExamTypes.AsEnumerable();
+
+                                if (cat.ExamCategoryType.Contains("Term-1") || cat.ExamCategoryType.Contains("Term 1"))
+                                {
+                                    // Term 1 → remove Yearly
+                                    examTypes = examTypes.Where(e => e.ExamType != "Y");
+                                }
+                                else if (cat.ExamCategoryType.Contains("Term-2") || cat.ExamCategoryType.Contains("Term 2"))
+                                {
+                                    // Term 2 → remove Half-Yearly
+                                    examTypes = examTypes.Where(e => e.ExamType != "HY");
+                                }
+
+
+
+                                foreach (var examType in examTypes)
                                 {
                                     <th class="borBottom borRight">@examType.ExamType</th>
                                 }
+
                                 <th class="borBottom borRight">TOTAL</th>
                                 <th rowspan="2" class="borBottom borRight">Grade</th>
                             }
+
                             <th class="borBottom borRight">GRAND TOTAL</th>
                             <th rowspan="2" class="borBottom">Grade</th>
                         </tr>
+
                         <tr>
                             @foreach (var cat in Model.ExamCategories)
                             {
-                                foreach (var examType in Model.ExamTypes)
+
+                                var examTypes = Model.ExamTypes.AsEnumerable();
+
+                                if (cat.ExamCategoryType.Contains("Term-1") || cat.ExamCategoryType.Contains("Term 1"))
+                                {
+                                    // Term 1 → remove Yearly
+                                    examTypes = examTypes.Where(e => e.ExamType != "Y");
+                                }
+                                else if (cat.ExamCategoryType.Contains("Term-2") || cat.ExamCategoryType.Contains("Term 2"))
+                                {
+                                    // Term 2 → remove Half-Yearly
+                                    examTypes = examTypes.Where(e => e.ExamType != "HY");
+                                }
+
+
+                                foreach (var examType in examTypes)
                                 {
                                     <th class="borBottom borRight">(in @examType.TotalMark)</th>
                                 }
+
                                 <th class="borBottom borRight">(in 100)</th>
                             }
                             <th class="borBottom borRight">T1(50)+T2(50)</th>
                         </tr>
+
                     </thead>
+
                     <tbody>
+
                         @foreach (var subject in Model.Subjects)
                         {
                             <tr>
@@ -195,8 +217,6 @@
                                 @{
                                     double term1Total = 0;
                                     double term2Total = 0;
-                                    double term1Percentage = 0;
-                                    double term2Percentage = 0;
                                 }
 
                                 @foreach (var cat in Model.ExamCategories)
@@ -204,7 +224,23 @@
                                     int termTotal = 0;
                                     int termMax = 100;
 
-                                    foreach (var examType in Model.ExamTypes)
+
+                                    var examTypes = Model.ExamTypes.AsEnumerable();
+
+                                    if (cat.ExamCategoryType.Contains("Term 1") || cat.ExamCategoryType.Contains("1"))
+                                    {
+
+                                        examTypes = examTypes.Where(e => e.ExamType != "Y");
+
+                                    }
+                                    else if (cat.ExamCategoryType.Contains("Term 2") || cat.ExamCategoryType.Contains("2"))
+                                    {
+
+                                        examTypes = examTypes.Where(e => e.ExamType != "HY");
+                                    }
+
+
+                                    foreach (var examType in examTypes)
                                     {
                                         var mark = Model.Marks.FirstOrDefault(m =>
                                             m.SubjectId == subject.Id &&
@@ -228,32 +264,34 @@
                                     double termPercentage = (termTotal * 100.0) / termMax;
                                     var grade = Model.Grades.FirstOrDefault(g => termPercentage >= g.Min && termPercentage <= g.Max);
 
-                                    <td class="borBottom borRight">@(grade.GradeName == null ? "-" : grade.GradeName)</td>
+                                    <td class="borBottom borRight">@(grade.GradeName)</td>
 
                                     if (cat.ExamCategoryType.Contains("Term 1") || cat.ExamCategoryType.Contains("1"))
                                     {
                                         term1Total = termTotal;
-                                        term1Percentage = termPercentage;
                                     }
+
                                     else if (cat.ExamCategoryType.Contains("Term 2") || cat.ExamCategoryType.Contains("2"))
                                     {
                                         term2Total = termTotal;
-                                        term2Percentage = termPercentage;
                                     }
+
                                 }
 
                                 @{
                                     double overallTotal = (term1Total * 0.5) + (term2Total * 0.5);
-                                    double overallPercentage = (overallTotal * 100.0) / 100;
-                                    var overallGrade = Model.Grades.FirstOrDefault(g => overallPercentage >= g.Min && overallPercentage <= g.Max);
+                                    var overallGrade = Model.Grades.FirstOrDefault(g => overallTotal >= g.Min && overallTotal <= g.Max);
                                 }
 
                                 <td class="borBottom borRight">@overallTotal.ToString("F0")</td>
-                                <td class="borBottom">@(overallGrade.GradeName == null ? "-" : overallGrade.GradeName)</td>
+                                <td class="borBottom">@(overallGrade.GradeName)</td>
+
                             </tr>
                         }
+
                     </tbody>
                 </table>
+
             </td>
         </tr>
         <tr>
@@ -327,7 +365,7 @@
 
                 <table border="0" cellspacing="0" cellpadding="5" width="100%">
                     <thead>
-                        <tr>
+                        <tr class="borBottom borRight" align="center">
                             <th class="borBottom borRight" align="center">
                                 Co-Scholastic Areas: Term-1<br />
                                 [on a 3-point (A-C) grading scale]
@@ -337,7 +375,7 @@
                                 Co-Scholastic Areas: Term-2<br />
                                 [on a 3-point (A-C) grading scale]
                             </th>
-                            <th class="borBottom" align="center">Grade</th>
+                            <th class="borBottom borRight" align="center">Grade</th>
                         </tr>
                     </thead>
 
@@ -435,7 +473,10 @@
                 <table border="0" cellspacing="5" cellpadding="0" width="100%">
                     <tbody>
                         <tr>
-                            <td style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>Remarks/Status:</strong> @Model.Student.ResultRemark</td>
+                            <td style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>Attendance:</strong> @Model.Student.Attendancecount</td>
+                            <td style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>Remarks/Status:</strong> @Model.Student.Remarks</td>
+                            <td style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>Promoted to Class:</strong> @Model.Student.PromotedToClass</td>
+
                         </tr>
                     </tbody>
                 </table>

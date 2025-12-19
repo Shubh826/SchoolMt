@@ -67,8 +67,9 @@ namespace SchoolMt.Controllers
             }
             else
             {
+               
                 obj.IsActive = true;
-                obj.SortId = 1;
+                obj.SortId = objBal.GetMaxId(0);
                 obj.Fk_CompanyId = SessionInfo.User.fk_companyid;
                 return View("AddEditLookupDetail", obj);
             }

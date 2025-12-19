@@ -224,5 +224,40 @@ namespace DAL
         }
 
 
+        public int GetMaxId(int Id)
+        {
+            int result = 0;
+
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>()
+                {
+                     new SqlParameter("@iPkId",Id),
+                   
+                };
+
+                _commandText = "[SMS].[usp_GetMaxLookUId]";
+
+                objDataSet = (DataSet)objDataFunctions.getQueryResult(_commandText, DataReturnType.DataSet, parms);
+                if (objDataSet.Tables[0].Rows.Count > 0)
+                {
+                    if (objDataSet.Tables[0].Rows[0].Field<int>("Message_Id") == 1)
+                    {
+
+                        result = objDataSet.Tables[0].Rows[0].Field<int>("Id");
+                        
+                    }
+                  
+                }
+            }
+
+            catch (Exception ex)
+            {
+                
+            }
+            return result;
+        }
+
+
     }
 }
