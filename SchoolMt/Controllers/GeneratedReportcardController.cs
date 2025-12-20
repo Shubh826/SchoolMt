@@ -28,9 +28,11 @@ namespace SchoolMt.Controllers
         BasicPagingMDL objBasicPagingMDL = null;
         private GeneratedReportcardBAL objBal;
         StoppageMstBAL objStoppageMstBAL = null;
+        private SubjectMarkMappingBAL objSubjectMarkMappingBAL;
         public GeneratedReportcardController()
         {
             objBal = new GeneratedReportcardBAL();
+            objSubjectMarkMappingBAL = new SubjectMarkMappingBAL();
         }
         // GET: GeneratedReportcard
         public ActionResult Index()
@@ -46,8 +48,8 @@ namespace SchoolMt.Controllers
         }
         public ActionResult StudentReportCardDetails(int id)
         {
-            ReportCardViewMDL obj=new ReportCardViewMDL();
-            obj= objBal.GetStudentDataForReportCard(id);
+            MarksTableViewModel obj = new MarksTableViewModel();
+            obj = objSubjectMarkMappingBAL.StudentReportCardDetails_New(id);
             return View(obj);
         }
 

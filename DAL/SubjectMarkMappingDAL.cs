@@ -30,6 +30,8 @@ namespace DAL
             _commandText = "[dbo].[usp_GetSubjectMarkMappingData]";
             List<SqlParameter> parms = new List<SqlParameter>
                {
+                
+                    new SqlParameter("@PK_ExamMarksMasterId",id),
                     new SqlParameter("@iRowperPage",rowPerpage),
                     new SqlParameter("@iCurrentPage",currentPage),
                     new SqlParameter("@FK_CompanyId",FK_CompanyId),

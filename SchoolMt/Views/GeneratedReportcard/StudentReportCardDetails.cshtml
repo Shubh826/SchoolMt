@@ -1,191 +1,586 @@
-﻿@model MDL.ReportCardViewMDL
+﻿@model MDL.MarksTableViewModel
 @{
     ViewBag.Title = "StudentReportCardDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Report Card - @Model.StudentName</title>
-    <style>
-        .report-card {
-            max-width: 900px;
-            margin: 16px auto;
-            border: 1px solid #ddd;
-            padding: 18px;
-            border-radius: 8px;
-            background: #fff;
+
+<style>
+    body {
+        font-family: Helvetica,Arial,sans-serif;
+        font-size: 8pt;
+        line-height: 10pt;
+        padding: 10pt;
+        background-color: #f4f4f4;
+    }
+
+    .borLeft {
+        border-left: 1px solid #000000;
+    }
+
+    .borRight {
+        border-right: 1px solid #000000;
+    }
+
+    .borTop {
+        border-top: 1px solid #000000;
+    }
+
+    .borBottom {
+        border-bottom: 1px solid #000000;
+    }
+
+    /**Start:Print and download css*/
+    .action-buttons {
+        text-align: center;
+        margin: 15px 0;
+    }
+
+    .btn-print, .btn-download {
+        display: inline-block;
+        padding: 8px 16px;
+        margin: 5px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        color: white;
+    }
+
+    .btn-print {
+        background-color: #28a745; /* green */
+    }
+
+        .btn-print:hover {
+            background-color: #218838;
         }
 
-        .school-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
+    .btn-download {
+        background-color: #007bff; /* blue */
+    }
+
+        .btn-download:hover {
+            background-color: #0056b3;
         }
 
-        .school-logo {
-            width: 90px;
-            height: 90px;
-            object-fit: contain;
+    /* Hide both buttons while printing */
+    @@media print {
+        .action-buttons {
+            display: none;
         }
+    }
+</style>
+<div class="action-buttons">
+    <a href="@Url.Action("Index", "GeneratedReportcard")"
+       class="btn btn-danger marb10">
+        Back
+    </a>    <button onclick="window.print()" class="btn-print">🖨️ Print Report Card</button>
+</div>
 
-        .school-details {
-            flex: 1;
-        }
-
-        .meta-table td {
-            padding: 4px 8px;
-        }
-
-        .subjects-table th, .subjects-table td {
-            vertical-align: middle;
-            text-align: center;
-        }
-
-        .subjects-table th {
-            background: #f8f9fa;
-        }
-
-        .totals {
-            font-weight: 700;
-        }
-
-        @@media print {
-            body {
-                -webkit-print-color-adjust: exact;
-            }
-
-            .report-card {
-                border: none;
-                box-shadow: none;
-                max-width: 100%;
-                margin: 0;
-            }
-
-            .no-print {
-                display: none;
-            }
-        }
-    </style>
-</head>
-<body class="bg-light">
-
-    <div class="report-card shadow-sm">
-        <input type="hidden" id="hdnstudentId" value="@Model.StudentId" />
-        <div class="school-header">
-            <img src="@Model.SchoolLogoUrl" alt="Logo" class="school-logo" />
-            <div class="school-details">
-                <h4 class="mb-0">@Model.SchoolName</h4>
-                <small class="text-muted">@Model.SchoolAddress</small>
-                <div><strong>Academic Year:</strong> @Model.AcademicYear</div>
-            </div>
-            <div class="text-end">
-                <h5 class="mb-0">Progress Report</h5>
-                <small class="text-muted">CBSE</small>
-            </div>
-        </div>
-
-        <hr />
-
-        <div class="row mb-3">
-            <div class="col-md-8">
-                <table class="meta-table">
-                    <tr>
-                        <td><strong>Student Name</strong></td>
-                        <td>@(Model.StudentName != null ? Model.StudentName : "-")</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Admission No.</strong></td>
-                        <td>@(Model.AdmissionNo != null ? Model.AdmissionNo : "-")</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Class</strong></td>
-                        <td>@(Model.Class != null ? Model.Class : "-")</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Section</strong></td>
-                        <td>@(Model.Section != null ? Model.Section : "-")</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Roll No.</strong></td>
-                        <td>@(Model.RollNo != null ? Model.RollNo : "-")</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="col-md-4 text-end">
-                <div><strong>DOB:</strong> @(Model.DOB != null ? Model.DOB : "-")</div>
-            </div>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table table-bordered subjects-table">
-                <thead>
-                    <tr>
-                        <th>Subject</th>
-                        <th>Periodic Test<br />(20)</th>
-                        <th>Notebook<br />(5)</th>
-                        <th>Subject Enrichment<br />(5)</th>
-                        <th>Annual Exam<br />(70)</th>
-                        <th>Total<br />(100)</th>
-                        <th>Grade</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var s in Model.SubjectGrades)
-                    {
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
+    <tbody>
+        <tr>
+            <td colspan="4" align="center" style="font-family: Helvetica, Arial, sans-serif;font-size:12pt;line-height:14pt;"><strong>REPORT CARD @Model.Student.AcademicYear</strong></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="borLeft borTop" colspan="2" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="3">
+                    <tbody>
                         <tr>
-                            <td class="text-start">@s.SubjectName</td>
-                            <td>@(s.PeriodicTest.HasValue ? s.PeriodicTest.Value.ToString() : "-")</td>
-                            <td>@(s.Notebook.HasValue ? s.Notebook.Value.ToString() : "-")</td>
-                            <td>@(s.SubjectEnrichment.HasValue ? s.SubjectEnrichment.Value.ToString() : "-")</td>
-                            <td>@(s.AnnualExam.HasValue ? s.AnnualExam.Value.ToString() : "-")</td>
-                            <td>@s.Total</td>
-                            <td>@(s.Grade != null ? s.Grade : "-")</td>
+                            <td style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">Student's Name: <strong>@Model.Student.StudentName</strong></td>
                         </tr>
-                    }
-                </tbody>
-                <tfoot>
-                    <tr class="totals">
-                        <td class="text-end" colspan="5">Grand Total</td>
-                        <td>@Model.TotalMarks / @Model.MaxMarks</td>
-                        <td>@String.Format("{0:0.00}%", Model.Percentage)</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+                        <tr>
+                            <td style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">Father's Name: <strong>@(Model.Student.FatherName ?? "-")</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">Mother's Name: <strong>@(Model.Student.MotherName ?? "-")</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">Date Of Birth: <strong>@(Model.Student.DOB != null ? Model.Student.DOB : "-")</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
+                                <table width="70%" border="0" cellspacing="0" cellpadding="0">
+                                    <tbody>
+                                        <tr>
+                                            <td width="45%" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">Class: <strong>@(Model.Student.Class ?? "-")</strong></td>
+                                            <td width="25%" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">Sec: <strong>@(Model.Student.Section ?? "-")</strong></td>
+                                            <td width="30%" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">Roll No: <strong>@(Model.Student.RollNo ?? "-")</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td align="right" class="borRight borTop" colspan="2" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
+                <table border="0" cellspacing="5" cellpadding="0">
+                    <tbody>
+                        <tr>
+                            <td><img src="@Model.Student.StudentImgUrl" alt="Student Photo" class="borBottom borLeft borRight borTop" width="80"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="5">
+                    <thead>
 
-        <div class="row mt-3">
-            <div class="col-md-8">
-                <p><strong>Remark:</strong> @(Model.ResultRemark != null ? Model.ResultRemark : "-")</p>
-                <p><small>Note: This is a computer-generated report card based on recorded marks.</small></p>
-            </div>
-            <div class="col-md-4 text-center">
-                <div style="height:60px">&nbsp;</div>
-                <div><strong>@(Model.ClassTeacherName != null ? Model.ClassTeacherName : "-")</strong><br /><small>Class Teacher</small></div>
-                <div class="mt-3"><strong>@(Model.PrincipalName != null ? Model.PrincipalName : "-")</strong><br /><small>Principal</small></div>
-            </div>
-        </div>
+                        <tr>
+                            <th class="borBottom borRight">Scholastic Areas:</th>
+                            @foreach (var cat in Model.ExamCategories)
+                            {
+                                <th class="borBottom borRight" colspan="6">@cat.ExamCategoryType (100 marks)</th>
+                            }
+                            <th class="borBottom" colspan="2">OVERALL</th>
+                        </tr>
 
-        <div class="mt-3 text-end no-print">
-            <button type="submit" class="btn btn-primary" id="printReportCard">Print</button>
-            @*<button class="btn btn-primary" onclick="window.print()">Print</button>*@
-            @*<a class="btn btn-primary" id="downloadReportCard">Download</a>*@
-            <a class="btn btn-primary" href="@Url.Action("DownloadReportCard", "GeneratedReportcard", new { id = Model.StudentId })">
-                Download 
-            </a>
-            <a class="btn btn-dark" href='@Url.Action("Index")' id="downloadReportCard">Cancel</a>
-        </div>
-    </div>
+                        <tr>
+                            <th class="borBottom borRight" rowspan="2">Subject Name</th>
 
-</body>
-</html>
+                            @foreach (var cat in Model.ExamCategories)
+                            {
+
+                                var examTypes = Model.ExamTypes.AsEnumerable();
+
+                                if (cat.ExamCategoryType.Contains("Term-1") || cat.ExamCategoryType.Contains("Term 1"))
+                                {
+                                    // Term 1 → remove Yearly
+                                    examTypes = examTypes.Where(e => e.ExamType != "Y");
+                                }
+                                else if (cat.ExamCategoryType.Contains("Term-2") || cat.ExamCategoryType.Contains("Term 2"))
+                                {
+                                    // Term 2 → remove Half-Yearly
+                                    examTypes = examTypes.Where(e => e.ExamType != "HY");
+                                }
+
+
+
+                                foreach (var examType in examTypes)
+                                {
+                                    <th class="borBottom borRight">@examType.ExamType</th>
+                                }
+
+                                <th class="borBottom borRight">TOTAL</th>
+                                <th rowspan="2" class="borBottom borRight">Grade</th>
+                            }
+
+                            <th class="borBottom borRight">GRAND TOTAL</th>
+                            <th rowspan="2" class="borBottom">Grade</th>
+                        </tr>
+
+                        <tr>
+                            @foreach (var cat in Model.ExamCategories)
+                            {
+
+                                var examTypes = Model.ExamTypes.AsEnumerable();
+
+                                if (cat.ExamCategoryType.Contains("Term-1") || cat.ExamCategoryType.Contains("Term 1"))
+                                {
+                                    // Term 1 → remove Yearly
+                                    examTypes = examTypes.Where(e => e.ExamType != "Y");
+                                }
+                                else if (cat.ExamCategoryType.Contains("Term-2") || cat.ExamCategoryType.Contains("Term 2"))
+                                {
+                                    // Term 2 → remove Half-Yearly
+                                    examTypes = examTypes.Where(e => e.ExamType != "HY");
+                                }
+
+
+                                foreach (var examType in examTypes)
+                                {
+                                    <th class="borBottom borRight">(in @examType.TotalMark)</th>
+                                }
+
+                                <th class="borBottom borRight">(in 100)</th>
+                            }
+                            <th class="borBottom borRight">T1(50)+T2(50)</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var subject in Model.Subjects)
+                        {
+                            <tr>
+                                <td class="borBottom borRight"><strong>@subject.SubjectName</strong></td>
+
+                                @{
+                                    double term1Total = 0;
+                                    double term2Total = 0;
+                                }
+
+                                @foreach (var cat in Model.ExamCategories)
+                                {
+                                    int termTotal = 0;
+                                    int termMax = 100;
+
+
+                                    var examTypes = Model.ExamTypes.AsEnumerable();
+
+                                    if (cat.ExamCategoryType.Contains("Term 1") || cat.ExamCategoryType.Contains("1"))
+                                    {
+
+                                        examTypes = examTypes.Where(e => e.ExamType != "Y");
+
+                                    }
+                                    else if (cat.ExamCategoryType.Contains("Term 2") || cat.ExamCategoryType.Contains("2"))
+                                    {
+
+                                        examTypes = examTypes.Where(e => e.ExamType != "HY");
+                                    }
+
+
+                                    foreach (var examType in examTypes)
+                                    {
+                                        var mark = Model.Marks.FirstOrDefault(m =>
+                                            m.SubjectId == subject.Id &&
+                                            m.ExamCategoryId == cat.Id &&
+                                            m.ExamTypeId == examType.Id);
+
+                                        if (mark != null)
+                                        {
+                                            <td class="borBottom borRight">@mark.ObtainMarks</td>
+                                            termTotal += mark.ObtainMarks;
+                                        }
+                                        else
+                                        {
+                                            <td class="borBottom borRight">-</td>
+                                        }
+                                    }
+
+                                    termTotal = termTotal > 100 ? 100 : termTotal;
+                                    <td class="borBottom borRight">@termTotal</td>
+
+                                    double termPercentage = (termTotal * 100.0) / termMax;
+                                    var grade = Model.Grades.FirstOrDefault(g => termPercentage >= g.Min && termPercentage <= g.Max);
+
+                                    <td class="borBottom borRight">@(grade.GradeName)</td>
+
+                                    if (cat.ExamCategoryType.Contains("Term 1") || cat.ExamCategoryType.Contains("1"))
+                                    {
+                                        term1Total = termTotal;
+                                    }
+
+                                    else if (cat.ExamCategoryType.Contains("Term 2") || cat.ExamCategoryType.Contains("2"))
+                                    {
+                                        term2Total = termTotal;
+                                    }
+
+                                }
+
+                                @{
+                                    double overallTotal = (term1Total * 0.5) + (term2Total * 0.5);
+                                    var overallGrade = Model.Grades.FirstOrDefault(g => overallTotal >= g.Min && overallTotal <= g.Max);
+                                }
+
+                                <td class="borBottom borRight">@overallTotal.ToString("F0")</td>
+                                <td class="borBottom">@(overallGrade.GradeName)</td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
+                <table border="0" cellspacing="5" cellpadding="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td width="25%" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>8 Point Grading Scale:</strong></td>
+                            <td width="75%" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
+                                <strong>
+                                    @{
+                                        var grades = Model.Grades.OrderByDescending(g => g.Min).ToList();
+                                        for (int i = 0; i < grades.Count; i++)
+                                        {
+                                            var grade = grades[i];
+                                            <text>@grade.GradeName (@grade.Min% - @grade.Max%)</text>
+                                            if (i < grades.Count - 1)
+                                            {
+                                                <text> </text>
+                                            }
+                                        }
+                                    }
+                                </strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
+                <table border="0" cellspacing="5" cellpadding="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td width="25%" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>Abbreviations:</strong></td>
+                            <td width="75%" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>@Model.Student.AbbreviationText</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
+                <table border="0" cellspacing="5" cellpadding="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td width="25%" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>Overall:</strong></td>
+                            <td width="25%" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>Marks: @Model.Student.ObtainMarks/@Model.Student.TotalMarks</strong></td>
+                            <td width="25%" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>Percentage: @Model.Student.Percentages</strong></td>
+                            <td width="25%" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>Grade: @Model.Student.Grade</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="borTop borLeft borRight"
+                style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
+
+                <table border="0" cellspacing="0" cellpadding="5" width="100%">
+                    <thead>
+                        <tr class="borBottom borRight" align="center">
+                            <th class="borBottom borRight" align="center">
+                                Co-Scholastic Areas: Term-1<br />
+                                [on a 3-point (A-C) grading scale]
+                            </th>
+                            <th class="borBottom borRight" align="center">Grade</th>
+                            <th class="borBottom borRight" align="center">
+                                Co-Scholastic Areas: Term-2<br />
+                                [on a 3-point (A-C) grading scale]
+                            </th>
+                            <th class="borBottom borRight" align="center">Grade</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model.CoScholasticArea != null && Model.CoScholasticArea.Any())
+                        {
+                            var areas = Model.CoScholasticArea
+                                             .Select(x => x.AreaName)
+                                             .Distinct()
+                                             .ToList();
+
+                            foreach (var area in areas)
+                            {
+                                var term1 = Model.CoScholasticArea
+                                                 .FirstOrDefault(x => x.AreaName == area && x.TermName == "Term 1");
+
+                                var term2 = Model.CoScholasticArea
+                                                 .FirstOrDefault(x => x.AreaName == area && x.TermName == "Term 2");
+
+                                <tr>
+                                    <td class="borBottom borRight" align="center">
+                                        @area
+                                    </td>
+                                    <td class="borBottom borRight" align="center">
+                                        @(term1 != null ? term1.TermGrade : "-")
+                                    </td>
+
+                                    <td class="borBottom borRight" align="center">
+                                        @area
+                                    </td>
+                                    <td class="borBottom" align="center">
+                                        @(term2 != null ? term2.TermGrade : "-")
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+
+        @*<tr>
+                <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
+                    <table border="0" cellspacing="0" cellpadding="5" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="borBottom borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">Co-Scholastic Areas: Term-1 [on a 3-point (A-C) grading scale]</th>
+                                <th class="borBottom borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">Grade</th>
+                                <th class="borBottom borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">Co-Scholastic Areas: Term-2 [on a 3-point (A-C) grading scale]</th>
+                                <th class="borBottom" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="borBottom borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">Work Education (or Pre-vocational Education)</td>
+                                <td class="borBottom borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">A</td>
+                                <td class="borBottom borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">Work Education (or Pre-vocational Education)</td>
+                                <td class="borBottom" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">A</td>
+                            </tr>
+                            <tr>
+                                <td class="borBottom borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">Art Education</td>
+                                <td class="borBottom borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">A</td>
+                                <td class="borBottom borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">Art Education</td>
+                                <td class="borBottom" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">A</td>
+                            </tr>
+                            <tr>
+                                <td class="borBottom borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">Health &amp; Physical Education</td>
+                                <td class="borBottom borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">A</td>
+                                <td class="borBottom borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">Health &amp; Physical Education</td>
+                                <td class="borBottom" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">A</td>
+                            </tr>
+                            <tr>
+                                <td class="borBottom borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">Discipline: Term-1</td>
+                                <td class="borBottom borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">Grade</td>
+                                <td class="borBottom borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">Discipline: Term-2</td>
+                                <td class="borBottom" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">Grade</td>
+                            </tr>
+                            <tr>
+                                <td class="borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">[on a 3-point (A-C) grading scale]</td>
+                                <td class="borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">A</td>
+                                <td class="borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">[on a 3-point (A-C) grading scale]</td>
+                                <td class="" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;" align="center">A</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>*@
+        <tr>
+            <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">&nbsp;</td>
+        </tr>
+
+        <tr>
+            <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
+                <table border="0" cellspacing="5" cellpadding="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>Attendance:</strong> @Model.Student.Attendancecount</td>
+                            <td style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>Remarks/Status:</strong> @Model.Student.Remarks</td>
+                            <td style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>Promoted to Class:</strong> @Model.Student.PromotedToClass</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="borTop borLeft borRight" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">
+                <table border="0" cellspacing="5" cellpadding="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">&nbsp;</td>
+                            <td align="center" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">&nbsp;</td>
+                            <td align="right" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>Date:@DateTime.Now.ToString("dd-MM-yyyy")</strong></td>
+                            <td align="center" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>Signature of Class Teacher</strong></td>
+                            <td align="right" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;"><strong>Principal's Signature</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="borTop borLeft borRight borBottom" style="font-family: Helvetica, Arial, sans-serif;font-size:8pt;line-height:10pt;">&nbsp;</td>
+        </tr>
+    </tbody>
+</table>
+
+
+@*@section scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script type="text/javascript">
+            $(document).ready(function (e) {
+                $('#printReportCard').click(function (e) {
+                    PrintReportcard(e);
+                });
+                $('#downloadReportCard').click(function (e) {
+                    DownLoadReportcard(e);
+                });
+            });
+
+            function PrintReportcard(e) {
+                debugger;
+                e.preventDefault(); // prevent full form submission
+                var studentId = $('#hdnstudentId').val();
+                if (!studentId) {
+                    alert('Student ID not found.');
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("PrintReportcard", "SubjectMarkMapping")',
+                    cache: false,
+                    contentType: "application/json; charset=utf-8",
+                    data: { 'id': studentId },
+
+                    success: function (data) {
+                        debugger;
+                        var htmlContent = data;
+
+                        var printFrame = document.createElement('iframe');
+                        printFrame.style.display = 'none';
+
+                        document.body.appendChild(printFrame);
+                        var printDocument = printFrame.contentDocument;
+
+                        printDocument.write(htmlContent);
+                        printDocument.close();
+
+                        printFrame.onload = function () {
+                            printFrame.contentWindow.focus();
+                            printFrame.contentWindow.print();
+                        };
+                    },
+                    error: function (xhr) {
+                        alert("Error generating receipt.");
+                    },
+                    failure: function (res) {
+                        alert("Failed to generate receipt.");
+                    },
+                });
+            }
+
+            function DownLoadReportcard() {
+                var studentId = $('#hdnstudentId').val();
+                // Directly open the controller action that returns PDF
+                window.location.href = '/SubjectMarkMapping/DownloadReportCard?id=' + studentId;
+            }
+
+        </script>
+    }*@
+
+
 
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script type="text/javascript">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script type="text/javascript">
     $(document).ready(function (e) {
         $('#printReportCard').click(function (e) {
             PrintReportcard(e);
@@ -194,7 +589,17 @@
             DownLoadReportcard(e);
         });
     });
-  
+        function downloadPDF() {
+            const element = document.querySelector('.report-card'); // Select your report card div
+            const opt = {
+                margin: 0.5,
+                filename: 'ReportCard.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
     function PrintReportcard(e) {
         debugger;
         e.preventDefault(); // prevent full form submission
@@ -205,7 +610,7 @@
         }
 
     $.ajax({
-         url: '@Url.Action("PrintReportcard", "GeneratedReportcard")',
+         url: '@Url.Action("PrintReportcard", "SubjectMarkMapping")',
         cache: false,
         contentType: "application/json; charset=utf-8",
         data: { 'id': studentId },
@@ -229,7 +634,7 @@
 
                 // ✅ Fallback: wait for print to complete, then redirect
                // setTimeout(function () {
-                  //  window.location.href = '@Url.Action("StudentReportCardDetails", "GeneratedReportcard")';
+                  //  window.location.href = '@Url.Action("StudentReportCardDetails", "SubjectMarkMapping")';
                // }, 1000); // 1 second delay — you can increase if needed
             };
         },
@@ -245,8 +650,8 @@
 function DownLoadReportcard() {
     var studentId = $('#hdnstudentId').val();
     // Directly open the controller action that returns PDF
-    window.location.href = '/GeneratedReportcard/DownloadReportCard?id=' + studentId;
+    window.location.href = '/SubjectMarkMapping/DownloadReportCard?id=' + studentId;
 }
 
-</script>
+    </script>
 }

@@ -28,7 +28,8 @@ namespace DAL
             objBasicPagingMDL = new BasicPagingMDL();
             bool result = false;
             Messages objMessages = new Messages();
-            _commandText = "[usp_GetStudentData]";
+            // _commandText = "[usp_GetStudentData]";
+            _commandText = "[dbo].[usp_GetStudentDataForReportCardNew]";
             List<SqlParameter> parms = new List<SqlParameter>
                {
                     new SqlParameter("@iRowperPage",rowPerpage),

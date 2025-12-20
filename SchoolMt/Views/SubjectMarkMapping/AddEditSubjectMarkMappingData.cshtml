@@ -41,10 +41,24 @@
                                     <label class="setForm bold">School Name<span style="color:red">*</span></label>
                                 </div>
                                 <div class="col-md-4 form-group">
+
+                                    @if (Model.PKId > 0)
+                                    {
                                     @Html.DropDownListFor(E => E.FK_CompanyId,
-                                        new SelectList((System.Collections.IEnumerable)ViewData["companylist"], "ID", "Value"),
-                                        "--SELECT--",
-                                        new { @class = "form-control select2", style = "width:100%", id = "FK_CompanyId" })
+                                      new SelectList((System.Collections.IEnumerable)ViewData["companylist"], "ID", "Value"),
+                                      "--SELECT--",
+                                      new { @class = "form-control select2", @disabled = "disabled", style = "width:100%", id = "FK_CompanyId" })
+                                    @Html.HiddenFor(E => E.FK_CompanyId)
+                                    }
+                                    else
+                                    {
+                                    @Html.DropDownListFor(E => E.FK_CompanyId,
+                                      new SelectList((System.Collections.IEnumerable)ViewData["companylist"], "ID", "Value"),
+                                      "--SELECT--",
+                                      new { @class = "form-control select2", style = "width:100%", id = "FK_CompanyId" })
+
+                                    }
+
                                 </div>
                             </div>
                             <!-- Class Dropdown (only for Subject) -->
@@ -53,13 +67,22 @@
                                     <label class="setForm bold">Class Name<span style="color:red">*</span></label>
                                 </div>
                                 <div class="col-md-4 form-group">
-
-
-
+                                    @if (Model.PKId > 0)
+                                    {@Html.DropDownListFor(E => E.FK_ClassId,
+                                     new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Id", "Value"),
+                                     "--SELECT--",
+                                     new { @class = "form-control select2", @disabled = "disabled", style = "width:100%", id = "FK_ClassId" })
+                                    @Html.HiddenFor(E => E.FK_ClassId)
+                                }
+                                else
+                                {
                                     @Html.DropDownListFor(E => E.FK_ClassId,
-                                        new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Id", "Value"),
-                                        "--SELECT--",
-                                        new { @class = "form-control select2", style = "width:100%", id = "FK_ClassId" })
+                                                                          new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Id", "Value"),
+                                                                          "--SELECT--",
+                                                                          new { @class = "form-control select2", style = "width:100%", id = "FK_ClassId" })
+
+
+                                }
 
                                 </div>
                             </div>
@@ -70,7 +93,18 @@
                                     <label class="setForm bold">Student Name<span style="color:red">*</span></label>
                                 </div>
                                 <div class="col-md-4 form-group">
+                                    @if (Model.PKId > 0)
+                                    {@Html.DropDownListFor(E => E.FK_StudentId, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "Value"), "--SELECT--", new { @class = "form-control Select2", @disabled = "disabled", style = "width:100%", })
+                                    @Html.HiddenFor(E => E.FK_StudentId)
+                                }
+                                else
+                                {
                                     @Html.DropDownListFor(E => E.FK_StudentId, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "Value"), "--SELECT--", new { @class = "form-control Select2", style = "width:100%", })
+
+                                }
+
+
+
                                 </div>
                             </div>
 
@@ -80,11 +114,23 @@
                                     <label class="setForm bold">Exam Category<span style="color:red">*</span></label>
                                 </div>
                                 <div class="col-md-4 form-group">
-                                    @Html.DropDownListFor(E => E.FK_ExamCategoryId,
+                                    @if (Model.PKId > 0)
+                                    {
+                                        @Html.DropDownListFor(E => E.FK_ExamCategoryId,
                                      new SelectList((System.Collections.IEnumerable)ViewData["ExamCategorylist"], "Id", "Value"),
                                      "--SELECT--",
-                                     new { @class = "form-control select2", style = "width:100%", id = "FK_ExamCategoryId" })
+                                     new { @class = "form-control select2", @disabled = "disabled", style = "width:100%", id = "FK_ExamCategoryId" })
+                                        @Html.HiddenFor(E => E.FK_ExamCategoryId)
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(E => E.FK_ExamCategoryId,
+                                                                           new SelectList((System.Collections.IEnumerable)ViewData["ExamCategorylist"], "Id", "Value"),
+                                                                           "--SELECT--",
+                                                                           new { @class = "form-control select2", style = "width:100%", id = "FK_ExamCategoryId" })
 
+
+                                    }
                                 </div>
                             </div>
 
@@ -145,7 +191,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-2" id="remarksSection" style="display:none;">
+                            <div class="row mb-2" id="remarksSection" style="display: none;">
                                 <div class="col-md-2">
                                     <label class="setForm bold">
                                         Remarks<span style="color:red">*</span>
@@ -213,6 +259,18 @@
                 BindSubjectWiseMarksList($('#FK_CompanyId').val(), $('#hdnExamCategoryId').val(), $('#PKId').val());
                 BindStudent($('#FK_CompanyId').val(), $("#FK_ClassId").val());
                 $("#CategoryListSection").show();
+                var selectedText = $("#FK_ExamCategoryId option:selected").text().toLowerCase();
+
+                // debugger;
+                if (selectedText.includes("term 2")) {
+                    $("#AttendanceSection").show();
+                    $("#remarksSection").show();
+                    $("#promotedtoclassSection").show();
+                } else {
+                    $("#AttendanceSection").hide();
+                    $("#remarksSection").hide();
+                    $("#promotedtoclassSection").hide();
+                }
             }
 
 
