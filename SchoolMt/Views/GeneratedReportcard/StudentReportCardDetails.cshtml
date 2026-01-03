@@ -212,82 +212,82 @@
 
                         @foreach (var subject in Model.Subjects)
                         {
-                            <tr>
-                                <td class="borBottom borRight"><strong>@subject.SubjectName</strong></td>
+                        <tr>
+                            <td class="borBottom borRight"><strong>@subject.SubjectName</strong></td>
 
-                                @{
-                                    double term1Total = 0;
-                                    double term2Total = 0;
-                                }
+                            @{
+                                double term1Total = 0;
+                                double term2Total = 0;
+                            }
 
-                                @foreach (var cat in Model.ExamCategories)
+                            @foreach (var cat in Model.ExamCategories)
+                            {
+                                int termTotal = 0;
+                                int termMax = 100;
+
+
+                                var examTypes = Model.ExamTypes.AsEnumerable();
+
+                                if (cat.ExamCategoryType.Contains("Term 1") || cat.ExamCategoryType.Contains("1"))
                                 {
-                                    int termTotal = 0;
-                                    int termMax = 100;
 
-
-                                    var examTypes = Model.ExamTypes.AsEnumerable();
-
-                                    if (cat.ExamCategoryType.Contains("Term 1") || cat.ExamCategoryType.Contains("1"))
-                                    {
-
-                                        examTypes = examTypes.Where(e => e.ExamType != "Y");
-
-                                    }
-                                    else if (cat.ExamCategoryType.Contains("Term 2") || cat.ExamCategoryType.Contains("2"))
-                                    {
-
-                                        examTypes = examTypes.Where(e => e.ExamType != "HY");
-                                    }
-
-
-                                    foreach (var examType in examTypes)
-                                    {
-                                        var mark = Model.Marks.FirstOrDefault(m =>
-                                            m.SubjectId == subject.Id &&
-                                            m.ExamCategoryId == cat.Id &&
-                                            m.ExamTypeId == examType.Id);
-
-                                        if (mark != null)
-                                        {
-                                            <td class="borBottom borRight">@mark.ObtainMarks</td>
-                                            termTotal += mark.ObtainMarks;
-                                        }
-                                        else
-                                        {
-                                            <td class="borBottom borRight">-</td>
-                                        }
-                                    }
-
-                                    termTotal = termTotal > 100 ? 100 : termTotal;
-                                    <td class="borBottom borRight">@termTotal</td>
-
-                                    double termPercentage = (termTotal * 100.0) / termMax;
-                                    var grade = Model.Grades.FirstOrDefault(g => termPercentage >= g.Min && termPercentage <= g.Max);
-
-                                    <td class="borBottom borRight">@(grade.GradeName)</td>
-
-                                    if (cat.ExamCategoryType.Contains("Term 1") || cat.ExamCategoryType.Contains("1"))
-                                    {
-                                        term1Total = termTotal;
-                                    }
-
-                                    else if (cat.ExamCategoryType.Contains("Term 2") || cat.ExamCategoryType.Contains("2"))
-                                    {
-                                        term2Total = termTotal;
-                                    }
+                                    examTypes = examTypes.Where(e => e.ExamType != "Y");
 
                                 }
+                                else if (cat.ExamCategoryType.Contains("Term 2") || cat.ExamCategoryType.Contains("2"))
+                                {
 
-                                @{
-                                    double overallTotal = (term1Total * 0.5) + (term2Total * 0.5);
-                                    var overallGrade = Model.Grades.FirstOrDefault(g => overallTotal >= g.Min && overallTotal <= g.Max);
+                                    examTypes = examTypes.Where(e => e.ExamType != "HY");
                                 }
 
-                                <td class="borBottom borRight">@overallTotal.ToString("F0")</td>
-                                <td class="borBottom">@(overallGrade.GradeName)</td>
 
-                            </tr>
+                                foreach (var examType in examTypes)
+                                {
+                                    var mark = Model.Marks.FirstOrDefault(m =>
+                                        m.SubjectId == subject.Id &&
+                                        m.ExamCategoryId == cat.Id &&
+                                        m.ExamTypeId == examType.Id);
+
+                                    if (mark != null)
+                                    {
+                                        <td class="borBottom borRight">@mark.ObtainMarks</td>
+                                        termTotal += mark.ObtainMarks;
+                                    }
+                                    else
+                                    {
+                                        <td class="borBottom borRight">-</td>
+                                    }
+                                }
+
+                                termTotal = termTotal > 100 ? 100 : termTotal;
+                                <td class="borBottom borRight">@termTotal</td>
+
+                                double termPercentage = (termTotal * 100.0) / termMax;
+                                var grade = Model.Grades.FirstOrDefault(g => termPercentage >= g.Min && termPercentage <= g.Max);
+
+                                <td class="borBottom borRight">@(grade.GradeName)</td>
+
+                                if (cat.ExamCategoryType.Contains("Term 1") || cat.ExamCategoryType.Contains("1"))
+                                {
+                                    term1Total = termTotal;
+                                }
+
+                                else if (cat.ExamCategoryType.Contains("Term 2") || cat.ExamCategoryType.Contains("2"))
+                                {
+                                    term2Total = termTotal;
+                                }
+
+                            }
+
+                            @{
+                                double overallTotal = (term1Total * 0.5) + (term2Total * 0.5);
+                                var overallGrade = Model.Grades.FirstOrDefault(g => overallTotal >= g.Min && overallTotal <= g.Max);
+                            }
+
+                            <td class="borBottom borRight">@overallTotal.ToString("F0")</td>
+                            <td class="borBottom">@(overallGrade==null?"-": overallGrade.GradeName)</td>
+
+                        </tr>
                         }
 
                     </tbody>

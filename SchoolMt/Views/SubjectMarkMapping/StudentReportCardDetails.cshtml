@@ -284,7 +284,7 @@
                                 }
 
                                 <td class="borBottom borRight">@overallTotal.ToString("F0")</td>
-                                <td class="borBottom">@(overallGrade.GradeName)</td>
+                                <td class="borBottom">@(overallGrade==null?"-": overallGrade.GradeName)</td>
 
                             </tr>
                         }
