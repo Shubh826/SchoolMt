@@ -433,8 +433,8 @@ namespace SchoolMt.Controllers
             //string MDLAttr = "StudentName,ClassName,ClassCode,FatherName,MotherName,Address,PreviousDueAmount,ExaminationFee1,ExaminationFee2,ApplicableMonthFee,MonthdueFee,TransportdueFee,TotalDueAmount";
 
             string[] columns = { "Student Name", "Class Name", "Class Code", "Father Name", "Mother Name", "Address", 
-                "Due Amount" };
-            string MDLAttr = "StudentName,ClassName,ClassCode,FatherName,MotherName,Address,TotalDueAmount";
+                "Due Amount","Mobile No." };
+            string MDLAttr = "StudentName,ClassName,ClassCode,FatherName,MotherName,Address,TotalDueAmount,MobileNo";
             ExcelExportHelper objExcelExportHelper = new ExcelExportHelper();
             return objExcelExportHelper.ExportExcelByClosedXmlForPendingFeeStatusReport(_listForExcel, "Fee Pending Status Report", ".xls", MDLAttr, columns);
         }

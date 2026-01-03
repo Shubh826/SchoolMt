@@ -56,7 +56,7 @@ namespace DAL
                             //FK_CompanyId = dr.Field<int>("FK_CompanyId"),
                             StudentName = dr.Field<string>("StudentName") ??   string.Empty,
                             FatherName = dr.Field<string>("FatherName") ?? string.Empty,
-                            //MobileNo = dr.Field<string>("MobileNo") ?? string.Empty,
+                            MobileNo = dr.Field<string>("MobileNo") ?? string.Empty,
                             ClassName = dr.Field<string>("ClassName") ?? string.Empty,
                             ClassCode = dr.Field<string>("ClassCode") ?? string.Empty,
                             Gender = dr.Field<string>("Gender") ?? string.Empty,
