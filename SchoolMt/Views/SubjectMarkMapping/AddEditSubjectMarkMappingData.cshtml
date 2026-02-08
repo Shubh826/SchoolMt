@@ -582,9 +582,22 @@ $('#btnsubmit').click(function (e) {
                                 <td>${subjectName}</td>`;
 
                     $.each(res.HeaderList, function (hIndex, header) {
-                        debugger;
-                        var match = subjectObj.Marks.find(m => m.ExamType=== header.ExamType);
-                        var obtain = match ? match.ObtainMark : 0;
+                       // debugger;
+                        var match = subjectObj.Marks.find(m => m.ExamType === header.ExamType);
+
+                        var obtainDefault = 0;
+
+                        if (match && match.ObtainMark != null) {
+                            obtainDefault = match.ObtainMark;
+                        }
+                        else {
+                            // Default value logic
+                            if (header.ExamType === "SE" || header.ExamType === "Nbs") {
+                                obtainDefault = header.TotalMark; // 5
+                            }
+                        }
+
+                        var obtain = match ? match.ObtainMark : obtainDefault;
 
                         row += `
                             <td>
