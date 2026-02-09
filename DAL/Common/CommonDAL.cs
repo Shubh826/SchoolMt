@@ -515,14 +515,15 @@ namespace DAL
 
 
         public static SubjectWiseMarksResponse GetSubjectWiseMarksWithHeaderList(
-     int companyid, int examtypeId, int pkId)
+     int companyid, int examtypeId, int pkId,int classId)
         {
             CommandText = "[dbo].[USP_GetSubjectWiseMarksWithHeader]";
-
-            var para = new SqlParameter[3];
+            
+            var para = new SqlParameter[4];
             para[0] = new SqlParameter("@iCompanyId", SqlDbType.Int) { Value = companyid };
             para[1] = new SqlParameter("@iexamtypeId", SqlDbType.Int) { Value = examtypeId };
             para[2] = new SqlParameter("@ipkId", SqlDbType.Int) { Value = pkId };
+            para[3] = new SqlParameter("@iClassId", SqlDbType.Int) { Value = classId };
 
             DataSet ds = (DataSet)objDataFunctions.getQueryResult(
                 CommandText, DataReturnType.DataSet, para.ToList());

@@ -44,18 +44,18 @@
 
                                     @if (Model.PKId > 0)
                                     {
-                                    @Html.DropDownListFor(E => E.FK_CompanyId,
-                                      new SelectList((System.Collections.IEnumerable)ViewData["companylist"], "ID", "Value"),
-                                      "--SELECT--",
-                                      new { @class = "form-control select2", @disabled = "disabled", style = "width:100%", id = "FK_CompanyId" })
-                                    @Html.HiddenFor(E => E.FK_CompanyId)
+                                        @Html.DropDownListFor(E => E.FK_CompanyId,
+                                          new SelectList((System.Collections.IEnumerable)ViewData["companylist"], "ID", "Value"),
+                                          "--SELECT--",
+                                          new { @class = "form-control select2", @disabled = "disabled", style = "width:100%", id = "FK_CompanyId" })
+                                        @Html.HiddenFor(E => E.FK_CompanyId)
                                     }
                                     else
                                     {
-                                    @Html.DropDownListFor(E => E.FK_CompanyId,
-                                      new SelectList((System.Collections.IEnumerable)ViewData["companylist"], "ID", "Value"),
-                                      "--SELECT--",
-                                      new { @class = "form-control select2", style = "width:100%", id = "FK_CompanyId" })
+                                        @Html.DropDownListFor(E => E.FK_CompanyId,
+                                          new SelectList((System.Collections.IEnumerable)ViewData["companylist"], "ID", "Value"),
+                                          "--SELECT--",
+                                          new { @class = "form-control select2", style = "width:100%", id = "FK_CompanyId" })
 
                                     }
 
@@ -69,9 +69,9 @@
                                 <div class="col-md-4 form-group">
                                     @if (Model.PKId > 0)
                                     {@Html.DropDownListFor(E => E.FK_ClassId,
-                                     new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Id", "Value"),
-                                     "--SELECT--",
-                                     new { @class = "form-control select2", @disabled = "disabled", style = "width:100%", id = "FK_ClassId" })
+                                    new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Id", "Value"),
+                                    "--SELECT--",
+                                    new { @class = "form-control select2", @disabled = "disabled", style = "width:100%", id = "FK_ClassId" })
                                     @Html.HiddenFor(E => E.FK_ClassId)
                                 }
                                 else
@@ -136,15 +136,15 @@
 
                             <!-- Exam Type -->
                             @*<div class="row mb-2" id="examptypediv">
-            <div class="col-md-2">
-                <label class="setForm bold">Exam Type<span style="color:red">*</span></label>
-            </div>
-            <div class="col-md-4 form-group">
+                                    <div class="col-md-2">
+                                        <label class="setForm bold">Exam Type<span style="color:red">*</span></label>
+                                    </div>
+                                    <div class="col-md-4 form-group">
 
-                @Html.DropDownListFor(E => E.LookUpDetailId, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "Value"), "--Select--", new { @class = "form-control select2" })
+                                        @Html.DropDownListFor(E => E.LookUpDetailId, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "Value"), "--Select--", new { @class = "form-control select2" })
 
-            </div>
-        </div>*@
+                                    </div>
+                                </div>*@
 
                             <!-- Subject Wise Marks Table -->
                             <div class="row mb-2" id="CategoryListSection" style="display:none;">
@@ -234,6 +234,7 @@
     <input type="hidden" id="hdnLookUpId" value="@Model.LookUpDetailId" />
     <input type="hidden" id="hdnStudentId" value="@Model.FK_StudentId" />
     <input type="hidden" id="hdnExamCategoryId" value="@Model.FK_ExamCategoryId" />
+    <input type="hidden" id="hdnClassId" value="@Model.FK_ClassId" />
 
 
 }@*@*******START Loader******@
@@ -255,10 +256,11 @@
 
 
             if ($('#PKId').val() > 0) {
+                
+                
                // GetExamType($('#FK_CompanyId').val(), 'Exam Type')
-                BindSubjectWiseMarksList($('#FK_CompanyId').val(), $('#hdnExamCategoryId').val(), $('#PKId').val());
+                BindSubjectWiseMarksList($('#FK_CompanyId').val(), $('#hdnExamCategoryId').val(), $('#PKId').val(), $('#hdnClassId').val());
                 BindStudent($('#FK_CompanyId').val(), $("#FK_ClassId").val());
-                $("#CategoryListSection").show();
                 var selectedText = $("#FK_ExamCategoryId option:selected").text().toLowerCase();
 
                 // debugger;
@@ -282,7 +284,12 @@
                 $("#FK_ClassId").val("").trigger('change');
                 $("#tblExamTypes tbody").empty();
                 $("#selectAllExamTypes").prop('checked', false);
+                $('#FK_ExamCategoryId').val("").attr("selected", "selected");
+                $("#AttendanceSection").hide();
+                $("#remarksSection").hide();
+                $("#promotedtoclassSection").hide();
                 $("#CategoryListSection").hide();
+                $('#FK_ExamCategoryId').select2();
             });
 
             // Company change
@@ -292,15 +299,23 @@
                 //GetExamType($("#FK_CompanyId").val(), 'Exam Type');
                 $("#tblExamTypes tbody").empty();
                 $("#selectAllExamTypes").prop('checked', false);
+                $('#FK_ExamCategoryId').val("").attr("selected", "selected");
                 $("#CategoryListSection").hide();
+                $("#AttendanceSection").hide();
+                $("#remarksSection").hide();
+                $("#promotedtoclassSection").hide();
+                $('#FK_ExamCategoryId').select2();
 
             });
 
 
             // Exam Type change
             $("#FK_ExamCategoryId").change(function (e) {
+                // debugger;
+                //alert($("#FK_ExamCategoryId option:selected").val())
+              
                 var selectedText = $("#FK_ExamCategoryId option:selected").text().toLowerCase();
-
+               // alert(selectedText)
                // debugger;
                 if (selectedText.includes("term 2")) {
                     $("#AttendanceSection").show();
@@ -311,8 +326,8 @@
                     $("#remarksSection").hide();
                     $("#promotedtoclassSection").hide();
                 }
-                BindSubjectWiseMarksList($('#FK_CompanyId').val(), $('#FK_ExamCategoryId').val(),0);
-                $("#CategoryListSection").show();
+                BindSubjectWiseMarksList($('#FK_CompanyId').val(), $('#FK_ExamCategoryId').val(), 0, $('#FK_ClassId').val());
+               
             });
 
             //$('#FK_CompanyId').select2();
@@ -530,7 +545,7 @@ $('#btnsubmit').click(function (e) {
             });
         }
 
-   function BindSubjectWiseMarksList(companyid, examtypeId, PkId) {
+        function BindSubjectWiseMarksList(companyid, examtypeId, PkId, classId) {
 
     var $thead = $("#tblExamTypes thead");
     var $tbody = $("#tblExamTypes tbody");
@@ -539,11 +554,12 @@ $('#btnsubmit').click(function (e) {
     $thead.empty();
     $tbody.empty();
     $coBody.empty();
+     //$("#CategoryListSection").hide();
 
     $.ajax({
         url: "@Url.Action("GetSubjectWiseMarksWithHeaderList", "SubjectMarkMapping")",
         type: "POST",
-        data: { companyid: companyid, examtypeId: examtypeId, PkId: PkId },
+        data: { companyid: companyid, examtypeId: examtypeId, PkId: PkId, classId: classId },
         success: function (res) {
 
             if (!res) return;
@@ -637,6 +653,7 @@ $('#btnsubmit').click(function (e) {
                     $coBody.append(row);
                 });
             }
+            $("#CategoryListSection").show();
 
         }
     });
