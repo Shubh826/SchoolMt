@@ -140,11 +140,11 @@ namespace SchoolMt.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetSubjectWiseMarksWithHeaderList(int companyid,int PkId,int examtypeId)
+        public JsonResult GetSubjectWiseMarksWithHeaderList(int companyid,int PkId,int examtypeId,int classId)
         {
             //return Json(CommonBAL.GetSubjectWiseMarksList(companyid, examtypeId, PkId), JsonRequestBehavior.AllowGet);
 
-            return Json(CommonBAL.GetSubjectWiseMarksWithHeaderList(companyid, examtypeId,  PkId), JsonRequestBehavior.AllowGet);
+            return Json(CommonBAL.GetSubjectWiseMarksWithHeaderList(companyid, examtypeId,  PkId, classId), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
