@@ -16,9 +16,9 @@ namespace BAL
         {
             objDal = new GeneratedReportcardDAL();
         }
-        public bool GetStudentData(out List<StudentMasterMDL> objStudentList, out BasicPagingMDL objBasicPagingMDL, int id, int rowPerpage, int currentPage, int FK_CompanyId, string SearchBy, string SearchValue)
+        public bool GetStudentData(out List<StudentMasterMDL> objStudentList, out BasicPagingMDL objBasicPagingMDL, int id, int rowPerpage, int currentPage, int FK_CompanyId, string SearchBy, string SearchValue, string Classname, string Section )
         {
-            return objDal.GetStudentData(out objStudentList, out objBasicPagingMDL, id, rowPerpage, currentPage, FK_CompanyId, SearchBy, SearchValue);
+            return objDal.GetStudentData(out objStudentList, out objBasicPagingMDL, id, rowPerpage, currentPage, FK_CompanyId, SearchBy, SearchValue, Classname, Section);
         }
         public ReportCardViewMDL GetStudentDataForReportCard(int id)
         {

@@ -15,6 +15,10 @@ using System.IO;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using iTextSharp.text;
 using iTextSharp.tool.xml;
+using SendGrid.Helpers.Mail.Model;
+using System.Net.Http;
+using BAL.Common;
+using Microsoft.Ajax.Utilities;
 
 namespace SchoolMt.Controllers
 {
@@ -37,11 +41,13 @@ namespace SchoolMt.Controllers
         // GET: GeneratedReportcard
         public ActionResult Index()
         {
+            ViewData["Classlist"] = CommonBAL.FillClass();
+            ViewData["ClassCodelist"] = CommonBAL.FillClassCode();
             return View();
         }
-        public PartialViewResult GetStudentData(int CurrentPage = 1, string SearchBy = "", string SearchValue = "")
+        public PartialViewResult GetStudentData(int CurrentPage = 1, string SearchBy = "", string SearchValue = "", string ClassName = "", string Section = "")
         {
-            objBal.GetStudentData(out _Studentlist, out objBasicPagingMDL, 0, 20, CurrentPage, SessionInfo.User.fk_companyid,SearchBy, SearchValue);
+            objBal.GetStudentData(out _Studentlist, out objBasicPagingMDL, 0, 20, CurrentPage, SessionInfo.User.fk_companyid, SearchBy, SearchValue, ClassName, Section);
             ViewBag.paging = objBasicPagingMDL;
             TempData["studentlist"] = _Studentlist;
             return PartialView("_StudentGrid", _Studentlist);
@@ -218,8 +224,402 @@ namespace SchoolMt.Controllers
             return sb.ToString();
         }
 
+        public ActionResult GenerateAllStudentsHtml()
+        {
+            try
+            {
+                TempData.Keep();
+                // ✅ Safe TempData handling
+                if (TempData["studentlist"] == null)
+                {
+                    return Content("Session expired. Please search again.");
+                }
+
+                List<StudentMasterMDL> _list = TempData["studentlist"] as List<StudentMasterMDL>;
+                TempData.Keep("studentlist"); // keep for reuse
+
+                if (_list == null || _list.Count == 0)
+                {
+                    return Content("Report card not found");
+                }
+
+                // ✅ Unique file name
+                string ReportName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+
+                var sb = new StringBuilder();
+
+                // ✅ Global CSS
+                sb.Append(@"
+        <style>
+        body { font-family: Helvetica,Arial,sans-serif; font-size:8pt; }
+        .borLeft { border-left:1px solid #000; }
+        .borRight { border-right:1px solid #000; }
+        .borTop { border-top:1px solid #000; }
+        .borBottom { border-bottom:1px solid #000; }
+        table { border-collapse: collapse; width:100%; }
+        td, th { padding:5px; }
+
+        .page-break {
+            page-break-after: always;
+        }
+        </style>
+        ");
+
+                // ✅ Loop students
+                foreach (var item in _list)
+                {
+                    var obj = objSubjectMarkMappingBAL
+                              .StudentReportCardDetails_New(Convert.ToInt32(item.PK_SudentId));
+
+                    sb.Append(GenerateSingleStudentHtml(obj));
+
+                    // Page break after each student
+                    sb.Append("<div class='page-break'></div>");
+                }
+
+                string htmlContent = sb.ToString(); // ✅ moved outside loop
+
+                // ✅ PDF generation
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    Document pdfDoc = new Document(PageSize.A4, 20f, 20f, 20f, 20f);
+                    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, ms);
+                    pdfDoc.Open();
+
+                    using (var srHtml = new StringReader(htmlContent))
+                    {
+                        XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, srHtml);
+                    }
+
+                    pdfDoc.Close();
+
+                    byte[] pdfBytes = ms.ToArray();
+
+                    return File(pdfBytes, "application/pdf", $"ReportCard_{ReportName}.pdf");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Optional: log error
+                return Content("Error generating report card");
+            }
+        }
+       
+        public string GenerateSingleStudentHtml(MarksTableViewModel Model)
+        {
+            var html = new StringBuilder();
+
+            // CSS
+            html.Append(@"
+    <style>
+        body {
+            font-family: Helvetica,Arial,sans-serif;
+            font-size: 8pt;
+            line-height: 10pt;
+            padding: 10pt;
+            background-color: #f4f4f4;
+        }
+        .borLeft { border-left: 1px solid #000; }
+        .borRight { border-right: 1px solid #000; }
+        .borTop { border-top: 1px solid #000; }
+        .borBottom { border-bottom: 1px solid #000; }
+
+        .action-buttons { text-align: center; margin: 15px 0; }
+        .btn-print, .btn-download {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 5px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            color: white;
+        }
+        .btn-print { background-color: #28a745; }
+        .btn-print:hover { background-color: #218838; }
+        .btn-download { background-color: #007bff; }
+        .btn-download:hover { background-color: #0056b3; }
+
+        @media print { .action-buttons { display: none; } }
+    </style>");
+
+            // Start Table
+            html.Append(@"<table width='100%' border='0' cellspacing='0' cellpadding='0'>
+        <tbody>
+            <tr>
+                <td colspan='4' align='center' style='font-size:12pt;'><strong>REPORT CARD " + Model.Student.AcademicYear + @"</strong></td>
+            </tr>
+            <tr><td colspan='4'>&nbsp;</td></tr>
+            <tr>
+                <td class='borLeft borTop' colspan='2'>
+                    <table width='100%' cellspacing='0' cellpadding='3'>
+                        <tr><td>Student's Name: <strong>" + Model.Student.StudentName + @"</strong></td></tr>
+                        <tr><td>Father's Name: <strong>" + (Model.Student.FatherName ?? "-") + @"</strong></td></tr>
+                        <tr><td>Mother's Name: <strong>" + (Model.Student.MotherName ?? "-") + @"</strong></td></tr>
+                        <tr><td>Date Of Birth: <strong>" + (Model.Student.DOB ?? "-") + @"</strong></td></tr>
+                        <tr>
+                            <td>
+                                <table width='70%' cellspacing='0' cellpadding='0'>
+                                    <tr>
+                                        <td width='45%'>Class: <strong>" + (Model.Student.Class ?? "-") + @"</strong></td>
+                                        <td width='25%'>Sec: <strong>" + (Model.Student.Section ?? "-") + @"</strong></td>
+                                        <td width='30%'>Roll No: <strong>" + (Model.Student.RollNo ?? "-") + @"</strong></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td align='right' class='borRight borTop' colspan='2'>
+                    <img src='" + Model.Student.StudentImgUrl + @"' alt='Student Photo' class='borBottom borLeft borRight borTop' width='80'>
+                </td>
+            </tr>
+            <tr><td colspan='4' class='borTop borLeft borRight'>&nbsp;</td></tr>
+            <tr>
+                <td colspan='4' class='borTop borLeft borRight'>
+                    <table width='100%' cellspacing='0' cellpadding='5'>
+                        <thead>
+                            <tr>
+                                <th class='borBottom borRight'>Scholastic Areas:</th>");
+            // Exam Categories Header
+            foreach (var cat in Model.ExamCategories)
+            {
+                html.Append("<th class='borBottom borRight' colspan='6'>" + cat.ExamCategoryType + " (100 marks)</th>");
+            }
+            html.Append("<th class='borBottom' colspan='2'>OVERALL</th></tr>");
+
+            // Exam Types Header
+            html.Append("<tr><th class='borBottom borRight' rowspan='2'>Subject Name</th>");
+            foreach (var cat in Model.ExamCategories)
+            {
+                var examTypes = Model.ExamTypes.AsEnumerable();
+                if (cat.ExamCategoryType.Contains("Term-1") || cat.ExamCategoryType.Contains("Term 1")) examTypes = examTypes.Where(e => e.ExamType != "Y");
+                if (cat.ExamCategoryType.Contains("Term-2") || cat.ExamCategoryType.Contains("Term 2")) examTypes = examTypes.Where(e => e.ExamType != "HY");
+
+                foreach (var examType in examTypes)
+                {
+                    html.Append("<th class='borBottom borRight'>" + examType.ExamType + "</th>");
+                }
+                html.Append("<th class='borBottom borRight'>TOTAL</th><th rowspan='2' class='borBottom borRight'>Grade</th>");
+            }
+            html.Append("<th class='borBottom borRight'>GRAND TOTAL</th><th rowspan='2' class='borBottom'>Grade</th></tr>");
+
+            // Sub-header for marks
+            html.Append("<tr>");
+            foreach (var cat in Model.ExamCategories)
+            {
+                var examTypes = Model.ExamTypes.AsEnumerable();
+                if (cat.ExamCategoryType.Contains("Term-1") || cat.ExamCategoryType.Contains("Term 1")) examTypes = examTypes.Where(e => e.ExamType != "Y");
+                if (cat.ExamCategoryType.Contains("Term-2") || cat.ExamCategoryType.Contains("Term 2")) examTypes = examTypes.Where(e => e.ExamType != "HY");
+                foreach (var examType in examTypes) html.Append("<th class='borBottom borRight'>(in " + examType.TotalMark + ")</th>");
+                html.Append("<th class='borBottom borRight'>(in 100)</th>");
+            }
+            html.Append("<th class='borBottom borRight'>T1(50)+T2(50)</th></tr>");
+            html.Append("</thead><tbody>");
+
+            // Subject Rows
+            foreach (var subject in Model.Subjects)
+            {
+                html.Append("<tr><td class='borBottom borRight'><strong>" + subject.SubjectName + "</strong></td>");
+                double term1Total = 0, term2Total = 0;
+                foreach (var cat in Model.ExamCategories)
+                {
+                    int termTotal = 0;
+                    var examTypes = Model.ExamTypes.AsEnumerable();
+                    if (cat.ExamCategoryType.Contains("Term-1") || cat.ExamCategoryType.Contains("1")) examTypes = examTypes.Where(e => e.ExamType != "Y");
+                    if (cat.ExamCategoryType.Contains("Term-2") || cat.ExamCategoryType.Contains("2")) examTypes = examTypes.Where(e => e.ExamType != "HY");
+
+                    foreach (var examType in examTypes)
+                    {
+                        var mark = Model.Marks.FirstOrDefault(m => m.SubjectId == subject.Id && m.ExamCategoryId == cat.Id && m.ExamTypeId == examType.Id);
+                        if (mark != null) { html.Append("<td class='borBottom borRight'>" + mark.ObtainMarks + "</td>"); termTotal += mark.ObtainMarks; }
+                        else html.Append("<td class='borBottom borRight'>-</td>");
+                    }
+
+                    termTotal = termTotal > 100 ? 100 : termTotal;
+                    html.Append("<td class='borBottom borRight'>" + termTotal + "</td>");
+                    double termPercentage = (termTotal * 100.0) / 100;
+                    var grade = Model.Grades.FirstOrDefault(g => termPercentage >= g.Min && termPercentage <= g.Max);
+                    html.Append("<td class='borBottom borRight'>" + (grade?.GradeName ?? "-") + "</td>");
+
+                    if (cat.ExamCategoryType.Contains("Term-1") || cat.ExamCategoryType.Contains("1")) term1Total = termTotal;
+                    if (cat.ExamCategoryType.Contains("Term-2") || cat.ExamCategoryType.Contains("2")) term2Total = termTotal;
+                }
+
+                double overallTotal = (term1Total * 0.5) + (term2Total * 0.5);
+                var overallGrade = Model.Grades.FirstOrDefault(g => overallTotal >= g.Min && overallTotal <= g.Max);
+                html.Append("<td class='borBottom borRight'>" + overallTotal.ToString("F0") + "</td>");
+                html.Append("<td class='borBottom'>" + (overallGrade?.GradeName ?? "-") + "</td>");
+                html.Append("</tr>");
+            }
+
+            html.Append("</tbody></table></td></tr>");
+
+            // 8 Point Grading Scale
+            html.Append(@"
+    <tr>
+        <td colspan='4' class='borTop borLeft borRight'>
+            <table width='100%' cellspacing='5' cellpadding='0'>
+                <tr>
+                    <td width='25%'><strong>8 Point Grading Scale:</strong></td>
+                    <td width='75%'><strong>");
+            var gradesList = Model.Grades.OrderByDescending(g => g.Min).ToList();
+            for (int i = 0; i < gradesList.Count; i++)
+            {
+                var g = gradesList[i];
+                html.Append(g.GradeName + " (" + g.Min + "% - " + g.Max + "%)");
+                if (i < gradesList.Count - 1) html.Append(" ");
+            }
+            html.Append(@"</strong></td></tr></table></td></tr>");
+
+            // Abbreviations
+            html.Append(@"
+    <tr>
+        <td colspan='4' class='borTop borLeft borRight'>
+            <table width='100%' cellspacing='5' cellpadding='0'>
+                <tr>
+                    <td width='25%'><strong>Abbreviations:</strong></td>
+                    <td width='75%'><strong>" + Model.Student.AbbreviationText + @"</strong></td>
+                </tr>
+            </table>
+        </td>
+    </tr>");
+
+            // Overall Marks
+            html.Append(@"
+    <tr>
+        <td colspan='4' class='borTop borLeft borRight'>
+            <table width='100%' cellspacing='5' cellpadding='0'>
+                <tr>
+                    <td width='25%'><strong>Overall:</strong></td>
+                    <td width='25%'><strong>Marks: " + Model.Student.ObtainMarks + "/" + Model.Student.TotalMarks + @"</strong></td>
+                    <td width='25%'><strong>Percentage: " + Model.Student.Percentages + @"</strong></td>
+                    <td width='25%'><strong>Grade: " + Model.Student.Grade + @"</strong></td>
+                </tr>
+            </table>
+        </td>
+    </tr>");
+
+            // Co-Scholastic Areas
+            html.Append(@"
+    <tr>
+        <td colspan='4' class='borTop borLeft borRight'>
+            <table width='100%' cellspacing='0' cellpadding='5'>
+                <thead>
+                    <tr class='borBottom borRight' align='center'>
+                        <th>Co-Scholastic Areas: Term-1<br>[on a 3-point (A-C) grading scale]</th>
+                        <th>Grade</th>
+                        <th>Co-Scholastic Areas: Term-2<br>[on a 3-point (A-C) grading scale]</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>");
+            if (Model.CoScholasticArea != null && Model.CoScholasticArea.Any())
+            {
+                var areas = Model.CoScholasticArea.Select(x => x.AreaName).Distinct();
+                foreach (var area in areas)
+                {
+                    var term1 = Model.CoScholasticArea.FirstOrDefault(x => x.AreaName == area && x.TermName == "Term 1");
+                    var term2 = Model.CoScholasticArea.FirstOrDefault(x => x.AreaName == area && x.TermName == "Term 2");
+
+                    html.Append("<tr>");
+                    html.Append("<td class='borBottom borRight' align='center'>" + area + "</td>");
+                    html.Append("<td class='borBottom borRight' align='center'>" + (term1?.TermGrade ?? "-") + "</td>");
+                    html.Append("<td class='borBottom borRight' align='center'>" + area + "</td>");
+                    html.Append("<td class='borBottom' align='center'>" + (term2?.TermGrade ?? "-") + "</td>");
+                    html.Append("</tr>");
+                }
+            }
+            html.Append("</tbody></table></td></tr>");
+
+            // Attendance, Remarks, Promoted Class
+            html.Append(@"
+    <tr>
+        <td colspan='4' class='borTop borLeft borRight'>
+            <table width='100%' cellspacing='5' cellpadding='0'>
+                <tr>
+                    <td><strong>Attendance:</strong> " + Model.Student.Attendancecount + @"</td>
+                    <td><strong>Remarks/Status:</strong> " + Model.Student.Remarks + @"</td>
+                    <td><strong>Promoted to Class:</strong> " + Model.Student.PromotedToClass + @"</td>
+                </tr>
+            </table>
+        </td>
+    </tr>");
+
+            // Signatures
+            html.Append(@"
+    <tr>
+        <td colspan='4' class='borTop borLeft borRight'>
+            <table width='100%' cellspacing='5' cellpadding='0'>
+                <tr>
+                    <td><strong>Date: " + DateTime.Now.ToString("dd-MM-yyyy") + @"</strong></td>
+                    <td align='center'><strong>Signature of Class Teacher</strong></td>
+                    <td align='right'><strong>Principal's Signature</strong></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr><td colspan='4' class='borTop borLeft borRight borBottom'>&nbsp;</td></tr>");
+
+            html.Append("</tbody></table>");
+
+            return html.ToString();
+        }
+        [HttpGet]
+        public string GetReportcardHtmlForPDF()
+        {
+            try
+            {
+                var list = TempData["studentlist"] as List<StudentMasterMDL>;
+                TempData.Keep("studentlist");
+
+                if (list == null || !list.Any())
+                    return "<h3>No data found</h3>";
+
+                var sb = new StringBuilder();
+
+                // Start HTML for PDF
+                sb.Append(@"
+<html>
+<head>
+<style>
+body { font-family: Helvetica,Arial,sans-serif; font-size:8pt; }
+table { border-collapse: collapse; width:100%; }
+td, th { padding:5px; }
+
+.borLeft { border-left:1px solid #000; }
+.borRight { border-right:1px solid #000; }
+.borTop { border-top:1px solid #000; }
+.borBottom { border-bottom:1px solid #000; }
+
+.page-break { page-break-after: always; }
+</style>
+</head>
+<body>
+");
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var obj = objSubjectMarkMappingBAL
+                        .StudentReportCardDetails_New(Convert.ToInt32(list[i].PK_SudentId));
+
+                    sb.Append(GenerateSingleStudentHtml(obj));
+
+                    // Avoid last blank page
+                    if (i < list.Count - 1)
+                        sb.Append("<div class='page-break'></div>");
+                }
+
+                sb.Append("</body></html>");
+
+                return sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                return $"<h3>Error: {ex.Message}</h3>";
+            }
+        }
     }
 
 }
 
- 

@@ -22,7 +22,7 @@ namespace DAL
             objDataFunctions = new DataFunctions();
         }
 
-        public bool GetStudentData(out List<StudentMasterMDL> objStudentList, out BasicPagingMDL objBasicPagingMDL, int id, int rowPerpage, int currentPage, int FK_CompanyId, string SearchBy, string SearchValue)
+        public bool GetStudentData(out List<StudentMasterMDL> objStudentList, out BasicPagingMDL objBasicPagingMDL, int id, int rowPerpage, int currentPage, int FK_CompanyId, string SearchBy, string SearchValue, string Classname, string Section)
         {
             objStudentList = new List<StudentMasterMDL>();
             objBasicPagingMDL = new BasicPagingMDL();
@@ -37,7 +37,9 @@ namespace DAL
                     new SqlParameter("@Fk_CompanyId",FK_CompanyId),
                     new SqlParameter("@SearchBy",SearchBy),
                     new SqlParameter("@SearchValue",SearchValue),
-                    new SqlParameter("@PK_StudentId",id)
+                    new SqlParameter("@PK_StudentId",id),
+                     new SqlParameter("@cClassName",Classname),
+                      new SqlParameter("@cSection",Section)
               };
             try
             {

@@ -15,77 +15,99 @@
             </div>
         </div>
         <section class="section">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col col-lg-5">
-                            <div class="form-group">
-                                <select class="form-control" id="SearchCreteria">
-                                    <option selected="selected" value="">Select</option>
-                                    <option value="StudentName">Student Name</option>
-                                    <option value="StudentCode">Student Code</option>
-                                    <option value="ClassName">Class Name</option>
-                                    <option value="ClassCode">Class Code</option>
-                                    <option value="Stop">Stoppage</option>
-                                </select>
-                            </div>
+            <div class="card shadow-sm">
+                <div class="card-body" style="padding:20px;">
+
+                    <!-- Filter Row -->
+                    <div class="row" style="margin-bottom:15px; align-items:flex-end;">
+
+                        <!-- Class -->
+                        <div class="col-md-2" style="padding-right:12px;">
+                            <label style="margin-bottom:5px;"><b>Class</b></label>
+                            @Html.DropDownListFor(E => E.ClassName,
+                                new SelectList((System.Collections.IEnumerable)ViewData["Classlist"], "Value", "Value"),
+                                "--SELECT--",
+                                new { @class = "form-control", style = "height:38px;" })
                         </div>
-                        <div class="col col-lg-5">
-                            <div class="form-group position-relative has-icon-right">
-                                <input type="text" class="form-control" id="SearchValue" placeholder="Search Value">
-                            </div>
+
+                        <!-- Section -->
+                        <div class="col-md-2" style="padding-right:12px;">
+                            <label style="margin-bottom:5px;"><b>Section</b></label>
+                            @Html.DropDownListFor(E => E.ClassCode,
+                                new SelectList((System.Collections.IEnumerable)ViewData["ClassCodelist"], "Value", "Value"),
+                                "--SELECT--",
+                                new { @class = "form-control", style = "height:38px;" })
                         </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block" onclick="paging(1)">Search</button>
-                            </div>
+
+                        <!-- Search By -->
+                        <div class="col-md-2" style="padding-right:12px;">
+                            <label style="margin-bottom:5px;"><b>Search By</b></label>
+                            <select class="form-control" id="SearchCreteria" style="height:38px;">
+                                <option value="">Select</option>
+                                <option value="StudentName">Student Name</option>
+                                <option value="FatherName">Father Name</option>
+                            </select>
                         </div>
+
+                        <!-- Search -->
+                        <div class="col-md-2" style="padding-right:12px;">
+                            <label style="margin-bottom:5px;"><b>Search</b></label>
+                            <input type="text" class="form-control" id="SearchValue"
+                                   placeholder="Enter value" style="height:38px;">
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="col-md-2 d-flex gap-2">
+                            <button type="button" class="btn btn-primary flex-fill" onclick="paging(1)">
+                                Search
+                            </button>
+                           
+                        </div>
+                        <div class="col-md-2 d-flex gap-2">
+                           
+                            <button type="button" id="btnpdf" class="btn btn-success flex-fill">
+                                Download PDF
+                            </button>
+                        </div>
+
                     </div>
 
-                    <div class="row" style="margin-top:20px;">
+                    <!-- Message -->
+                    <div class="row" style="margin-top:10px;">
                         <div id="msgDiv" class="col-12">
                             @if (ViewBag.msg != null && (ViewBag.msg).Message_Id == 1)
                             {
-                                <div id="myAlert" class="alert alert-success">
-                                    <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close" onclick="DivHide()">&times;</a>
+                                <div class="alert alert-success">
+                                    <a href="javascript:void(0)" class="close" data-dismiss="alert">&times;</a>
                                     <strong>@ViewBag.msg.Message</strong>
                                 </div>
                             }
-                            else
+                            else if (ViewBag.msg != null)
                             {
-                                if (ViewBag.msg != null)
-                                {
-                                    <div id="myAlert" class="alert alert-danger">
-                                        <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close" onclick="DivHide()">&times;</a>
-                                        <strong> @ViewBag.msg.Message</strong>
-                                    </div>
-                                }
+                                <div class="alert alert-danger">
+                                    <a href="javascript:void(0)" class="close" data-dismiss="alert">&times;</a>
+                                    <strong>@ViewBag.msg.Message</strong>
+                                </div>
                             }
-                            <script>
-                                setTimeout(function () {
-                                    document.getElementById("msgDiv").style.display = "none";
-                                }, 5000);
-                            </script>
                         </div>
                     </div>
 
-                    <div class="row">
-                        @*<div class="col-md-12 excelPdfIcon" id="Export">
-                                @using (Html.BeginForm("ExportToExcel", "StudentMaster"))
-                                {
-                                    <input type="image" class="iconSet" title="Download Excel" src="~/App_Images/excel.jpg" style="float:right;" alt="Submit" id="Excel">
-                                }
-                                <input type="image" class="iconSet" title="Download PDF" src="~/App_Images/pdf.jpg" alt="Submit" id="PDF">
-                            </div>*@
+                    <!-- Grid -->
+                    <div class="row" style="margin-top:15px;">
                         <div class="col-md-12">
-                            <div id="GridDiv">
-                                @*@{Html.RenderAction("GetStudentData"); }*@
-                            </div>
+                            <div id="GridDiv"></div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
+
+        <script>
+            setTimeout(function () {
+                document.getElementById("msgDiv").style.display = "none";
+            }, 5000);
+        </script>
     </div>
     @*<footer>
             <div class="footer clearfix mb-0 text-muted">
@@ -139,23 +161,22 @@
     $(document).ready(function (e) {
         //debugger
         $('#Export').hide();
-        $('#PDF').on('click', function (e) {
-            demoFromHTML("data", "STMS Students Detail");
+      
+        $('#btnpdf').on('click', function (e) {
+            downloadPdf(e);
         });
 
-        $(function () {
+        paging(1);
+        $('#SearchCreteria').change(function () {
+            $('#SearchValue').val('');
+            if ($('#SearchCreteria').val() == '') {
+                paging(1);
+            }
 
-            paging(1);
-            $('#SearchCreteria').change(function () {
-                $('#SearchValue').val('');
-                if ($('#SearchCreteria').val() == '') {
-                    paging(1);
-                }
-
-            })
         });
+    
     });
-     
+
     function paging(currentpage) {
         if (currentpage == NaN || currentpage <= 0) {
             return false;
@@ -165,7 +186,7 @@
             url:"@Url.Action("GetStudentData", "GeneratedReportcard")",
             type: 'GET',
             cache: false,
-            data: { 'CurrentPage': parseInt(currentpage), 'SearchBy': $("#SearchCreteria").val(), 'SearchValue': $("#SearchValue").val() },
+            data: { 'CurrentPage': parseInt(currentpage), 'SearchBy': $("#SearchCreteria").val(), 'SearchValue': $("#SearchValue").val(), 'ClassName': $("#ClassName").val(), 'Section': $("#ClassCode").val() },
             beforeSend: function () {
                 $(".modalBgLoader, .modalLoaderCenter").show();
             },
@@ -185,6 +206,58 @@
         $('#img').attr('height', 100);
         $('#img').attr('width', 100);
         $('#myModal1').modal('show');
-    }
+        }
+
+        function downloadPdf(e)
+        {
+            debugger;
+            // ✅ Call controller (TempData already has data)
+          //  window.open('/GeneratedReportcard/GenerateAllStudentsHtml', '_blank');
+            GeneratedReportcardPDF(e);
+
+        }
+
+
+
+    function GeneratedReportcardPDF(e) {
+    e.preventDefault(); // prevent full form submission
+    $.ajax({
+        url: "@Url.Action("GetReportcardHtmlForPDF", "GeneratedReportcard")",
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        data: {},
+        beforeSend: function () {
+            $(".modalBgLoader, .modalLoaderCenter").show();
+        },
+        complete: function () {
+            $(".modalBgLoader, .modalLoaderCenter").hide();
+        },
+        success: function (data) {
+            var htmlContent = data;
+
+            var printFrame = document.createElement('iframe');
+            printFrame.style.display = 'none';
+
+            document.body.appendChild(printFrame);
+            var printDocument = printFrame.contentDocument;
+
+            printDocument.write(htmlContent);
+            printDocument.close();
+
+            printFrame.onload = function () {
+                printFrame.contentWindow.focus();
+                printFrame.contentWindow.print();
+
+               
+            };
+        },
+        error: function (xhr) {
+            alert("Error generating receipt.");
+        },
+        failure: function (res) {
+            alert("Failed to generate receipt.");
+        },
+    });
+}
     </script>
 }
