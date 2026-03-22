@@ -19,6 +19,8 @@ using SendGrid.Helpers.Mail.Model;
 using System.Net.Http;
 using BAL.Common;
 using Microsoft.Ajax.Utilities;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
 namespace SchoolMt.Controllers
 {
@@ -309,40 +311,7 @@ namespace SchoolMt.Controllers
         {
             var html = new StringBuilder();
 
-            // CSS
-            html.Append(@"
-    <style>
-        body {
-            font-family: Helvetica,Arial,sans-serif;
-            font-size: 8pt;
-            line-height: 10pt;
-            padding: 10pt;
-            background-color: #f4f4f4;
-        }
-        .borLeft { border-left: 1px solid #000; }
-        .borRight { border-right: 1px solid #000; }
-        .borTop { border-top: 1px solid #000; }
-        .borBottom { border-bottom: 1px solid #000; }
-
-        .action-buttons { text-align: center; margin: 15px 0; }
-        .btn-print, .btn-download {
-            display: inline-block;
-            padding: 8px 16px;
-            margin: 5px;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            cursor: pointer;
-            color: white;
-        }
-        .btn-print { background-color: #28a745; }
-        .btn-print:hover { background-color: #218838; }
-        .btn-download { background-color: #007bff; }
-        .btn-download:hover { background-color: #0056b3; }
-
-        @media print { .action-buttons { display: none; } }
-    </style>");
-
+           
             // Start Table
             html.Append(@"<table width='100%' border='0' cellspacing='0' cellpadding='0'>
         <tbody>
@@ -498,22 +467,25 @@ namespace SchoolMt.Controllers
                 </tr>
             </table>
         </td>
-    </tr>");
+    </tr>"
+);
 
             // Co-Scholastic Areas
             html.Append(@"
-    <tr>
-        <td colspan='4' class='borTop borLeft borRight'>
-            <table width='100%' cellspacing='0' cellpadding='5'>
+      <tr>
+        <td colspan='4' style='border-top:1px solid #000; border-left:1px solid #000; border-right:1px solid #000; font-family:Helvetica,Arial,sans-serif; font-size:8pt; line-height:10pt;'>
+            <table style='width:100%; border-collapse:collapse;' cellspacing='0' cellpadding='5'>
                 <thead>
-                    <tr class='borBottom borRight' align='center'>
-                        <th>Co-Scholastic Areas: Term-1<br>[on a 3-point (A-C) grading scale]</th>
-                        <th>Grade</th>
-                        <th>Co-Scholastic Areas: Term-2<br>[on a 3-point (A-C) grading scale]</th>
-                        <th>Grade</th>
-                    </tr>
+                    <tr align='center'>
+                        <th style='border-bottom:1px solid #000; border-right:1px solid #000; width:40%;'>Co-Scholastic Areas: Term-1<br>[on a 3-point (A-C) grading scale]</th>
+                        <th style='border-bottom:1px solid #000; border-right:1px solid #000; width:10%;'>Grade</th>
+                        <th style='border-bottom:1px solid #000; border-right:1px solid #000; width:40%;'>Co-Scholastic Areas: Term-2<br>[on a 3-point (A-C) grading scale]</th>
+                        <th style='border-bottom:1px solid #000; width:10%;'>Grade</th>
+                     </tr>
                 </thead>
                 <tbody>");
+
+            // Data rows
             if (Model.CoScholasticArea != null && Model.CoScholasticArea.Any())
             {
                 var areas = Model.CoScholasticArea.Select(x => x.AreaName).Distinct();
@@ -522,15 +494,19 @@ namespace SchoolMt.Controllers
                     var term1 = Model.CoScholasticArea.FirstOrDefault(x => x.AreaName == area && x.TermName == "Term 1");
                     var term2 = Model.CoScholasticArea.FirstOrDefault(x => x.AreaName == area && x.TermName == "Term 2");
 
-                    html.Append("<tr>");
-                    html.Append("<td class='borBottom borRight' align='center'>" + area + "</td>");
-                    html.Append("<td class='borBottom borRight' align='center'>" + (term1?.TermGrade ?? "-") + "</td>");
-                    html.Append("<td class='borBottom borRight' align='center'>" + area + "</td>");
-                    html.Append("<td class='borBottom' align='center'>" + (term2?.TermGrade ?? "-") + "</td>");
+                    html.Append(@"<tr>");
+                    html.Append("<td style='border-bottom:1px solid #000; border-right:1px solid #000;' align='center'>" + area + "</td>");
+                    html.Append("<td style='border-bottom:1px solid #000; border-right:1px solid #000;' align='center'>" + (term1?.TermGrade ?? "-") + "</td>");
+                    html.Append("<td style='border-bottom:1px solid #000; border-right:1px solid #000;' align='center'>" + area + "</td>");
+                    html.Append("<td style='border-bottom:1px solid #000;' align='center'>" + (term2?.TermGrade ?? "-") + "</td>");
                     html.Append("</tr>");
                 }
             }
-            html.Append("</tbody></table></td></tr>");
+
+            html.Append(@"</tbody>
+            </table>
+        </td>
+     </tr>");
 
             // Attendance, Remarks, Promoted Class
             html.Append(@"
