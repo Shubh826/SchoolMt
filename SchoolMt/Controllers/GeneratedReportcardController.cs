@@ -52,6 +52,11 @@ namespace SchoolMt.Controllers
             objBal.GetStudentData(out _Studentlist, out objBasicPagingMDL, 0, 20, CurrentPage, SessionInfo.User.fk_companyid, SearchBy, SearchValue, ClassName, Section);
             ViewBag.paging = objBasicPagingMDL;
             TempData["studentlist"] = _Studentlist;
+            TempData["TotalItem"] = objBasicPagingMDL.TotalItem;
+            TempData["ClassName"] = ClassName;
+            TempData["Section"] = Section;
+            TempData["SearchBy"] = SearchBy;
+            TempData["SearchValue"] = SearchValue;
             return PartialView("_StudentGrid", _Studentlist);
         }
         public ActionResult StudentReportCardDetails(int id)
@@ -226,99 +231,403 @@ namespace SchoolMt.Controllers
             return sb.ToString();
         }
 
-        public ActionResult GenerateAllStudentsHtml()
-        {
-            try
-            {
-                TempData.Keep();
-                // ✅ Safe TempData handling
-                if (TempData["studentlist"] == null)
-                {
-                    return Content("Session expired. Please search again.");
-                }
+//        public string GenerateSingleStudentHtml(MarksTableViewModel Model)
+//        {
+//            var html = new StringBuilder();
+//            html.Append(@"
+//<html>
+//<head>
+//<style>
+//body{
+//    font-family: Arial, Helvetica, sans-serif;
+//    font-size: 11px;
+//    margin:0;
+//    padding:10px;
+//}
+//table{
+//    border-collapse: collapse;
+//    width:100%;
+//}
+//th, td{
+//    border:1px solid #000;
+//    padding:4px;
+//    font-size:11px;
+//}
+//.borLeft{border-left:1px solid #000;}
+//.borRight{border-right:1px solid #000;}
+//.borTop{border-top:1px solid #000;}
+//.borBottom{border-bottom:1px solid #000;}
 
-                List<StudentMasterMDL> _list = TempData["studentlist"] as List<StudentMasterMDL>;
-                TempData.Keep("studentlist"); // keep for reuse
+//.schoolHeader{
+//    background:#e9a15a;
+//    text-align:center;
+//    font-size:22px;
+//    font-weight:bold;
+//    padding:8px;
+//}
+//.schoolSub{
+//    text-align:center;
+//    font-size:11px;
+//    font-weight:bold;
+//    padding:4px;
+//}
+//.reportTitle{
+//    text-align:center;
+//    font-size:18px;
+//    font-weight:bold;
+//    border:1px solid #000;
+//    padding:6px;
+//}
+//body{
+//    margin:0 !important;
+//    padding:0 !important;
+//}
 
-                if (_list == null || _list.Count == 0)
-                {
-                    return Content("Report card not found");
-                }
+//@page{
+//    margin: 8mm;
+//    size: A4;
+//}
+//</style>
+//</head>
+//<body>
+//");
 
-                // ✅ Unique file name
-                string ReportName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+//            // Start Table
+//            html.Append(@"
+//<table width='100%' border='0' cellspacing='0' cellpadding='0'>
+//    <tbody>
+//        <tr>
+//    <td colspan='4' style='height:10px; border:none;'>&nbsp;</td>
+//</tr>
+//        <tr>
+//            <td colspan='4' class='reportTitle'>
+//                REPORT CARD " + Model.Student.AcademicYear + @"
+            
+//            <tr><td colspan='4'>&nbsp;</td></tr>
+//            <tr>
+//                <td class='borLeft borTop' colspan='2'>
+//                    <table width='100%' cellspacing='0' cellpadding='3'>
+//                        <tr><td>Student's Name: <strong>" + Model.Student.StudentName + @"</strong></td></tr>
+//                        <tr><td>Father's Name: <strong>" + (Model.Student.FatherName ?? "-") + @"</strong></td></tr>
+//                        <tr><td>Mother's Name: <strong>" + (Model.Student.MotherName ?? "-") + @"</strong></td></tr>
+//                        <tr><td>Date Of Birth: <strong>" + (Model.Student.DOB ?? "-") + @"</strong></td></tr>
+//                        <tr>
+//                            <td>
+//                                <table width='70%' cellspacing='0' cellpadding='0'>
+//                                    <tr>
+//                                        <td width='45%'>Class: <strong>" + (Model.Student.Class ?? "-") + @"</strong></td>
+//                                        <td width='25%'>Sec: <strong>" + (Model.Student.Section ?? "-") + @"</strong></td>
+//                                        <td width='30%'>Roll No: <strong>" + (Model.Student.RollNo ?? "-") + @"</strong></td>
+//                                    </tr>
+//                                </table>
+//                            </td>
+//                        </tr>
+//                    </table>
+//                </td>
+//                <td align='right' class='borRight borTop' colspan='2'>
+//                    <img src='" + Model.Student.StudentImgUrl + @"' alt='Student Photo' class='borBottom borLeft borRight borTop' width='80'>
+//                </td>
+//            </tr>
+//            <tr><td colspan='4' class='borTop borLeft borRight'>&nbsp;</td></tr>
+//            <tr>
+//                <td colspan='4' class='borTop borLeft borRight'>
+//                    <table width='100%' cellspacing='0' cellpadding='5'>
+//                        <thead>
+//                            <tr>
+//                                <th class='borBottom borRight'>Scholastic Areas:</th>");
+//            // Exam Categories Header
+//            foreach (var cat in Model.ExamCategories)
+//            {
+//                html.Append("<th class='borBottom borRight' colspan='6'>" + cat.ExamCategoryType + " (100 marks)</th>");
+//            }
+//            html.Append("<th class='borBottom' colspan='2'>OVERALL</th></tr>");
 
-                var sb = new StringBuilder();
+//            // Exam Types Header
+//            html.Append("<tr><th class='borBottom borRight' rowspan='2'>Subject Name</th>");
+//            foreach (var cat in Model.ExamCategories)
+//            {
+//                var examTypes = Model.ExamTypes.AsEnumerable();
+//                if (cat.ExamCategoryType.Contains("Term-1") || cat.ExamCategoryType.Contains("Term 1")) examTypes = examTypes.Where(e => e.ExamType != "Y");
+//                if (cat.ExamCategoryType.Contains("Term-2") || cat.ExamCategoryType.Contains("Term 2")) examTypes = examTypes.Where(e => e.ExamType != "HY");
 
-                // ✅ Global CSS
-                sb.Append(@"
-        <style>
-        body { font-family: Helvetica,Arial,sans-serif; font-size:8pt; }
-        .borLeft { border-left:1px solid #000; }
-        .borRight { border-right:1px solid #000; }
-        .borTop { border-top:1px solid #000; }
-        .borBottom { border-bottom:1px solid #000; }
-        table { border-collapse: collapse; width:100%; }
-        td, th { padding:5px; }
+//                foreach (var examType in examTypes)
+//                {
+//                    html.Append("<th class='borBottom borRight'>" + examType.ExamType + "</th>");
+//                }
+//                html.Append("<th class='borBottom borRight'>TOTAL</th><th rowspan='2' class='borBottom borRight'>Grade</th>");
+//            }
+//            html.Append("<th class='borBottom borRight'>GRAND TOTAL</th><th rowspan='2' class='borBottom'>Grade</th></tr>");
 
-        .page-break {
-            page-break-after: always;
-        }
-        </style>
-        ");
+//            // Sub-header for marks
+//            html.Append("<tr>");
+//            foreach (var cat in Model.ExamCategories)
+//            {
+//                var examTypes = Model.ExamTypes.AsEnumerable();
+//                if (cat.ExamCategoryType.Contains("Term-1") || cat.ExamCategoryType.Contains("Term 1")) examTypes = examTypes.Where(e => e.ExamType != "Y");
+//                if (cat.ExamCategoryType.Contains("Term-2") || cat.ExamCategoryType.Contains("Term 2")) examTypes = examTypes.Where(e => e.ExamType != "HY");
+//                foreach (var examType in examTypes) html.Append("<th class='borBottom borRight'>(in " + examType.TotalMark + ")</th>");
+//                html.Append("<th class='borBottom borRight'>(in 100)</th>");
+//            }
+//            html.Append("<th class='borBottom borRight'>T1(50)+T2(50)</th></tr>");
+//            html.Append("</thead><tbody>");
 
-                // ✅ Loop students
-                foreach (var item in _list)
-                {
-                    var obj = objSubjectMarkMappingBAL
-                              .StudentReportCardDetails_New(Convert.ToInt32(item.PK_SudentId));
+//            // Subject Rows
+//            foreach (var subject in Model.Subjects)
+//            {
+//                html.Append("<tr><td class='borBottom borRight'><strong>" + subject.SubjectName + "</strong></td>");
+//                double term1Total = 0, term2Total = 0;
+//                foreach (var cat in Model.ExamCategories)
+//                {
+//                    int termTotal = 0;
+//                    var examTypes = Model.ExamTypes.AsEnumerable();
+//                    if (cat.ExamCategoryType.Contains("Term-1") || cat.ExamCategoryType.Contains("1")) examTypes = examTypes.Where(e => e.ExamType != "Y");
+//                    if (cat.ExamCategoryType.Contains("Term-2") || cat.ExamCategoryType.Contains("2")) examTypes = examTypes.Where(e => e.ExamType != "HY");
 
-                    sb.Append(GenerateSingleStudentHtml(obj));
+//                    foreach (var examType in examTypes)
+//                    {
+//                        var mark = Model.Marks.FirstOrDefault(m => m.SubjectId == subject.Id && m.ExamCategoryId == cat.Id && m.ExamTypeId == examType.Id);
+//                        if (mark != null) { html.Append("<td class='borBottom borRight'>" + mark.ObtainMarks + "</td>"); termTotal += mark.ObtainMarks; }
+//                        else html.Append("<td class='borBottom borRight'>-</td>");
+//                    }
 
-                    // Page break after each student
-                    sb.Append("<div class='page-break'></div>");
-                }
+//                    termTotal = termTotal > 100 ? 100 : termTotal;
+//                    html.Append("<td class='borBottom borRight'>" + termTotal + "</td>");
+//                    double termPercentage = (termTotal * 100.0) / 100;
+//                    var grade = Model.Grades.FirstOrDefault(g => termPercentage >= g.Min && termPercentage <= g.Max);
+//                    html.Append("<td class='borBottom borRight'>" + (grade?.GradeName ?? "-") + "</td>");
 
-                string htmlContent = sb.ToString(); // ✅ moved outside loop
+//                    if (cat.ExamCategoryType.Contains("Term-1") || cat.ExamCategoryType.Contains("1")) term1Total = termTotal;
+//                    if (cat.ExamCategoryType.Contains("Term-2") || cat.ExamCategoryType.Contains("2")) term2Total = termTotal;
+//                }
 
-                // ✅ PDF generation
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    Document pdfDoc = new Document(PageSize.A4, 20f, 20f, 20f, 20f);
-                    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, ms);
-                    pdfDoc.Open();
+//                double overallTotal = (term1Total * 0.5) + (term2Total * 0.5);
+//                var overallGrade = Model.Grades.FirstOrDefault(g => overallTotal >= g.Min && overallTotal <= g.Max);
+//                html.Append("<td class='borBottom borRight'>" + overallTotal.ToString("F0") + "</td>");
+//                html.Append("<td class='borBottom'>" + (overallGrade?.GradeName ?? "-") + "</td>");
+//                html.Append("</tr>");
+//            }
 
-                    using (var srHtml = new StringReader(htmlContent))
-                    {
-                        XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, srHtml);
-                    }
+//            html.Append("</tbody></table></td></tr>");
 
-                    pdfDoc.Close();
+//            // 8 Point Grading Scale
+//            html.Append(@"
+//    <tr>
+//        <td colspan='4' class='borTop borLeft borRight'>
+//            <table width='100%' cellspacing='5' cellpadding='0'>
+//                <tr>
+//                    <td width='25%'><strong>8 Point Grading Scale:</strong></td>
+//                    <td width='75%'><strong>");
+//            var gradesList = Model.Grades.OrderByDescending(g => g.Min).ToList();
+//            for (int i = 0; i < gradesList.Count; i++)
+//            {
+//                var g = gradesList[i];
+//                html.Append(g.GradeName + " (" + g.Min + "% - " + g.Max + "%)");
+//                if (i < gradesList.Count - 1) html.Append(" ");
+//            }
+//            html.Append(@"</strong></td></tr></table></td></tr>");
 
-                    byte[] pdfBytes = ms.ToArray();
+//            // Abbreviations
+//            html.Append(@"
+//    <tr>
+//        <td colspan='4' class='borTop borLeft borRight'>
+//            <table width='100%' cellspacing='5' cellpadding='0'>
+//                <tr>
+//                    <td width='25%'><strong>Abbreviations:</strong></td>
+//                    <td width='75%'><strong>" + Model.Student.AbbreviationText + @"</strong></td>
+//                </tr>
+//            </table>
+//        </td>
+//    </tr>");
 
-                    return File(pdfBytes, "application/pdf", $"ReportCard_{ReportName}.pdf");
-                }
-            }
-            catch (Exception ex)
-            {
-                // Optional: log error
-                return Content("Error generating report card");
-            }
-        }
-       
+//            // Overall Marks
+//            html.Append(@"
+//    <tr>
+//        <td colspan='4' class='borTop borLeft borRight'>
+//            <table width='100%' cellspacing='5' cellpadding='0'>
+//                <tr>
+//                    <td width='25%'><strong>Overall:</strong></td>
+//                    <td width='25%'><strong>Marks: " + Model.Student.ObtainMarks + "/" + Model.Student.TotalMarks + @"</strong></td>
+//                    <td width='25%'><strong>Percentage: " + Model.Student.Percentages + @"</strong></td>
+//                    <td width='25%'><strong>Grade: " + Model.Student.Grade + @"</strong></td>
+//                </tr>
+//            </table>
+//        </td>
+//    </tr>"
+//);
+
+//            // Co-Scholastic Areas
+//            html.Append(@"
+//      <tr>
+//        <td colspan='4' style='border-top:1px solid #000; border-left:1px solid #000; border-right:1px solid #000; font-family:Helvetica,Arial,sans-serif; font-size:8pt; line-height:10pt;'>
+//            <table style='width:100%; border-collapse:collapse;' cellspacing='0' cellpadding='5'>
+//                <thead>
+//                    <tr align='center'>
+//                        <th style='border-bottom:1px solid #000; border-right:1px solid #000; width:40%;'>Co-Scholastic Areas: Term-1<br>[on a 3-point (A-C) grading scale]</th>
+//                        <th style='border-bottom:1px solid #000; border-right:1px solid #000; width:10%;'>Grade</th>
+//                        <th style='border-bottom:1px solid #000; border-right:1px solid #000; width:40%;'>Co-Scholastic Areas: Term-2<br>[on a 3-point (A-C) grading scale]</th>
+//                        <th style='border-bottom:1px solid #000; width:10%;'>Grade</th>
+//                     </tr>
+//                </thead>
+//                <tbody>");
+
+//            // Data rows
+//            if (Model.CoScholasticArea != null && Model.CoScholasticArea.Any())
+//            {
+//                var areas = Model.CoScholasticArea.Select(x => x.AreaName).Distinct();
+//                foreach (var area in areas)
+//                {
+//                    var term1 = Model.CoScholasticArea.FirstOrDefault(x => x.AreaName == area && x.TermName == "Term 1");
+//                    var term2 = Model.CoScholasticArea.FirstOrDefault(x => x.AreaName == area && x.TermName == "Term 2");
+
+//                    html.Append(@"<tr>");
+//                    html.Append("<td style='border-bottom:1px solid #000; border-right:1px solid #000;' align='center'>" + area + "</td>");
+//                    html.Append("<td style='border-bottom:1px solid #000; border-right:1px solid #000;' align='center'>" + (term1?.TermGrade ?? "-") + "</td>");
+//                    html.Append("<td style='border-bottom:1px solid #000; border-right:1px solid #000;' align='center'>" + area + "</td>");
+//                    html.Append("<td style='border-bottom:1px solid #000;' align='center'>" + (term2?.TermGrade ?? "-") + "</td>");
+//                    html.Append("</tr>");
+//                }
+//            }
+
+//            html.Append(@"</tbody>
+//            </table>
+//        </td>
+//     </tr>");
+
+//            // Attendance, Remarks, Promoted Class
+//            html.Append(@"
+//    <tr>
+//        <td colspan='4' class='borTop borLeft borRight'>
+//            <table width='100%' cellspacing='5' cellpadding='0'>
+//                <tr>
+//                    <td><strong>Attendance:</strong> " + Model.Student.Attendancecount + @"</td>
+//                    <td><strong>Remarks/Status:</strong> " + Model.Student.Remarks + @"</td>
+//                    <td><strong>Promoted to Class:</strong> " + Model.Student.PromotedToClass + @"</td>
+//                </tr>
+//            </table>
+//        </td>
+//    </tr>");
+
+//            // Signatures
+//            html.Append(@"
+//    <tr>
+//    <td colspan='4' class='borLeft borRight borTop borBottom'>
+//        <table width='100%' cellspacing='0' cellpadding='0' style='border-collapse:collapse;'>
+
+//            <!-- blank signature area -->
+//            <tr>
+//    <td colspan='3' style='height:70px; border:none;'>&nbsp;</td>
+//</tr>
+
+//            <!-- bottom text row -->
+//            <tr>
+//                <td style='width:33%; padding:8px; text-align:left; border:none;'>
+//                    <strong>Date : " + DateTime.Now.ToString("dd/MM/yyyy") + @"</strong>
+//                </td>
+
+//                <td style='width:34%; padding:8px; text-align:center; border:none;'>
+//                    <strong>Signature of Class Teacher</strong>
+//                </td>
+
+//                <td style='width:33%; padding:8px; text-align:right; border:none;'>
+//                    <strong>Principal's Signature</strong>
+//                </td>
+//            </tr>
+
+//        </table>
+//    </td>
+//</tr>");
+
+//            html.Append("</body></html>");
+
+//            return html.ToString();
+//        }
+
         public string GenerateSingleStudentHtml(MarksTableViewModel Model)
         {
             var html = new StringBuilder();
 
-           
+            html.Append(@"
+<html>
+<head>
+<style>
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    margin:0;
+    padding:10px;
+}
+table{
+    border-collapse: collapse;
+    width:100%;
+}
+th, td{
+    border:1px solid #000;
+    padding:4px;
+    font-size:11px;
+}
+.borLeft{border-left:1px solid #000;}
+.borRight{border-right:1px solid #000;}
+.borTop{border-top:1px solid #000;}
+.borBottom{border-bottom:1px solid #000;}
+
+.schoolHeader{
+    background:#e9a15a;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    padding:8px;
+}
+.schoolSub{
+    text-align:center;
+    font-size:11px;
+    font-weight:bold;
+    padding:4px;
+}
+.reportTitle{
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+    border:1px solid #000;
+    padding:6px;
+}
+body{
+    margin:0 !important;
+    padding:0 !important;
+}
+
+@page{
+    margin: 8mm;
+    size: A4;
+}
+</style>
+</head>
+<body>
+");
+
             // Start Table
             html.Append(@"<table width='100%' border='0' cellspacing='0' cellpadding='0'>
         <tbody>
-            <tr>
-                <td colspan='4' align='center' style='font-size:12pt;'><strong>REPORT CARD " + Model.Student.AcademicYear + @"</strong></td>
-            </tr>
-            <tr><td colspan='4'>&nbsp;</td></tr>
+<tr>
+    <td colspan='4' style='height:175px; border:none;'>&nbsp;</td>
+</tr>
+           <tr>
+    <td colspan='4' align='center' style='border:none; padding:6px 0;'>
+        <div style='
+            display:inline-block;
+            padding:4px 14px;
+            font-size:9pt;
+            font-weight:bold;
+            border:1.5px solid #000;
+            border-radius:16px;
+            background:linear-gradient(to bottom, #ffffff, #ededed);
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.25);
+            text-align:center;
+            min-width:190px;
+        '>
+            REPORT CARD " + Model.Student.AcademicYear + @"
+        </div>
+    </td>
+</tr>
             <tr>
                 <td class='borLeft borTop' colspan='2'>
                     <table width='100%' cellspacing='0' cellpadding='3'>
@@ -416,8 +725,14 @@ namespace SchoolMt.Controllers
                 }
 
                 double overallTotal = (term1Total * 0.5) + (term2Total * 0.5);
-                var overallGrade = Model.Grades.FirstOrDefault(g => overallTotal >= g.Min && overallTotal <= g.Max);
-                html.Append("<td class='borBottom borRight'>" + overallTotal.ToString("F0") + "</td>");
+
+                // rounded value for grade matching
+                double roundedOverallTotal = Math.Round(overallTotal, 0, MidpointRounding.AwayFromZero);
+
+                var overallGrade = Model.Grades
+                    .FirstOrDefault(g => roundedOverallTotal >= g.Min && roundedOverallTotal <= g.Max);
+
+                html.Append("<td class='borBottom borRight'>" + roundedOverallTotal.ToString("F0") + "</td>");
                 html.Append("<td class='borBottom'>" + (overallGrade?.GradeName ?? "-") + "</td>");
                 html.Append("</tr>");
             }
@@ -525,17 +840,32 @@ namespace SchoolMt.Controllers
             // Signatures
             html.Append(@"
     <tr>
-        <td colspan='4' class='borTop borLeft borRight'>
-            <table width='100%' cellspacing='5' cellpadding='0'>
-                <tr>
-                    <td><strong>Date: " + DateTime.Now.ToString("dd-MM-yyyy") + @"</strong></td>
-                    <td align='center'><strong>Signature of Class Teacher</strong></td>
-                    <td align='right'><strong>Principal's Signature</strong></td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr><td colspan='4' class='borTop borLeft borRight borBottom'>&nbsp;</td></tr>");
+    <td colspan='4' class='borLeft borRight borTop borBottom'>
+        <table width='100%' cellspacing='0' cellpadding='0' style='border-collapse:collapse;'>
+
+            <!-- blank signature area -->
+            <tr>
+    <td colspan='3' style='height:70px; border:none;'>&nbsp;</td>
+</tr>
+
+            <!-- bottom text row -->
+            <tr>
+                <td style='width:33%; padding:8px; text-align:left; border:none;'>
+                    <strong>Date : " + DateTime.Now.ToString("dd/MM/yyyy") + @"</strong>
+                </td>
+
+                <td style='width:34%; padding:8px; text-align:center; border:none;'>
+                    <strong>Signature of Class Teacher</strong>
+                </td>
+
+                <td style='width:33%; padding:8px; text-align:right; border:none;'>
+                    <strong>Principal's Signature</strong>
+                </td>
+            </tr>
+
+        </table>
+    </td>
+</tr>");
 
             html.Append("</tbody></table>");
 
@@ -546,8 +876,15 @@ namespace SchoolMt.Controllers
         {
             try
             {
-                var list = TempData["studentlist"] as List<StudentMasterMDL>;
-                TempData.Keep("studentlist");
+                int TotalItem = Convert.ToInt32(TempData["TotalItem"] ?? 0);
+                var ClassName = TempData["ClassName"]?.ToString();
+                var Section = TempData["Section"]?.ToString();
+                var SearchBy = TempData["SearchBy"]?.ToString();
+                var SearchValue = TempData["SearchValue"]?.ToString();
+
+                objBal.GetStudentData(out _Studentlist, out objBasicPagingMDL, 0, TotalItem, 1, SessionInfo.User.fk_companyid, SearchBy, SearchValue, ClassName, Section);
+
+                var list = _Studentlist;
 
                 if (list == null || !list.Any())
                     return "<h3>No data found</h3>";
@@ -565,7 +902,7 @@ td, th { padding:5px; }
 
 .borLeft { border-left:1px solid #000; }
 .borRight { border-right:1px solid #000; }
-.borTop { border-top:1px solid #000; }
+.borRight{ border-right:2px solid #000 !important; }
 .borBottom { border-bottom:1px solid #000; }
 
 .page-break { page-break-after: always; }
