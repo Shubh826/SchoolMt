@@ -113,8 +113,10 @@ namespace SchoolMt.Controllers
                     obj.CoScholasticJson = JsonConvert.SerializeObject(obj.CoScholasticGrades);
                 }
 
-                /* ---------------- INSERT INTO DB (ONE CALL) ---------------- */
-                Messages msg = objBal.InsertSubjectMarkMappingData(obj);
+                obj.userId = SessionInfo.User.userid;
+
+               /* ---------------- INSERT INTO DB (ONE CALL) ---------------- */
+               Messages msg = objBal.InsertSubjectMarkMappingData(obj);
 
                 return Json(new
                 {
