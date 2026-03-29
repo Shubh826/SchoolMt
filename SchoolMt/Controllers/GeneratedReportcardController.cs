@@ -775,7 +775,7 @@ body{
         <td colspan='4' class='borTop borLeft borRight'>
             <table width='100%' cellspacing='5' cellpadding='0'>
                 <tr>
-                    <td width='25%'><strong>Overall:</strong></td>
+                    <td width='25%'><strong>Overall (T1(50)+T2(50)):</strong></td>
                     <td width='25%'><strong>Marks: " + Model.Student.ObtainMarks + "/" + Model.Student.TotalMarks + @"</strong></td>
                     <td width='25%'><strong>Percentage: " + Model.Student.Percentages + @"</strong></td>
                     <td width='25%'><strong>Grade: " + Model.Student.Grade + @"</strong></td>
