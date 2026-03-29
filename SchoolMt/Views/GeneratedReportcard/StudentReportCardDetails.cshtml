@@ -278,14 +278,25 @@
                                 }
 
                             }
-
                             @{
                                 double overallTotal = (term1Total * 0.5) + (term2Total * 0.5);
-                                var overallGrade = Model.Grades.FirstOrDefault(g => overallTotal >= g.Min && overallTotal <= g.Max);
+
+                                // rounded value for grade matching
+                                double roundedOverallTotal = Math.Round(overallTotal, 0, MidpointRounding.AwayFromZero);
+
+                                var overallGrade = Model.Grades
+                                    .FirstOrDefault(g => roundedOverallTotal >= g.Min && roundedOverallTotal <= g.Max);
                             }
 
-                            <td class="borBottom borRight">@overallTotal.ToString("F0")</td>
-                            <td class="borBottom">@(overallGrade==null?"-": overallGrade.GradeName)</td>
+                            <td class="borBottom borRight">@roundedOverallTotal.ToString("F0")</td>
+                            <td class="borBottom">@(overallGrade == null ? "-" : overallGrade.GradeName)</td>
+                            @*@{
+            double overallTotal = (term1Total * 0.5) + (term2Total * 0.5);
+            var overallGrade = Model.Grades.FirstOrDefault(g => overallTotal >= g.Min && overallTotal <= g.Max);
+        }
+
+        <td class="borBottom borRight">@overallTotal.ToString("F0")</td>
+        <td class="borBottom">@(overallGrade==null?"-": overallGrade.GradeName)</td>*@
 
                         </tr>
                         }
